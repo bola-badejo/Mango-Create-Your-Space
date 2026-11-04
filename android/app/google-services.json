@@ -1,0 +1,223 @@
+{
+  "project_info": {
+    "project_number": "892280623487",
+    "firebase_url": "https://mango-cloud-34e08-default-rtdb.firebaseio.com",
+    "project_id": "mango-cloud-34e08",
+    "storage_bucket": "mango-cloud-34e08.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892280623487:android:24d66f96b65971bbd24a4a",
+        "android_client_info": {
+          "package_name": "com.example.mango"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892280623487-6jtp6hbu2ii0npnjc4dil6tli31ds7sv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mango",
+            "certificate_hash": "2f8a446636d92ea84b39347378f5642155e12c66"
+          }
+        },
+        {
+          "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFCP0TCptycLjzadXYm92MpCzhkOJ1EVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "892280623487-bmi3qsjmflnial9iipm8ghahu7ldfse0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.com.mango.mango"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892280623487:android:1227c6af421048a5d24a4a",
+        "android_client_info": {
+          "package_name": "com.mango.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892280623487-7abdv1362beo6qrb1ch7o69sivs11eek.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mango.app",
+            "certificate_hash": "b4c6e977ecc2f31db5e014cacec17c49a43c2793"
+          }
+        },
+        {
+          "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFCP0TCptycLjzadXYm92MpCzhkOJ1EVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "892280623487-bmi3qsjmflnial9iipm8ghahu7ldfse0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.com.mango.mango"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892280623487:android:630edeea82a55b09d24a4a",
+        "android_client_info": {
+          "package_name": "ng.com.mango"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892280623487-cph23ofquma4vdvn8d4oa2j4aprbl05s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ng.com.mango",
+            "certificate_hash": "2f8a446636d92ea84b39347378f5642155e12c66"
+          }
+        },
+        {
+          "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFCP0TCptycLjzadXYm92MpCzhkOJ1EVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "892280623487-bmi3qsjmflnial9iipm8ghahu7ldfse0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.com.mango.mango"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892280623487:android:e26f2290a8c3303ed24a4a",
+        "android_client_info": {
+          "package_name": "ng.com.mango.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892280623487-g3cps8nt55nepis3gentfvd40ai0ktvs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ng.com.mango.app",
+            "certificate_hash": "b4c6e977ecc2f31db5e014cacec17c49a43c2793"
+          }
+        },
+        {
+          "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFCP0TCptycLjzadXYm92MpCzhkOJ1EVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "892280623487-bmi3qsjmflnial9iipm8ghahu7ldfse0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.com.mango.mango"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892280623487:android:eade6181e6cfce10d24a4a",
+        "android_client_info": {
+          "package_name": "ng.com.mango.mango"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFCP0TCptycLjzadXYm92MpCzhkOJ1EVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892280623487-d0cpth4r47iegrvd8l267mp57l4te449.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "892280623487-bmi3qsjmflnial9iipm8ghahu7ldfse0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.com.mango.mango"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

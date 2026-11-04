@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package blockchain;
+
+message Transaction {
+  string sender = 1;
+  string receiver = 2;
+  int64 amount = 3;
+  int64 fee = 4;
+  string signature = 5;
+  int64 nonce = 6;
+  string transaction_id = 7;
+  int64 timestamp = 8;
+  string data = 9;
+}
+
+message Block {
+  int32 index = 1;
+  string previous_hash = 2;
+  string hash = 3;
+  string merkle_root = 4;
+  repeated Transaction transactions = 5;
+  int32 nonce = 6;
+  int64 timestamp = 7;
+  string signed_by = 8;
+  string signature = 9;
+  int32 difficulty = 10;
+}
+
+message BlockchainResponse {
+  repeated Block blocks = 1;
+  int32 current_difficulty = 2;
+  string network_id = 3;
+}
+
+message TransactionResponse {
+  bool success = 1;
+  string message = 2;
+  string transaction_id = 3;
+  int64 block_index = 4;
+}
+
+message TradingPair {
+  string base_asset = 1;
+  string quote_asset = 2;
+  string pair_address = 3;
+  int64 liquidity = 4;
+  double price = 5;
+}
+
+message Order {
+  string order_id = 1;
+  string user_id = 2;
+  string pair = 3;
+  string side = 4;
+  string order_type = 5;
+  int64 quantity = 6;
+  int64 price = 7;
+  int64 filled_quantity = 8;
+  string status = 9;
+  int64 timestamp = 10;
+  string signature = 11;
+}
+
+message OrderBook {
+  repeated Order bids = 1;
+  repeated Order asks = 2;
+  string pair = 3;
+  int64 timestamp = 4;
+}
+
+message Trade {
+  string trade_id = 1;
+  string pair = 2;
+  string taker_order_id = 3;
+  string maker_order_id = 4;
+  string taker_id = 5;
+  string maker_id = 6;
+  string side = 7;
+  int64 quantity = 8;
+  int64 price = 9;
+  int64 fee = 10;
+  int64 timestamp = 11;
+}
+
+service BlockchainService {
+  rpc SubmitTransaction (Transaction) returns (TransactionResponse);
+  rpc GetBlockchain (Empty) returns (BlockchainResponse);
+  rpc MineBlock (Empty) returns (Block);
+  rpc GetBalance (BalanceRequest) returns (BalanceResponse);
+  rpc GetTransactionHistory (TransactionHistoryRequest) returns (TransactionHistoryResponse);
+}
+
+service TradingService {
+  rpc CreateOrder (Order) returns (OrderResponse);
+  rpc CancelOrder (OrderRequest) returns (OrderResponse);
+  rpc GetOrderBook (OrderBookRequest) returns (OrderBook);
+  rpc GetUserOrders (UserOrdersRequest) returns (UserOrdersResponse);
+  rpc GetTradeHistory (TradeHistoryRequest) returns (TradeHistoryResponse);
+}
+
+message BalanceRequest {
+  string user_id = 1;
+  string asset = 2;
+}
+
+message BalanceResponse {
+  int64 balance = 1;
+  int64 locked_balance = 2;
+  string asset = 3;
+}
+
+message Empty {}
