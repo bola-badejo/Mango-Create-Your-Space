@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class MediaViewerDialog extends StatefulWidget {
   final String url;
@@ -49,13 +50,13 @@ class _MediaViewerDialogState extends State<MediaViewerDialog> {
         materialProgressColors: ChewieProgressColors(
           playedColor: Colors.blue,
           handleColor: Colors.blue,
-          backgroundColor: Colors.grey,
-          bufferedColor: Colors.grey.shade400,
+          backgroundColor: MangoPalette.grey500,
+          bufferedColor: MangoPalette.grey400,
         ),
         placeholder: Container(
-          color: Colors.black,
+          color: MangoPalette.black,
           child: Center(
-            child: CircularProgressIndicator(
+            child: CircularProgressIndicator(semanticsLabel: 'Loading', 
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           ),
@@ -110,6 +111,7 @@ class _MediaViewerDialogState extends State<MediaViewerDialog> {
                 shape: BoxShape.circle,
               ),
               child: IconButton(
+        tooltip: 'Close',
                 icon: Icon(Icons.close, color: Colors.white, size: 30),
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -121,7 +123,7 @@ class _MediaViewerDialogState extends State<MediaViewerDialog> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 color: Colors.black87,
               ),
               child: widget.type == 'image'
@@ -147,7 +149,7 @@ class _MediaViewerDialogState extends State<MediaViewerDialog> {
         imageUrl: widget.url,
         fit: BoxFit.contain,
         placeholder: (context, url) => Center(
-          child: CircularProgressIndicator(
+          child: CircularProgressIndicator(semanticsLabel: 'Loading', 
             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
           ),
         ),
@@ -185,7 +187,7 @@ class _MediaViewerDialogState extends State<MediaViewerDialog> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
+          CircularProgressIndicator(semanticsLabel: 'Loading', 
             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
           ),
           SizedBox(height: 16),

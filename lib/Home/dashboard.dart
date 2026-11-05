@@ -37,6 +37,8 @@ import 'package:mango/Store/screens/product_detail_screen.dart';
 import 'package:mango/Utils/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MiniPlayerWrapper extends StatelessWidget {
   const MiniPlayerWrapper({super.key});
@@ -252,12 +254,12 @@ class _MangoDashboardState extends State<MangoDashboard>
         placeholder: (context, url) => Container(
           width: width,
           height: height,
-          color: isDarkMode ? Colors.grey[800] : Colors.grey[300],
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey300,
           child: Center(
             child: SizedBox(
               width: width * 0.3,
               height: height * 0.3,
-              child: CircularProgressIndicator(
+              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                 strokeWidth: 2,
                 valueColor: AlwaysStoppedAnimation(
                   _themeController.primaryColorValue,
@@ -271,12 +273,12 @@ class _MangoDashboardState extends State<MangoDashboard>
           height: height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
-            color: isDarkMode ? Colors.grey[800] : Colors.grey[300],
+            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey300,
           ),
           child: Icon(
             icon,
             size: width * 0.4,
-            color: isDarkMode ? Colors.grey : Colors.grey[600],
+            color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey600,
           ),
         ),
       ),
@@ -295,12 +297,12 @@ class _MangoDashboardState extends State<MangoDashboard>
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
-        color: isDarkMode ? Colors.grey[800] : Colors.grey[300],
+        color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey300,
       ),
       child: Icon(
         icon,
         size: width * 0.4,
-        color: isDarkMode ? Colors.grey : Colors.grey[600],
+        color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey600,
       ),
     );
   }
@@ -326,7 +328,7 @@ class _MangoDashboardState extends State<MangoDashboard>
       final isDarkMode = _themeController.isDarkMode.value;
       
       return Scaffold(
-        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.black : Colors.white,
         body: Column(
           children: [
             _buildSearchHeader(),
@@ -348,7 +350,7 @@ class _MangoDashboardState extends State<MangoDashboard>
 
     return Obx(() {
       return Container(
-        color: themeController.isDarkMode.value ? Colors.black : Colors.white,
+        color: themeController.isDarkMode.value ? MangoPalette.black : Colors.white,
         padding: const EdgeInsets.only(top: 33),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
@@ -360,9 +362,9 @@ class _MangoDashboardState extends State<MangoDashboard>
               : 53,
           child: Card(
             elevation: 2,
-            shadowColor: Colors.black.withOpacity(0.1),
+            shadowColor: MangoPalette.black.withOpacity(0.1),
             color: themeController.isDarkMode.value
-                ? Colors.black
+                ? MangoPalette.black
                 : Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(_isSearchExpanded ? 16 : 25),
@@ -382,18 +384,18 @@ class _MangoDashboardState extends State<MangoDashboard>
                             focusNode: _searchFocusNode,
                             onChanged: _onSearchChanged,
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: 12,
                               color: themeController.isDarkMode.value
                                   ? Colors.white
-                                  : Colors.black,
+                                  : MangoPalette.black,
                             ),
                             decoration: InputDecoration(
                               hintText: "Search music, books, podcasts...",
                               hintStyle: TextStyle(
-                                fontSize: 11,
+                                fontSize: 12,
                                 color: themeController.isDarkMode.value
-                                    ? Colors.grey
-                                    : Colors.grey,
+                                    ? MangoPalette.grey500
+                                    : MangoPalette.grey500,
                               ),
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.symmetric(
@@ -402,12 +404,13 @@ class _MangoDashboardState extends State<MangoDashboard>
                               isDense: true,
                               suffixIcon: _searchController.text.isNotEmpty
                                   ? IconButton(
+        tooltip: 'Clear',
                                       icon: Icon(
                                         Icons.clear,
                                         size: 16,
                                         color: themeController.isDarkMode.value
                                             ? Colors.white
-                                            : Colors.black,
+                                            : MangoPalette.black,
                                       ),
                                       onPressed: _clearSearch,
                                       padding: EdgeInsets.zero,
@@ -442,12 +445,13 @@ class _MangoDashboardState extends State<MangoDashboard>
       switch (_currentSearchState) {
         case SearchState.collapsed:
           return IconButton(
+        tooltip: 'Search',
             icon: Icon(
               Icons.search,
               size: 18,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             onPressed: _toggleSearchExpansion,
             padding: EdgeInsets.zero,
@@ -456,12 +460,13 @@ class _MangoDashboardState extends State<MangoDashboard>
         case SearchState.expandedNoResults:
         case SearchState.results:
           return IconButton(
+        tooltip: 'Close',
             icon: Icon(
               Icons.close,
               size: 18,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             onPressed: _cancelSearch,
             padding: EdgeInsets.zero,
@@ -485,11 +490,11 @@ class _MangoDashboardState extends State<MangoDashboard>
                 Text(
                   'Trending Now',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: themeController.isDarkMode.value
-                        ? Colors.grey
-                        : Colors.grey,
+                        ? MangoPalette.grey500
+                        : MangoPalette.grey500,
                   ),
                 ),
               ],
@@ -569,18 +574,18 @@ class _MangoDashboardState extends State<MangoDashboard>
                   icon,
                   size: 14,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey
-                      : Colors.grey[600],
+                      ? MangoPalette.grey500
+                      : MangoPalette.grey600,
                 ),
                 const SizedBox(width: 6),
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: themeController.isDarkMode.value
                         ? Colors.white
-                        : Colors.black,
+                        : MangoPalette.black,
                   ),
                 ),
               ],
@@ -604,8 +609,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             height: 60,
             width: 60,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -613,10 +618,10 @@ class _MangoDashboardState extends State<MangoDashboard>
             child: Text(
               "No trending music",
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
             ),
           );
@@ -645,10 +650,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                     Text(
                       track.title,
                       style: TextStyle(
-                        fontSize: 8,
+                        fontSize: 12,
                         color: themeController.isDarkMode.value
                             ? Colors.white
-                            : Colors.black,
+                            : MangoPalette.black,
                       ),
                       maxLines: 2,
                       textAlign: TextAlign.center,
@@ -675,8 +680,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             height: 90,
             width: 60,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -684,10 +689,10 @@ class _MangoDashboardState extends State<MangoDashboard>
             child: Text(
               "No trending books",
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
             ),
           );
@@ -716,10 +721,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                     Text(
                       book.title,
                       style: TextStyle(
-                        fontSize: 8,
+                        fontSize: 12,
                         color: themeController.isDarkMode.value
                             ? Colors.white
-                            : Colors.black,
+                            : MangoPalette.black,
                       ),
                       maxLines: 2,
                       textAlign: TextAlign.center,
@@ -746,8 +751,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             height: 40,
             width: 40,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -755,10 +760,10 @@ class _MangoDashboardState extends State<MangoDashboard>
             child: Text(
               "No trending podcasts",
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
             ),
           );
@@ -781,19 +786,19 @@ class _MangoDashboardState extends State<MangoDashboard>
                   title: Text(
                     podcast.title,
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       color: themeController.isDarkMode.value
                           ? Colors.white
-                          : Colors.black,
+                          : MangoPalette.black,
                     ),
                   ),
                   subtitle: Text(
                     podcast.artiste,
                     style: TextStyle(
-                      fontSize: 9,
+                      fontSize: 12,
                       color: themeController.isDarkMode.value
-                          ? Colors.grey
-                          : Colors.grey,
+                          ? MangoPalette.grey500
+                          : MangoPalette.grey500,
                     ),
                   ),
                   trailing: Icon(
@@ -801,7 +806,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                     size: 14,
                     color: themeController.isDarkMode.value
                         ? Colors.white
-                        : Colors.black,
+                        : MangoPalette.black,
                   ),
                 ),
               )
@@ -836,10 +841,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                 Text(
                   'Movie ${index + 1}',
                   style: TextStyle(
-                    fontSize: 8,
+                    fontSize: 12,
                     color: themeController.isDarkMode.value
                         ? Colors.white
-                        : Colors.black,
+                        : MangoPalette.black,
                   ),
                   maxLines: 2,
                   textAlign: TextAlign.center,
@@ -863,8 +868,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             height: 60,
             width: 180,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -872,10 +877,10 @@ class _MangoDashboardState extends State<MangoDashboard>
             child: Text(
               "No trending spaces",
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
             ),
           );
@@ -887,7 +892,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               .map(
                 (space) => Card(
                   color: themeController.isDarkMode.value
-                      ? Colors.black
+                      ? MangoPalette.black
                       : Colors.white,
                   margin: const EdgeInsets.only(bottom: 6),
                   child: ListTile(
@@ -907,19 +912,19 @@ class _MangoDashboardState extends State<MangoDashboard>
                     title: Text(
                       space.title,
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: themeController.isDarkMode.value
                             ? Colors.white
-                            : Colors.black,
+                            : MangoPalette.black,
                       ),
                     ),
                     subtitle: Text(
                       '${space.members} members • ${space.category}',
                       style: TextStyle(
-                        fontSize: 9,
+                        fontSize: 12,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey,
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey500,
                       ),
                     ),
                     trailing: Icon(
@@ -927,7 +932,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                       size: 10,
                       color: themeController.isDarkMode.value
                           ? Colors.white
-                          : Colors.black,
+                          : MangoPalette.black,
                     ),
                   ),
                 ),
@@ -987,12 +992,12 @@ class _MangoDashboardState extends State<MangoDashboard>
         child: Text(
           label,
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             color: _tabController.index == index
                 ? themeController.primaryColorValue
                 : themeController.isDarkMode.value
-                ? Colors.grey
-                : Colors.grey,
+                ? MangoPalette.grey500
+                : MangoPalette.grey500,
           ),
         ),
       );
@@ -1058,16 +1063,16 @@ class _MangoDashboardState extends State<MangoDashboard>
                   fontSize: 12,
                   color: themeController.isDarkMode.value
                       ? Colors.white
-                      : Colors.black,
+                      : MangoPalette.black,
                 ),
               ),
               subtitle: Text(
                 '@${user.username}',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey
-                      : Colors.grey,
+                      ? MangoPalette.grey500
+                      : MangoPalette.grey500,
                 ),
               ),
               trailing: Icon(
@@ -1075,7 +1080,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 size: 16,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
               onTap: () {
                 Get.to(() => ProfilePage(id: user.id));
@@ -1148,16 +1153,16 @@ class _MangoDashboardState extends State<MangoDashboard>
                   fontSize: 12,
                   color: themeController.isDarkMode.value
                       ? Colors.white
-                      : Colors.black,
+                      : MangoPalette.black,
                 ),
               ),
               subtitle: Text(
                 track.artistName,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey
-                      : Colors.grey,
+                      ? MangoPalette.grey500
+                      : MangoPalette.grey500,
                 ),
               ),
               trailing: Icon(
@@ -1165,7 +1170,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 size: 16,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
               onTap: () {
                 Navigator.push(
@@ -1217,16 +1222,16 @@ class _MangoDashboardState extends State<MangoDashboard>
                   fontSize: 12,
                   color: themeController.isDarkMode.value
                       ? Colors.white
-                      : Colors.black,
+                      : MangoPalette.black,
                 ),
               ),
               subtitle: Text(
                 book.author,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey
-                      : Colors.grey,
+                      ? MangoPalette.grey500
+                      : MangoPalette.grey500,
                 ),
               ),
               trailing: Icon(
@@ -1234,7 +1239,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 size: 16,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
               onTap: () {
                 Get.to(() => FullScreenBookPage(book: book));
@@ -1281,16 +1286,16 @@ class _MangoDashboardState extends State<MangoDashboard>
                   fontSize: 12,
                   color: themeController.isDarkMode.value
                       ? Colors.white
-                      : Colors.black,
+                      : MangoPalette.black,
                 ),
               ),
               subtitle: Text(
                 podcast.artiste,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey
-                      : Colors.grey,
+                      ? MangoPalette.grey500
+                      : MangoPalette.grey500,
                 ),
               ),
               trailing: Icon(
@@ -1298,7 +1303,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 size: 16,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
               onTap: () {
                 Navigator.push(
@@ -1351,16 +1356,16 @@ class _MangoDashboardState extends State<MangoDashboard>
                   fontSize: 12,
                   color: themeController.isDarkMode.value
                       ? Colors.white
-                      : Colors.black,
+                      : MangoPalette.black,
                 ),
               ),
               subtitle: Text(
                 '${space.members} members • ${space.category}',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey
-                      : Colors.grey,
+                      ? MangoPalette.grey500
+                      : MangoPalette.grey500,
                 ),
               ),
               trailing: Icon(
@@ -1368,7 +1373,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 size: 12,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
               onTap: () {
                 Get.to(
@@ -1390,7 +1395,7 @@ class _MangoDashboardState extends State<MangoDashboard>
       future: _getUserInfo(post.postCreator),
       builder: (context, userSnapshot) {
         return Card(
-          color: themeController.isDarkMode.value ? Colors.black : Colors.white,
+          color: themeController.isDarkMode.value ? MangoPalette.black : Colors.white,
           margin: const EdgeInsets.symmetric(vertical: 4),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -1410,11 +1415,11 @@ class _MangoDashboardState extends State<MangoDashboard>
                       Text(
                         userSnapshot.data!.displayName,
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: themeController.isDarkMode.value
                               ? Colors.white
-                              : Colors.black,
+                              : MangoPalette.black,
                         ),
                       ),
                     ],
@@ -1423,10 +1428,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                 Text(
                   post.text,
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: 12,
                     color: themeController.isDarkMode.value
                         ? Colors.white
-                        : Colors.black,
+                        : MangoPalette.black,
                   ),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
@@ -1435,10 +1440,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                 Text(
                   timeAgo(post.timeStamp!.toDate()),
                   style: TextStyle(
-                    fontSize: 9,
+                    fontSize: 12,
                     color: themeController.isDarkMode.value
-                        ? Colors.grey
-                        : Colors.grey,
+                        ? MangoPalette.grey500
+                        : MangoPalette.grey500,
                   ),
                 ),
               ],
@@ -1457,7 +1462,7 @@ class _MangoDashboardState extends State<MangoDashboard>
       itemCount: 5,
       itemBuilder: (context, index) {
         return Card(
-          color: themeController.isDarkMode.value ? Colors.black : Colors.white,
+          color: themeController.isDarkMode.value ? MangoPalette.black : Colors.white,
           margin: const EdgeInsets.symmetric(vertical: 4),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -1468,9 +1473,9 @@ class _MangoDashboardState extends State<MangoDashboard>
                   height: 40,
                   decoration: BoxDecoration(
                     color: themeController.isDarkMode.value
-                        ? Colors.grey[800]
-                        : Colors.grey[300],
-                    borderRadius: BorderRadius.circular(6),
+                        ? MangoPalette.grey800
+                        : MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -1482,16 +1487,16 @@ class _MangoDashboardState extends State<MangoDashboard>
                         width: double.infinity,
                         height: 10,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey[800]
-                            : Colors.grey[300],
+                            ? MangoPalette.grey800
+                            : MangoPalette.grey300,
                       ),
                       const SizedBox(height: 6),
                       Container(
                         width: 100,
                         height: 8,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey[800]
-                            : Colors.grey[300],
+                            ? MangoPalette.grey800
+                            : MangoPalette.grey300,
                       ),
                     ],
                   ),
@@ -1515,8 +1520,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             Icons.search_off,
             size: 40,
             color: themeController.isDarkMode.value
-                ? Colors.grey[600]
-                : Colors.grey[400],
+                ? MangoPalette.grey600
+                : MangoPalette.grey400,
           ),
           const SizedBox(height: 8),
           Text(
@@ -1524,8 +1529,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             style: TextStyle(
               fontSize: 12,
               color: themeController.isDarkMode.value
-                  ? Colors.grey
-                  : Colors.grey[600],
+                  ? MangoPalette.grey500
+                  : MangoPalette.grey600,
             ),
             textAlign: TextAlign.center,
           ),
@@ -1554,7 +1559,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               width: double.infinity,
               decoration: BoxDecoration(
                 color: themeController.isDarkMode.value
-                    ? Colors.black
+                    ? MangoPalette.black
                     : Colors.white,
               ),
               child: Column(
@@ -1647,7 +1652,7 @@ class _MangoDashboardState extends State<MangoDashboard>
             fontSize: 24,
             color: themeController.isDarkMode.value
                 ? Colors.white
-                : Colors.black,
+                : MangoPalette.black,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -1678,18 +1683,19 @@ class _MangoDashboardState extends State<MangoDashboard>
                     fontSize: 16,
                     color: themeController.isDarkMode.value
                         ? Colors.white
-                        : Colors.black,
+                        : MangoPalette.black,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                GestureDetector(
+                MangoPressable(
+        semanticLabel: 'Next',
                   onTap: onSeeAll,
                   child: Icon(
                     Icons.arrow_forward_ios,
                     size: 14,
                     color: themeController.isDarkMode.value
                         ? Colors.white
-                        : Colors.black,
+                        : MangoPalette.black,
                   ),
                 ),
               ],
@@ -1715,8 +1721,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 180,
               width: 160,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -1757,8 +1763,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 160,
               width: 140,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -1795,8 +1801,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 220,
               width: double.infinity,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -1855,8 +1861,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               Icons.error_outline,
               size: 40,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[600]
-                  : Colors.grey[400],
+                  ? MangoPalette.grey600
+                  : MangoPalette.grey400,
             ),
             SizedBox(height: 8),
             Text(
@@ -1864,8 +1870,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               style: TextStyle(
                 fontSize: 12,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey
-                    : Colors.grey[600],
+                    ? MangoPalette.grey500
+                    : MangoPalette.grey600,
               ),
               textAlign: TextAlign.center,
             ),
@@ -1885,7 +1891,7 @@ class _MangoDashboardState extends State<MangoDashboard>
   Widget _buildHitListCard(Music track, int rank) {
     final themeController = ThemeController.to;
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Navigator.push(
           context,
@@ -1916,7 +1922,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.black87,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Text(
                       '#$rank',
@@ -1935,13 +1941,13 @@ class _MangoDashboardState extends State<MangoDashboard>
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Text(
                       playValue(track.plays),
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1969,11 +1975,11 @@ class _MangoDashboardState extends State<MangoDashboard>
             Text(
               track.title,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -1981,10 +1987,10 @@ class _MangoDashboardState extends State<MangoDashboard>
             Text(
               track.artistName,
               style: TextStyle(
-                fontSize: 9,
+                fontSize: 12,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey
-                    : Colors.grey,
+                    ? MangoPalette.grey500
+                    : MangoPalette.grey500,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -1998,7 +2004,7 @@ class _MangoDashboardState extends State<MangoDashboard>
   Widget _buildNewMusicCard(Music track) {
     final themeController = ThemeController.to;
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Navigator.push(
           context,
@@ -2029,13 +2035,13 @@ class _MangoDashboardState extends State<MangoDashboard>
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.red,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(MangoRadius.xs),
                     ),
                     child: Text(
                       'NEW',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 8,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -2047,11 +2053,11 @@ class _MangoDashboardState extends State<MangoDashboard>
             Text(
               track.title,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.w800,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
               maxLines: 2,
               textAlign: TextAlign.center,
@@ -2060,11 +2066,11 @@ class _MangoDashboardState extends State<MangoDashboard>
             Text(
               track.artistName,
               style: TextStyle(
-                fontSize: 9,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey
-                    : Colors.black,
+                    ? MangoPalette.grey500
+                    : MangoPalette.black,
               ),
               maxLines: 2,
               textAlign: TextAlign.center,
@@ -2079,7 +2085,7 @@ class _MangoDashboardState extends State<MangoDashboard>
   Widget _buildTop10Item(Music track, int rank) {
     final themeController = ThemeController.to;
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Navigator.push(
           context,
@@ -2093,8 +2099,8 @@ class _MangoDashboardState extends State<MangoDashboard>
         padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 16),
         decoration: BoxDecoration(
           color: themeController.isDarkMode.value
-              ? Colors.grey[800]
-              : Colors.grey[300],
+              ? MangoPalette.grey800
+              : MangoPalette.grey300,
         ),
         child: Stack(
           children: [
@@ -2108,16 +2114,16 @@ class _MangoDashboardState extends State<MangoDashboard>
                     Icons.play_arrow,
                     size: 7,
                     color: themeController.isDarkMode.value
-                        ? Colors.grey
-                        : Colors.grey,
+                        ? MangoPalette.grey500
+                        : MangoPalette.grey500,
                   ),
                   Text(
                     playValue(track.plays),
                     style: TextStyle(
-                      fontSize: 6,
+                      fontSize: 12,
                       color: themeController.isDarkMode.value
-                          ? Colors.grey
-                          : Colors.grey,
+                          ? MangoPalette.grey500
+                          : MangoPalette.grey500,
                     ),
                   ),
                 ],
@@ -2139,7 +2145,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                           fontWeight: FontWeight.bold,
                           color: rank <= 5
                               ? themeController.primaryColorValue
-                              : Colors.grey,
+                              : MangoPalette.grey500,
                         ),
                       ),
                     ),
@@ -2161,11 +2167,11 @@ class _MangoDashboardState extends State<MangoDashboard>
                       Text(
                         track.title,
                         style: TextStyle(
-                          fontSize: 9,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: themeController.isDarkMode.value
                               ? Colors.white
-                              : Colors.black,
+                              : MangoPalette.black,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -2173,10 +2179,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                       Text(
                         track.artistName,
                         style: TextStyle(
-                          fontSize: 8,
+                          fontSize: 12,
                           color: themeController.isDarkMode.value
-                              ? Colors.grey
-                              : Colors.grey[500],
+                              ? MangoPalette.grey500
+                              : MangoPalette.grey500,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -2205,8 +2211,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 240,
               width: 160,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -2242,8 +2248,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 220,
               width: 140,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -2279,8 +2285,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 180,
               width: 300,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -2316,8 +2322,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 280,
               width: double.infinity,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -2387,8 +2393,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 200,
               width: 130,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -2424,8 +2430,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 240,
               width: 160,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -2461,8 +2467,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 240,
               width: 160,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -2510,13 +2516,13 @@ class _MangoDashboardState extends State<MangoDashboard>
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                   decoration: BoxDecoration(
                     color: themeController.primaryColorValue,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                   child: Text(
                     'BESTSELLER',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -2532,7 +2538,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               fontWeight: FontWeight.bold,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -2541,10 +2547,10 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             book.author,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               color: themeController.isDarkMode.value
-                  ? Colors.grey
-                  : Colors.grey[600],
+                  ? MangoPalette.grey500
+                  : MangoPalette.grey600,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -2557,20 +2563,20 @@ class _MangoDashboardState extends State<MangoDashboard>
               Text(
                 '4.8',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey
-                      : Colors.grey[600],
+                      ? MangoPalette.grey500
+                      : MangoPalette.grey600,
                 ),
               ),
               Spacer(),
               Text(
                 '${book.reads} reads',
                 style: TextStyle(
-                  fontSize: 9,
+                  fontSize: 12,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey
-                      : Colors.grey[500],
+                      ? MangoPalette.grey500
+                      : MangoPalette.grey500,
                 ),
               ),
             ],
@@ -2605,14 +2611,14 @@ class _MangoDashboardState extends State<MangoDashboard>
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(3),
+                    color: MangoPalette.green500,
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                   child: Text(
                     'NEW',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 7,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -2626,12 +2632,12 @@ class _MangoDashboardState extends State<MangoDashboard>
             child: Text(
               book.title,
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
                 height: 1,
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
               maxLines: 2,
               textAlign: TextAlign.left,
@@ -2642,10 +2648,10 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             book.author,
             style: TextStyle(
-              fontSize: 9,
+              fontSize: 12,
               color: themeController.isDarkMode.value
-                  ? Colors.grey
-                  : Colors.grey[600],
+                  ? MangoPalette.grey500
+                  : MangoPalette.grey600,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -2663,8 +2669,8 @@ class _MangoDashboardState extends State<MangoDashboard>
       margin: EdgeInsets.only(right: 12),
       child: Card(
         elevation: 3,
-        color: themeController.isDarkMode.value ? Colors.black : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        color: themeController.isDarkMode.value ? MangoPalette.black : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
         child: Row(
           children: [
             Container(
@@ -2697,7 +2703,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                         Text(
                           'TRENDING',
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 12,
                             color: Colors.red,
                             fontWeight: FontWeight.bold,
                           ),
@@ -2712,7 +2718,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                         fontWeight: FontWeight.bold,
                         color: themeController.isDarkMode.value
                             ? Colors.white
-                            : Colors.black,
+                            : MangoPalette.black,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -2723,8 +2729,8 @@ class _MangoDashboardState extends State<MangoDashboard>
                       style: TextStyle(
                         fontSize: 12,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey[600],
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey600,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -2736,17 +2742,17 @@ class _MangoDashboardState extends State<MangoDashboard>
                           Icons.visibility,
                           size: 12,
                           color: themeController.isDarkMode.value
-                              ? Colors.grey
-                              : Colors.grey,
+                              ? MangoPalette.grey500
+                              : MangoPalette.grey500,
                         ),
                         SizedBox(width: 4),
                         Text(
                           '${book.reads} reads',
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: 12,
                             color: themeController.isDarkMode.value
-                                ? Colors.grey
-                                : Colors.grey,
+                                ? MangoPalette.grey500
+                                : MangoPalette.grey500,
                           ),
                         ),
                         Spacer(),
@@ -2758,12 +2764,12 @@ class _MangoDashboardState extends State<MangoDashboard>
                           decoration: BoxDecoration(
                             color: themeController.primaryColorValue
                                 .withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                           ),
                           child: Text(
                             'Read Now',
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: themeController.primaryColorValue,
                               fontWeight: FontWeight.bold,
                             ),
@@ -2784,7 +2790,7 @@ class _MangoDashboardState extends State<MangoDashboard>
   Widget _buildTop10BookItem(MangoBooks book, int rank) {
     final themeController = ThemeController.to;
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Navigator.push(
           context,
@@ -2798,8 +2804,8 @@ class _MangoDashboardState extends State<MangoDashboard>
         padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 16),
         decoration: BoxDecoration(
           color: themeController.isDarkMode.value
-              ? Colors.grey[800]
-              : Colors.grey[300],
+              ? MangoPalette.grey800
+              : MangoPalette.grey300,
         ),
         child: Stack(
           children: [
@@ -2813,16 +2819,16 @@ class _MangoDashboardState extends State<MangoDashboard>
                     Icons.bookmark_border,
                     size: 7,
                     color: themeController.isDarkMode.value
-                        ? Colors.grey
-                        : Colors.grey,
+                        ? MangoPalette.grey500
+                        : MangoPalette.grey500,
                   ),
                   Text(
                     '${book.reads} reads',
                     style: TextStyle(
-                      fontSize: 6,
+                      fontSize: 12,
                       color: themeController.isDarkMode.value
-                          ? Colors.grey
-                          : Colors.grey,
+                          ? MangoPalette.grey500
+                          : MangoPalette.grey500,
                     ),
                   ),
                 ],
@@ -2844,7 +2850,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                           fontWeight: FontWeight.bold,
                           color: rank <= 5
                               ? themeController.primaryColorValue
-                              : Colors.grey,
+                              : MangoPalette.grey500,
                         ),
                       ),
                     ),
@@ -2868,11 +2874,11 @@ class _MangoDashboardState extends State<MangoDashboard>
                       Text(
                         book.title,
                         style: TextStyle(
-                          fontSize: 9,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: themeController.isDarkMode.value
                               ? Colors.white
-                              : Colors.black,
+                              : MangoPalette.black,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -2880,10 +2886,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                       Text(
                         book.author == '' ? 'Unknown Author' : book.author,
                         style: TextStyle(
-                          fontSize: 8,
+                          fontSize: 12,
                           color: themeController.isDarkMode.value
-                              ? Colors.grey
-                              : Colors.grey[500],
+                              ? MangoPalette.grey500
+                              : MangoPalette.grey500,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -2905,11 +2911,11 @@ class _MangoDashboardState extends State<MangoDashboard>
     final genreStyles = {
       'Business': {'color': Colors.blue, 'emoji': '💼'},
       'Fiction': {'color': Colors.purple, 'emoji': '📖'},
-      'African': {'color': Colors.green, 'emoji': '🌍'},
-      'Short-Read': {'color': Colors.orange, 'emoji': '⚡'},
+      'African': {'color': MangoPalette.green500, 'emoji': '🌍'},
+      'Short-Read': {'color': MangoPalette.green500, 'emoji': '⚡'},
     };
 
-    final style = genreStyles[genre] ?? {'color': Colors.grey, 'emoji': '📚'};
+    final style = genreStyles[genre] ?? {'color': MangoPalette.grey500, 'emoji': '📚'};
     final color = style['color'] as Color;
     final emoji = style['emoji'] as String;
 
@@ -2922,7 +2928,7 @@ class _MangoDashboardState extends State<MangoDashboard>
             width: 100,
             height: 140,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               boxShadow: [
                 BoxShadow(
                   color: color.withOpacity(0.2),
@@ -2947,9 +2953,9 @@ class _MangoDashboardState extends State<MangoDashboard>
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: color.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(MangoRadius.xs),
                     ),
-                    child: Text(emoji, style: TextStyle(fontSize: 10)),
+                    child: Text(emoji, style: TextStyle(fontSize: 12)),
                   ),
                 ),
               ],
@@ -2959,11 +2965,11 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             book.title,
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 2,
             textAlign: TextAlign.center,
@@ -2973,10 +2979,10 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             book.author,
             style: TextStyle(
-              fontSize: 9,
+              fontSize: 12,
               color: themeController.isDarkMode.value
-                  ? Colors.grey
-                  : Colors.grey[600],
+                  ? MangoPalette.grey500
+                  : MangoPalette.grey600,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -3000,7 +3006,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 width: 120,
                 height: 160,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -3010,7 +3016,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 child: Padding(
                   padding: EdgeInsets.all(8),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                     child: _buildImageWithShimmer(
                       imageUrl: book.coverUrl,
                       width: 104,
@@ -3037,13 +3043,13 @@ class _MangoDashboardState extends State<MangoDashboard>
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
               color: Colors.amber[50],
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
               border: Border.all(color: Colors.amber[200]!),
             ),
             child: Text(
               'AWARD WINNER',
               style: TextStyle(
-                fontSize: 8,
+                fontSize: 12,
                 color: Colors.amber[800],
                 fontWeight: FontWeight.bold,
               ),
@@ -3053,11 +3059,11 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             book.title,
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.bold,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 2,
             textAlign: TextAlign.center,
@@ -3082,14 +3088,14 @@ class _MangoDashboardState extends State<MangoDashboard>
                 width: 100,
                 height: 130,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   border: Border.all(
                     color: themeController.primaryColorValue,
                     width: 2,
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                   child: _buildImageWithShimmer(
                     imageUrl: book.coverUrl,
                     width: 100,
@@ -3111,7 +3117,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                       bottomRight: Radius.circular(4),
                     ),
                   ),
-                  child: Text('🥭', style: TextStyle(fontSize: 10)),
+                  child: Text('🥭', style: TextStyle(fontSize: 12)),
                 ),
               ),
             ],
@@ -3120,7 +3126,7 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             'EXCLUSIVE',
             style: TextStyle(
-              fontSize: 9,
+              fontSize: 12,
               color: themeController.primaryColorValue,
               fontWeight: FontWeight.bold,
             ),
@@ -3129,11 +3135,11 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             book.title,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 2,
             textAlign: TextAlign.center,
@@ -3157,8 +3163,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               Icons.menu_book,
               size: 32,
               color: themeController.isDarkMode.value
-                  ? Colors.grey
-                  : Colors.grey[400],
+                  ? MangoPalette.grey500
+                  : MangoPalette.grey400,
             ),
             SizedBox(height: 8),
             Text(
@@ -3166,8 +3172,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               style: TextStyle(
                 fontSize: 12,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey
-                    : Colors.grey[600],
+                    ? MangoPalette.grey500
+                    : MangoPalette.grey600,
               ),
               textAlign: TextAlign.center,
             ),
@@ -3181,14 +3187,14 @@ class _MangoDashboardState extends State<MangoDashboard>
     final themeController = ThemeController.to;
 
     final genreColors = {
-      'Afrobeats': Colors.orange,
+      'Afrobeats': MangoPalette.green500,
       'Hip Hop': Colors.purple,
       'Chill': Colors.blue,
       'Jazz': Colors.brown,
       'Pop': Colors.pink,
     };
 
-    final color = genreColors[genre] ?? Colors.grey;
+    final color = genreColors[genre] ?? MangoPalette.grey500;
 
     return Container(
       width: 120,
@@ -3199,7 +3205,7 @@ class _MangoDashboardState extends State<MangoDashboard>
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               image: DecorationImage(
                 image: NetworkImage(playlist.image),
                 fit: BoxFit.cover,
@@ -3212,12 +3218,12 @@ class _MangoDashboardState extends State<MangoDashboard>
             padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
             ),
             child: Text(
               genre,
               style: TextStyle(
-                fontSize: 9,
+                fontSize: 12,
                 color: color,
                 fontWeight: FontWeight.bold,
               ),
@@ -3227,11 +3233,11 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             playlist.title,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 2,
             textAlign: TextAlign.center,
@@ -3255,8 +3261,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 200,
               width: 200,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -3279,7 +3285,7 @@ class _MangoDashboardState extends State<MangoDashboard>
   }
 
   Widget _buildTrendingCard(Music playlist) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Navigator.push(
           context,
@@ -3293,13 +3299,13 @@ class _MangoDashboardState extends State<MangoDashboard>
         margin: const EdgeInsets.symmetric(horizontal: 6),
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
           child: Stack(
             children: [
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                   image: DecorationImage(
                     image: NetworkImage(playlist.artworkUrl),
                     fit: BoxFit.cover,
@@ -3308,11 +3314,11 @@ class _MangoDashboardState extends State<MangoDashboard>
               ),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    colors: [Colors.black.withOpacity(0.7), Colors.transparent],
+                    colors: [MangoPalette.black.withOpacity(0.7), Colors.transparent],
                   ),
                 ),
               ),
@@ -3337,7 +3343,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                           ? 'Unknown Artiste'
                           : playlist.artistName,
                       style: const TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: Colors.white70,
                       ),
                       maxLines: 1,
@@ -3355,7 +3361,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                         Text(
                           playValue(playlist.plays),
                           style: const TextStyle(
-                            fontSize: 9,
+                            fontSize: 12,
                             color: Colors.white70,
                           ),
                         ),
@@ -3384,8 +3390,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               Icons.music_note,
               size: 32,
               color: themeController.isDarkMode.value
-                  ? Colors.grey
-                  : Colors.grey[400],
+                  ? MangoPalette.grey500
+                  : MangoPalette.grey400,
             ),
             SizedBox(height: 8),
             Text(
@@ -3393,8 +3399,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               style: TextStyle(
                 fontSize: 12,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey
-                    : Colors.grey[600],
+                    ? MangoPalette.grey500
+                    : MangoPalette.grey600,
               ),
             ),
           ],
@@ -3413,8 +3419,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             height: 150,
             width: 150,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -3424,7 +3430,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               style: TextStyle(
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
             ),
           );
@@ -3438,7 +3444,7 @@ class _MangoDashboardState extends State<MangoDashboard>
             itemCount: music.length,
             itemBuilder: (context, index) {
               var track = music[index];
-              return GestureDetector(
+              return MangoPressable(
                 onTap: () {
                   Navigator.push(
                     context,
@@ -3477,8 +3483,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             height: 210,
             width: 130,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -3488,7 +3494,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               style: TextStyle(
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
             ),
           );
@@ -3521,8 +3527,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             height: 400,
             width: 300,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -3532,7 +3538,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               style: TextStyle(
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
             ),
           );
@@ -3566,8 +3572,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             height: 100,
             width: 100,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -3577,7 +3583,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               style: TextStyle(
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
             ),
           );
@@ -3633,10 +3639,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                   fontWeight: FontWeight.bold,
                   color: themeController.isDarkMode.value
                       ? Colors.white
-                      : Colors.black,
+                      : MangoPalette.black,
                 ),
               ),
-              GestureDetector(
+              MangoPressable(
                 onTap: () {
                   Get.to(
                     () => MarketPlace(),
@@ -3647,7 +3653,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                   "See All",
                   style: TextStyle(
                     fontSize: 13,
-                    color: Colors.orange,
+                    color: MangoPalette.green500,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -3689,8 +3695,8 @@ class _MangoDashboardState extends State<MangoDashboard>
                             Icons.build_circle,
                             size: 32,
                             color: isDarkMode
-                                ? Colors.grey[400]
-                                : Colors.grey[600],
+                                ? MangoPalette.grey400
+                                : MangoPalette.grey600,
                           ),
                           const SizedBox(height: 12),
                           Text(
@@ -3698,7 +3704,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                             style: TextStyle(
                               color: isDarkMode
                                   ? Colors.white70
-                                  : Colors.grey[600],
+                                  : MangoPalette.grey600,
                               fontSize: 13,
                             ),
                           ),
@@ -3707,8 +3713,8 @@ class _MangoDashboardState extends State<MangoDashboard>
                             Text(
                               "Create index: isActive Ascending, createdAt Descending",
                               style: TextStyle(
-                                color: Colors.orange[300],
-                                fontSize: 10,
+                                color: MangoPalette.green300,
+                                fontSize: 12,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -3729,13 +3735,13 @@ class _MangoDashboardState extends State<MangoDashboard>
                       Icon(
                         Icons.wifi_off,
                         size: 48,
-                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                       ),
                       const SizedBox(height: 16),
                       Text(
                         "No internet connection",
                         style: TextStyle(
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : MangoPalette.black,
                           fontSize: 14,
                         ),
                       ),
@@ -3760,8 +3766,8 @@ class _MangoDashboardState extends State<MangoDashboard>
                         Icons.shopping_bag_outlined,
                         size: 40,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey[600]
-                            : Colors.grey[400],
+                            ? MangoPalette.grey600
+                            : MangoPalette.grey400,
                       ),
                       const SizedBox(height: 12),
                       Text(
@@ -3769,7 +3775,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                         style: TextStyle(
                           color: themeController.isDarkMode.value
                               ? Colors.white70
-                              : Colors.grey[600],
+                              : MangoPalette.grey600,
                           fontSize: 14,
                         ),
                       ),
@@ -3817,15 +3823,15 @@ class _MangoDashboardState extends State<MangoDashboard>
     final themeController = ThemeController.to;
     final isDarkMode = themeController.isDarkMode.value;
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () => controller.navigateToProductDetail(product),
       child: Container(
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[850] : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          color: isDarkMode ? MangoPalette.grey850 : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: MangoPalette.black.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -3850,35 +3856,35 @@ class _MangoDashboardState extends State<MangoDashboard>
                           placeholder: (context, url) => Container(
                             height: 140,
                             color: isDarkMode
-                                ? Colors.grey[800]
-                                : Colors.grey[200],
+                                ? MangoPalette.grey800
+                                : MangoPalette.grey200,
                             child: const Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(semanticsLabel: 'Loading'),
                             ),
                           ),
                           errorWidget: (context, url, error) => Container(
                             height: 140,
                             color: isDarkMode
-                                ? Colors.grey[800]
-                                : Colors.grey[200],
+                                ? MangoPalette.grey800
+                                : MangoPalette.grey200,
                             child: Icon(
                               Icons.image_not_supported,
                               color: isDarkMode
-                                  ? Colors.grey[600]
-                                  : Colors.grey[400],
+                                  ? MangoPalette.grey600
+                                  : MangoPalette.grey400,
                             ),
                           ),
                         )
                       : Container(
                           height: 140,
                           color: isDarkMode
-                              ? Colors.grey[800]
-                              : Colors.grey[200],
+                              ? MangoPalette.grey800
+                              : MangoPalette.grey200,
                           child: Icon(
                             Icons.image,
                             color: isDarkMode
-                                ? Colors.grey[600]
-                                : Colors.grey[400],
+                                ? MangoPalette.grey600
+                                : MangoPalette.grey400,
                           ),
                         ),
                 ),
@@ -3894,12 +3900,12 @@ class _MangoDashboardState extends State<MangoDashboard>
                       ),
                       decoration: BoxDecoration(
                         color: Colors.red,
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(MangoRadius.xs),
                       ),
                       child: Text(
                         '-${((product.price - product.salePrice!) / product.price * 100).toStringAsFixed(0)}%',
                         style: const TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -3911,7 +3917,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(12),
                         ),
@@ -3921,7 +3927,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                           'OUT OF STOCK',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -3941,7 +3947,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -3955,20 +3961,20 @@ class _MangoDashboardState extends State<MangoDashboard>
                       Text(
                         product.rating.toStringAsFixed(1),
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: isDarkMode
-                              ? Colors.grey[400]
-                              : Colors.grey[600],
+                              ? MangoPalette.grey400
+                              : MangoPalette.grey600,
                         ),
                       ),
                       const SizedBox(width: 4),
                       Text(
                         '(${product.reviewCount})',
                         style: TextStyle(
-                          fontSize: 9,
+                          fontSize: 12,
                           color: isDarkMode
-                              ? Colors.grey[500]
-                              : Colors.grey[500],
+                              ? MangoPalette.grey500
+                              : MangoPalette.grey500,
                         ),
                       ),
                     ],
@@ -3982,7 +3988,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: Colors.orange,
+                          color: MangoPalette.green500,
                         ),
                       ),
                       if (product.onSale)
@@ -3991,10 +3997,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                           child: Text(
                             '₦${product.price.toStringAsFixed(2)}',
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: isDarkMode
-                                  ? Colors.grey[500]
-                                  : Colors.grey[400],
+                                  ? MangoPalette.grey500
+                                  : MangoPalette.grey400,
                               decoration: TextDecoration.lineThrough,
                             ),
                           ),
@@ -4014,9 +4020,9 @@ class _MangoDashboardState extends State<MangoDashboard>
     final themeController = ThemeController.to;
     final isDarkMode = themeController.isDarkMode.value;
 
-    return Shimmer.fromColors(
-      baseColor: isDarkMode ? Colors.grey[850]! : Colors.grey[300]!,
-      highlightColor: isDarkMode ? Colors.grey[800]! : Colors.grey[100]!,
+    return MangoShimmer(
+      baseColor: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey300,
+      highlightColor: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
       child: OptimizedGridView(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -4030,8 +4036,8 @@ class _MangoDashboardState extends State<MangoDashboard>
         itemCount: 6,
         itemBuilder: (context, index) => Container(
           decoration: BoxDecoration(
-            color: isDarkMode ? Colors.grey[800] : Colors.white,
-            borderRadius: BorderRadius.circular(12),
+            color: isDarkMode ? MangoPalette.grey800 : Colors.white,
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
         ),
       ),
@@ -4058,7 +4064,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                     fontWeight: FontWeight.bold,
                     color: themeController.isDarkMode.value
                         ? Colors.white
-                        : Colors.black,
+                        : MangoPalette.black,
                   ),
                 ),
               ),
@@ -4067,8 +4073,8 @@ class _MangoDashboardState extends State<MangoDashboard>
                 height: 280,
                 width: 180,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey[800]!
-                    : Colors.grey[300]!,
+                    ? MangoPalette.grey800
+                    : MangoPalette.grey300,
               ),
             ],
           );
@@ -4085,7 +4091,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                   style: TextStyle(
                     color: themeController.isDarkMode.value
                         ? Colors.white
-                        : Colors.black,
+                        : MangoPalette.black,
                   ),
                 ),
               ],
@@ -4101,8 +4107,8 @@ class _MangoDashboardState extends State<MangoDashboard>
                   Icons.store_outlined,
                   size: 48,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey[600]
-                      : Colors.grey[400],
+                      ? MangoPalette.grey600
+                      : MangoPalette.grey400,
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -4110,7 +4116,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                   style: TextStyle(
                     color: themeController.isDarkMode.value
                         ? Colors.white70
-                        : Colors.grey[600],
+                        : MangoPalette.grey600,
                   ),
                 ),
                 SizedBox(height: 4),
@@ -4120,7 +4126,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                     fontSize: 12,
                     color: themeController.isDarkMode.value
                         ? Colors.white54
-                        : Colors.grey[500],
+                        : MangoPalette.grey500,
                   ),
                 ),
               ],
@@ -4145,10 +4151,10 @@ class _MangoDashboardState extends State<MangoDashboard>
                       fontWeight: FontWeight.bold,
                       color: themeController.isDarkMode.value
                           ? Colors.white
-                          : Colors.black,
+                          : MangoPalette.black,
                     ),
                   ),
-                  GestureDetector(
+                  MangoPressable(
                     onTap: () {
                       Get.to(
                         () => VendorsListPage(),
@@ -4159,7 +4165,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                       "See All",
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.orange,
+                        color: MangoPalette.green500,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -4197,8 +4203,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             height: 200,
             width: 250,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           );
         }
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -4208,7 +4214,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               style: TextStyle(
                 color: themeController.isDarkMode.value
                     ? Colors.white
-                    : Colors.black,
+                    : MangoPalette.black,
               ),
             ),
           );
@@ -4223,7 +4229,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               itemCount: spaces.length,
               itemBuilder: (context, index) {
                 var space = spaces[index];
-                return GestureDetector(
+                return MangoPressable(
                   onTap: () {
                     Get.to(
                       () => SpaceDetailScreen(space),
@@ -4240,8 +4246,8 @@ class _MangoDashboardState extends State<MangoDashboard>
                           padding: const EdgeInsets.only(left: 25, right: 20),
                           decoration: BoxDecoration(
                             color: themeController.isDarkMode.value
-                                ? Colors.grey[800]
-                                : Colors.grey[200],
+                                ? MangoPalette.grey800
+                                : MangoPalette.grey200,
                             borderRadius: BorderRadius.circular(29),
                             boxShadow: [
                               BoxShadow(
@@ -4275,7 +4281,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                                   color: themeController.isDarkMode.value
                                       ? Colors.white
                                       : themeController.primaryColorValue,
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -4351,8 +4357,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 200,
               width: 280,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -4388,8 +4394,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 180,
               width: 150,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -4425,8 +4431,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 240,
               width: double.infinity,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -4462,8 +4468,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 160,
               width: 300,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -4510,8 +4516,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 140,
               width: 120,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -4547,8 +4553,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 220,
               width: 160,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -4584,8 +4590,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 180,
               width: 140,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -4621,8 +4627,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               height: 100,
               width: double.infinity,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[800]!
-                  : Colors.grey[300]!,
+                  ? MangoPalette.grey800
+                  : MangoPalette.grey300,
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -4653,8 +4659,8 @@ class _MangoDashboardState extends State<MangoDashboard>
       margin: EdgeInsets.only(right: 16),
       child: Card(
         elevation: 4,
-        color: themeController.isDarkMode.value ? Colors.black : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        color: themeController.isDarkMode.value ? MangoPalette.black : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
         child: Column(
           children: [
             Expanded(
@@ -4691,13 +4697,13 @@ class _MangoDashboardState extends State<MangoDashboard>
                         ),
                         decoration: BoxDecoration(
                           color: Colors.red,
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         child: Text(
                           'TRENDING',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -4737,7 +4743,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                         fontWeight: FontWeight.bold,
                         color: themeController.isDarkMode.value
                             ? Colors.white
-                            : Colors.black,
+                            : MangoPalette.black,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -4748,8 +4754,8 @@ class _MangoDashboardState extends State<MangoDashboard>
                       style: TextStyle(
                         fontSize: 12,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey[600],
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey600,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -4761,17 +4767,17 @@ class _MangoDashboardState extends State<MangoDashboard>
                           Icons.headset,
                           size: 12,
                           color: themeController.isDarkMode.value
-                              ? Colors.grey
-                              : Colors.grey,
+                              ? MangoPalette.grey500
+                              : MangoPalette.grey500,
                         ),
                         SizedBox(width: 4),
                         Text(
                           '${podcast.plays} listens',
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: 12,
                             color: themeController.isDarkMode.value
-                                ? Colors.grey
-                                : Colors.grey,
+                                ? MangoPalette.grey500
+                                : MangoPalette.grey500,
                           ),
                         ),
                         Spacer(),
@@ -4783,12 +4789,12 @@ class _MangoDashboardState extends State<MangoDashboard>
                           decoration: BoxDecoration(
                             color: themeController.primaryColorValue
                                 .withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                           ),
                           child: Text(
                             podcast.genre,
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: themeController.primaryColorValue,
                               fontWeight: FontWeight.bold,
                             ),
@@ -4820,7 +4826,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   image: DecorationImage(
                     image: NetworkImage(podcast.image),
                     fit: BoxFit.cover,
@@ -4833,14 +4839,14 @@ class _MangoDashboardState extends State<MangoDashboard>
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(4),
+                    color: MangoPalette.green500,
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                   child: Text(
                     'NEW',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -4856,7 +4862,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               fontWeight: FontWeight.w500,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 2,
             textAlign: TextAlign.center,
@@ -4866,10 +4872,10 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             podcast.artiste,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               color: themeController.isDarkMode.value
-                  ? Colors.grey
-                  : Colors.grey[600],
+                  ? MangoPalette.grey500
+                  : MangoPalette.grey600,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -4886,7 +4892,7 @@ class _MangoDashboardState extends State<MangoDashboard>
       margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Card(
         elevation: 2,
-        color: themeController.isDarkMode.value ? Colors.black : Colors.white,
+        color: themeController.isDarkMode.value ? MangoPalette.black : Colors.white,
         child: ListTile(
           leading: Stack(
             children: [
@@ -4894,7 +4900,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   image: DecorationImage(
                     image: NetworkImage(podcast.image),
                     fit: BoxFit.cover,
@@ -4910,14 +4916,14 @@ class _MangoDashboardState extends State<MangoDashboard>
                   decoration: BoxDecoration(
                     color: rank <= 3
                         ? themeController.primaryColorValue
-                        : Colors.grey,
+                        : MangoPalette.grey500,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: Text(
                       '$rank',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -4934,7 +4940,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               fontWeight: FontWeight.w500,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -4944,8 +4950,8 @@ class _MangoDashboardState extends State<MangoDashboard>
             style: TextStyle(
               fontSize: 12,
               color: themeController.isDarkMode.value
-                  ? Colors.grey
-                  : Colors.grey,
+                  ? MangoPalette.grey500
+                  : MangoPalette.grey500,
             ),
           ),
           trailing: Column(
@@ -4955,16 +4961,16 @@ class _MangoDashboardState extends State<MangoDashboard>
                 Icons.headset,
                 size: 16,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey
-                    : Colors.grey,
+                    ? MangoPalette.grey500
+                    : MangoPalette.grey500,
               ),
               Text(
                 '${podcast.plays}',
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 12,
                   color: themeController.isDarkMode.value
-                      ? Colors.grey
-                      : Colors.grey,
+                      ? MangoPalette.grey500
+                      : MangoPalette.grey500,
                 ),
               ),
             ],
@@ -4985,8 +4991,8 @@ class _MangoDashboardState extends State<MangoDashboard>
       margin: EdgeInsets.only(right: 12),
       child: Card(
         elevation: 3,
-        color: themeController.isDarkMode.value ? Colors.black : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        color: themeController.isDarkMode.value ? MangoPalette.black : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
         child: Padding(
           padding: EdgeInsets.all(12),
           child: Row(
@@ -4995,7 +5001,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   image: DecorationImage(
                     image: NetworkImage(podcast.image),
                     fit: BoxFit.cover,
@@ -5013,12 +5019,12 @@ class _MangoDashboardState extends State<MangoDashboard>
                         color: themeController.primaryColorValue.withOpacity(
                           0.2,
                         ),
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(MangoRadius.xs),
                       ),
                       child: Text(
                         'POPULAR EPISODE',
                         style: TextStyle(
-                          fontSize: 8,
+                          fontSize: 12,
                           color: themeController.primaryColorValue,
                           fontWeight: FontWeight.bold,
                         ),
@@ -5032,7 +5038,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                         fontWeight: FontWeight.bold,
                         color: themeController.isDarkMode.value
                             ? Colors.white
-                            : Colors.black,
+                            : MangoPalette.black,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -5043,8 +5049,8 @@ class _MangoDashboardState extends State<MangoDashboard>
                       style: TextStyle(
                         fontSize: 12,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey[600],
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey600,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -5056,17 +5062,17 @@ class _MangoDashboardState extends State<MangoDashboard>
                           Icons.schedule,
                           size: 12,
                           color: themeController.isDarkMode.value
-                              ? Colors.grey
-                              : Colors.grey,
+                              ? MangoPalette.grey500
+                              : MangoPalette.grey500,
                         ),
                         SizedBox(width: 4),
                         Text(
                           '45 min',
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: 12,
                             color: themeController.isDarkMode.value
-                                ? Colors.grey
-                                : Colors.grey,
+                                ? MangoPalette.grey500
+                                : MangoPalette.grey500,
                           ),
                         ),
                         Spacer(),
@@ -5098,10 +5104,10 @@ class _MangoDashboardState extends State<MangoDashboard>
     final themeController = ThemeController.to;
 
     final categoryStyles = {
-      'Comedy': {'color': Colors.orange, 'emoji': '😂'},
+      'Comedy': {'color': MangoPalette.green500, 'emoji': '😂'},
       'Business': {'color': Colors.blue, 'emoji': '💼'},
       'True Crime': {'color': Colors.red, 'emoji': '🔍'},
-      'African': {'color': Colors.green, 'emoji': '🌍'},
+      'African': {'color': MangoPalette.green500, 'emoji': '🌍'},
     };
 
     final style =
@@ -5118,11 +5124,11 @@ class _MangoDashboardState extends State<MangoDashboard>
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               border: Border.all(color: color, width: 2),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               child: Image.network(podcast.image, fit: BoxFit.cover),
             ),
           ),
@@ -5131,19 +5137,19 @@ class _MangoDashboardState extends State<MangoDashboard>
             padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
             ),
-            child: Text(emoji, style: TextStyle(fontSize: 10)),
+            child: Text(emoji, style: TextStyle(fontSize: 12)),
           ),
           SizedBox(height: 4),
           Text(
             podcast.title,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 2,
             textAlign: TextAlign.center,
@@ -5168,7 +5174,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 width: 140,
                 height: 140,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -5181,7 +5187,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 child: Padding(
                   padding: EdgeInsets.all(8),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                     child: Image.network(podcast.image, fit: BoxFit.cover),
                   ),
                 ),
@@ -5193,7 +5199,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                   decoration: BoxDecoration(
                     color: themeController.primaryColorValue,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                   child: Text('🥭', style: TextStyle(fontSize: 12)),
                 ),
@@ -5205,7 +5211,7 @@ class _MangoDashboardState extends State<MangoDashboard>
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
               color: themeController.primaryColorValue.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
               border: Border.all(
                 color: themeController.primaryColorValue.withOpacity(0.3),
               ),
@@ -5213,7 +5219,7 @@ class _MangoDashboardState extends State<MangoDashboard>
             child: Text(
               'EXCLUSIVE',
               style: TextStyle(
-                fontSize: 9,
+                fontSize: 12,
                 color: themeController.primaryColorValue,
                 fontWeight: FontWeight.bold,
               ),
@@ -5227,7 +5233,7 @@ class _MangoDashboardState extends State<MangoDashboard>
               fontWeight: FontWeight.bold,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 2,
             textAlign: TextAlign.center,
@@ -5252,7 +5258,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   image: DecorationImage(
                     image: NetworkImage(podcast.image),
                     fit: BoxFit.cover,
@@ -5265,7 +5271,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 child: Container(
                   padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: MangoPalette.green500,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(Icons.flash_on, size: 12, color: Colors.white),
@@ -5277,19 +5283,19 @@ class _MangoDashboardState extends State<MangoDashboard>
           Container(
             padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: Colors.green[50],
-              borderRadius: BorderRadius.circular(4),
+              color: MangoPalette.green50,
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.timer, size: 10, color: Colors.green),
+                Icon(Icons.timer, size: 10, color: MangoPalette.green500),
                 SizedBox(width: 2),
                 Text(
                   '15 min',
                   style: TextStyle(
-                    fontSize: 8,
-                    color: Colors.green[700],
+                    fontSize: 12,
+                    color: MangoPalette.green700,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -5300,11 +5306,11 @@ class _MangoDashboardState extends State<MangoDashboard>
           Text(
             podcast.title,
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
               color: themeController.isDarkMode.value
                   ? Colors.white
-                  : Colors.black,
+                  : MangoPalette.black,
             ),
             maxLines: 2,
             textAlign: TextAlign.center,
@@ -5323,7 +5329,7 @@ class _MangoDashboardState extends State<MangoDashboard>
       margin: EdgeInsets.only(right: 8),
       child: Card(
         elevation: 2,
-        color: themeController.isDarkMode.value ? Colors.black : Colors.white,
+        color: themeController.isDarkMode.value ? MangoPalette.black : Colors.white,
         child: Padding(
           padding: EdgeInsets.all(8),
           child: Row(
@@ -5332,7 +5338,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   image: DecorationImage(
                     image: NetworkImage(podcast.image),
                     fit: BoxFit.cover,
@@ -5351,7 +5357,7 @@ class _MangoDashboardState extends State<MangoDashboard>
                         fontWeight: FontWeight.w500,
                         color: themeController.isDarkMode.value
                             ? Colors.white
-                            : Colors.black,
+                            : MangoPalette.black,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -5359,20 +5365,20 @@ class _MangoDashboardState extends State<MangoDashboard>
                     Text(
                       podcast.artiste,
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey,
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey500,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 4),
-                    LinearProgressIndicator(
+                    LinearProgressIndicator(semanticsLabel: 'Loading', 
                       value: 0.7,
                       backgroundColor: themeController.isDarkMode.value
-                          ? Colors.grey[800]
-                          : Colors.grey[200],
+                          ? MangoPalette.grey800
+                          : MangoPalette.grey200,
                       valueColor: AlwaysStoppedAnimation<Color>(
                         themeController.primaryColorValue,
                       ),
@@ -5382,12 +5388,13 @@ class _MangoDashboardState extends State<MangoDashboard>
               ),
               SizedBox(width: 8),
               IconButton(
+        tooltip: 'Play',
                 icon: Icon(
                   Icons.play_arrow,
                   size: 20,
                   color: themeController.isDarkMode.value
                       ? Colors.white
-                      : Colors.black,
+                      : MangoPalette.black,
                 ),
                 onPressed: () {
                   context.read<MusicPlayerState>().playTrack(podcast);
@@ -5413,8 +5420,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               Icons.podcasts,
               size: 32,
               color: themeController.isDarkMode.value
-                  ? Colors.grey
-                  : Colors.grey[400],
+                  ? MangoPalette.grey500
+                  : MangoPalette.grey400,
             ),
             SizedBox(height: 8),
             Text(
@@ -5422,8 +5429,8 @@ class _MangoDashboardState extends State<MangoDashboard>
               style: TextStyle(
                 fontSize: 12,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey
-                    : Colors.grey[600],
+                    ? MangoPalette.grey500
+                    : MangoPalette.grey600,
               ),
               textAlign: TextAlign.center,
             ),
@@ -5529,9 +5536,9 @@ class _FrostedGlassWithTextAndImageState
               width: double.infinity,
               height: _isExpanded ? 200 : 150,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 color: themeController.isDarkMode.value
-                    ? Colors.black.withOpacity(0.3)
+                    ? MangoPalette.black.withOpacity(0.3)
                     : Colors.white.withOpacity(0.3),
                 border: Border.all(
                   color: themeController.isDarkMode.value
@@ -5541,7 +5548,7 @@ class _FrostedGlassWithTextAndImageState
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: MangoPalette.black.withOpacity(0.1),
                     blurRadius: 20,
                     spreadRadius: 5,
                     offset: const Offset(0, 10),
@@ -5549,7 +5556,7 @@ class _FrostedGlassWithTextAndImageState
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Container(),
@@ -5573,10 +5580,10 @@ class _FrostedGlassWithTextAndImageState
                           child: Text(
                             "Mango Best Sellers\n16th March 2024",
                             style: TextStyle(
-                              fontSize: 7,
+                              fontSize: 12,
                               color: themeController.isDarkMode.value
-                                  ? Colors.grey
-                                  : Colors.grey,
+                                  ? MangoPalette.grey500
+                                  : MangoPalette.grey500,
                             ),
                           ),
                         ),
@@ -5596,14 +5603,14 @@ class _FrostedGlassWithTextAndImageState
                             color: themeController.isDarkMode.value
                                 ? Colors.white
                                 : themeController.primaryColorValue,
-                            fontSize: 9,
+                            fontSize: 12,
                           ),
                         ),
                         const SizedBox(height: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            GestureDetector(
+                            MangoPressable(
                               onTap: () {
                                 setState(() {
                                   _isExpanded = !_isExpanded;
@@ -5615,10 +5622,10 @@ class _FrostedGlassWithTextAndImageState
                                   Text(
                                     'tap card for more',
                                     style: TextStyle(
-                                      fontSize: 7,
+                                      fontSize: 12,
                                       color: themeController.isDarkMode.value
                                           ? Colors.white.withOpacity(0.8)
-                                          : Colors.black.withOpacity(0.8),
+                                          : MangoPalette.black.withOpacity(0.8),
                                     ),
                                   ),
                                   Icon(
@@ -5627,7 +5634,7 @@ class _FrostedGlassWithTextAndImageState
                                         : Icons.keyboard_arrow_down,
                                     color: themeController.isDarkMode.value
                                         ? Colors.white.withOpacity(0.8)
-                                        : Colors.black.withOpacity(0.8),
+                                        : MangoPalette.black.withOpacity(0.8),
                                     size: 9,
                                   ),
                                 ],
@@ -5643,14 +5650,14 @@ class _FrostedGlassWithTextAndImageState
                                       widget.book.description,
                                       maxLines: 2,
                                       style: TextStyle(
-                                        fontSize: 8,
+                                        fontSize: 12,
                                         color: themeController.isDarkMode.value
                                             ? Colors.white.withOpacity(0.6)
-                                            : Colors.black.withOpacity(0.6),
+                                            : MangoPalette.black.withOpacity(0.6),
                                       ),
                                     ),
                                     const SizedBox(height: 10),
-                                    GestureDetector(
+                                    MangoPressable(
                                       onTap: () {
                                         _openFullScreen(context, widget.book);
                                       },
@@ -5668,8 +5675,8 @@ class _FrostedGlassWithTextAndImageState
                                         ),
                                         child: Text(
                                           "read now",
-                                          style: GoogleFonts.montserrat(
-                                            fontSize: 11,
+                                          style: TextStyle(fontFamily: 'Poppins', 
+                                            fontSize: 12,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -5692,10 +5699,10 @@ class _FrostedGlassWithTextAndImageState
                           width: 150,
                           height: 240,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(MangoRadius.lg),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
+                                color: MangoPalette.black.withOpacity(0.1),
                                 blurRadius: 20,
                                 spreadRadius: 5,
                                 offset: const Offset(10, 10),
@@ -5703,7 +5710,7 @@ class _FrostedGlassWithTextAndImageState
                             ],
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(MangoRadius.sm),
                             child: _buildImageWithShimmer(
                               imageUrl: widget.book.coverUrl,
                               width: 150,
@@ -5718,7 +5725,7 @@ class _FrostedGlassWithTextAndImageState
                             animation: _shimmerController,
                             builder: (context, child) {
                               return ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(MangoRadius.sm),
                                 child: ShaderMask(
                                   shaderCallback: (rect) {
                                     return LinearGradient(
@@ -5789,14 +5796,14 @@ Widget _buildImageWithShimmer({
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]
-                : Colors.grey[300],
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           ),
           child: Center(
             child: SizedBox(
               width: width * 0.3,
               height: height * 0.3,
-              child: CircularProgressIndicator(
+              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                 strokeWidth: 2,
                 valueColor: AlwaysStoppedAnimation<Color>(
                   themeController.primaryColorValue,
@@ -5813,15 +5820,15 @@ Widget _buildImageWithShimmer({
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]
-                : Colors.grey[300],
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           ),
           child: Icon(
             icon,
             size: width * 0.4,
             color: themeController.isDarkMode.value
-                ? Colors.grey
-                : Colors.grey[600],
+                ? MangoPalette.grey500
+                : MangoPalette.grey600,
           ),
         );
       },
@@ -5857,19 +5864,19 @@ class _CompactTrendingChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(
           color: themeController.isDarkMode.value
-              ? Colors.grey[800]
-              : Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
+              ? MangoPalette.grey800
+              : MangoPalette.grey100,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
             color: themeController.isDarkMode.value
-                ? Colors.grey[700]!
-                : Colors.grey[300]!,
+                ? MangoPalette.grey700
+                : MangoPalette.grey300,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontSize: 9,
+            fontSize: 12,
             color: themeController.isDarkMode.value
                 ? Colors.white
                 : Colors.black87,

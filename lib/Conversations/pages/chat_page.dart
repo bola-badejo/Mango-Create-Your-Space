@@ -20,6 +20,8 @@ import 'package:mango/Utils/theme.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 import 'package:mango/utils.dart';
 import 'package:path/path.dart' as p;
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class ConversationChatPage extends StatefulWidget {
   final ConversationController controller;
@@ -165,7 +167,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       final secondaryColor = _themeController.secondaryColorValue;
 
       return Scaffold(
-        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.black : Colors.white,
         body: SafeArea(
           child: Column(
             children: [
@@ -248,7 +250,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                 Text(
                   '$userName is typing...',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                     fontSize: 14,
                     fontStyle: FontStyle.italic,
                   ),
@@ -285,7 +287,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       width: 8,
       height: 8,
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
         shape: BoxShape.circle,
       ),
       child: TweenAnimationBuilder<double>(
@@ -297,7 +299,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+            color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             shape: BoxShape.circle,
           ),
         ),
@@ -310,13 +312,13 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
         border: Border(
           top: BorderSide(
-            color: isDarkMode ? Colors.grey[800]! : Colors.grey.shade300,
+            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey300,
           ),
           bottom: BorderSide(
-            color: isDarkMode ? Colors.grey[800]! : Colors.grey.shade300,
+            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey300,
           ),
         ),
       ),
@@ -343,7 +345,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                       : _replyToMessage!.text,
                   style: TextStyle(
                     fontSize: 12,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -352,6 +354,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             ),
           ),
           IconButton(
+        tooltip: 'Close',
             icon: Icon(Icons.close, size: 20),
             onPressed: () {
               setState(() {
@@ -359,7 +362,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                 _showReplyPreview = false;
               });
             },
-            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+            color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
           ),
         ],
       ),
@@ -382,7 +385,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       isScrollControlled: true,
       builder: (context) => Container(
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[900] : Colors.white,
+          color: isDarkMode ? MangoPalette.grey900 : Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: SafeArea(
@@ -395,7 +398,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: isDarkMode ? Colors.grey[800]! : Colors.grey[200]!,
+                      color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                     ),
                   ),
                 ),
@@ -422,7 +425,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                             '🤔',
                           ]
                           .map(
-                            (emoji) => GestureDetector(
+                            (emoji) => MangoPressable(
                               onTap: () {
                                 Navigator.pop(context);
                                 widget.controller.addReaction(
@@ -441,9 +444,9 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                                 padding: EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: isDarkMode
-                                      ? Colors.grey[800]
-                                      : Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(20),
+                                      ? MangoPalette.grey800
+                                      : MangoPalette.grey100,
+                                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                                 ),
                                 child: Text(
                                   emoji,
@@ -483,7 +486,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
               message.sender ==
                   widget.controller.authentication.currentUser!.uid
               ? Colors.blue
-              : Colors.green,
+              : MangoPalette.green500,
         ),
         SizedBox(width: 12),
         Expanded(
@@ -497,7 +500,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                     : widget.selectedFriend.displayName,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               ),
               SizedBox(height: 4),
@@ -510,7 +513,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                     ? '📎 Media'
                     : 'Empty message',
                 style: TextStyle(
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -535,7 +538,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       _buildActionTile(
         icon: Icons.reply,
         title: 'Reply',
-        color: isDarkMode ? Colors.white : Colors.black,
+        color: isDarkMode ? Colors.white : MangoPalette.black,
         onTap: () {
           Navigator.pop(context);
           _startReply(message);
@@ -546,7 +549,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       _buildActionTile(
         icon: Icons.forward,
         title: 'Forward',
-        color: isDarkMode ? Colors.white : Colors.black,
+        color: isDarkMode ? Colors.white : MangoPalette.black,
         onTap: () {
           Navigator.pop(context);
           _showForwardDialog(message);
@@ -558,7 +561,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
         _buildActionTile(
           icon: Icons.copy,
           title: 'Copy',
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode ? Colors.white : MangoPalette.black,
           onTap: () {
             Clipboard.setData(ClipboardData(text: message.text));
             Navigator.pop(context);
@@ -575,7 +578,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       _buildActionTile(
         icon: message.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
         title: message.isPinned ? 'Unpin' : 'Pin',
-        color: isDarkMode ? Colors.white : Colors.black,
+        color: isDarkMode ? Colors.white : MangoPalette.black,
         onTap: () {
           Navigator.pop(context);
           widget.controller.togglePinMessage(
@@ -647,10 +650,10 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
         title: Text(
           'Forward Message',
-          style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+          style: TextStyle(color: isDarkMode ? Colors.white : MangoPalette.black),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -658,13 +661,13 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
               ),
               child: Text(
                 message.text.isNotEmpty ? message.text : '📎 Media',
                 style: TextStyle(
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               ),
             ),
@@ -672,7 +675,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             Text(
               'Select friends to forward to:',
               style: TextStyle(
-                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
               ),
             ),
             SizedBox(height: 8),
@@ -683,7 +686,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                 child: Text(
                   'Friend selection will be implemented',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               ),
@@ -696,7 +699,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             child: Text(
               'Cancel',
               style: TextStyle(
-                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
               ),
             ),
           ),
@@ -729,23 +732,23 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
         title: Text(
           'Edit Message',
-          style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+          style: TextStyle(color: isDarkMode ? Colors.white : MangoPalette.black),
         ),
         content: TextField(
           controller: editController,
           maxLines: 4,
-          style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+          style: TextStyle(color: isDarkMode ? Colors.white : MangoPalette.black),
           decoration: InputDecoration(
             hintText: 'Edit your message...',
             hintStyle: TextStyle(
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)),
             filled: isDarkMode,
-            fillColor: isDarkMode ? Colors.grey[800] : Colors.grey[100],
+            fillColor: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
           ),
         ),
         actions: [
@@ -754,7 +757,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             child: Text(
               'Cancel',
               style: TextStyle(
-                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
               ),
             ),
           ),
@@ -790,15 +793,15 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
         title: Text(
           'Delete Message',
-          style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+          style: TextStyle(color: isDarkMode ? Colors.white : MangoPalette.black),
         ),
         content: Text(
           'Are you sure you want to delete this message?',
           style: TextStyle(
-            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+            color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
           ),
         ),
         actions: [
@@ -807,7 +810,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             child: Text(
               'Cancel',
               style: TextStyle(
-                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
               ),
             ),
           ),
@@ -1464,10 +1467,10 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
         title: Text(
           'Add Caption',
-          style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+          style: TextStyle(color: isDarkMode ? Colors.white : MangoPalette.black),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -1477,7 +1480,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                 height: 160,
                 width: 80,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   image: kIsWeb && webBytes != null
                       ? DecorationImage(
                           image: MemoryImage(webBytes!),
@@ -1489,7 +1492,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                                 fit: BoxFit.cover,
                               )
                             : null),
-                  color: isDarkMode ? Colors.grey[700] : Colors.grey.shade300,
+                  color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                 ),
               )
             else if (fileType == 'audio')
@@ -1503,7 +1506,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                     Text(
                       'Voice Note',
                       style: TextStyle(
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                       ),
                     ),
                   ],
@@ -1520,12 +1523,12 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                   vertical: 8,
                 ),
                 filled: isDarkMode,
-                fillColor: isDarkMode ? Colors.grey[800] : null,
+                fillColor: isDarkMode ? MangoPalette.grey800 : null,
                 hintStyle: TextStyle(
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
               ),
-              style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+              style: TextStyle(color: isDarkMode ? Colors.white : MangoPalette.black),
               maxLines: 3,
               autofocus: true,
             ),
@@ -1537,7 +1540,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             child: Text(
               'Cancel',
               style: TextStyle(
-                color: isDarkMode ? Colors.grey[400] : Colors.grey,
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey500,
               ),
             ),
           ),
@@ -1569,15 +1572,15 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
   Widget _buildChatHeader(bool isDarkMode, Color primaryColor) {
     return Container(
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.black : Colors.white,
+        color: isDarkMode ? MangoPalette.black : Colors.white,
         border: Border(
           bottom: BorderSide(
-            color: isDarkMode ? Colors.grey[800]! : Colors.grey.shade200,
+            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
           ),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDarkMode ? 0.3 : 0.1),
+            color: MangoPalette.black.withOpacity(isDarkMode ? 0.3 : 0.1),
             blurRadius: 4,
             offset: Offset(0, 2),
           ),
@@ -1588,10 +1591,11 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
         child: Row(
           children: [
             IconButton(
+        tooltip: 'Back',
               icon: Icon(
                 Icons.arrow_back,
                 size: 24,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
               ),
               onPressed: () => Navigator.of(context).pop(),
               padding: EdgeInsets.zero,
@@ -1607,11 +1611,11 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                   ? Icon(
                       Icons.person,
                       size: 20,
-                      color: isDarkMode ? Colors.black : Colors.white,
+                      color: isDarkMode ? MangoPalette.black : Colors.white,
                     )
                   : null,
               backgroundColor: widget.selectedFriend.profileImage.isEmpty
-                  ? (isDarkMode ? Colors.grey[700] : Colors.grey.shade300)
+                  ? (isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300)
                   : null,
             ),
             SizedBox(width: 12),
@@ -1624,7 +1628,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -1633,9 +1637,9 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                     '@${widget.selectedFriend.username}',
                     style: TextStyle(
                       color: isDarkMode
-                          ? Colors.grey[400]
-                          : Colors.grey.shade600,
-                      fontSize: 9,
+                          ? MangoPalette.grey400
+                          : MangoPalette.grey600,
+                      fontSize: 12,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -1643,10 +1647,11 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
               ),
             ),
             IconButton(
+        tooltip: 'More options',
               icon: Icon(
                 Icons.more_vert,
                 size: 24,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
               ),
               onPressed: () => _showChatOptions(isDarkMode, primaryColor),
               padding: EdgeInsets.zero,
@@ -1664,7 +1669,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[900] : Colors.white,
+          color: isDarkMode ? MangoPalette.grey900 : Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: SafeArea(
@@ -1674,14 +1679,14 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
               ListTile(
                 leading: Icon(
                   Icons.search,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                   size: 11,
                 ),
                 title: Text(
                   'Search in conversation',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.white : Colors.black,
-                    fontSize: 10,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
+                    fontSize: 12,
                   ),
                 ),
                 onTap: () {
@@ -1692,14 +1697,14 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
               ListTile(
                 leading: Icon(
                   Icons.push_pin,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                   size: 11,
                 ),
                 title: Text(
                   'View pinned messages',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.white : Colors.black,
-                    fontSize: 10,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
+                    fontSize: 12,
                   ),
                 ),
                 onTap: () {
@@ -1711,7 +1716,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                 leading: Icon(Icons.block, color: Colors.red, size: 11),
                 title: Text(
                   'Block user',
-                  style: TextStyle(color: Colors.red, fontSize: 10),
+                  style: TextStyle(color: Colors.red, fontSize: 12),
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -1735,17 +1740,17 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
         title: Text(
           'Pinned Messages',
-          style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+          style: TextStyle(color: isDarkMode ? Colors.white : MangoPalette.black),
         ),
         content: StreamBuilder<List<Message>>(
           stream: widget.controller.getPinnedMessages(conversationId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(color: primaryColor),
+                child: CircularProgressIndicator(semanticsLabel: 'Loading', color: primaryColor),
               );
             }
 
@@ -1754,7 +1759,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                 child: Text(
                   'No pinned messages',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -1773,15 +1778,15 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                     title: Text(
                       message.text.isNotEmpty ? message.text : '📎 Media',
                       style: TextStyle(
-                        color: isDarkMode ? Colors.white : Colors.black,
-                        fontSize: 10,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
+                        fontSize: 12,
                       ),
                     ),
                     subtitle: Text(
                       _formatMessageTime(message.timeStamp),
                       style: TextStyle(
-                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-                        fontSize: 10,
+                        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
+                        fontSize: 12,
                       ),
                     ),
                     onTap: () {
@@ -1800,8 +1805,8 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             child: Text(
               'Close',
               style: TextStyle(
-                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-                fontSize: 10,
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
+                fontSize: 12,
               ),
             ),
           ),
@@ -1814,16 +1819,16 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
         title: Text(
           'Block ${widget.selectedFriend.displayName}?',
-          style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+          style: TextStyle(color: isDarkMode ? Colors.white : MangoPalette.black),
         ),
         content: Text(
           'You will no longer receive messages from this user.',
           style: TextStyle(
-            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-            fontSize: 10,
+            color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
+            fontSize: 12,
           ),
         ),
         actions: [
@@ -1832,7 +1837,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             child: Text(
               'Cancel',
               style: TextStyle(
-                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
               ),
             ),
           ),
@@ -1870,8 +1875,8 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             child: Text(
               'Error loading messages',
               style: TextStyle(
-                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-                fontSize: 11,
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
+                fontSize: 12,
               ),
             ),
           );
@@ -1940,19 +1945,19 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
           ? DismissDirection.endToStart
           : DismissDirection.startToEnd,
       background: Container(
-        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
         alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Icon(
           Icons.reply,
-          color: isDarkMode ? Colors.grey[600] : Colors.grey[800],
+          color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey800,
           size: 16,
         ),
       ),
       onDismissed: (direction) {
         _startReply(firstMessage);
       },
-      child: GestureDetector(
+      child: MangoPressable(
         onLongPress: () => _showMessageContextMenu(
           context,
           firstMessage,
@@ -2025,18 +2030,18 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
     }
 
     final bubbleColor = isSender
-        ? (isPending ? Colors.grey.withOpacity(0.7) : Colors.grey.shade900)
-        : (isDarkMode ? Colors.grey[800] : Colors.grey.shade100);
+        ? (isPending ? MangoPalette.grey500.withOpacity(0.7) : MangoPalette.grey900)
+        : (isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100);
 
     final textColor = isSender
         ? Colors.white
         : (isDarkMode ? Colors.white : Colors.black87);
     final timeColor = isSender
         ? Colors.white70
-        : (isDarkMode ? Colors.grey[400] : Colors.grey.shade600);
+        : (isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600);
     final senderNameColor = isSender
         ? Colors.white.withOpacity(0.8)
-        : (isDarkMode ? Colors.grey[400] : Colors.grey.shade600);
+        : (isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600);
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 2),
@@ -2057,11 +2062,11 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                         ? Icon(
                             Icons.person,
                             size: 10,
-                            color: isDarkMode ? Colors.black : Colors.white,
+                            color: isDarkMode ? MangoPalette.black : Colors.white,
                           )
                         : null,
                     backgroundColor: user?.profileImage.isEmpty == true
-                        ? (isDarkMode ? Colors.grey[700] : Colors.grey.shade300)
+                        ? (isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300)
                         : null,
                   ),
                   SizedBox(width: 4),
@@ -2069,7 +2074,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                 Text(
                   isSender ? 'You' : senderName,
                   style: TextStyle(
-                    fontSize: 9,
+                    fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: senderNameColor,
                   ),
@@ -2083,11 +2088,11 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: bubbleColor,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               boxShadow: [
                 if (!isPending)
                   BoxShadow(
-                    color: Colors.black.withOpacity(isDarkMode ? 0.2 : 0.05),
+                    color: MangoPalette.black.withOpacity(isDarkMode ? 0.2 : 0.05),
                     blurRadius: 2,
                     offset: Offset(0, 1),
                   ),
@@ -2143,8 +2148,8 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       margin: EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[700] : Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(8),
+        color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey200,
+        borderRadius: BorderRadius.circular(MangoRadius.sm),
         border: Border(left: BorderSide(color: primaryColor, width: 3)),
       ),
       child: Column(
@@ -2155,17 +2160,17 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                 ? 'You'
                 : widget.selectedFriend.displayName,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.grey[300] : Colors.grey[700],
+              color: isDarkMode ? MangoPalette.grey300 : MangoPalette.grey700,
             ),
           ),
           SizedBox(height: 2),
           Text(
             message.replyMessage ?? '',
             style: TextStyle(
-              fontSize: 9,
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              fontSize: 12,
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -2189,8 +2194,8 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       margin: EdgeInsets.only(top: 4),
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[700] : Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(12),
+        color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey200,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Wrap(
         spacing: 4,
@@ -2219,8 +2224,8 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
           Text(
             'Read',
             style: TextStyle(
-              fontSize: 10,
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              fontSize: 12,
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
           ),
         ],
@@ -2258,11 +2263,11 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
+              MangoPressable(
                 onTap: () =>
                     _viewMedia(message.image!, 'image', message.caption),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                   child: Image.network(
                     message.image!,
                     width: 100,
@@ -2274,10 +2279,10 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                         width: 100,
                         height: 200,
                         color: isDarkMode
-                            ? Colors.grey[700]
-                            : Colors.grey.shade300,
+                            ? MangoPalette.grey700
+                            : MangoPalette.grey300,
                         child: Center(
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                             value: loadingProgress.expectedTotalBytes != null
                                 ? loadingProgress.cumulativeBytesLoaded /
                                       loadingProgress.expectedTotalBytes!
@@ -2292,8 +2297,8 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                         width: 100,
                         height: 200,
                         color: isDarkMode
-                            ? Colors.grey[700]
-                            : Colors.grey.shade300,
+                            ? MangoPalette.grey700
+                            : MangoPalette.grey300,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -2303,8 +2308,8 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                               'Failed to load image',
                               style: TextStyle(
                                 color: isDarkMode
-                                    ? Colors.grey[400]
-                                    : Colors.grey.shade600,
+                                    ? MangoPalette.grey400
+                                    : MangoPalette.grey600,
                               ),
                             ),
                           ],
@@ -2322,23 +2327,23 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
+              MangoPressable(
                 onTap: () =>
                     _viewMedia(message.video!, 'video', message.caption),
                 child: Container(
                   width: 100,
                   height: 200,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: isDarkMode ? Colors.grey[700] : Colors.black12,
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
+                    color: isDarkMode ? MangoPalette.grey700 : Colors.black12,
                   ),
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: isDarkMode ? Colors.grey[600] : Colors.black26,
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
+                          color: isDarkMode ? MangoPalette.grey600 : Colors.black26,
                         ),
                       ),
                       Center(
@@ -2352,7 +2357,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                           child: Icon(
                             Icons.play_arrow,
                             size: 30,
-                            color: Colors.black,
+                            color: MangoPalette.black,
                           ),
                         ),
                       ),
@@ -2380,7 +2385,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                       Text(
                         'Edited',
                         style: TextStyle(
-                          fontSize: 7,
+                          fontSize: 12,
                           color: timeColor,
                           fontStyle: FontStyle.italic,
                         ),
@@ -2390,7 +2395,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                   ),
                 Text(
                   message.text,
-                  style: TextStyle(color: textColor, fontSize: 11, height: 1.1),
+                  style: TextStyle(color: textColor, fontSize: 12, height: 1.1),
                 ),
               ],
             ),
@@ -2407,10 +2412,10 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             child: Text(
               message.caption!,
               style: TextStyle(
-                fontSize: 9,
+                fontSize: 12,
                 color: isSender
-                    ? Colors.black
-                    : (isDarkMode ? Colors.black : Colors.grey.shade700),
+                    ? MangoPalette.black
+                    : (isDarkMode ? MangoPalette.black : MangoPalette.grey700),
                 fontStyle: FontStyle.italic,
                 height: 1.1,
               ),
@@ -2426,7 +2431,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
               children: [
                 Text(
                   _formatMessageTime(message.timeStamp),
-                  style: TextStyle(fontSize: 8, color: timeColor),
+                  style: TextStyle(fontSize: 12, color: timeColor),
                 ),
                 if (isSender) ...[
                   SizedBox(width: 6),
@@ -2470,7 +2475,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
           Text(
             'No messages yet',
             style: TextStyle(
-              color: isDarkMode ? Colors.grey[400] : Colors.grey.shade600,
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -2479,8 +2484,8 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
           Text(
             'Say hello to ${widget.selectedFriend.displayName}!',
             style: TextStyle(
-              color: isDarkMode ? Colors.grey[500] : Colors.grey.shade500,
-              fontSize: 9,
+              color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey500,
+              fontSize: 12,
             ),
           ),
         ],
@@ -2501,14 +2506,14 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
         border: Border.all(
-          color: isDarkMode ? Colors.grey[700]! : Colors.grey.shade300,
+          color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDarkMode ? 0.2 : 0.05),
+            color: MangoPalette.black.withOpacity(isDarkMode ? 0.2 : 0.05),
             blurRadius: 8,
             offset: Offset(0, 2),
           ),
@@ -2522,14 +2527,14 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             maxLines: null,
             textInputAction: TextInputAction.send,
             style: TextStyle(
-              color: isDarkMode ? Colors.white : Colors.black,
-              fontSize: 9,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
+              fontSize: 12,
             ),
             decoration: InputDecoration(
               hintText: 'Type a message...',
               hintStyle: TextStyle(
-                color: isDarkMode ? Colors.grey[400] : Colors.grey.shade500,
-                fontSize: 9,
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey500,
+                fontSize: 12,
               ),
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
@@ -2551,7 +2556,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                       _buildMediaButton(
                         icon: Icons.image,
                         onTap: _pickImage,
-                        color: Colors.green,
+                        color: MangoPalette.green500,
                         tooltip: 'Send Image',
                         isDarkMode: isDarkMode,
                       ),
@@ -2575,7 +2580,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                       _buildMediaButton(
                         icon: Icons.mic,
                         onTap: (){_startRecording(context);},
-                        color: Colors.orange,
+                        color: MangoPalette.green500,
                         tooltip: 'Record Voice Note',
                         isDarkMode: isDarkMode,
                       ),
@@ -2593,7 +2598,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                   onPressed: _sendTextMessage,
                   backgroundColor:
                       _messageController.text.trim().isEmpty || _isSending
-                      ? (isDarkMode ? Colors.grey[700] : Colors.grey.shade300)
+                      ? (isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300)
                       : primaryColor,
                   elevation: 1,
                   child: Transform.rotate(
@@ -2601,7 +2606,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                     child: Icon(
                       Icons.send,
                       color: _messageController.text.trim().isEmpty
-                          ? (isDarkMode ? Colors.grey[500] : Colors.grey)
+                          ? (isDarkMode ? MangoPalette.grey500 : MangoPalette.grey500)
                           : Colors.white,
                       size: 16,
                     ),
@@ -2624,14 +2629,14 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
   }) {
     return Tooltip(
       message: tooltip,
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: onTap,
         child: Container(
           width: 32,
           height: 32,
           decoration: BoxDecoration(
             color: color.withOpacity(isDarkMode ? 0.2 : 0.1),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: Border.all(
               color: color.withOpacity(isDarkMode ? 0.4 : 0.3),
               width: 1,
@@ -2653,7 +2658,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: isDarkMode
-              ? [Colors.grey[900]!, Colors.black]
+              ? [MangoPalette.grey900, MangoPalette.black]
               : [
                   recordingColor.withOpacity(0.1),
                   recordingColor.withOpacity(0.05),
@@ -2665,7 +2670,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDarkMode ? 0.3 : 0.1),
+            color: MangoPalette.black.withOpacity(isDarkMode ? 0.3 : 0.1),
             blurRadius: 10,
             spreadRadius: 2,
           ),
@@ -2678,7 +2683,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: recordingColor.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -2700,7 +2705,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                   style: TextStyle(
                     color: recordingColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: 11,
+                    fontSize: 12,
                   ),
                 ),
               ],
@@ -2759,7 +2764,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     side: BorderSide(color: recordingColor),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                   ),
                 ),
@@ -2777,7 +2782,7 @@ class _ConversationChatPageState extends State<ConversationChatPage> {
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     elevation: 2,
                   ),

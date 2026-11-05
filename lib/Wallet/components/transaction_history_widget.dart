@@ -24,7 +24,7 @@ class TransactionHistoryScreen extends StatelessWidget {
         future: _fetchTransactionHistory(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
           }
           final transactions = snapshot.data!;
           return OptimizedListView(

@@ -10,6 +10,8 @@ import 'package:mango/Store/screens/product_detail_screen.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:mango/Models/customModel/MangoProduct.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class ShopController extends GetxController {
   final MangoDashboardController dashboardController = Get.find();
@@ -226,7 +228,7 @@ class ShopScreen extends GetView<ShopController> {
     final isOwner = currentUserId == vendorId;
 
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.black : Colors.white,
       appBar: _buildAppBar(isDarkMode),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -254,12 +256,13 @@ class ShopScreen extends GetView<ShopController> {
 
   PreferredSizeWidget _buildAppBar(bool isDarkMode) {
     return AppBar(
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.black : Colors.white,
       elevation: 0,
       leading: IconButton(
+        tooltip: 'Back',
         icon: Icon(
           Icons.arrow_back,
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode ? Colors.white : MangoPalette.black,
         ),
         onPressed: () => Get.back(),
       ),
@@ -268,7 +271,7 @@ class ShopScreen extends GetView<ShopController> {
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode ? Colors.white : MangoPalette.black,
         ),
       ),
       centerTitle: true,
@@ -277,9 +280,10 @@ class ShopScreen extends GetView<ShopController> {
           () => Stack(
             children: [
               IconButton(
+        tooltip: 'Cart',
                 icon: Icon(
                   Icons.shopping_cart_outlined,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
                 onPressed: () => Get.toNamed('/cart'),
               ),
@@ -290,7 +294,7 @@ class ShopScreen extends GetView<ShopController> {
                   child: Container(
                     padding: const EdgeInsets.all(2),
                     decoration: const BoxDecoration(
-                      color: Colors.orange,
+                      color: MangoPalette.green500,
                       shape: BoxShape.circle,
                     ),
                     constraints: const BoxConstraints(
@@ -301,7 +305,7 @@ class ShopScreen extends GetView<ShopController> {
                       controller.cartController.cartItems.length.toString(),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
@@ -319,10 +323,10 @@ class ShopScreen extends GetView<ShopController> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
         border: Border(
           bottom: BorderSide(
-            color: isDarkMode ? Colors.grey[800]! : Colors.grey[200]!,
+            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
           ),
         ),
       ),
@@ -333,7 +337,7 @@ class ShopScreen extends GetView<ShopController> {
             height: 60,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.orange.withOpacity(0.1),
+              color: MangoPalette.green500.withOpacity(0.1),
             ),
             child: ClipOval(
               child:
@@ -343,11 +347,11 @@ class ShopScreen extends GetView<ShopController> {
                       imageUrl: controller.vendorLogo!,
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
+                          const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading')),
                       errorWidget: (context, url, error) =>
-                          Icon(Icons.store, size: 30, color: Colors.orange),
+                          Icon(Icons.store, size: 30, color: MangoPalette.green500),
                     )
-                  : Icon(Icons.store, size: 30, color: Colors.orange),
+                  : Icon(Icons.store, size: 30, color: MangoPalette.green500),
             ),
           ),
           const SizedBox(width: 16),
@@ -360,7 +364,7 @@ class ShopScreen extends GetView<ShopController> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -370,7 +374,7 @@ class ShopScreen extends GetView<ShopController> {
                     controller.vendorBio!,
                     style: TextStyle(
                       fontSize: 12,
-                      color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                      color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -403,19 +407,19 @@ class ShopScreen extends GetView<ShopController> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[800] : Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
+        color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: Colors.orange),
+          Icon(icon, size: 12, color: MangoPalette.green500),
           const SizedBox(width: 4),
           Text(
             label,
             style: TextStyle(
-              fontSize: 10,
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              fontSize: 12,
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
           ),
         ],
@@ -429,27 +433,27 @@ class ShopScreen extends GetView<ShopController> {
       child: Container(
         height: 45,
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[900] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(10),
+          color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.sm),
           border: Border.all(
-            color: isDarkMode ? Colors.grey[800]! : Colors.grey[200]!,
+            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
           ),
         ),
         child: TextField(
           style: TextStyle(
             fontSize: 14,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : MangoPalette.black,
           ),
           decoration: InputDecoration(
             hintText: 'Search in $vendorName...',
             hintStyle: TextStyle(
               fontSize: 14,
-              color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+              color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
             ),
             prefixIcon: Icon(
               Icons.search,
               size: 20,
-              color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+              color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
             ),
             border: InputBorder.none,
             contentPadding: const EdgeInsets.symmetric(vertical: 12),
@@ -477,7 +481,7 @@ class ShopScreen extends GetView<ShopController> {
 
   Widget _buildCategoryTab(String title, int index, bool isDarkMode) {
     return Obx(
-      () => GestureDetector(
+      () => MangoPressable(
         onTap: () => controller.selectedTabIndex.value = index,
         child: Container(
           margin: const EdgeInsets.only(right: 16),
@@ -486,7 +490,7 @@ class ShopScreen extends GetView<ShopController> {
             border: Border(
               bottom: BorderSide(
                 color: controller.selectedTabIndex.value == index
-                    ? Colors.orange
+                    ? MangoPalette.green500
                     : Colors.transparent,
                 width: 2,
               ),
@@ -500,8 +504,8 @@ class ShopScreen extends GetView<ShopController> {
                   ? FontWeight.w600
                   : FontWeight.normal,
               color: controller.selectedTabIndex.value == index
-                  ? Colors.orange
-                  : (isDarkMode ? Colors.grey[400] : Colors.grey[600]),
+                  ? MangoPalette.green500
+                  : (isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600),
             ),
           ),
         ),
@@ -532,13 +536,13 @@ class ShopScreen extends GetView<ShopController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
+                Icon(Icons.search_off, size: 64, color: MangoPalette.grey400),
                 const SizedBox(height: 16),
                 Text(
                   controller.searchQuery.value.isNotEmpty
                       ? 'No products found for "${controller.searchQuery.value}"'
                       : 'No products in this category',
-                  style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                  style: TextStyle(fontSize: 14, color: MangoPalette.grey500),
                 ),
               ],
             ),
@@ -564,15 +568,15 @@ class ShopScreen extends GetView<ShopController> {
   Widget _buildProductCard(MangoProductItem product, BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () => controller.navigateToProductDetail(product),
       child: Container(
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[850] : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          color: isDarkMode ? MangoPalette.grey850 : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: MangoPalette.black.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -596,35 +600,35 @@ class ShopScreen extends GetView<ShopController> {
                           placeholder: (context, url) => Container(
                             height: 160,
                             color: isDarkMode
-                                ? Colors.grey[800]
-                                : Colors.grey[200],
+                                ? MangoPalette.grey800
+                                : MangoPalette.grey200,
                             child: const Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(semanticsLabel: 'Loading'),
                             ),
                           ),
                           errorWidget: (context, url, error) => Container(
                             height: 160,
                             color: isDarkMode
-                                ? Colors.grey[800]
-                                : Colors.grey[200],
+                                ? MangoPalette.grey800
+                                : MangoPalette.grey200,
                             child: Icon(
                               Icons.image_not_supported,
                               color: isDarkMode
-                                  ? Colors.grey[600]
-                                  : Colors.grey[400],
+                                  ? MangoPalette.grey600
+                                  : MangoPalette.grey400,
                             ),
                           ),
                         )
                       : Container(
                           height: 160,
                           color: isDarkMode
-                              ? Colors.grey[800]
-                              : Colors.grey[200],
+                              ? MangoPalette.grey800
+                              : MangoPalette.grey200,
                           child: Icon(
                             Icons.image,
                             color: isDarkMode
-                                ? Colors.grey[600]
-                                : Colors.grey[400],
+                                ? MangoPalette.grey600
+                                : MangoPalette.grey400,
                           ),
                         ),
                 ),
@@ -639,12 +643,12 @@ class ShopScreen extends GetView<ShopController> {
                       ),
                       decoration: BoxDecoration(
                         color: Colors.red,
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(MangoRadius.xs),
                       ),
                       child: Text(
                         '-${((product.price - product.salePrice!) / product.price * 100).toStringAsFixed(0)}%',
                         style: const TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -655,7 +659,7 @@ class ShopScreen extends GetView<ShopController> {
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(12),
                         ),
@@ -684,7 +688,7 @@ class ShopScreen extends GetView<ShopController> {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -697,20 +701,20 @@ class ShopScreen extends GetView<ShopController> {
                       Text(
                         product.rating.toStringAsFixed(1),
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: isDarkMode
-                              ? Colors.grey[400]
-                              : Colors.grey[600],
+                              ? MangoPalette.grey400
+                              : MangoPalette.grey600,
                         ),
                       ),
                       const SizedBox(width: 4),
                       Text(
                         '(${product.reviewCount})',
                         style: TextStyle(
-                          fontSize: 9,
+                          fontSize: 12,
                           color: isDarkMode
-                              ? Colors.grey[500]
-                              : Colors.grey[500],
+                              ? MangoPalette.grey500
+                              : MangoPalette.grey500,
                         ),
                       ),
                     ],
@@ -723,7 +727,7 @@ class ShopScreen extends GetView<ShopController> {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.orange,
+                          color: MangoPalette.green500,
                         ),
                       ),
                       if (product.onSale)
@@ -732,10 +736,10 @@ class ShopScreen extends GetView<ShopController> {
                           child: Text(
                             '₦${product.price.toStringAsFixed(2)}',
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: 12,
                               color: isDarkMode
-                                  ? Colors.grey[500]
-                                  : Colors.grey[400],
+                                  ? MangoPalette.grey500
+                                  : MangoPalette.grey400,
                               decoration: TextDecoration.lineThrough,
                             ),
                           ),
@@ -750,18 +754,18 @@ class ShopScreen extends GetView<ShopController> {
                           ? () => controller.addToCart(product)
                           : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor: MangoPalette.green500,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         minimumSize: const Size(double.infinity, 32),
                       ),
                       child: Text(
                         product.inStock ? 'Add to Cart' : 'Out of Stock',
                         style: const TextStyle(
-                          fontSize: 11,
+                          fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -787,13 +791,13 @@ class ShopScreen extends GetView<ShopController> {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[100],
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.shopping_bag_outlined,
                 size: 50,
-                color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
               ),
             ),
             const SizedBox(height: 24),
@@ -802,7 +806,7 @@ class ShopScreen extends GetView<ShopController> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
               ),
             ),
             const SizedBox(height: 12),
@@ -815,7 +819,7 @@ class ShopScreen extends GetView<ShopController> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
               ),
             ),
@@ -829,14 +833,14 @@ class ShopScreen extends GetView<ShopController> {
                 icon: const Icon(Icons.add, size: 18),
                 label: const Text('Add Your First Product'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: MangoPalette.green500,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
                     vertical: 12,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                 ),
               ),
@@ -848,9 +852,9 @@ class ShopScreen extends GetView<ShopController> {
 
   Widget _buildLoadingShimmer(context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Shimmer.fromColors(
-      baseColor: isDarkMode ? Colors.grey[850]! : Colors.grey[300]!,
-      highlightColor: isDarkMode ? Colors.grey[800]! : Colors.grey[100]!,
+    return MangoShimmer(
+      baseColor: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey300,
+      highlightColor: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: OptimizedGridView(
@@ -865,8 +869,8 @@ class ShopScreen extends GetView<ShopController> {
           itemCount: 6,
           itemBuilder: (context, index) => Container(
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.grey[800] : Colors.white,
-              borderRadius: BorderRadius.circular(12),
+              color: isDarkMode ? MangoPalette.grey800 : Colors.white,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
           ),
         ),
@@ -886,14 +890,14 @@ class TopOfferCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         // Navigate to item detail
       },
       child: Card(
         elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        color: isDarkMode ? Colors.grey[850] : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
+        color: isDarkMode ? MangoPalette.grey850 : Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -908,7 +912,7 @@ class TopOfferCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -920,15 +924,15 @@ class TopOfferCard extends StatelessWidget {
                       Text(
                         '₦${item.price.toStringAsFixed(2)}',
                         style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 11,
+                          color: MangoPalette.green500,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.red,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                         ),
                         padding: EdgeInsets.symmetric(
                           horizontal: 6,
@@ -937,7 +941,7 @@ class TopOfferCard extends StatelessWidget {
                         child: Text(
                           '-20%',
                           style: TextStyle(
-                            fontSize: 9,
+                            fontSize: 12,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
@@ -965,19 +969,19 @@ class TopOfferCard extends StatelessWidget {
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                 height: item.height.toDouble(),
-                color: Colors.grey[200],
-                child: Center(child: CircularProgressIndicator()),
+                color: MangoPalette.grey200,
+                child: Center(child: CircularProgressIndicator(semanticsLabel: 'Loading')),
               ),
               errorWidget: (context, url, error) => Container(
                 height: item.height.toDouble(),
-                color: Colors.grey[200],
+                color: MangoPalette.grey200,
                 child: Icon(Icons.image_not_supported, size: 40),
               ),
             )
           : Container(
               height: item.height.toDouble(),
-              color: Colors.grey[200],
-              child: Icon(Icons.image, size: 40, color: Colors.grey[400]),
+              color: MangoPalette.grey200,
+              child: Icon(Icons.image, size: 40, color: MangoPalette.grey400),
             ),
     );
   }
@@ -997,14 +1001,14 @@ class BestSellerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         // Navigate to item detail
       },
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        color: isDarkMode ? Colors.grey[850] : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
+        color: isDarkMode ? MangoPalette.grey850 : Colors.white,
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 150, maxHeight: 400),
           child: Column(
@@ -1021,22 +1025,22 @@ class BestSellerCard extends StatelessWidget {
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Container(
                           height: 150,
-                          color: Colors.grey[200],
-                          child: Center(child: CircularProgressIndicator()),
+                          color: MangoPalette.grey200,
+                          child: Center(child: CircularProgressIndicator(semanticsLabel: 'Loading')),
                         ),
                         errorWidget: (context, url, error) => Container(
                           height: 150,
-                          color: Colors.grey[200],
+                          color: MangoPalette.grey200,
                           child: Icon(Icons.image_not_supported, size: 40),
                         ),
                       )
                     : Container(
                         height: 150,
-                        color: Colors.grey[200],
+                        color: MangoPalette.grey200,
                         child: Icon(
                           Icons.image,
                           size: 40,
-                          color: Colors.grey[400],
+                          color: MangoPalette.grey400,
                         ),
                       ),
               ),
@@ -1057,7 +1061,7 @@ class BestSellerCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: isDarkMode ? Colors.white : Colors.black,
+                              color: isDarkMode ? Colors.white : MangoPalette.black,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -1068,8 +1072,8 @@ class BestSellerCard extends StatelessWidget {
                               Text(
                                 '₦${item.price.toStringAsFixed(2)}',
                                 style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 11,
+                                  color: MangoPalette.green500,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -1078,9 +1082,9 @@ class BestSellerCard extends StatelessWidget {
                                 '₦${(item.price * 1.2).toStringAsFixed(2)}',
                                 style: TextStyle(
                                   color: isDarkMode
-                                      ? Colors.grey[500]
-                                      : Colors.grey[400],
-                                  fontSize: 10,
+                                      ? MangoPalette.grey500
+                                      : MangoPalette.grey400,
+                                  fontSize: 12,
                                   decoration: TextDecoration.lineThrough,
                                 ),
                               ),
@@ -1090,8 +1094,8 @@ class BestSellerCard extends StatelessWidget {
                             Text(
                               'In Stock',
                               style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.green,
+                                fontSize: 12,
+                                color: MangoPalette.green500,
                               ),
                             ),
                         ],
@@ -1100,14 +1104,14 @@ class BestSellerCard extends StatelessWidget {
                         onPressed: onAddToCart,
                         child: Text(
                           'Add to Cart',
-                          style: TextStyle(fontSize: 11),
+                          style: TextStyle(fontSize: 12),
                         ),
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(double.infinity, 36),
-                          backgroundColor: Colors.orange,
+                          backgroundColor: MangoPalette.green500,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(MangoRadius.sm),
                           ),
                         ),
                       ),
@@ -1134,16 +1138,16 @@ class CatalogCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Card(
         elevation: 4,
-        color: isDarkMode ? Colors.grey[850] : Colors.white,
+        color: isDarkMode ? MangoPalette.grey850 : Colors.white,
         margin: EdgeInsets.only(bottom: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
         child: ListTile(
           leading: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             child: item.imageUrl.isNotEmpty
                 ? CachedNetworkImage(
                     imageUrl: item.imageUrl,
@@ -1153,20 +1157,20 @@ class CatalogCard extends StatelessWidget {
                     placeholder: (context, url) => Container(
                       width: 60,
                       height: 60,
-                      color: Colors.grey[200],
-                      child: Center(child: CircularProgressIndicator()),
+                      color: MangoPalette.grey200,
+                      child: Center(child: CircularProgressIndicator(semanticsLabel: 'Loading')),
                     ),
                     errorWidget: (context, url, error) => Container(
                       width: 60,
                       height: 60,
-                      color: Colors.grey[200],
+                      color: MangoPalette.grey200,
                       child: Icon(Icons.image, size: 30),
                     ),
                   )
                 : Container(
                     width: 60,
                     height: 60,
-                    color: Colors.grey[200],
+                    color: MangoPalette.grey200,
                     child: Icon(Icons.image, size: 30),
                   ),
           ),
@@ -1175,7 +1179,7 @@ class CatalogCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -1188,8 +1192,8 @@ class CatalogCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 11,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  fontSize: 12,
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
               ),
               SizedBox(height: 4),
@@ -1198,14 +1202,14 @@ class CatalogCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green,
+                  color: MangoPalette.green500,
                 ),
               ),
             ],
           ),
           trailing: Icon(
             Icons.chevron_right,
-            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+            color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
           ),
         ),
       ),

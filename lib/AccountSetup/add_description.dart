@@ -100,7 +100,7 @@ class _AddDetailsState extends State<AddDetails> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(
+              CircularProgressIndicator(semanticsLabel: 'Loading', 
                 valueColor: AlwaysStoppedAnimation<Color>(
                   Theme.of(context).colorScheme.primary,
                 ),

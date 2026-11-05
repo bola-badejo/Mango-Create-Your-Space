@@ -12,6 +12,8 @@ import 'package:mango/utils.dart';
 import '../../../Home/controllers/dashboard_controller.dart';
 import '../../../Home/pages/post_shimmer.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpaceLibrary extends StatelessWidget {
   SpaceLibrary({super.key});
@@ -72,7 +74,7 @@ class SpaceLibrary extends StatelessWidget {
   Widget _buildLoadingScaffold() {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(semanticsLabel: 'Loading'),
       ),
     );
   }
@@ -100,7 +102,8 @@ class SpaceLibrary extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                GestureDetector(
+                MangoPressable(
+        semanticLabel: 'Next',
                   onTap: onSeeAll,
                   child: const Icon(Icons.arrow_forward_ios, size: 14),
                 ),
@@ -120,11 +123,11 @@ class SpaceLibrary extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.menu_book, size: 32, color: Colors.grey[400]),
+              Icon(Icons.menu_book, size: 32, color: MangoPalette.grey400),
               SizedBox(height: 8),
               Text(
                 message,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -146,11 +149,11 @@ class SpaceLibrary extends StatelessWidget {
                   width: 140,
                   height: 190,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5),
+                    color: MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                   ),
                   child: Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2),
                   ),
                 ),
               ],
@@ -159,10 +162,10 @@ class SpaceLibrary extends StatelessWidget {
             Container(
               width: 100,
               height: 12,
-              color: Colors.grey[300],
+              color: MangoPalette.grey300,
               margin: EdgeInsets.only(bottom: 4),
             ),
-            Container(width: 80, height: 10, color: Colors.grey[300]),
+            Container(width: 80, height: 10, color: MangoPalette.grey300),
           ],
         ),
       );
@@ -181,7 +184,7 @@ class SpaceLibrary extends StatelessWidget {
                   width: 140,
                   height: 190,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                     image: DecorationImage(
                       image: NetworkImage(
                         bookData['thumbnail'] ?? bookData['coverImage'] ?? '',
@@ -200,7 +203,7 @@ class SpaceLibrary extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.black87,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Text(
                       '#${index + 1}',
@@ -219,7 +222,7 @@ class SpaceLibrary extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: Row(
                       children: [
@@ -229,7 +232,7 @@ class SpaceLibrary extends StatelessWidget {
                           bookData['rating']?.toString() ?? '0.0',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: 12,
                           ),
                         ),
                       ],
@@ -247,7 +250,7 @@ class SpaceLibrary extends StatelessWidget {
             ),
             Text(
               bookData['author'] ?? 'Unknown Author',
-              style: TextStyle(fontSize: 10, color: Colors.grey),
+              style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -272,7 +275,7 @@ class SpaceLibrary extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 240,
                 width: 160,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -320,23 +323,23 @@ class SpaceLibrary extends StatelessWidget {
                                     width: 140,
                                     height: 190,
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(5),
+                                      color: MangoPalette.grey300,
+                                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                                     ),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.book,
-                                          color: Colors.grey[600],
+                                          color: MangoPalette.grey600,
                                           size: 24,
                                         ),
                                         SizedBox(height: 4),
                                         Text(
                                           'Book not found',
                                           style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey[600],
+                                            fontSize: 12,
+                                            color: MangoPalette.grey600,
                                           ),
                                         ),
                                       ],
@@ -348,7 +351,7 @@ class SpaceLibrary extends StatelessWidget {
                               Text(
                                 'Book not available',
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 maxLines: 1,
@@ -357,8 +360,8 @@ class SpaceLibrary extends StatelessWidget {
                               Text(
                                 'Unknown',
                                 style: TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  color: MangoPalette.grey500,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -396,7 +399,7 @@ class SpaceLibrary extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 240,
                 width: 160,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -579,7 +582,7 @@ class SpaceBooksActions extends StatelessWidget {
           ),
           _buildButton(
             context,
-            color: Colors.orange,
+            color: MangoPalette.green500,
             icon: Icons.record_voice_over,
             text: "Author",
             onTap: isAdmin 
@@ -600,14 +603,14 @@ class SpaceBooksActions extends StatelessWidget {
     required VoidCallback onTap,
     bool isDisabled = false,
   }) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Container(
         height: 100,
         width: 90,
         decoration: BoxDecoration(
-          color: isDisabled ? Colors.grey[700] : color,
-          borderRadius: BorderRadius.circular(20),
+          color: isDisabled ? MangoPalette.grey700 : color,
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
         ),
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -747,7 +750,7 @@ class _BookClubCardState extends State<BookClubCard> {
                 width: double.infinity,
                 height: _isExpanded ? 200 : 150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   color: Colors.white.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.5),
@@ -755,7 +758,7 @@ class _BookClubCardState extends State<BookClubCard> {
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(),
@@ -780,14 +783,14 @@ class _BookClubCardState extends State<BookClubCard> {
                             ),
                             margin: const EdgeInsets.only(bottom: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5),
+                              color: MangoPalette.black,
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: Text(
                               data['status'] ?? "Active",
                               style: const TextStyle(
-                                fontSize: 7,
-                                color: Colors.grey,
+                                fontSize: 12,
+                                color: MangoPalette.grey500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -804,12 +807,12 @@ class _BookClubCardState extends State<BookClubCard> {
                           Text(
                             "${data['members'] ?? 0} members reading",
                             style: const TextStyle(
-                              fontSize: 9,
-                              color: Colors.black,
+                              fontSize: 12,
+                              color: MangoPalette.black,
                             ),
                           ),
                           const SizedBox(height: 10),
-                          GestureDetector(
+                          MangoPressable(
                             onTap: () {
                               setState(() {
                                 _isExpanded = !_isExpanded;
@@ -820,15 +823,15 @@ class _BookClubCardState extends State<BookClubCard> {
                                 Text(
                                   'tap for more',
                                   style: TextStyle(
-                                    fontSize: 8,
-                                    color: Colors.black.withOpacity(0.8),
+                                    fontSize: 12,
+                                    color: MangoPalette.black.withOpacity(0.8),
                                   ),
                                 ),
                                 Icon(
                                   _isExpanded
                                       ? Icons.keyboard_arrow_up
                                       : Icons.keyboard_arrow_down,
-                                  color: Colors.black.withOpacity(0.8),
+                                  color: MangoPalette.black.withOpacity(0.8),
                                   size: 10,
                                 ),
                               ],
@@ -840,8 +843,8 @@ class _BookClubCardState extends State<BookClubCard> {
                               child: Text(
                                 data['description'] ?? 'Join our book club discussions!',
                                 style: TextStyle(
-                                  fontSize: 8,
-                                  color: Colors.black.withOpacity(0.6),
+                                  fontSize: 12,
+                                  color: MangoPalette.black.withOpacity(0.6),
                                 ),
                                 maxLines: 2,
                               ),
@@ -858,7 +861,7 @@ class _BookClubCardState extends State<BookClubCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: MangoPalette.black.withOpacity(0.1),
                               blurRadius: 20,
                               spreadRadius: 5,
                               offset: const Offset(10, 10),
@@ -866,7 +869,7 @@ class _BookClubCardState extends State<BookClubCard> {
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           child: data['image'] != null
                               ? Image.network(
                                   data['image'],
@@ -895,10 +898,10 @@ class _BookClubCardState extends State<BookClubCard> {
       height: 150,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -914,7 +917,7 @@ class _BookClubCardState extends State<BookClubCard> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -926,7 +929,7 @@ class _BookClubCardState extends State<BookClubCard> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -934,10 +937,10 @@ class _BookClubCardState extends State<BookClubCard> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -950,7 +953,7 @@ class _BookClubCardState extends State<BookClubCard> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.deepPurple.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.deepPurple.withOpacity(0.5),
@@ -967,7 +970,7 @@ class _BookClubCardState extends State<BookClubCard> {
                     "BOOK CLUB",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -990,7 +993,7 @@ class _BookClubCardState extends State<BookClubCard> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1008,7 +1011,7 @@ class _BookClubCardState extends State<BookClubCard> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1038,7 +1041,7 @@ class _BookClubCardState extends State<BookClubCard> {
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),
@@ -1126,7 +1129,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                 width: double.infinity,
                 height: _isExpanded ? 200 : 150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   color: Colors.white.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.5),
@@ -1134,7 +1137,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(),
@@ -1159,14 +1162,14 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                             ),
                             margin: const EdgeInsets.only(bottom: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5),
+                              color: MangoPalette.black,
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: Text(
                               _getReadingTimeText(currentSession),
                               style: const TextStyle(
-                                fontSize: 7,
-                                color: Colors.grey,
+                                fontSize: 12,
+                                color: MangoPalette.grey500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -1185,8 +1188,8 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                               Text(
                                 "${currentSession['readers'] ?? 0} readers.",
                                 style: const TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.black,
+                                  fontSize: 12,
+                                  color: MangoPalette.black,
                                 ),
                               ),
                               const SizedBox(width: 5),
@@ -1197,13 +1200,13 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: _getStatusColor(currentSession),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                                 ),
                                 child: Text(
                                   _getStatusText(currentSession),
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 8,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -1222,7 +1225,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: MangoPalette.black.withOpacity(0.1),
                               blurRadius: 20,
                               spreadRadius: 5,
                               offset: const Offset(10, 10),
@@ -1230,7 +1233,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           child: currentSession['image'] != null
                               ? Image.network(
                                   currentSession['image'],
@@ -1280,7 +1283,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
 
   Color _getStatusColor(Map<String, dynamic> session) {
     if (session['isLive'] == true) return Colors.red;
-    if (session['isScheduled'] == true) return Colors.orange;
+    if (session['isScheduled'] == true) return MangoPalette.green500;
     return Colors.teal;
   }
 
@@ -1290,10 +1293,10 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
       height: 150,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -1309,7 +1312,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -1321,7 +1324,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -1329,10 +1332,10 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -1345,7 +1348,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.teal.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.teal.withOpacity(0.5),
@@ -1362,7 +1365,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                     "READING",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1385,7 +1388,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1403,7 +1406,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1433,7 +1436,7 @@ class _LiveReadingSessionsCardState extends State<LiveReadingSessionsCard> {
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),
@@ -1526,7 +1529,7 @@ class AuthorCornerList extends StatelessWidget {
                                 child: Text(
                                   data["genre"] ?? "Author Event",
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     color: Theme.of(context).primaryColorLight,
                                   ),
                                 ),
@@ -1598,10 +1601,10 @@ class _AuthorCornerCarouselState extends State<_AuthorCornerCarousel> {
       height: 150,
       margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -1617,7 +1620,7 @@ class _AuthorCornerCarouselState extends State<_AuthorCornerCarousel> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -1629,7 +1632,7 @@ class _AuthorCornerCarouselState extends State<_AuthorCornerCarousel> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -1637,10 +1640,10 @@ class _AuthorCornerCarouselState extends State<_AuthorCornerCarousel> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -1652,11 +1655,11 @@ class _AuthorCornerCarouselState extends State<_AuthorCornerCarousel> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                color: MangoPalette.green500.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.orange.withOpacity(0.5),
+                    color: MangoPalette.green500.withOpacity(0.5),
                     blurRadius: 8,
                     spreadRadius: 2,
                   ),
@@ -1670,7 +1673,7 @@ class _AuthorCornerCarouselState extends State<_AuthorCornerCarousel> {
                     "AUTHOR",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1693,7 +1696,7 @@ class _AuthorCornerCarouselState extends State<_AuthorCornerCarousel> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1711,7 +1714,7 @@ class _AuthorCornerCarouselState extends State<_AuthorCornerCarousel> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1737,11 +1740,11 @@ class _AuthorCornerCarouselState extends State<_AuthorCornerCarousel> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _currentImageIndex == index
-                        ? Colors.orange
+                        ? MangoPalette.green500
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),

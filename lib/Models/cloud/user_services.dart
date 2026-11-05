@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart' show XFile;
+import 'package:mango/Media/compose/mango_uploader.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -60,81 +62,40 @@ class UserService {
     }
   }
 
-  Future<String?> updateProfileImage(
-    dynamic imageData, [
-    String? fileName,
-  ]) async {
-    try {
-      final user = _auth.currentUser;
-      if (user == null) throw Exception('User not authenticated');
+  /// Uploads a new profile picture (bytes, File or XFile) through the Mango
+  /// uploader, updates every field the app reads it from, and removes the
+  /// previous picture.
+  Future<String?> updateProfileImage(dynamic imageData, [String? fileName]) =>
+      _replaceUserImage(imageData, area: 'profile', fields: const ['profileImage', 'profileImageUrl'], updateAuthPhoto: true);
 
-      String? downloadUrl;
+  Future<Uint8List> _bytesOf(dynamic data) async {
+    if (data is Uint8List) return data;
+    if (data is XFile) return data.readAsBytes();
+    if (!kIsWeb && data is File) return data.readAsBytes();
+    throw Exception('Unsupported image data');
+  }
 
-      if (kIsWeb && imageData is Uint8List) {
-        
-        final compressedBytes = await compressImageForWeb(imageData);
-        debugPrint(
-          'Web: Compressed profile image from ${imageData.length} to ${compressedBytes.length} bytes',
-        );
-
-        final String uniqueFileName =
-            fileName ??
-            'profile_${user.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        final Reference storageRef = _storage
-            .ref()
-            .child('profile_images')
-            .child(user.uid)
-            .child(uniqueFileName);
-
-        final metadata = SettableMetadata(
-          contentType: 'image/jpeg',
-          customMetadata: {
-            'uploadedBy': user.uid,
-            'uploadedAt': DateTime.now().toIso8601String(),
-            'platform': 'web',
-          },
-        );
-
-        final uploadTask = storageRef.putData(compressedBytes, metadata);
-        final snapshot = await uploadTask;
-        downloadUrl = await snapshot.ref.getDownloadURL();
-      } else if (!kIsWeb && imageData is File) {
-        
-        final String uniqueFileName =
-            'profile_${user.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        final Reference storageRef = _storage
-            .ref()
-            .child('profile_images')
-            .child(user.uid)
-            .child(uniqueFileName);
-
-        final metadata = SettableMetadata(
-          contentType: 'image/jpeg',
-          customMetadata: {
-            'uploadedBy': user.uid,
-            'uploadedAt': DateTime.now().toIso8601String(),
-            'platform': 'mobile',
-          },
-        );
-
-        final uploadTask = storageRef.putFile(imageData, metadata);
-        final snapshot = await uploadTask;
-        downloadUrl = await snapshot.ref.getDownloadURL();
-      } else {
-        throw Exception('Invalid image data type for platform');
-      }
-
-      
-      await _firestore.collection('users').doc(user.uid).update({
-        'profileImageUrl': downloadUrl,
-        'profileImageUpdatedAt': FieldValue.serverTimestamp(),
-      });
-
-      return downloadUrl;
-    } catch (e, stack) {
-      debugPrint('Error uploading profile image: $e\n$stack');
-      rethrow;
+  Future<String?> _replaceUserImage(dynamic imageData, {required String area, required List<String> fields, bool updateAuthPhoto = false}) async {
+    final user = _auth.currentUser;
+    if (user == null) throw Exception('User not authenticated');
+    final bytes = await _bytesOf(imageData);
+    final up = await MangoUploader.uploadWithRetry(bytes: bytes, contentType: 'image/jpeg', path: MangoUploader.userPath(area, 'jpg'));
+    final ref = _firestore.collection('users').doc(user.uid);
+    final previous = (await ref.get()).data()?['${area}ImagePath'];
+    await ref.set({
+      for (final f in fields) f: up.url,
+      '${area}ImagePath': up.path,
+      '${area}ImageUpdatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+    if (updateAuthPhoto) {
+      try {
+        await user.updatePhotoURL(up.url);
+      } catch (_) {}
     }
+    if (previous is String && previous.startsWith('users/${user.uid}/') && previous != up.path) {
+      await MangoUploader.delete(previous);
+    }
+    return up.url;
   }
 
   Future<Uint8List> compressImageForWeb(
@@ -159,84 +120,10 @@ class UserService {
   }
 
   
-  Future<String?> updateBannerImage(
-    dynamic imageData, [
-    String? fileName,
-  ]) async {
-    try {
-      final user = _auth.currentUser;
-      if (user == null) throw Exception('User not authenticated');
+  /// Uploads a new banner through the Mango uploader.
+  Future<String?> updateBannerImage(dynamic imageData, [String? fileName]) =>
+      _replaceUserImage(imageData, area: 'banner', fields: const ['bannerImage', 'bannerImageUrl']);
 
-      String? downloadUrl;
-
-      if (kIsWeb && imageData is Uint8List) {
-        
-        final compressedBytes = await compressImageForWeb(imageData);
-        debugPrint(
-          'Web: Compressed banner image from ${imageData.length} to ${compressedBytes.length} bytes',
-        );
-
-        final String uniqueFileName =
-            fileName ??
-            'banner_${user.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        final Reference storageRef = _storage
-            .ref()
-            .child('banner_images')
-            .child(user.uid)
-            .child(uniqueFileName);
-
-        final metadata = SettableMetadata(
-          contentType: 'image/jpeg',
-          customMetadata: {
-            'uploadedBy': user.uid,
-            'uploadedAt': DateTime.now().toIso8601String(),
-            'platform': 'web',
-          },
-        );
-
-        final uploadTask = storageRef.putData(compressedBytes, metadata);
-        final snapshot = await uploadTask;
-        downloadUrl = await snapshot.ref.getDownloadURL();
-      } else if (!kIsWeb && imageData is File) {
-        
-        final String uniqueFileName =
-            'banner_${user.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        final Reference storageRef = _storage
-            .ref()
-            .child('banner_images')
-            .child(user.uid)
-            .child(uniqueFileName);
-
-        final metadata = SettableMetadata(
-          contentType: 'image/jpeg',
-          customMetadata: {
-            'uploadedBy': user.uid,
-            'uploadedAt': DateTime.now().toIso8601String(),
-            'platform': 'mobile',
-          },
-        );
-
-        final uploadTask = storageRef.putFile(imageData, metadata);
-        final snapshot = await uploadTask;
-        downloadUrl = await snapshot.ref.getDownloadURL();
-      } else {
-        throw Exception('Invalid image data type for platform');
-      }
-
-      
-      await _firestore.collection('users').doc(user.uid).update({
-        'bannerImageUrl': downloadUrl,
-        'bannerImageUpdatedAt': FieldValue.serverTimestamp(),
-      });
-
-      return downloadUrl;
-    } catch (e, stack) {
-      debugPrint('Error uploading banner image: $e\n$stack');
-      rethrow;
-    }
-  }
-
-  
   Future<void> updateDisplayName(String displayName) async {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -1363,7 +1250,7 @@ class UserService {
           stream: UserService().getUserInfo(uidList[j]),
           builder: (BuildContext context, AsyncSnapshot<MangoUser?> snapshot) {
             if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
             }
             MangoUser? user = snapshot.data!;
             userList.add(user);
@@ -1440,6 +1327,11 @@ class UserService {
         .map(_episodeListFromSnapshots);
   }
 
+  /// No longer sends anything from the app. It used a Firebase Cloud
+  /// Messaging server key embedded in the app, which let anyone send pushes
+  /// to anyone; that key must be revoked. Follows, likes, replies, mentions
+  /// and Space activity are now notified by the server (functions/notify).
+  @Deprecated('Notifications are sent by the server')
   Future sendNotification(
     var id,
     String page,
@@ -1447,52 +1339,7 @@ class UserService {
     String title,
     String receiverID,
     String receiverToken,
-  ) async {
-    var db = FirebaseFirestore.instance;
-    await db.collection('notifications').add({
-      'pageId': id,
-      'message': message,
-      'title': title,
-      'sender': FirebaseAuth.instance.currentUser!.uid,
-      'page': page,
-      'receiver': receiverID,
-      'time': FieldValue.serverTimestamp(),
-    });
-
-    final data = {
-      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-      'id': '1',
-      'status': 'done',
-      'body': message,
-      'title': title,
-    };
-
-    try {
-      http.Response response = await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization':
-              'key=AAAAz8AR0X8:APA91bEh-1OM8JyYmnc2LbxdNyLkCEYzhzKXf5Tc-JtYms2cm6dJX6m4B_oCzefsIYHiw2IZsxr-ozmxYkIRCCH4E6leZTPsNDBI9aobj3waUk1RvZ4bwyiYNwV7VrtyXDF2EDsOGF0v',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'notification': <String, dynamic>{'title': title, 'body': message},
-          'priority': 'high',
-          'data': data,
-          'to': receiverToken,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        
-      } else {
-        
-      }
-    } catch (e) {
-      
-    }
-    return;
-  }
+  ) async {}
 
   Future sendNotificationToTopic(
     String message,

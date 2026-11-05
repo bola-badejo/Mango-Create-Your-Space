@@ -5,6 +5,7 @@ import 'package:mango/Models/customModel/MangoProduct.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/Store/controller/product_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class MangoProduct extends StatelessWidget {
   final MangoProductItem product;
@@ -30,7 +31,7 @@ class MangoProduct extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,7 +58,7 @@ class MangoProduct extends StatelessWidget {
                   Text(
                     product.brand,
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: MangoPalette.grey600,
                       fontSize: 12,
                     ),
                   ),
@@ -99,7 +100,7 @@ class MangoProduct extends StatelessWidget {
               topLeft: Radius.circular(12),
               topRight: Radius.circular(12),
             ),
-            color: isDark ? Colors.grey[700] : Colors.grey[200],
+            color: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
           ),
           child: product.imageUrls.isNotEmpty
               ? ClipRRect(
@@ -113,7 +114,7 @@ class MangoProduct extends StatelessWidget {
                     errorBuilder: (context, error, stackTrace) {
                       return Icon(
                         Icons.image_not_supported,
-                        color: Colors.grey[400],
+                        color: MangoPalette.grey400,
                         size: 40,
                       );
                     },
@@ -121,7 +122,7 @@ class MangoProduct extends StatelessWidget {
                 )
               : Icon(
                   Icons.photo_library,
-                  color: Colors.grey[400],
+                  color: MangoPalette.grey400,
                   size: 40,
                 ),
         ),
@@ -134,14 +135,14 @@ class MangoProduct extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(8),
+                color: MangoPalette.black.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
               ),
               child: Text(
                 '+${product.imageUrls.length - 1}',
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -157,13 +158,13 @@ class MangoProduct extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
                 color: Colors.red,
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
               ),
               child: const Text(
                 'SALE',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -201,7 +202,7 @@ class MangoProduct extends StatelessWidget {
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
+                color: MangoPalette.black.withOpacity(0.5),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),
@@ -231,7 +232,7 @@ class MangoProduct extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
-            color: product.onSale ? Colors.red : Colors.black,
+            color: product.onSale ? Colors.red : MangoPalette.black,
           ),
         ),
         if (product.onSale) ...[
@@ -240,7 +241,7 @@ class MangoProduct extends StatelessWidget {
             '₦${product.price.toStringAsFixed(2)}',
             style: const TextStyle(
               fontSize: 12,
-              color: Colors.grey,
+              color: MangoPalette.grey500,
               decoration: TextDecoration.lineThrough,
             ),
           ),
@@ -266,7 +267,7 @@ class MangoProduct extends StatelessWidget {
               product.likeCount.toString(),
               style: const TextStyle(
                 fontSize: 12,
-                color: Colors.grey,
+                color: MangoPalette.grey500,
               ),
             ),
           ],
@@ -285,7 +286,7 @@ class MangoProduct extends StatelessWidget {
               product.commentCount.toString(),
               style: const TextStyle(
                 fontSize: 12,
-                color: Colors.grey,
+                color: MangoPalette.grey500,
               ),
             ),
           ],
@@ -305,7 +306,7 @@ class MangoProduct extends StatelessWidget {
                 product.rating.toStringAsFixed(1),
                 style: const TextStyle(
                   fontSize: 12,
-                  color: Colors.grey,
+                  color: MangoPalette.grey500,
                 ),
               ),
             ],
@@ -326,7 +327,7 @@ class MangoProduct extends StatelessWidget {
             children: [
               const Text(
                 'Colors: ',
-                style: TextStyle(fontSize: 10, color: Colors.grey),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
               ),
               ...colors.take(3).map((color) {
                 return Container(
@@ -336,14 +337,14 @@ class MangoProduct extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: _getColorFromString(color),
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: MangoPalette.grey500),
                   ),
                 );
               }).toList(),
               if (colors.length > 3)
                 Text(
                   '+${colors.length - 3}',
-                  style: const TextStyle(fontSize: 10, color: Colors.grey),
+                  style: const TextStyle(fontSize: 12, color: MangoPalette.grey500),
                 ),
             ],
           ),
@@ -352,7 +353,7 @@ class MangoProduct extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             'Sizes: ${sizes.take(3).join(', ')}${sizes.length > 3 ? '...' : ''}',
-            style: const TextStyle(fontSize: 10, color: Colors.grey),
+            style: const TextStyle(fontSize: 12, color: MangoPalette.grey500),
           ),
         ],
       ],
@@ -368,15 +369,15 @@ class MangoProduct extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
           decoration: BoxDecoration(
             color: product.inStock 
-                ? Colors.green.withOpacity(0.1)
+                ? MangoPalette.green500.withOpacity(0.1)
                 : Colors.red.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(MangoRadius.xs),
           ),
           child: Text(
             product.inStock ? '${product.stockQuantity} in stock' : 'Out of stock',
             style: TextStyle(
-              fontSize: 10,
-              color: product.inStock ? Colors.green : Colors.red,
+              fontSize: 12,
+              color: product.inStock ? MangoPalette.green500 : Colors.red,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -387,15 +388,15 @@ class MangoProduct extends StatelessWidget {
           children: [
             Icon(
               Icons.remove_red_eye,
-              color: Colors.grey[600],
+              color: MangoPalette.grey600,
               size: 14,
             ),
             const SizedBox(width: 2),
             Text(
               product.viewCount.toString(),
               style: TextStyle(
-                fontSize: 10,
-                color: Colors.grey[600],
+                fontSize: 12,
+                color: MangoPalette.grey600,
               ),
             ),
           ],
@@ -408,17 +409,17 @@ class MangoProduct extends StatelessWidget {
     final colorMap = {
       'red': Colors.red,
       'blue': Colors.blue,
-      'green': Colors.green,
-      'black': Colors.black,
+      'green': MangoPalette.green500,
+      'black': MangoPalette.black,
       'white': Colors.white,
       'yellow': Colors.yellow,
       'purple': Colors.purple,
       'pink': Colors.pink,
-      'orange': Colors.orange,
+      'orange': MangoPalette.green500,
       'brown': Colors.brown,
-      'gray': Colors.grey,
+      'gray': MangoPalette.grey500,
     };
     
-    return colorMap[colorName.toLowerCase()] ?? Colors.grey;
+    return colorMap[colorName.toLowerCase()] ?? MangoPalette.grey500;
   }
 }

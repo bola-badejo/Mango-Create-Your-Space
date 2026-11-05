@@ -2,12 +2,359 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Allow anyone to read (fetch data)
-    match /{document=**} {
-      allow read: if true;
+    function signedIn() { return request.auth != null; }
+    function isUser(uid) { return signedIn() && request.auth.uid == uid; }
 
-      // Only authenticated users can write (create/update/delete)
-      allow write: if request.auth != null;
+    // Collections only Cloud Functions may write (the Admin SDK bypasses
+    // these rules). Balances, blocks and rewards can never be written from
+    // the app, and the old client-written wallet collections are frozen.
+    function serverOnly(c) {
+      return c in [
+        'ledger_meta', 'ledger_keys', 'ledger_blocks', 'ledger_tx', 'ledger_accounts',
+        'ledger_addresses', 'ledger_activity', 'ledger_caps', 'ledger_epochs',
+        'ledger_sessions', 'ledger_idem', 'ledger_anchors',
+        'wallets', 'transactions', 'mining_activities', 'daily_activities',
+        'user_activities', 'creator_payouts', 'failed_payouts', 'failed_mining',
+        'trades', 'user_trades', 'nft_sales', 'failed_nft_sales', 'nfts',
+        'premium_purchases',
+        'space_handles', 'space_owners', 'space_rate',
+        'messages', 'conversations', 'typingIndicators',
+        'notifications', 'usernames', 'notify_rate', 'media_stats'
+      ];
+    }
+
+    // Collections with their own rules below, so the default rule at the
+    // end must not also apply to them (rules combine with OR).
+    function hasOwnRules(c) {
+      return c in ['spaces', 'content_lists', 'media_progress', 'media_taste', 'dm_chats', 'users', 'contributors', 'music', 'podcasts', 'movies', 'books', 'products', 'posts', 'vines'];
+    }
+
+    // ---- MangoChain (public, verifiable parts) ----
+    match /ledger_meta/{doc}     { allow read: if signedIn(); allow write: if false; }
+    match /ledger_keys/{keyId}   { allow read: if true;       allow write: if false; }
+    match /ledger_blocks/{h}     { allow read: if signedIn(); allow write: if false; }
+    match /ledger_tx/{txId}      { allow read: if signedIn(); allow write: if false; }
+    match /ledger_anchors/{h}    { allow read: if true;       allow write: if false; }
+    match /ledger_epochs/{epoch} {
+      allow read: if signedIn();
+      allow write: if false;
+      match /points/{uid} { allow read: if isUser(uid); allow write: if false; }
+    }
+
+    // ---- MangoChain (private to the account holder) ----
+    match /ledger_accounts/{uid} { allow read: if isUser(uid); allow write: if false; }
+    match /ledger_activity/{id} {
+      allow read: if signedIn() && resource.data.actor == request.auth.uid;
+      allow write: if false;
+    }
+    // ledger_addresses, ledger_caps, ledger_sessions, ledger_idem: no client access.
+
+    // ---- Legacy wallet data: owner may read, nobody may write ----
+    match /wallets/{uid} { allow read: if isUser(uid); allow write: if false; }
+
+    // ---- Virtual Spaces ----
+    function spaceData(spaceId) {
+      return get(/databases/$(database)/documents/spaces/$(spaceId)).data;
+    }
+    function isSpaceEditor(spaceId) {
+      let s = spaceData(spaceId);
+      return signedIn() && (
+        s.get('ownerId', '') == request.auth.uid ||
+        s.get('postCreator', '') == request.auth.uid ||
+        request.auth.uid in s.get('editors', []));
+    }
+    function isSpaceMember(spaceId) {
+      return signedIn() && exists(/databases/$(database)/documents/spaces/$(spaceId)/subscribers/$(request.auth.uid));
+    }
+    function spaceVisibility(spaceId) {
+      let s = spaceData(spaceId);
+      return s.get('visibility', s.get('isPrivate', false) ? 'members' : 'public');
+    }
+    // Public Spaces are open to everyone; "members" Spaces to those who
+    // joined; "private" Spaces to people the owner added.
+    function canView(spaceId) {
+      return spaceVisibility(spaceId) == 'public' || isSpaceEditor(spaceId) || isSpaceMember(spaceId);
+    }
+    function canTalk(spaceId) {
+      return signedIn() && canView(spaceId);
+    }
+    function protectedSpaceKeys() {
+      return ['ownerId', 'postCreator', 'editors', 'handle', 'theme', 'liveEventId', 'world', 'visibility'];
+    }
+    function validMessage(d) {
+      return d.keys().hasOnly(['authorId', 'authorName', 'authorPhoto', 'text', 'createdAt'])
+        && d.authorId == request.auth.uid
+        && d.text is string && d.text.size() > 0 && d.text.size() <= 500
+        && (!('authorName' in d) || (d.authorName is string && d.authorName.size() <= 60))
+        && (!('authorPhoto' in d) || (d.authorPhoto is string && d.authorPhoto.size() <= 500))
+        && d.createdAt == request.time;
+    }
+    function validObject(spaceId, d) {
+      return d.keys().hasOnly(['kind', 'itemId', 'contentRef', 'x', 'y', 'z', 'scale', 'label', 'createdAt', 'createdBy', 'updatedAt'])
+        && d.kind in ['decor', 'content', 'wall', 'events']
+        && d.x is number && d.x >= 0 && d.x <= 1
+        && d.y is number && d.y >= 0 && d.y <= 1
+        && (!('scale' in d) || (d.scale is number && d.scale >= 0.5 && d.scale <= 2.5))
+        && (!('z' in d) || d.z is int)
+        && (!('label' in d) || (d.label is string && d.label.size() <= 60))
+        && (d.kind != 'decor' || (d.itemId is string
+              && exists(/databases/$(database)/documents/spaces/$(spaceId)/inventory/$(d.itemId))))
+        && (d.kind != 'content' || (d.contentRef is map
+              && d.contentRef.keys().hasOnly(['type', 'id', 'title', 'imageUrl'])
+              && d.contentRef.type in ['song', 'podcast', 'movie', 'post', 'product', 'book', 'vine', 'list']
+              && d.contentRef.id is string && d.contentRef.id.size() <= 200
+              && (!('title' in d.contentRef) || (d.contentRef.title is string && d.contentRef.title.size() <= 120))
+              && (!('imageUrl' in d.contentRef) || (d.contentRef.imageUrl is string && d.contentRef.imageUrl.size() <= 1000))));
+    }
+
+    match /spaces/{spaceId} {
+      // Space cards stay discoverable, as before.
+      allow read: if true;
+      // The guided wizard creates Spaces on the server. The legacy screen may
+      // still create one, but only as its own owner and without server fields.
+      allow create: if signedIn()
+        && request.resource.data.postCreator == request.auth.uid
+        && !request.resource.data.keys().hasAny(['ownerId', 'editors', 'handle', 'theme', 'liveEventId', 'world', 'visibility']);
+      allow update: if (signedIn()
+          && (resource.data.get('ownerId', '') == request.auth.uid
+              || resource.data.get('postCreator', '') == request.auth.uid
+              || request.auth.uid in resource.data.get('editors', []))
+          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(protectedSpaceKeys()))
+        || (signedIn()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['members'])
+          && request.resource.data.members is int
+          && (request.resource.data.members - resource.data.get('members', 0)) in [-1, 0, 1]);
+      allow delete: if signedIn()
+        && (resource.data.get('ownerId', '') == request.auth.uid || resource.data.get('postCreator', '') == request.auth.uid);
+
+      match /objects/{objectId} {
+        allow read: if canView(spaceId);
+        allow create, update: if isSpaceEditor(spaceId) && validObject(spaceId, request.resource.data);
+        allow delete: if isSpaceEditor(spaceId);
+      }
+      match /inventory/{itemId} {
+        allow read: if canView(spaceId);
+        allow write: if false; // granted only by a verified purchase on the server
+      }
+      match /presence/{uid} {
+        allow read: if canView(spaceId);
+        allow create, update: if isUser(uid) && canView(spaceId)
+          && request.resource.data.keys().hasOnly(['name', 'photo', 'x', 'y', 'lastSeen', 'status'])
+          && request.resource.data.lastSeen == request.time
+          && (!('name' in request.resource.data) || (request.resource.data.name is string && request.resource.data.name.size() <= 60))
+          && (!('photo' in request.resource.data) || (request.resource.data.photo is string && request.resource.data.photo.size() <= 500))
+          && request.resource.data.x is number && request.resource.data.x >= 0 && request.resource.data.x <= 1
+          && request.resource.data.y is number && request.resource.data.y >= 0 && request.resource.data.y <= 1
+          && (!('status' in request.resource.data) || request.resource.data.status in ['here', 'away']);
+        allow delete: if isUser(uid) || isSpaceEditor(spaceId);
+      }
+      match /wall/{msgId} {
+        allow read: if canView(spaceId);
+        allow create: if canTalk(spaceId) && validMessage(request.resource.data);
+        allow update: if false;
+        allow delete: if signedIn() && (resource.data.authorId == request.auth.uid || isSpaceEditor(spaceId));
+      }
+      match /events/{eventId} {
+        allow read: if canView(spaceId);
+        allow write: if false; // scheduled, started and ended on the server
+        match /attendees/{uid} {
+          allow read: if canView(spaceId);
+          allow create, update: if isUser(uid) && canView(spaceId)
+            && request.resource.data.keys().hasOnly(['name', 'photo', 'joinedAt', 'handRaised'])
+            && (!('handRaised' in request.resource.data) || request.resource.data.handRaised is bool)
+            && request.resource.data.joinedAt == request.time;
+          allow delete: if isUser(uid) || isSpaceEditor(spaceId);
+        }
+        match /chat/{msgId} {
+          allow read: if canView(spaceId);
+          allow create: if canTalk(spaceId) && validMessage(request.resource.data)
+            && get(/databases/$(database)/documents/spaces/$(spaceId)/events/$(eventId)).data.status == 'live';
+          allow update: if false;
+          allow delete: if signedIn() && (resource.data.authorId == request.auth.uid || isSpaceEditor(spaceId));
+        }
+      }
+      match /subscribers/{uid} {
+        allow read: if true;
+        // Anyone may join a public or members Space; private Spaces are by invitation.
+        allow create: if (isUser(uid) && spaceVisibility(spaceId) != 'private') || isSpaceEditor(spaceId);
+        allow update: if isUser(uid) || isSpaceEditor(spaceId);
+        allow delete: if isUser(uid) || isSpaceEditor(spaceId);
+      }
+      // Existing Space features (conversations, pods, counters) keep their
+      // previous behaviour.
+      match /{sub}/{document=**} {
+        allow read: if !(sub in ['objects', 'inventory', 'presence', 'wall', 'events', 'subscribers']);
+        allow write: if signedIn() && !(sub in ['objects', 'inventory', 'presence', 'wall', 'events', 'subscribers']);
+      }
+    }
+
+    // ---- Media: content lists, progress, taste ----
+    function validList(d) {
+      return d.keys().hasOnly(['ownerId', 'spaceId', 'title', 'description', 'visibility', 'items', 'coverUrl', 'createdAt', 'updatedAt'])
+        && d.title is string && d.title.size() >= 1 && d.title.size() <= 80
+        && (!('description' in d) || (d.description is string && d.description.size() <= 500))
+        && (!('coverUrl' in d) || (d.coverUrl is string && d.coverUrl.size() <= 1000))
+        && d.visibility in ['public', 'private']
+        && d.items is list && d.items.size() <= 200
+        && (d.get('spaceId', null) == null || (d.spaceId is string && isSpaceEditor(d.spaceId)));
+    }
+    match /content_lists/{listId} {
+      allow read: if (signedIn() && resource.data.ownerId == request.auth.uid)
+        || (resource.data.visibility == 'public'
+            && (resource.data.get('spaceId', null) == null || canView(resource.data.spaceId)))
+        || (resource.data.get('spaceId', null) != null && isSpaceEditor(resource.data.spaceId));
+      allow create: if signedIn() && request.resource.data.ownerId == request.auth.uid
+        && validList(request.resource.data) && request.resource.data.updatedAt == request.time;
+      allow update: if signedIn()
+        && (resource.data.ownerId == request.auth.uid
+            || (resource.data.get('spaceId', null) != null && isSpaceEditor(resource.data.spaceId)))
+        && request.resource.data.ownerId == resource.data.ownerId
+        && request.resource.data.get('spaceId', null) == resource.data.get('spaceId', null)
+        && validList(request.resource.data) && request.resource.data.updatedAt == request.time;
+      allow delete: if signedIn()
+        && (resource.data.ownerId == request.auth.uid
+            || (resource.data.get('spaceId', null) != null && isSpaceEditor(resource.data.spaceId)));
+    }
+    // Where you are in a song, episode, film or book; private to you.
+    match /media_progress/{uid}/items/{key} {
+      allow read, delete: if isUser(uid);
+      allow create, update: if isUser(uid)
+        && request.resource.data.keys().hasOnly(['type', 'id', 'title', 'imageUrl', 'positionMs', 'durationMs', 'page', 'pageCount', 'bookmarks', 'completed', 'updatedAt'])
+        && request.resource.data.type in ['song', 'podcast', 'movie', 'book', 'vine']
+        && request.resource.data.id is string && request.resource.data.id.size() <= 128
+        && (!('bookmarks' in request.resource.data) || (request.resource.data.bookmarks is list && request.resource.data.bookmarks.size() <= 200))
+        && request.resource.data.updatedAt == request.time;
+    }
+    // Taste profiles are written only by the server; you can read your own.
+    match /media_taste/{uid} {
+      allow read: if isUser(uid);
+      allow write: if false;
+    }
+
+    // ---- Chat (one-to-one) ----
+    function chatMembers(chatId) {
+      return get(/databases/$(database)/documents/dm_chats/$(chatId)).data.members;
+    }
+    match /dm_chats/{chatId} {
+      allow read: if signedIn() && request.auth.uid in resource.data.members;
+      allow write: if false; // opened, summarised and expired on the server
+      match /messages/{msgId} {
+        allow read: if signedIn() && request.auth.uid in chatMembers(chatId);
+        allow create: if signedIn() && request.auth.uid in chatMembers(chatId)
+          && request.resource.data.keys().hasOnly(['senderId', 'kind', 'text', 'media', 'replyTo', 'createdAt'])
+          && request.resource.data.senderId == request.auth.uid
+          && request.resource.data.kind in ['text', 'snap', 'media', 'voice', 'file']
+          && request.resource.data.createdAt == request.time
+          && (!('text' in request.resource.data) || (request.resource.data.text is string && request.resource.data.text.size() <= 2000))
+          && (request.resource.data.kind == 'text' || (request.resource.data.media is map
+                && request.resource.data.media.path is string
+                && request.resource.data.media.path.matches('chats/' + chatId + '/' + request.auth.uid + '/.+')))
+          && (!('replyTo' in request.resource.data) || request.resource.data.replyTo is map);
+        // Reactions: each person may only change their own.
+        allow update: if signedIn() && request.auth.uid in chatMembers(chatId)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reactions'])
+          && request.resource.data.reactions.diff(resource.data.get('reactions', {})).affectedKeys().hasOnly([request.auth.uid]);
+        allow delete: if false; // unsend and expiry run on the server
+      }
+      match /presence/{uid} {
+        allow read: if signedIn() && request.auth.uid in chatMembers(chatId);
+        allow write: if isUser(uid) && uid in chatMembers(chatId)
+          && request.resource.data.keys().hasOnly(['typing', 'here', 'lastSeen'])
+          && request.resource.data.lastSeen == request.time;
+      }
+    }
+
+    // ---- Users: profiles are public; private data is private ----
+    function bumpsOnly(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys)
+        && request.resource.data.diff(resource.data).affectedKeys().size() >= 1;
+    }
+    function counterOk(f) {
+      return !(f in request.resource.data.diff(resource.data).affectedKeys())
+        || (request.resource.data[f] is int && (request.resource.data[f] - resource.data.get(f, 0)) in [-1, 0, 1]);
+    }
+    function userCountersOnly() {
+      return bumpsOnly(['likes', 'views', 'postCount', 'profileViews'])
+        && counterOk('likes') && counterOk('views') && counterOk('postCount') && counterOk('profileViews');
+    }
+    function protectedUserKeys() {
+      return ['isVerified', 'isCreator', 'creatorID', 'isVendor', 'vendorID', 'isDistributor', 'distributorID'];
+    }
+    match /users/{uid} {
+      allow read: if true;
+      allow create: if isUser(uid) && !request.resource.data.keys().hasAny(['isVerified', 'onboarding']);
+      allow update: if (isUser(uid) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(protectedUserKeys()))
+        || (signedIn() && userCountersOnly());
+      allow delete: if isUser(uid);
+      // Notifications are created by the server; you can read them, mark
+      // them read and delete them.
+      match /notifications/{id} {
+        allow read, delete: if isUser(uid);
+        allow update: if isUser(uid) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isRead']);
+        allow create: if false;
+      }
+      // Old per-user chat copies: only their owner can see them.
+      match /chats/{rest=**} {
+        allow read, write: if isUser(uid);
+      }
+      match /followers/{followerId} {
+        allow read: if true;
+        allow write: if isUser(followerId) || isUser(uid);
+      }
+      match /following/{followeeId} {
+        allow read: if true;
+        allow write: if isUser(uid);
+      }
+      match /{sub}/{rest=**} {
+        allow read: if !(sub in ['chats', 'notifications']);
+        allow write: if signedIn() && !(sub in ['chats', 'followers', 'following', 'notifications']);
+      }
+    }
+
+    // ---- Contributors: public profiles; owners edit, never their status ----
+    match /contributors/{contributorId} {
+      allow read: if true;
+      allow create, delete: if false; // registered on the server (contributorRegister)
+      allow update: if signedIn() && resource.data.userId == request.auth.uid
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['userId', 'ownerId', 'contributorId', 'type', 'isVerified', 'isPremium', 'followers', 'rating', 'reviews']);
+      match /{sub}/{rest=**} {
+        allow read: if true;
+        allow write: if signedIn() && get(/databases/$(database)/documents/contributors/$(contributorId)).data.userId == request.auth.uid;
+      }
+    }
+
+    // ---- Creator content: owners create, edit and delete; others only nudge counters ----
+    function ownerOf(d) {
+      return d.get('ownerId', d.get('artistId', d.get('postCreator', d.get('uploaderId', d.get('userId', d.get('contributorId', d.get('creatorId', '')))))));
+    }
+    function contentCountersOnly() {
+      return bumpsOnly(['plays', 'likes', 'views', 'reads', 'shares', 'downloads', 'favorites', 'likeCount', 'replyCount', 'repostCount', 'commentCount', 'saves'])
+        && counterOk('plays') && counterOk('likes') && counterOk('views') && counterOk('reads') && counterOk('shares')
+        && counterOk('downloads') && counterOk('favorites') && counterOk('likeCount') && counterOk('replyCount')
+        && counterOk('repostCount') && counterOk('commentCount') && counterOk('saves');
+    }
+    match /{collection}/{docId} {
+      allow read: if collection in ['music', 'podcasts', 'movies', 'books', 'products', 'posts', 'vines'];
+      allow create: if collection in ['music', 'podcasts', 'movies', 'books', 'products', 'posts', 'vines']
+        && signedIn() && ownerOf(request.resource.data) == request.auth.uid;
+      allow update: if collection in ['music', 'podcasts', 'movies', 'books', 'products', 'posts', 'vines'] && signedIn()
+        && ((ownerOf(resource.data) == request.auth.uid && ownerOf(request.resource.data) == request.auth.uid)
+            || contentCountersOnly());
+      allow delete: if collection in ['music', 'podcasts', 'movies', 'books', 'products', 'posts', 'vines']
+        && signedIn() && ownerOf(resource.data) == request.auth.uid;
+      // Likes, comments and other sub-collections keep their previous behaviour.
+      match /{sub}/{rest=**} {
+        allow read: if collection in ['music', 'podcasts', 'movies', 'books', 'products', 'posts', 'vines'];
+        allow write: if collection in ['music', 'podcasts', 'movies', 'books', 'products', 'posts', 'vines'] && signedIn();
+      }
+    }
+
+    // ---- Everything else: unchanged from the previous rules ----
+    // Still too open (any signed-in user can write anywhere); tighten per
+    // collection as a separate change.
+    match /{collection}/{document=**} {
+      allow read: if !serverOnly(collection) && !hasOwnRules(collection);
+      allow write: if signedIn() && !serverOnly(collection) && !hasOwnRules(collection);
     }
   }
 }

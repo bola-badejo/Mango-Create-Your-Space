@@ -9,6 +9,9 @@ import 'package:mango/Spaces/screens/space_content.dart';
 import 'package:mango/Spaces/screens/space_detail.dart';
 import 'package:mango/Spaces/screens/space_pods/space_music.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
+import 'package:mango/Spaces/world/space_create_wizard.dart';
 
 class SpaceHomeConstants {
   static const double horizontalPadding = 25.0;
@@ -24,14 +27,14 @@ class SpaceCardThemes {
     return {
       'featured': isDark ? Colors.blue.shade800 : Colors.lightBlue.shade400,
       'private': isDark ? Colors.purple.shade800 : Colors.deepPurpleAccent.shade400,
-      'joined': isDark ? Colors.green.shade800 : Colors.lightGreen.shade400,
+      'joined': isDark ? MangoPalette.green800 : Colors.lightGreen.shade400,
       'explore': isDark ? Colors.blueGrey.shade800 : Colors.blueGrey.shade400,
     };
   }
   
   static Color getBackgroundColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? Colors.grey.shade900
+        ? MangoPalette.grey900
         : Colors.white;
   }
   
@@ -55,7 +58,7 @@ class SpaceCardThemes {
   
   static Color getShadowColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? Colors.black.withOpacity(0.5)
+        ? MangoPalette.black.withOpacity(0.5)
         : Colors.black12;
   }
 }
@@ -98,6 +101,12 @@ class SpaceHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'create-space',
+        onPressed: () => Get.to(() => const SpaceCreateWizard()),
+        icon: const Icon(Icons.add_rounded),
+        label: const Text('Create a Space'),
+      ),
       backgroundColor: SpaceCardThemes.getBackgroundColor(context),
       extendBodyBehindAppBar: false,
       body: SingleChildScrollView(
@@ -132,7 +141,7 @@ class SpaceHomeScreen extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
-        GestureDetector(
+        MangoPressable(
           onTap: (){
             Get.toNamed('new-space');
           },
@@ -140,9 +149,9 @@ class SpaceHomeScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.grey.shade800
+                  ? MangoPalette.grey800
                   : Colors.white,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               boxShadow: [
                 BoxShadow(
                   color: SpaceCardThemes.getShadowColor(context),
@@ -299,8 +308,8 @@ class SpaceHomeScreen extends StatelessWidget {
       return Container(
         height: height,
         width: height,
-        color: Colors.grey[300],
-        child: Icon(Icons.image, color: Colors.grey.shade600),
+        color: MangoPalette.grey300,
+        child: Icon(Icons.image, color: MangoPalette.grey600),
       );
     }
   }
@@ -422,9 +431,9 @@ class SpaceHomeScreen extends StatelessWidget {
   }
 
   Widget _buildShimmerLoading() {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+    return MangoShimmer(
+      baseColor: MangoPalette.grey300,
+      highlightColor: MangoPalette.grey100,
       child: Column(
         children: [
           Row(
@@ -435,7 +444,7 @@ class SpaceHomeScreen extends StatelessWidget {
                 width: (Get.width / 2) - 30,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                 ),
               ),
               Column(
@@ -445,7 +454,7 @@ class SpaceHomeScreen extends StatelessWidget {
                     width: (Get.width / 2) - 30,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(MangoRadius.lg),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -454,7 +463,7 @@ class SpaceHomeScreen extends StatelessWidget {
                     width: (Get.width / 2) - 30,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(MangoRadius.lg),
                     ),
                   ),
                 ],
@@ -467,7 +476,7 @@ class SpaceHomeScreen extends StatelessWidget {
             width: Get.width,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
             ),
           ),
         ],
@@ -508,17 +517,17 @@ class _SpaceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
           child: Stack(
             children: [
               
@@ -539,7 +548,7 @@ class _SpaceCard extends StatelessWidget {
                 ),
               ),
 
-              Container(color: Colors.black.withOpacity(0.05)),
+              Container(color: MangoPalette.black.withOpacity(0.05)),
               
               imagePosition,
               
@@ -591,8 +600,8 @@ class _SpaceCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.25),
-          borderRadius: BorderRadius.circular(12),
+          color: MangoPalette.black.withOpacity(0.25),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -601,13 +610,13 @@ class _SpaceCard extends StatelessWidget {
               4,
               (index) => const Icon(Icons.star, color: Colors.amber, size: 10),
             ),
-            const Icon(Icons.star, color: Colors.grey, size: 10),
+            const Icon(Icons.star, color: MangoPalette.grey500, size: 10),
             const SizedBox(width: 4),
             Text(
               rating,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 10,
+                fontSize: 12,
                 color: Colors.white,
               ),
             ),

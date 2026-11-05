@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MusicPickerDialog extends StatefulWidget {
   const MusicPickerDialog({super.key});
@@ -109,8 +111,8 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.grey[900],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      backgroundColor: MangoPalette.grey900,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
       child: Container(
         width: double.maxFinite,
         height: MediaQuery.of(context).size.height * 0.8,
@@ -130,6 +132,7 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
                 ),
                 const Spacer(),
                 IconButton(
+        tooltip: 'Close',
                   icon: const Icon(Icons.close, color: Colors.white),
                   onPressed: () => Navigator.pop(context),
                 ),
@@ -145,7 +148,7 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
             
             Expanded(
               child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'))
                   : _filteredSongs.isEmpty
                       ? const Center(
                           child: Text(
@@ -172,7 +175,7 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
           final playlist = _playlists[index];
           final isSelected = playlist['id'] == _selectedPlaylistId;
           
-          return GestureDetector(
+          return MangoPressable(
             onTap: () {
               setState(() {
                 _selectedPlaylistId = playlist['id'];
@@ -183,8 +186,8 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               margin: const EdgeInsets.only(right: 8),
               decoration: BoxDecoration(
-                color: isSelected ? Colors.blue : Colors.grey[800],
-                borderRadius: BorderRadius.circular(20),
+                color: isSelected ? Colors.blue : MangoPalette.grey800,
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
               ),
               child: Row(
                 children: [
@@ -194,7 +197,7 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
                       height: 24,
                       margin: const EdgeInsets.only(right: 8),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(MangoRadius.xs),
                         image: DecorationImage(
                           image: NetworkImage(playlist['coverUrl']),
                           fit: BoxFit.cover,
@@ -204,7 +207,7 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
                   Text(
                     playlist['name'],
                     style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.grey[300],
+                      color: isSelected ? Colors.white : MangoPalette.grey300,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -224,12 +227,12 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
         onChanged: (value) => setState(() => _searchQuery = value),
         decoration: InputDecoration(
           hintText: 'Search songs...',
-          hintStyle: const TextStyle(color: Colors.grey),
-          prefixIcon: const Icon(Icons.search, color: Colors.grey),
+          hintStyle: const TextStyle(color: MangoPalette.grey500),
+          prefixIcon: const Icon(Icons.search, color: MangoPalette.grey500),
           filled: true,
-          fillColor: Colors.grey[800],
+          fillColor: MangoPalette.grey800,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             borderSide: BorderSide.none,
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -251,7 +254,7 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                     image: DecorationImage(
                       image: NetworkImage(song['coverUrl']),
                       fit: BoxFit.cover,
@@ -262,8 +265,8 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.grey[700],
-                    borderRadius: BorderRadius.circular(4),
+                    color: MangoPalette.grey700,
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                   child: const Icon(Icons.music_note, color: Colors.white),
                 ),
@@ -275,13 +278,13 @@ class _MusicPickerDialogState extends State<MusicPickerDialog> {
           ),
           subtitle: Text(
             song['artist'],
-            style: const TextStyle(color: Colors.grey),
+            style: const TextStyle(color: MangoPalette.grey500),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           trailing: Text(
             song['duration'],
-            style: const TextStyle(color: Colors.grey),
+            style: const TextStyle(color: MangoPalette.grey500),
           ),
           onTap: () {
             Navigator.pop(context, song['url']);

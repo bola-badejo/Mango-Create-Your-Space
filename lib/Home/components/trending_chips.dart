@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class _CompactTrendingChip extends StatelessWidget {
   final String label;
@@ -11,11 +12,11 @@ class _CompactTrendingChip extends StatelessWidget {
       margin: const EdgeInsets.only(right: 6),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
+        color: MangoPalette.grey100,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.grey300),
       ),
-      child: Text(label, style: const TextStyle(fontSize: 9, color: Colors.black87)),
+      child: Text(label, style: const TextStyle(fontSize: 12, color: Colors.black87)),
     );
   }
 }

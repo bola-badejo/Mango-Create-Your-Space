@@ -6,6 +6,7 @@ import 'package:mango/AccountSetup/add_friends.dart';
 import 'package:mango/Models/cloud/user_services.dart';
 import 'package:mango/constants.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class BookGenreSelection extends StatefulWidget {
   final String? uid;
@@ -78,7 +79,7 @@ class _BookGenreSelectionState extends State<BookGenreSelection> {
             child: const Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(
                 Icons.skip_next,
-                color: Colors.black,
+                color: MangoPalette.black,
                 size: 22,
               ),
               SizedBox(
@@ -87,7 +88,7 @@ class _BookGenreSelectionState extends State<BookGenreSelection> {
               Text(
                 "Next",
                 style: TextStyle(
-                    color: Colors.black,
+                    color: MangoPalette.black,
                     fontWeight: FontWeight.w600,
                     fontSize: 18
                 ),
@@ -120,7 +121,7 @@ class _BookGenreSelectionState extends State<BookGenreSelection> {
                     return const LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Colors.grey, Colors.transparent, Colors.transparent, Colors.transparent],
+                      colors: [MangoPalette.grey500, Colors.transparent, Colors.transparent, Colors.transparent],
                       stops: [0.0, 0.1, 0.9, 1.0], 
                     ).createShader(rect);
                   },
@@ -192,7 +193,7 @@ class _BookGenreSelectionState extends State<BookGenreSelection> {
           ),
           label: Text(_selectedGenre[i]),
           labelStyle: const TextStyle(color: Colors.white),
-          backgroundColor: Colors.grey,
+          backgroundColor: MangoPalette.grey500,
           selected: sttate,
           onDeleted: () {
             setState(() {

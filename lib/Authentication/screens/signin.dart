@@ -8,6 +8,8 @@ import 'package:mango/utils.dart';
 
 import '../../constants.dart';
 import '../../Utils/text_field.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -105,15 +107,15 @@ class _LoginPageState extends State<LoginPage> {
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: isError
           ? Colors.redAccent.withOpacity(0.9)
-          : Colors.greenAccent.withOpacity(0.9),
-      colorText: isError ? Colors.white : Colors.black,
+          : MangoPalette.green400.withOpacity(0.9),
+      colorText: isError ? Colors.white : MangoPalette.black,
       context: context,
       borderRadius: 8,
       margin: const EdgeInsets.all(16),
       duration: const Duration(seconds: 4),
       icon: Icon(
         isError ? Icons.error_outline : Icons.check_circle,
-        color: isError ? Colors.white : Colors.black,
+        color: isError ? Colors.white : MangoPalette.black,
       ),
       shouldIconPulse: true,
     );
@@ -122,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: MangoPalette.black,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -144,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               FadeAnimation(
                 1.1,
-                GestureDetector(
+                MangoPressable(
                   onTap: () => Get.toNamed('/space-home'),
                   child: const Text(
                     'Sign In',
@@ -166,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                   elevation: 0,
                   baseColor: Colors.white10,
                   expandedColor: Colors.white12,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                   leading: const CircleAvatar(
                     backgroundColor: Colors.white12,
                     child: Icon(Icons.mail, size: 18, color: Colors.white),
@@ -181,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   subtitle: const Text(
                     'sign in using your email and password',
-                    style: TextStyle(fontSize: 10, color: Colors.white54),
+                    style: TextStyle(fontSize: 12, color: Colors.white54),
                   ),
                   children: <Widget>[
                     const Divider(color: Colors.white12, thickness: 0.5),
@@ -224,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
 
                           FadeAnimation(
                             1.2,
-                            GestureDetector(
+                            MangoPressable(
                               onTap: () => Get.toNamed('/forgot-password'),
                               child: const Text(
                                 'Forgot Password?',
@@ -249,19 +251,19 @@ class _LoginPageState extends State<LoginPage> {
                                       : _login,
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,
-                                    foregroundColor: Colors.black,
+                                    foregroundColor: MangoPalette.black,
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 15,
                                     ),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(MangoRadius.md),
                                     ),
                                   ),
                                   child: _isEmailLoading.value
                                       ? const SizedBox(
                                           width: 20,
                                           height: 20,
-                                          child: CircularProgressIndicator(
+                                          child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                             strokeWidth: 2,
                                           ),
                                         )
@@ -292,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
                     "Alternative authentication",
                     style: TextStyle(
                       color: Colors.white38,
-                      fontSize: 11,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -308,7 +310,7 @@ class _LoginPageState extends State<LoginPage> {
               //     elevation: 0,
               //     baseColor: Colors.white10,
               //     expandedColor: Colors.white12,
-              //     borderRadius: BorderRadius.circular(12),
+              //     borderRadius: BorderRadius.circular(MangoRadius.md),
               //     leading: const CircleAvatar(
               //       backgroundColor: Colors.white12,
               //       child: Icon(Icons.phone, size: 18, color: Colors.white),
@@ -323,7 +325,7 @@ class _LoginPageState extends State<LoginPage> {
               //     ),
               //     subtitle: const Text(
               //       'sign in using your phone number',
-              //       style: TextStyle(fontSize: 10, color: Colors.white54),
+              //       style: TextStyle(fontSize: 12, color: Colors.white54),
               //     ),
               //     children: <Widget>[
               //       const Divider(color: Colors.white12, thickness: 0.5),
@@ -361,12 +363,12 @@ class _LoginPageState extends State<LoginPage> {
               //                         : _phoneLogin,
               //                     style: ElevatedButton.styleFrom(
               //                       backgroundColor: Colors.white,
-              //                       foregroundColor: Colors.black,
+              //                       foregroundColor: MangoPalette.black,
               //                       padding: const EdgeInsets.symmetric(
               //                         vertical: 15,
               //                       ),
               //                       shape: RoundedRectangleBorder(
-              //                         borderRadius: BorderRadius.circular(12),
+              //                         borderRadius: BorderRadius.circular(MangoRadius.md),
               //                       ),
               //                     ),
               //                     child: _isPhoneLoading.value
@@ -409,7 +411,7 @@ class _LoginPageState extends State<LoginPage> {
               //         ),
               //         decoration: BoxDecoration(
               //           color: Colors.white10,
-              //           borderRadius: BorderRadius.circular(12),
+              //           borderRadius: BorderRadius.circular(MangoRadius.md),
               //         ),
               //         child: Row(
               //           children: [
@@ -455,7 +457,7 @@ class _LoginPageState extends State<LoginPage> {
               //         ),
               //         decoration: BoxDecoration(
               //           color: Colors.white10,
-              //           borderRadius: BorderRadius.circular(12),
+              //           borderRadius: BorderRadius.circular(MangoRadius.md),
               //         ),
               //         child: Row(
               //           children: [
@@ -499,7 +501,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(color: Colors.white54, fontSize: 12),
                     ),
                     const SizedBox(width: 4),
-                    GestureDetector(
+                    MangoPressable(
                       onTap: () => Get.offNamed('/signup'),
                       child: const Text(
                         "Sign up",

@@ -5,13 +5,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:mango/Books/pdf_viewer.dart';
+import 'package:mango/Media/reader/mango_reader.dart';
 import 'package:mango/Home/controllers/dashboard_controller.dart';
 import 'package:mango/Home/pages/post_shimmer.dart';
 import 'package:mango/Models/customModel/library.dart';
 import 'package:mango/Spaces/common/space_it.dart';
 import 'package:mango/Utils/theme.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MangoLibraryList extends StatefulWidget {
   final MangoBooks book;
@@ -62,9 +64,9 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
         margin: const EdgeInsets.all(8),
         child: Card(
           elevation: 4,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)),
           clipBehavior: Clip.antiAlias,
-          color: isDarkMode ? Colors.grey[900] : Colors.white,
+          color: isDarkMode ? MangoPalette.grey900 : Colors.white,
           child: Stack(
             children: [
               Positioned.fill(
@@ -86,15 +88,15 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
                       end: Alignment.bottomCenter,
                       colors: _isExpanded
                           ? [
-                              Colors.black.withOpacity(0.8),
-                              Colors.black.withOpacity(0.9),
+                              MangoPalette.black.withOpacity(0.8),
+                              MangoPalette.black.withOpacity(0.9),
                             ]
                           : [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.3),
-                              Colors.black.withOpacity(0.6),
-                              Colors.black.withOpacity(1.0),
-                              Colors.black.withOpacity(1.0),
+                              MangoPalette.black.withOpacity(0.3),
+                              MangoPalette.black.withOpacity(0.6),
+                              MangoPalette.black.withOpacity(1.0),
+                              MangoPalette.black.withOpacity(1.0),
                             ],
                       stops: _isExpanded
                           ? [0.0, 1.0]
@@ -118,7 +120,7 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 10,
+                          fontSize: 12,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -127,7 +129,7 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
                         widget.book.author,
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.8),
-                          fontSize: 9,
+                          fontSize: 12,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -141,14 +143,14 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
                               widget.book.description,
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.8),
-                                fontSize: 8,
+                                fontSize: 12,
                               ),
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
-                              child: GestureDetector(
+                              child: MangoPressable(
                                 onTap: () {
                                   print("pressed");
                                   _openFullScreen(context, widget.book);
@@ -159,7 +161,7 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                                     border: Border.all(
                                       color: primaryColor,
                                       width: 1.0,
@@ -170,7 +172,7 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
                                     child: Text(
                                       'Read',
                                       style: TextStyle(
-                                        fontSize: 11,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.bold,
                                         color: primaryColor,
                                       ),
@@ -184,7 +186,7 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
                       ),
                       Align(
                         alignment: Alignment.center,
-                        child: GestureDetector(
+                        child: MangoPressable(
                           onTap: () =>
                               setState(() => _isExpanded = !_isExpanded),
                           child: AnimatedSwitcher(
@@ -244,13 +246,13 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
           width: width,
           height: height,
           color: themeController.isDarkMode.value
-              ? Colors.grey[800]
-              : Colors.grey[300],
+              ? MangoPalette.grey800
+              : MangoPalette.grey300,
           child: Center(
             child: SizedBox(
               width: width * 0.3,
               height: height * 0.3,
-              child: CircularProgressIndicator(
+              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                 strokeWidth: 2,
                 valueColor: AlwaysStoppedAnimation(
                   themeController.primaryColorValue,
@@ -266,15 +268,15 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]
-                : Colors.grey[300],
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           ),
           child: Icon(
             icon,
             size: width * 0.4,
             color: themeController.isDarkMode.value
-                ? Colors.grey
-                : Colors.grey[600],
+                ? MangoPalette.grey500
+                : MangoPalette.grey600,
           ),
         ),
       ),
@@ -294,15 +296,15 @@ class _MangoLibraryListState extends State<MangoLibraryList> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
         color: themeController.isDarkMode.value
-            ? Colors.grey[800]
-            : Colors.grey[300],
+            ? MangoPalette.grey800
+            : MangoPalette.grey300,
       ),
       child: Icon(
         icon,
         size: width * 0.4,
         color: themeController.isDarkMode.value
-            ? Colors.grey
-            : Colors.grey[600],
+            ? MangoPalette.grey500
+            : MangoPalette.grey600,
       ),
     );
   }
@@ -497,10 +499,10 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
   Widget _buildLoadingState(ThemeController themeController) {
     return Container(
       color: themeController.isDarkMode.value
-          ? Colors.grey[900]
-          : Colors.grey[200],
+          ? MangoPalette.grey900
+          : MangoPalette.grey200,
       child: Center(
-        child: CircularProgressIndicator(
+        child: CircularProgressIndicator(semanticsLabel: 'Loading', 
           strokeWidth: 3,
           valueColor: AlwaysStoppedAnimation<Color>(
             themeController.primaryColorValue,
@@ -513,8 +515,8 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
   Widget _buildErrorPlaceholder(ThemeController themeController) {
     return Container(
       color: themeController.isDarkMode.value
-          ? Colors.grey[900]
-          : Colors.grey[200],
+          ? MangoPalette.grey900
+          : MangoPalette.grey200,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -523,16 +525,16 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
               Icons.book_rounded,
               size: 60,
               color: themeController.isDarkMode.value
-                  ? Colors.grey[700]
-                  : Colors.grey[400],
+                  ? MangoPalette.grey700
+                  : MangoPalette.grey400,
             ),
             const SizedBox(height: 10),
             Text(
               'Cover image',
               style: TextStyle(
                 color: themeController.isDarkMode.value
-                    ? Colors.grey[500]
-                    : Colors.grey[600],
+                    ? MangoPalette.grey500
+                    : MangoPalette.grey600,
                 fontSize: 14,
               ),
             ),
@@ -555,9 +557,9 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
       child: Obx(() {
         final primaryColor = themeController.primaryColorValue;
         final isDarkMode = themeController.isDarkMode.value;
-        final scaffoldBackground = isDarkMode ? Colors.black : Colors.white;
+        final scaffoldBackground = isDarkMode ? MangoPalette.black : Colors.white;
         final textColor = isDarkMode ? Colors.white : Colors.black87;
-        final cardColor = isDarkMode ? Colors.grey[900] : Colors.grey[100];
+        final cardColor = isDarkMode ? MangoPalette.grey900 : MangoPalette.grey100;
 
         return Scaffold(
           backgroundColor: scaffoldBackground,
@@ -568,11 +570,12 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
               SliverAppBar(
                 expandedHeight: imageHeight,
                 pinned: true,
-                backgroundColor: isDarkMode ? Colors.black : primaryColor,
+                backgroundColor: isDarkMode ? MangoPalette.black : primaryColor,
                 leading: IconButton(
+        tooltip: 'Back',
                   icon: Icon(
                     Icons.arrow_back,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                   onPressed: () {
                     Get.back();
@@ -625,13 +628,13 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
                             padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
                               color: Colors.black54,
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(MangoRadius.xs),
                             ),
                             child: Text(
                               'URL: ${widget.book.coverUrl.length > 40 ? '${widget.book.coverUrl.substring(0, 40)}...' : widget.book.coverUrl}',
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 10,
+                                fontSize: 12,
                                 fontFamily: 'monospace',
                               ),
                             ),
@@ -706,7 +709,7 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
 
                       Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           border: Border.all(
                             color: primaryColor.withOpacity(0.5),
                             width: 2.0,
@@ -721,19 +724,21 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
                         ),
                         child: Material(
                           color: primaryColor,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           child: InkWell(
                             onTap: () {
                               HapticFeedback.mediumImpact();
                               Get.to(
-                                () => PdfViewerScreen(
+                                // Mango Reader: themes, focus mode, read aloud, bookmarks, resume.
+                                () => MangoReaderScreen(
+                                  bookId: widget.book.id,
                                   fileUrl: widget.book.fileUrl,
-                                  book: widget.book,
+                                  title: widget.book.title,
                                 ),
                                 transition: Transition.rightToLeft,
                               );
                             },
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                             child: Container(
                               width: double.infinity,
                               height: 60,
@@ -784,18 +789,18 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
                           hintStyle: TextStyle(
                             fontSize: 14,
                             color: isDarkMode
-                                ? Colors.grey[400]
-                                : Colors.grey[600],
+                                ? MangoPalette.grey400
+                                : MangoPalette.grey600,
                           ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                             borderSide: BorderSide(
                               color: primaryColor.withOpacity(0.3),
                               width: 1.5,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                             borderSide: BorderSide(
                               color: primaryColor,
                               width: 2.0,
@@ -803,10 +808,11 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
                           ),
                           filled: true,
                           fillColor: isDarkMode
-                              ? Colors.grey[900]
-                              : Colors.grey[50],
+                              ? MangoPalette.grey900
+                              : MangoPalette.grey50,
                           contentPadding: const EdgeInsets.all(16),
                           suffixIcon: IconButton(
+        tooltip: 'Send',
                             icon: Icon(Icons.send_rounded, color: primaryColor),
                             onPressed: () {},
                           ),
@@ -845,7 +851,7 @@ class _FullScreenBookPageState extends State<FullScreenBookPage> {
           Container(
             height: 150,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               color: cardColor.withOpacity(0.5),
             ),
             child: Center(

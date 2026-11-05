@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:mango/Models/controllers/creator_controller.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class UploadWizardV2 extends StatefulWidget {
   const UploadWizardV2({Key? key}) : super(key: key);
@@ -187,15 +188,15 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
           'Select content type:',
           style: TextStyle(
             fontSize: 16,
-            color: Colors.grey[600],
+            color: MangoPalette.grey600,
           ),
         ),
         const SizedBox(height: 15),
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(12),
+            color: MangoPalette.grey50,
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: Border.all(color: const Color.fromARGB(255, 60, 59, 59)),
           ),
           child: DropdownButton<ContentType>(
@@ -232,7 +233,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                 backgroundColor: Colors.deepPurple,
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
               ),
               child: const Text(
@@ -262,8 +263,8 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.grey[50],
-              borderRadius: BorderRadius.circular(15),
+              color: MangoPalette.grey50,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               border: Border.all(
                 color: hasSingleFile ? Colors.deepPurple : const Color.fromARGB(255, 51, 51, 51),
                 width: 2,
@@ -274,7 +275,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                 Icon(
                   Icons.cloud_upload,
                   size: 50,
-                  color: hasSingleFile ? Colors.deepPurple : Colors.grey[400],
+                  color: hasSingleFile ? Colors.deepPurple : MangoPalette.grey400,
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -282,7 +283,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: hasSingleFile ? Colors.deepPurple : Colors.grey[600],
+                    color: hasSingleFile ? Colors.deepPurple : MangoPalette.grey600,
                   ),
                 ),
                 if (picked != null) ...[
@@ -291,7 +292,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                     picked!.name,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.grey[600],
+                      color: MangoPalette.grey600,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -301,7 +302,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                       '${(picked!.size! / 1024 / 1024).toStringAsFixed(2)} MB',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[500],
+                        color: MangoPalette.grey500,
                       ),
                     ),
                   ],
@@ -378,7 +379,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                   ),
                   child: const Text('Back'),
@@ -431,7 +432,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                       UtilsService().showSnackbar(
                         'Success',
                         'Content uploaded successfully!',
-                        backgroundColor: Colors.green,
+                        backgroundColor: MangoPalette.green500,
                         colorText: Colors.white, context: context,
                       );
                       
@@ -449,14 +450,14 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                     backgroundColor: Colors.deepPurple,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                   ),
                   child: creator.loading.value
                       ? const SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
@@ -509,8 +510,8 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.grey[50],
-              borderRadius: BorderRadius.circular(15),
+              color: MangoPalette.grey50,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               border: Border.all(
                 color: hasAlbumFiles ? Colors.deepPurple : const Color.fromARGB(255, 53, 53, 53),
                 width: 2,
@@ -521,7 +522,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                 Icon(
                   Icons.library_music,
                   size: 50,
-                  color: hasAlbumFiles ? Colors.deepPurple : Colors.grey[400],
+                  color: hasAlbumFiles ? Colors.deepPurple : MangoPalette.grey400,
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -531,7 +532,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: hasAlbumFiles ? Colors.deepPurple : Colors.grey[600],
+                    color: hasAlbumFiles ? Colors.deepPurple : MangoPalette.grey600,
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -612,9 +613,10 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                         ),
                         subtitle: Text(
                           albumPicked[i].name,
-                          style: TextStyle(color: Colors.grey[600]),
+                          style: TextStyle(color: MangoPalette.grey600),
                         ),
                         trailing: IconButton(
+        tooltip: 'Delete',
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
                             setState(() {
@@ -671,7 +673,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                   ),
                   child: const Text('Back'),
@@ -728,7 +730,7 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                       UtilsService().showSnackbar(
                         'Success',
                         'Album created successfully!',
-                        backgroundColor: Colors.green,
+                        backgroundColor: MangoPalette.green500,
                         colorText: Colors.white, context: context,
                       );
                       
@@ -746,14 +748,14 @@ class _UploadWizardV2State extends State<UploadWizardV2> {
                     backgroundColor: Colors.deepPurple,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                   ),
                   child: creator.loading.value
                       ? const SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),

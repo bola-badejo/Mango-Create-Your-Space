@@ -15,6 +15,8 @@ import 'package:lottie/lottie.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class AlbumTrack {
   String id;
@@ -231,7 +233,7 @@ class UploadAlbumController extends GetxController {
         'Draft Saved',
         'Your album has been saved as draft',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
         context: context,
@@ -455,7 +457,7 @@ class UploadAlbumController extends GetxController {
               'Cover Added',
               'Album artwork selected',
               snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Colors.green,
+              backgroundColor: MangoPalette.green500,
               colorText: Colors.white,
               context: context,
             );
@@ -478,7 +480,7 @@ class UploadAlbumController extends GetxController {
             'Cover Added',
             'Album artwork selected',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -561,7 +563,7 @@ class UploadAlbumController extends GetxController {
       'Track Added',
       '${track.titleController.text} has been added',
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white,
       context: context,
     );
@@ -580,7 +582,7 @@ class UploadAlbumController extends GetxController {
         'Track Removed',
         '$trackName has been removed',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -604,7 +606,7 @@ class UploadAlbumController extends GetxController {
       'Contributor Added',
       '$name ($role)',
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white,
       context: context,
     );
@@ -729,7 +731,7 @@ class UploadAlbumController extends GetxController {
         'Contributor Required',
         'Please register as a creator first to upload an album.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -742,7 +744,7 @@ class UploadAlbumController extends GetxController {
         'Missing Info',
         'Please complete all required fields and add at least one track',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -884,7 +886,7 @@ class UploadAlbumController extends GetxController {
         '🎉 Success!',
         '${albumTitle.value} has been uploaded',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 4),
         context: context,
@@ -1041,7 +1043,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.blue.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               border: Border.all(color: Colors.blue),
             ),
             child: Row(
@@ -1075,6 +1077,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                   child: const Text('Restore'),
                 ),
                 IconButton(
+        tooltip: 'Delete',
                   icon: const Icon(Icons.delete_outline, size: 18),
                   onPressed: () => controller.deleteDraft(context),
                   color: Colors.red,
@@ -1088,9 +1091,9 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
-    final cardColor = isDark ? Colors.grey[800]! : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final backgroundColor = isDark ? MangoPalette.grey900 : MangoPalette.grey50;
+    final cardColor = isDark ? MangoPalette.grey800 : Colors.white;
+    final textColor = isDark ? Colors.white : MangoPalette.black;
 
     return WillPopScope(
       onWillPop: _showExitDialog,
@@ -1183,15 +1186,15 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
       final isCompleted = controller.currentStep.value > stepNumber;
       final isAccessible = controller.currentStep.value >= stepNumber;
 
-      return GestureDetector(
+      return MangoPressable(
         onTap: isAccessible ? () => controller.currentStep.value = stepNumber : null,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: isActive ? Colors.orange.withOpacity(0.1) : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            border: isActive ? Border.all(color: Colors.orange.withOpacity(0.3)) : null,
+            color: isActive ? MangoPalette.green500.withOpacity(0.1) : Colors.transparent,
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            border: isActive ? Border.all(color: MangoPalette.green500.withOpacity(0.3)) : null,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -1200,8 +1203,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: isCompleted
-                      ? Colors.green
-                      : (isActive ? Colors.orange : Colors.grey.withOpacity(0.2)),
+                      ? MangoPalette.green500
+                      : (isActive ? MangoPalette.green500 : MangoPalette.grey500.withOpacity(0.2)),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -1214,9 +1217,9 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                  color: isDark ? Colors.white : Colors.black,
+                  color: isDark ? Colors.white : MangoPalette.black,
                 ),
               ),
             ],
@@ -1230,7 +1233,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
     return Container(
       width: 16,
       height: 1,
-      color: isDark ? Colors.grey[700] : Colors.grey[300],
+      color: isDark ? MangoPalette.grey700 : MangoPalette.grey300,
     );
   }
 
@@ -1262,10 +1265,10 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -1273,7 +1276,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             ),
             child: Column(
               children: [
-                Obx(() => GestureDetector(
+                Obx(() => MangoPressable(
                   onTap: ()=> controller.pickCoverImage(context),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 400),
@@ -1282,12 +1285,12 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                     decoration: BoxDecoration(
                       color: controller.isArtworkSelected.value
                           ? Colors.transparent
-                          : Colors.grey[200],
-                      borderRadius: BorderRadius.circular(16),
+                          : MangoPalette.grey200,
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                       border: Border.all(
                         color: controller.isArtworkSelected.value
-                            ? Colors.orange
-                            : Colors.grey[300]!,
+                            ? MangoPalette.green500
+                            : MangoPalette.grey300,
                         width: 2,
                       ),
                       image: controller.coverImage.value != null
@@ -1304,13 +1307,13 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                               Icon(
                                 Icons.album,
                                 size: 48,
-                                color: Colors.grey[400],
+                                color: MangoPalette.grey400,
                               ),
                               const SizedBox(height: 12),
                               Text(
                                 'Add Album Artwork',
                                 style: TextStyle(
-                                  color: Colors.grey[600],
+                                  color: MangoPalette.grey600,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -1325,6 +1328,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                                   radius: 14,
                                   backgroundColor: Colors.black54,
                                   child: IconButton(
+        tooltip: 'Close',
                                     icon: const Icon(Icons.close, size: 14, color: Colors.white),
                                     onPressed: () => controller.removeCoverImage(context),
                                     padding: EdgeInsets.zero,
@@ -1341,7 +1345,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black,
+                    color: isDark ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -1349,7 +1353,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                   'Choose a square image for best results. Recommended: 1200x1200px',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               ],
@@ -1369,10 +1373,10 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -1395,8 +1399,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         children: [
@@ -1417,7 +1421,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
               labelText: 'Track Title',
               labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
               ),
             ),
           ),
@@ -1425,8 +1429,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
           Obx(() => Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: MangoPalette.grey500),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
             ),
             child: Row(
               children: [
@@ -1437,7 +1441,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                         : controller.newSongFilePath.value.split('/').last,
                     style: TextStyle(
                       color: controller.newSongFilePath.value.isEmpty 
-                          ? Colors.grey 
+                          ? MangoPalette.grey500 
                           : textColor,
                     ),
                   ),
@@ -1455,7 +1459,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             icon: const Icon(Icons.add),
             label: const Text('Add Track'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
+              backgroundColor: MangoPalette.green500,
               foregroundColor: Colors.white,
             ),
           ),
@@ -1474,7 +1478,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
               Icon(
                 Icons.music_note,
                 size: 64,
-                color: Colors.grey[400],
+                color: MangoPalette.grey400,
               ),
               const SizedBox(height: 16),
               Text(
@@ -1517,8 +1521,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                         width: 32,
                         height: 32,
                         decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(6),
+                          color: MangoPalette.green500,
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         child: Center(
                           child: Text(
@@ -1543,6 +1547,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                         ),
                       ),
                       IconButton(
+        tooltip: 'Delete',
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () => controller.removeSong(index, context),
                       ),
@@ -1551,14 +1556,14 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Icon(Icons.audiotrack, size: 16, color: Colors.grey),
+                      Icon(Icons.audiotrack, size: 16, color: MangoPalette.grey500),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           track.filePath.split('/').last,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: MangoPalette.grey600,
                           ),
                         ),
                       ),
@@ -1567,7 +1572,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                           '${(track.duration.value ~/ 60)}:${(track.duration.value % 60).toString().padLeft(2, '0')}',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: MangoPalette.grey600,
                           ),
                         ),
                     ],
@@ -1578,8 +1583,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                       child: Text(
                         track.fileSize.value,
                         style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey[500],
+                          fontSize: 12,
+                          color: MangoPalette.grey500,
                         ),
                       ),
                     ),
@@ -1619,8 +1624,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             return Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark ? Colors.grey[800] : Colors.grey[50],
-                borderRadius: BorderRadius.circular(8),
+                color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
               ),
               child: Text(
                 'No credits added for this track',
@@ -1640,7 +1645,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                 leading: Icon(
                   Icons.person,
                   size: 16,
-                  color: Colors.orange,
+                  color: MangoPalette.green500,
                 ),
                 title: Text(
                   entry.value['name'] ?? '',
@@ -1648,9 +1653,10 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                 ),
                 subtitle: Text(
                   entry.value['role'] ?? '',
-                  style: TextStyle(fontSize: 11, color: Colors.grey),
+                  style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                 ),
                 trailing: IconButton(
+        tooltip: 'Delete',
                   icon: const Icon(Icons.delete, size: 16, color: Colors.red),
                   onPressed: () => controller.removeTrackCredit(trackIndex, entry.key, context),
                 ),
@@ -1671,10 +1677,10 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -1747,12 +1753,12 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                   readOnly: true,
                   decoration: InputDecoration(
                     labelText: 'Release Date',
-                    prefixIcon: Icon(Icons.calendar_today, color: Colors.orange),
+                    prefixIcon: Icon(Icons.calendar_today, color: MangoPalette.green500),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     filled: true,
-                    fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+                    fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
                   ),
                   onTap: () async {
                     final picked = await showDatePicker(
@@ -1800,10 +1806,10 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -1835,8 +1841,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         children: [
@@ -1885,7 +1891,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             icon: const Icon(Icons.person_add),
             label: const Text('Add Contributor'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
+              backgroundColor: MangoPalette.green500,
               foregroundColor: Colors.white,
             ),
           ),
@@ -1904,7 +1910,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
               Icon(
                 Icons.people,
                 size: 64,
-                color: Colors.grey[400],
+                color: MangoPalette.grey400,
               ),
               const SizedBox(height: 16),
               Text(
@@ -1944,11 +1950,12 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
               child: ListTile(
                 leading: Icon(
                   Icons.person,
-                  color: Colors.orange,
+                  color: MangoPalette.green500,
                 ),
                 title: Text(entry.value['name'] ?? ''),
                 subtitle: Text(entry.value['role'] ?? ''),
                 trailing: IconButton(
+        tooltip: 'Delete',
                   icon: const Icon(Icons.delete, color: Colors.red),
                   onPressed: () => controller.removeContributor(entry.key, context),
                 ),
@@ -1969,10 +1976,10 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -1980,7 +1987,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
             ),
             child: Column(
               children: [
-                Icon(Icons.task_alt, size: 64, color: Colors.green),
+                Icon(Icons.task_alt, size: 64, color: MangoPalette.green500),
                 const SizedBox(height: 16),
                 Text(
                   'Ready to Upload!',
@@ -1995,7 +2002,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                   'Review your album details before uploading',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -2010,7 +2017,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                     return Column(
                       children: [
                         const SizedBox(height: 8),
-                        LinearProgressIndicator(value: controller.uploadProgress.value),
+                        LinearProgressIndicator(semanticsLabel: 'Loading', value: controller.uploadProgress.value),
                         const SizedBox(height: 8),
                         Text(
                           controller.uploadStatus.value,
@@ -2033,8 +2040,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2067,8 +2074,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2088,8 +2095,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark ? Colors.grey[700] : Colors.white,
-                borderRadius: BorderRadius.circular(8),
+                color: isDark ? MangoPalette.grey700 : Colors.white,
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
               ),
               child: Row(
                 children: [
@@ -2097,8 +2104,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                     width: 24,
                     height: 24,
                     decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(4),
+                      color: MangoPalette.green500,
+                      borderRadius: BorderRadius.circular(MangoRadius.xs),
                     ),
                     child: Center(
                       child: Text(
@@ -2127,8 +2134,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                           Text(
                             'Credits: ${track.credits.map((c) => c['name']).join(', ')}',
                             style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.grey[600],
+                              fontSize: 12,
+                              color: MangoPalette.grey600,
                             ),
                           ),
                       ],
@@ -2139,7 +2146,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                       '${(track.duration.value ~/ 60)}:${(track.duration.value % 60).toString().padLeft(2, '0')}',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: MangoPalette.grey600,
                       ),
                     ),
                 ],
@@ -2160,8 +2167,8 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
       return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -2181,7 +2188,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
               children: controller.contributors.map((contributor) {
                 return Chip(
                   label: Text('${contributor['name']} (${contributor['role']})'),
-                  backgroundColor: Colors.orange.withOpacity(0.1),
+                  backgroundColor: MangoPalette.green500.withOpacity(0.1),
                 );
               }).toList(),
             ),
@@ -2196,7 +2203,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Icon(icon, size: 16, color: Colors.orange),
+          Icon(icon, size: 16, color: MangoPalette.green500),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -2204,7 +2211,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
               children: [
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  style: const TextStyle(fontSize: 12, color: MangoPalette.grey500),
                 ),
                 Text(
                   value,
@@ -2226,14 +2233,14 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
               ElevatedButton(
                 onPressed: controller.goToPreviousStep,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isDark ? Colors.grey[700] : Colors.grey[200],
+                  backgroundColor: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
                 ),
                 child: Text(
                   'Back',
                   style: TextStyle(
-                    color: isDark ? Colors.white : Colors.black,
+                    color: isDark ? Colors.white : MangoPalette.black,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -2246,10 +2253,10 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
                 (controller.currentStep.value == 4 ? controller.uploadAlbum : controller.goToNextStep) : null;},
               style: ElevatedButton.styleFrom(
                 backgroundColor: controller.isStepValid.value
-                    ? (controller.currentStep.value == 4 ? Colors.green : Colors.orange)
-                    : Colors.grey,
+                    ? (controller.currentStep.value == 4 ? MangoPalette.green500 : MangoPalette.green500)
+                    : MangoPalette.grey500,
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
               ),
               child: Text(
                 controller.currentStep.value == 4 ? 'Upload Album 🚀' : 'Continue',
@@ -2277,25 +2284,25 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
       controller: TextEditingController(text: initialValue)
         ..selection = TextSelection.collapsed(offset: initialValue.length),
       style: TextStyle(
-        color: isDark ? Colors.white : Colors.black,
+        color: isDark ? Colors.white : MangoPalette.black,
         fontSize: 14,
       ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          color: isDark ? Colors.grey[400] : Colors.grey[600],
+          color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
         ),
-        prefixIcon: Icon(icon, color: Colors.orange),
+        prefixIcon: Icon(icon, color: MangoPalette.green500),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[400]!),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: BorderSide(color: MangoPalette.grey400),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.orange),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: const BorderSide(color: MangoPalette.green500),
         ),
         filled: true,
-        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+        fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
       ),
     );
   }
@@ -2316,7 +2323,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
           child: Text(
             value,
             style: TextStyle(
-              color: isDark ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : MangoPalette.black,
               fontSize: 14,
             ),
           ),
@@ -2328,19 +2335,19 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          color: isDark ? Colors.grey[400] : Colors.grey[600],
+          color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
         ),
-        prefixIcon: Icon(icon, color: Colors.orange),
+        prefixIcon: Icon(icon, color: MangoPalette.green500),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[400]!),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: BorderSide(color: MangoPalette.grey400),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.orange),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: const BorderSide(color: MangoPalette.green500),
         ),
         filled: true,
-        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+        fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
       ),
     );
   }
@@ -2355,19 +2362,19 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[400]!),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.grey400),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.orange),
+          Icon(icon, color: MangoPalette.green500),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               title,
               style: TextStyle(
-                color: isDark ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : MangoPalette.black,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -2375,7 +2382,7 @@ class _UploadAlbumPageState extends State<UploadAlbumPage> with SingleTickerProv
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: Colors.orange,
+            activeColor: MangoPalette.green500,
           ),
         ],
       ),

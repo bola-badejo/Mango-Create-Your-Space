@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class TestPage extends StatelessWidget {
   const TestPage({super.key});
@@ -7,7 +8,7 @@ class TestPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         leading: const Icon(Icons.settings, size: 36, color: Colors.white),
         title: const Text(
           "Test Page",
@@ -26,22 +27,22 @@ class TestPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Hello World,", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 30),),
-              const Text("Welcome to our test page, we are glad to have you here.", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w800, fontSize: 16),),
+              const Text("Hello World,", style: TextStyle(color: MangoPalette.black, fontWeight: FontWeight.w800, fontSize: 30),),
+              const Text("Welcome to our test page, we are glad to have you here.", style: TextStyle(color: MangoPalette.grey500, fontWeight: FontWeight.w800, fontSize: 16),),
               const SizedBox(height: 10),
               const Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.access_time, color: Colors.black),
+                  Icon(Icons.access_time, color: MangoPalette.black),
                   Text("16 mins", style: TextStyle(
-                    color: Colors.black
+                    color: MangoPalette.black
                   ),),
                   SizedBox(width: 5),
           
-                  Icon(Icons.web_asset, color: Colors.black),
+                  Icon(Icons.web_asset, color: MangoPalette.black),
                   Text("Oladele Usman", style: TextStyle(
-                      color: Colors.black
+                      color: MangoPalette.black
                   ),),
                 ],
               ),
@@ -50,7 +51,7 @@ class TestPage extends StatelessWidget {
                   width: double.infinity,
                   height: 260,
                   child: Image.asset("asset/images/mango-9.jpg", fit: BoxFit.fitWidth,)),
-              const Text("Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. \n\n Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. \n\n Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here.", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800, fontSize: 16),),
+              const Text("Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. \n\n Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. \n\n Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here. Welcome to our test page, we are glad to have you here.", style: TextStyle(color: MangoPalette.black, fontWeight: FontWeight.w800, fontSize: 16),),
           
             ]
           ),

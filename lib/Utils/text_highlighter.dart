@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class HighlightedMultilineText extends StatelessWidget {
   final String text;
@@ -9,7 +10,7 @@ class HighlightedMultilineText extends StatelessWidget {
     super.key,
     required this.text,
     required this.style,
-    this.highlightColor = Colors.black,
+    this.highlightColor = MangoPalette.black,
   });
 
   @override
@@ -51,7 +52,7 @@ class HighlightedMultilineText extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
                   decoration: BoxDecoration(
                     color: highlightColor.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(0),
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                   child: Text(line, style: style),
                 ))

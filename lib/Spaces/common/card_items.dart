@@ -20,7 +20,7 @@ class SpaceItems extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
-            fontSize: 9,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
             color: textColor.withOpacity(0.7),
           ),
@@ -28,7 +28,7 @@ class SpaceItems extends StatelessWidget {
         Text(
           name,
           style: TextStyle(
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
             color: textColor,
           ),

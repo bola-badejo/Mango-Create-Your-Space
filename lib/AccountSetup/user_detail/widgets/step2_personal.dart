@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/AccountSetup/user_detail/user_detail_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class Step2Personal extends StatelessWidget {
   Step2Personal({super.key});
@@ -10,7 +11,7 @@ class Step2Personal extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final textColor = theme.colorScheme.onBackground;
-    final cardColor = isDark ? Colors.black : Colors.white;
+    final cardColor = isDark ? MangoPalette.black : Colors.white;
     
     
     final controller = Get.find<UserDetailsController>(
@@ -59,21 +60,21 @@ class Step2Personal extends StatelessWidget {
           hintText: "Select your date of birth",
           labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
           hintStyle: TextStyle(color: textColor.withOpacity(0.5)),
-          prefixIcon: const Icon(Icons.calendar_today, color: Colors.orange),
+          prefixIcon: const Icon(Icons.calendar_today, color: MangoPalette.green500),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: BorderSide(color: MangoPalette.grey300),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: BorderSide(color: MangoPalette.grey300),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.orange),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: const BorderSide(color: MangoPalette.green500),
           ),
           filled: true,
-          fillColor: isDark ? Colors.grey[800] : Colors.grey.shade50,
+          fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
         ),
       ),
     );
@@ -105,10 +106,10 @@ class _Section extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: MangoPalette.black.withOpacity(0.1),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -124,10 +125,10 @@ class _Section extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.1),
+                    color: MangoPalette.green500.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, color: Colors.orange, size: 20),
+                  child: Icon(icon, color: MangoPalette.green500, size: 20),
                 ),
                 const SizedBox(width: 12),
                 Text(

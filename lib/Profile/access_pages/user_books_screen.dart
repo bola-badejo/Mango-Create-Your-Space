@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/Profile/profile_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class BooksScreen extends StatelessWidget {
   final ProfileController profileController = Get.find<ProfileController>();
@@ -17,7 +18,7 @@ class BooksScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (profileController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
         }
 
         final books = profileController.userBooks;
@@ -27,11 +28,11 @@ class BooksScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.menu_book, size: 64, color: Colors.grey),
+                Icon(Icons.menu_book, size: 64, color: MangoPalette.grey500),
                 SizedBox(height: 16),
                 Text(
                   'No books added yet',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(fontSize: 16, color: MangoPalette.grey500),
                 ),
               ],
             ),
@@ -57,13 +58,13 @@ class BooksScreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: MangoPalette.grey200,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8),
                           topRight: Radius.circular(8),
                         ),
                       ),
-                      child: const Icon(Icons.book, size: 50, color: Colors.grey),
+                      child: const Icon(Icons.book, size: 50, color: MangoPalette.grey500),
                     ),
                   ),
                   Padding(
@@ -85,7 +86,7 @@ class BooksScreen extends StatelessWidget {
                           'By ${book.author.isNotEmpty ? book.author : 'Unknown'}',
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: MangoPalette.grey500,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

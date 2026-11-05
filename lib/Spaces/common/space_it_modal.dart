@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/Spaces/controllers/space_controller.dart';
 import 'package:mango/utils.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpaceItModal extends StatefulWidget {
   final String itemId;
@@ -137,7 +139,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
       UtilsService().showSnackbar(
         'No Spaces Selected',
         'Please select at least one space',
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -169,7 +171,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
           UtilsService().showSnackbar(
             'Success! ✨',
             '${StringExtension(widget.itemType).capitalizeFirst()} added to $successCount space(s)',
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -178,7 +180,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
           UtilsService().showSnackbar(
             'Partial Success',
             'Added to $successCount space(s), failed for $failCount',
-            backgroundColor: Colors.orange,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -318,7 +320,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: MangoPalette.black,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -336,6 +338,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
             ),
           ),
           IconButton(
+        tooltip: 'Close',
             icon: Icon(Icons.close, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
@@ -349,9 +352,9 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[800]!),
+        color: MangoPalette.grey900,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.grey800),
       ),
       child: Row(
         children: [
@@ -365,7 +368,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
             ),
             child: Icon(
               _getItemIcon(),
@@ -392,8 +395,8 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                 Text(
                   widget.itemType.toUpperCase(),
                   style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 10,
+                    color: MangoPalette.grey400,
+                    fontSize: 12,
                   ),
                 ),
               ],
@@ -402,14 +405,14 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.grey[800],
-              borderRadius: BorderRadius.circular(12),
+              color: MangoPalette.grey800,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Text(
               '${_selectedSpaces.length} selected',
               style: TextStyle(
-                color: Colors.grey[300],
-                fontSize: 10,
+                color: MangoPalette.grey300,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -424,8 +427,8 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
       padding: const EdgeInsets.all(16),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[900],
-          borderRadius: BorderRadius.circular(12),
+          color: MangoPalette.grey900,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
         ),
         child: Row(
           children: [
@@ -448,13 +451,13 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
   Widget _buildTabButton({required String title, required int index, required int count}) {
     final isSelected = _selectedSegment == index;
     return Expanded(
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: () => setState(() => _selectedSegment = index),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             color: isSelected ? const Color(0xFF8B5CF6) : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
           child: Center(
             child: Row(
@@ -463,7 +466,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                 Text(
                   title,
                   style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.grey[400],
+                    color: isSelected ? Colors.white : MangoPalette.grey400,
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
                   ),
@@ -473,14 +476,14 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.white.withOpacity(0.2) : Colors.grey[800],
-                      borderRadius: BorderRadius.circular(12),
+                      color: isSelected ? Colors.white.withOpacity(0.2) : MangoPalette.grey800,
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Text(
                       '$count',
                       style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.grey[400],
-                        fontSize: 10,
+                        color: isSelected ? Colors.white : MangoPalette.grey400,
+                        fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -499,14 +502,14 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(
+          const CircularProgressIndicator(semanticsLabel: 'Loading', 
             color: Color(0xFF8B5CF6),
           ),
           const SizedBox(height: 16),
           Text(
             "Loading your spaces...",
             style: TextStyle(
-              color: Colors.grey[400],
+              color: MangoPalette.grey400,
               fontSize: 12,
             ),
           ),
@@ -526,7 +529,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
             Icon(
               Icons.space_dashboard,
               size: 64,
-              color: Colors.grey[600],
+              color: MangoPalette.grey600,
             ),
             const SizedBox(height: 16),
             Text(
@@ -534,7 +537,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                   ? "No spaces yet"
                   : "No collaborations yet",
               style: TextStyle(
-                color: Colors.grey[400],
+                color: MangoPalette.grey400,
                 fontSize: 16,
               ),
             ),
@@ -544,7 +547,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                   ? "Create a space to get started"
                   : "Join spaces to collaborate",
               style: TextStyle(
-                color: Colors.grey[600],
+                color: MangoPalette.grey600,
                 fontSize: 12,
               ),
             ),
@@ -565,8 +568,8 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
           margin: const EdgeInsets.only(bottom: 8),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.grey[900],
-              borderRadius: BorderRadius.circular(12),
+              color: MangoPalette.grey900,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               border: Border.all(
                 color: isSelected ? const Color(0xFF8B5CF6) : Colors.transparent,
                 width: 2,
@@ -576,7 +579,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
               color: Colors.transparent,
               child: InkWell(
                 onTap: () => _toggleSpaceSelection(space['id']!),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Row(
@@ -591,11 +594,11 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         child: space['iconUrl'] != null && space['iconUrl'].isNotEmpty
                             ? ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(MangoRadius.sm),
                                 child: Image.network(
                                   space['iconUrl'],
                                   fit: BoxFit.cover,
@@ -633,8 +636,8 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                             Text(
                               '${space['category']} • ${space['members']} members',
                               style: TextStyle(
-                                color: Colors.grey[400],
-                                fontSize: 11,
+                                color: MangoPalette.grey400,
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -646,10 +649,10 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                         width: 24,
                         height: 24,
                         decoration: BoxDecoration(
-                          color: isSelected ? const Color(0xFF8B5CF6) : Colors.grey[800],
-                          borderRadius: BorderRadius.circular(12),
+                          color: isSelected ? const Color(0xFF8B5CF6) : MangoPalette.grey800,
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           border: Border.all(
-                            color: isSelected ? const Color(0xFF8B5CF6) : Colors.grey[600]!,
+                            color: isSelected ? const Color(0xFF8B5CF6) : MangoPalette.grey600,
                           ),
                         ),
                         child: isSelected
@@ -675,9 +678,9 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: MangoPalette.black,
         border: Border(
-          top: BorderSide(color: Colors.grey[800]!),
+          top: BorderSide(color: MangoPalette.grey800),
         ),
       ),
       child: AnimatedOpacity(
@@ -712,7 +715,7 @@ class _SpaceItModalState extends State<SpaceItModal> with SingleTickerProviderSt
                       ? const SizedBox(
                           width: 20,
                           height: 20,
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                             strokeWidth: 2,
                             color: Colors.white,
                           ),

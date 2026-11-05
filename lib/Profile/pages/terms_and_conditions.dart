@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class TermsAndConditionsPage extends StatelessWidget {
   const TermsAndConditionsPage({super.key});
@@ -42,7 +43,7 @@ class TermsAndConditionsPage extends StatelessWidget {
               Text(
                 "Mango is more than an app. It is a movement — a decentralized ecosystem where creativity, knowledge, and honest work collide to shape a new digital economy for Africa and the world. Every tap, every creation, every voice contributes to a shared orbit of progress.",
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: 10,
+                  fontSize: 12,
                   height: 1.2,
                 ),
               ),
@@ -114,7 +115,7 @@ class TermsAndConditionsPage extends StatelessWidget {
               ),
 
               const SizedBox(height: 24),
-              Divider(color: Colors.grey.withOpacity(0.3)),
+              Divider(color: MangoPalette.grey500.withOpacity(0.3)),
               const SizedBox(height: 32),
 
               _quoteText(
@@ -137,7 +138,7 @@ class TermsAndConditionsPage extends StatelessWidget {
         text,
         style: const TextStyle(
           fontWeight: FontWeight.w700,
-          fontSize: 11.5,
+          fontSize: 12,
         ),
       ),
     );
@@ -147,7 +148,7 @@ class TermsAndConditionsPage extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        fontSize: 10,
+        fontSize: 12,
         height: 1.5,
       ),
     );
@@ -159,7 +160,7 @@ class TermsAndConditionsPage extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 10,
+          fontSize: 12,
           fontStyle: FontStyle.italic,
           height: 1.6,
         ),
@@ -174,7 +175,7 @@ class TermsAndConditionsPage extends StatelessWidget {
           Text(
             "Last updated • October 2025",
             style: TextStyle(
-              fontSize: 9.5,
+              fontSize: 12,
               color: theme.textTheme.bodySmall?.color?.withOpacity(0.6),
             ),
           ),
@@ -184,7 +185,7 @@ class TermsAndConditionsPage extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 backgroundColor: Colors.lightGreenAccent.withOpacity(.4),
@@ -192,7 +193,7 @@ class TermsAndConditionsPage extends StatelessWidget {
               onPressed: () => Get.back(),
               child: const Text(
                 "Ok, I get it",
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Colors.white),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white),
               ),
             ),
           ),

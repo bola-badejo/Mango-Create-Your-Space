@@ -7,6 +7,8 @@ import 'package:mango/Models/customModel/user.dart';
 import 'package:mango/MusicPlayer/music.dart';
 import 'package:mango/MusicPlayer/music_player.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MusicBoxPage extends StatefulWidget {
   final MangoUser user; 
@@ -112,10 +114,10 @@ class _MusicBoxPageState extends State<MusicBoxPage>
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDarkMode ? Colors.white : Colors.black;
-    final backgroundColor = isDarkMode ? Colors.grey[900] : Colors.white;
-    final cardColor = isDarkMode ? Colors.grey[800] : Colors.grey[50];
-    final secondaryTextColor = isDarkMode ? Colors.grey[400] : Colors.grey[600];
+    final textColor = isDarkMode ? Colors.white : MangoPalette.black;
+    final backgroundColor = isDarkMode ? MangoPalette.grey900 : Colors.white;
+    final cardColor = isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50;
+    final secondaryTextColor = isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600;
 
     
     if (_contributorId == null || _contributorId!.isEmpty) {
@@ -138,7 +140,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
               Icon(
                 Icons.error_outline,
                 size: 64,
-                color: Colors.orange,
+                color: MangoPalette.green500,
               ),
               const SizedBox(height: 16),
               Text(
@@ -224,7 +226,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                     child: Text(
                       'Mango Music. © 2025',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                      style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                     ),
                   ),
                 ),
@@ -308,17 +310,17 @@ class _MusicBoxPageState extends State<MusicBoxPage>
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDarkMode ? 0.4 : 0.1),
+            color: MangoPalette.black.withOpacity(isDarkMode ? 0.4 : 0.1),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
         ],
         border: Border.all(
-          color: isDarkMode ? Colors.grey[800]! : Colors.grey[200]!,
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
         ),
       ),
       child: Column(
@@ -328,12 +330,12 @@ class _MusicBoxPageState extends State<MusicBoxPage>
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  color: MangoPalette.green500.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 child: Icon(
                   Icons.analytics,
-                  color: Colors.orange,
+                  color: MangoPalette.green500,
                   size: 18,
                 ),
               ),
@@ -343,7 +345,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               ),
             ],
@@ -378,7 +380,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                 value: monthlyPlays ?? 0,
                 label: 'Monthly Plays',
                 icon: Icons.trending_up,
-                color: Colors.green,
+                color: MangoPalette.green500,
                 isLoading: isLoading,
                 isDarkMode: isDarkMode,
               ),
@@ -408,8 +410,8 @@ class _MusicBoxPageState extends State<MusicBoxPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[800] : color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
+        color: isDarkMode ? MangoPalette.grey800 : color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: Border.all(
           color: color.withOpacity(0.2),
         ),
@@ -424,7 +426,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 child: Icon(
                   icon,
@@ -443,8 +445,8 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                   width: 60,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
-                    borderRadius: BorderRadius.circular(4),
+                    color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                 )
               else
@@ -457,7 +459,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                       style: TextStyle(
                         fontSize: 45,
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                         fontFamily: 'Inter',
                       ),
                     );
@@ -469,8 +471,8 @@ class _MusicBoxPageState extends State<MusicBoxPage>
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 10,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  fontSize: 12,
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -486,8 +488,8 @@ class _MusicBoxPageState extends State<MusicBoxPage>
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
       ),
       child: Column(
         children: [
@@ -500,7 +502,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
           Text(
             error,
             style: TextStyle(
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -514,10 +516,10 @@ class _MusicBoxPageState extends State<MusicBoxPage>
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 400),
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(16),
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
-            color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade300,
+            color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
           ),
         ),
         child: Column(
@@ -536,6 +538,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                     ),
                   ),
                   IconButton(
+        tooltip: 'Show options',
                     icon: AnimatedRotation(
                       turns: _showUploadOptions ? 0.5 : 0,
                       duration: const Duration(milliseconds: 300),
@@ -555,7 +558,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
               firstChild: Column(
                 children: [
                   Divider(
-                    color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                    color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                   ),
                   _buildUploadOption(
                     'Upload a Single Track',
@@ -606,7 +609,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           child: Container(
             padding: const EdgeInsets.all(16),
             child: Row(
@@ -616,11 +619,11 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                   title,
                   style: TextStyle(
                     fontSize: 14,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Icon(icon, size: 20, color: Colors.orange, semanticLabel: title),
+                Icon(icon, size: 20, color: MangoPalette.green500, semanticLabel: title),
               ],
             ),
           ),
@@ -658,8 +661,8 @@ class _MusicBoxPageState extends State<MusicBoxPage>
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: isDarkMode ? Colors.white : Colors.black,
+                child: CircularProgressIndicator(semanticsLabel: 'Loading', 
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               );
             }
@@ -669,7 +672,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                 child: Text(
                   "Error loading albums",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -680,7 +683,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                 child: Text(
                   "No albums yet",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -714,25 +717,25 @@ class _MusicBoxPageState extends State<MusicBoxPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             child: CachedNetworkImage(
               imageUrl: imageUrl,
               placeholder: (context, url) => Container(
                 width: 120,
                 height: 120,
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                 child: Icon(
                   Icons.album,
-                  color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                  color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                 ),
               ),
               errorWidget: (context, url, error) => Container(
                 width: 120,
                 height: 120,
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                 child: Icon(
                   Icons.album,
-                  color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                  color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                 ),
               ),
               width: 120,
@@ -749,7 +752,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
                 overflow: TextOverflow.ellipsis,
               ),
               maxLines: 2,
@@ -776,8 +779,8 @@ class _MusicBoxPageState extends State<MusicBoxPage>
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: CircularProgressIndicator(
-                color: isDarkMode ? Colors.white : Colors.black,
+              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
+                color: isDarkMode ? Colors.white : MangoPalette.black,
               ),
             );
           }
@@ -843,37 +846,37 @@ class _MusicBoxPageState extends State<MusicBoxPage>
               ),
             );
           },
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-              borderRadius: BorderRadius.circular(12),
+              color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Row(
               children: [
                 Stack(
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       child: CachedNetworkImage(
                         imageUrl: music.artworkUrl,
                         placeholder: (context, url) => Container(
                           width: 50,
                           height: 50,
-                          color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                          color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                           child: Icon(
                             Icons.music_note,
-                            color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                            color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                           ),
                         ),
                         errorWidget: (context, url, error) => Container(
                           width: 50,
                           height: 50,
-                          color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                          color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                           child: Icon(
                             Icons.music_note,
-                            color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                            color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                           ),
                         ),
                         width: 50,
@@ -889,12 +892,12 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                           decoration: BoxDecoration(
                             color: Colors.red,
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.circular(MangoRadius.xs),
                           ),
                           child: Text(
                             'E',
                             style: TextStyle(
-                              fontSize: 8,
+                              fontSize: 12,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -947,7 +950,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                         Text(
                           'Mood: ${music.mood!}${music.language != null && music.language!.isNotEmpty ? ' • ${music.language!}' : ''}',
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 12,
                             color: secondaryTextColor.withOpacity(0.8),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -966,14 +969,14 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.orange.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
+                        color: MangoPalette.green500.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                       child: Text(
                         '${music.plays} plays',
                         style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.orange,
+                          fontSize: 12,
+                          color: MangoPalette.green500,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -982,7 +985,7 @@ class _MusicBoxPageState extends State<MusicBoxPage>
                     Text(
                       '${music.likes} likes',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: secondaryTextColor,
                       ),
                     ),
@@ -1004,13 +1007,13 @@ class _MusicBoxPageState extends State<MusicBoxPage>
     return SliverToBoxAdapter(
       child: Column(
         children: [
-          GestureDetector(
+          MangoPressable(
             onTap: _toggleYourSongs,
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-                borderRadius: BorderRadius.circular(16),
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1044,8 +1047,8 @@ class _MusicBoxPageState extends State<MusicBoxPage>
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
-                    child: CircularProgressIndicator(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', 
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                   );
                 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mango/Models/controllers/player_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class PlayerPage extends StatelessWidget {
   PlayerPage({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class PlayerPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Now Playing'),
-        backgroundColor: Colors.black,
+        backgroundColor: MangoPalette.black,
       ),
       body: Obx(() {
         final item = pc.current.value;
@@ -85,25 +86,30 @@ class PlayerPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
+        tooltip: 'Shuffle',
                     icon: Icon(pc.shuffle.value ? Icons.shuffle_on : Icons.shuffle),
                     onPressed: () => pc.toggleShuffle(),
                   ),
                   IconButton(
+        tooltip: 'Previous track',
                     icon: const Icon(Icons.skip_previous, size: 36),
                     onPressed: () => pc.skipPrevious(),
                   ),
                   Container(
                     decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                     child: IconButton(
-                      icon: Icon(pc.playing.value ? Icons.pause : Icons.play_arrow, color: Colors.black, size: 32),
+        tooltip: 'Pause',
+                      icon: Icon(pc.playing.value ? Icons.pause : Icons.play_arrow, color: MangoPalette.black, size: 32),
                       onPressed: () => pc.playPause(),
                     ),
                   ),
                   IconButton(
+        tooltip: 'Next track',
                     icon: const Icon(Icons.skip_next, size: 36),
                     onPressed: () => pc.skipNext(),
                   ),
                   IconButton(
+        tooltip: 'Repeat one',
                     icon: Icon(pc.repeatMode.value == RepeatMode.one
                         ? Icons.repeat_one
                         : pc.repeatMode.value == RepeatMode.all

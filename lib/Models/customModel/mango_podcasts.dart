@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:mango/Wallet/ledger/mango_activity_tracker.dart';
 class MangoPodcast {
   final String id;
   final String title;
@@ -303,6 +304,8 @@ class MangoPodcastManager {
 
   
   Future<void> incrementPlays(String id) async {
+    // Playback started: open a server-timed session for MangoChain mining.
+    MangoActivityTracker.startInBackground(contentType: 'podcast', contentId: id);
     try {
       await _firestore
           .collection(collectionName)

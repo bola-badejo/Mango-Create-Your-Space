@@ -1,6 +1,6 @@
-import 'dart:js_interop' as js_interop;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:get/get.dart';
+import 'package:mango/Notifications/notification_router.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,8 +8,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/App/router/app_routes.dart';
 import '../main.dart';
 
-// Web-specific import (only when running on web)
-import 'package:web/web.dart' as web if (dart.library.html) 'package:web/web.dart';
+// Browser notifications on web; a no-op stub on Android and iOS.
+import 'web_notifications_stub.dart'
+    if (dart.library.js_interop) 'web_notifications.dart';
 
 class NotificationController extends GetxController {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
@@ -280,21 +281,17 @@ Future<void> saveToken(String token) async {
 
   // ====================== WEB NOTIFICATIONS ======================
   void _showWebNotification(RemoteMessage message) {
-    // Check if the browser supports notifications
-    if (web.Notification.permission == null) {
+    final permission = webNotificationPermission();
+    if (permission == 'unsupported') {
       logger('Browser does not support notifications');
       return;
     }
-
-    if (web.Notification.permission == 'granted') {
+    if (permission == 'granted') {
       _createWebNotification(message);
-    } else if (web.Notification.permission != 'denied') {
-      // Request permission and convert JSPromise to Dart Future
-      web.Notification.requestPermission().toDart.then((permission) {
-        if (permission == 'granted') {
-          _createWebNotification(message);
-        }
-      }).catchError((e) {
+    } else if (permission != 'denied') {
+      requestWebNotificationPermission().then((result) {
+        if (result == 'granted') _createWebNotification(message);
+      }).catchError((Object e) {
         logger('Permission request failed: $e');
       });
     }
@@ -303,9 +300,9 @@ Future<void> saveToken(String token) async {
   Future<void> requestPermissionIfNeeded() async {
     if (kIsWeb) {
       // For web, use the browser permission API
-      if (web.Notification.permission == 'default') {
+      if (webNotificationPermission() == 'default') {
         // Request permission
-        final permission = await web.Notification.requestPermission().toDart;
+        final permission = await requestWebNotificationPermission();
         if (permission == 'granted') {
           await _saveCurrentToken();
         }
@@ -323,55 +320,19 @@ Future<void> saveToken(String token) async {
   }
 
   void _createWebNotification(RemoteMessage message) {
-    final title = message.notification?.title ?? 'Mango';
-    final options = web.NotificationOptions(
+    showWebNotification(
+      message.notification?.title ?? 'Mango',
       body: message.notification?.body ?? '',
       icon: message.notification?.android?.imageUrl ?? 'icons/Icon-192.png',
     );
-    web.Notification(title, options);
   }
   // ================================================================
 
+  /// A push was tapped: open what it is about.
   void _handleMessageOpened(RemoteMessage message) {
-    final data = message.data;
-    final type = data['type'];
-    
-    logger('Notification tapped: type=$type, data=$data');
-    
-    // Add a small delay to ensure app is ready
-    Future.delayed(const Duration(milliseconds: 500), () {
-      try {
-        if (type == 'chat') {
-          final senderId = data['senderId'];
-          final chatId = data['chatId'] ?? senderId;
-          
-          if (senderId != null && senderId.isNotEmpty) {
-            Get.toNamed('/chat/$senderId');
-          } else {
-            Get.toNamed(AppRoutes.home);
-          }
-          
-        } else if (type == 'post' && data['postId'] != null) {
-          Get.toNamed('/post/${data['postId']}');
-          
-        } else if (type == 'song' && data['songId'] != null) {
-          Get.toNamed('/song/${data['songId']}');
-          
-        } else if (type == 'profile' && data['viewerId'] != null) {
-          Get.toNamed('/profile/${data['viewerId']}');
-          
-        } else if (type == 'book' && data['bookId'] != null) {
-          Get.toNamed('/book/${data['bookId']}');
-          
-        } else {
-          // Default to home
-          Get.toNamed(AppRoutes.home);
-        }
-      } catch (e) {
-        logger('Error navigating from notification: $e');
-        Get.toNamed(AppRoutes.home);
-      }
-    });
+    final data = Map<String, dynamic>.from(message.data);
+    // A short delay lets the app finish starting when opened from a push.
+    Future.delayed(const Duration(milliseconds: 500), () => NotificationRouter.openFromPush(data));
   }
 
   // Add this to handle deep links

@@ -7,6 +7,8 @@ import 'package:mango/Home/pages/post_shimmer.dart';
 import 'package:mango/Models/customModel/library.dart';
 import 'package:mango/Models/customModel/mango_movies.dart';
 import 'package:mango/Spaces/common/space_it.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MangoMovieCard extends StatefulWidget {
   final MangoMovie movie;
@@ -51,7 +53,7 @@ class _MangoMovieCardState extends State<MangoMovieCard> {
       margin: const EdgeInsets.all(8),
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)),
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
@@ -70,13 +72,13 @@ class _MangoMovieCardState extends State<MangoMovieCard> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: _isExpanded
-                        ? [Colors.black, Colors.black]
+                        ? [MangoPalette.black, MangoPalette.black]
                         : [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.3),
-                            Colors.black.withOpacity(0.6),
-                            Colors.black.withOpacity(1.0),
-                            Colors.black.withOpacity(1.0),
+                            MangoPalette.black.withOpacity(0.3),
+                            MangoPalette.black.withOpacity(0.6),
+                            MangoPalette.black.withOpacity(1.0),
+                            MangoPalette.black.withOpacity(1.0),
                           ],
                     stops: _isExpanded
                         ? [0.0, 1.0]
@@ -100,7 +102,7 @@ class _MangoMovieCardState extends State<MangoMovieCard> {
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 10,
+                        fontSize: 12,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -109,7 +111,7 @@ class _MangoMovieCardState extends State<MangoMovieCard> {
                       widget.movie.releaseYear,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.8),
-                        fontSize: 9,
+                        fontSize: 12,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -123,14 +125,14 @@ class _MangoMovieCardState extends State<MangoMovieCard> {
                             widget.movie.description,
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.8),
-                              fontSize: 8,
+                              fontSize: 12,
                             ),
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
-                            child: GestureDetector(
+                            child: MangoPressable(
                               onTap: () {
                                 print("pressed");
                                 
@@ -141,7 +143,7 @@ class _MangoMovieCardState extends State<MangoMovieCard> {
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                                   border: Border.all(
                                     color: Colors.white,
                                     width: 1.0,
@@ -151,7 +153,7 @@ class _MangoMovieCardState extends State<MangoMovieCard> {
                                   child: Text(
                                     'Read',
                                     style: TextStyle(
-                                      fontSize: 11,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
@@ -165,7 +167,7 @@ class _MangoMovieCardState extends State<MangoMovieCard> {
                     ),
                     Align(
                       alignment: Alignment.center,
-                      child: GestureDetector(
+                      child: MangoPressable(
                         onTap: () => setState(() => _isExpanded = !_isExpanded),
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
@@ -228,7 +230,7 @@ class _FullScreenMoviePageState extends State<FullScreenMoviePage> {
     final imageHeight = screenHeight / 1.5;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: MangoPalette.black,
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -249,9 +251,9 @@ class _FullScreenMoviePageState extends State<FullScreenMoviePage> {
                   return LinearGradient(
                     colors: [
                       Colors.transparent,
-                      Colors.black.withOpacity(0.6),
-                      Colors.black.withOpacity(0.8),
-                      Colors.black,
+                      MangoPalette.black.withOpacity(0.6),
+                      MangoPalette.black.withOpacity(0.8),
+                      MangoPalette.black,
                     ],
                     stops: const [0.7, 0.8, 0.9, 1.0],
                   ).createShader(rect);
@@ -291,7 +293,7 @@ class _FullScreenMoviePageState extends State<FullScreenMoviePage> {
                               widget.movie.productionCompany!,
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.8),
-                                fontSize: 11,
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -316,7 +318,7 @@ class _FullScreenMoviePageState extends State<FullScreenMoviePage> {
                       widget.movie.description,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 10,
+                        fontSize: 12,
                         height: 1.5,
                       ),
                     ),
@@ -324,7 +326,7 @@ class _FullScreenMoviePageState extends State<FullScreenMoviePage> {
                     Container(
                       padding: const EdgeInsets.only(top: 3, left: 3),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                         border: const Border(
                           bottom: BorderSide(color: Colors.white),
                           top: BorderSide(color: Colors.white),
@@ -343,10 +345,10 @@ class _FullScreenMoviePageState extends State<FullScreenMoviePage> {
                           
                           
                         },
-                        color: Colors.orangeAccent,
+                        color: MangoPalette.green500,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         child: const Text(
                           "Read this Movie",
@@ -397,18 +399,18 @@ class _FullScreenMoviePageState extends State<FullScreenMoviePage> {
                       decoration: InputDecoration(
                         hintText: 'Comment',
                         hintStyle: const TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey,
+                          fontSize: 12,
+                          color: MangoPalette.grey500,
                         ),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 8,
                         ),
                       ),
-                      style: const TextStyle(fontSize: 11, color: Colors.white),
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
                     const SizedBox(height: 20),
                   ],

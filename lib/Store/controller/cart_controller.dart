@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/Store/controller/cart_service.dart';
 import 'package:mango/Store/models/cart_item.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class CartController extends GetxController {
   final CartService _cartService = CartService();
@@ -63,7 +64,7 @@ class CartController extends GetxController {
         'Success',
         'Added to cart',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: Duration(seconds: 2),
       );
@@ -101,7 +102,7 @@ class CartController extends GetxController {
         'Removed',
         'Item removed from cart',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: Duration(seconds: 2),
       );
@@ -148,7 +149,7 @@ class CartController extends GetxController {
           'Cart Updated',
           'Some items were out of stock or removed',
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.orange,
+          backgroundColor: MangoPalette.green500,
           colorText: Colors.white,
         );
         return {'success': false, 'error': 'Cart items invalid'};
@@ -165,7 +166,7 @@ class CartController extends GetxController {
           'Success',
           'Order placed successfully!',
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
+          backgroundColor: MangoPalette.green500,
           colorText: Colors.white,
           duration: Duration(seconds: 3),
         );

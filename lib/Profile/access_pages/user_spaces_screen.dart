@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/Profile/profile_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class SpacesScreen extends StatelessWidget {
   final ProfileController profileController = Get.find<ProfileController>();
@@ -17,7 +18,7 @@ class SpacesScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (profileController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
         }
 
         final spaces = profileController.userSpaces;
@@ -27,11 +28,11 @@ class SpacesScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.space_dashboard, size: 64, color: Colors.grey),
+                Icon(Icons.space_dashboard, size: 64, color: MangoPalette.grey500),
                 SizedBox(height: 16),
                 Text(
                   'No spaces created yet',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(fontSize: 16, color: MangoPalette.grey500),
                 ),
               ],
             ),
@@ -51,7 +52,7 @@ class SpacesScreen extends StatelessWidget {
                   height: 50,
                   decoration: BoxDecoration(
                     color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                   ),
                   child: const Icon(Icons.people, color: Colors.blue),
                 ),
@@ -66,7 +67,7 @@ class SpacesScreen extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       '${space.members} members • ${space.category}',
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      style: const TextStyle(fontSize: 12, color: MangoPalette.grey500),
                     ),
                   ],
                 ),

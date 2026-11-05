@@ -18,6 +18,8 @@ import '../../../Home/pages/post_shimmer.dart';
 import '../../../Models/customModel/playlist.dart';
 
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 class SpaceLounge extends StatelessWidget {
   SpaceLounge({super.key});
 
@@ -298,7 +300,7 @@ class SpaceLounge extends StatelessWidget {
                                             child: Text(
                                               "100 attendees",
                                               style: TextStyle(
-                                                fontSize: 10,
+                                                fontSize: 12,
                                                 color: Theme.of(context)
                                                     .primaryColorLight,
                                               ),
@@ -321,7 +323,7 @@ class SpaceLounge extends StatelessWidget {
                               width: size.width * .65,
                               decoration: BoxDecoration(
                                 color: Theme.of(context).primaryColorLight,
-                                borderRadius: BorderRadius.circular(7),
+                                borderRadius: BorderRadius.circular(MangoRadius.sm),
                               ),
                             ),
                           ],
@@ -446,7 +448,7 @@ class SpaceLounge extends StatelessWidget {
                     child: Text(
                       "Mango Best Seller For 16th March 2024",
                       style: TextStyle(
-                        fontSize: 9,
+                        fontSize: 12,
                         color: Theme.of(context).primaryColorLight,
                       ),
                     ),
@@ -474,7 +476,7 @@ class SpaceLounge extends StatelessWidget {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: Theme.of(context).primaryColorLight,
                             ),
                           ),
@@ -584,13 +586,13 @@ class _ConversationsCardState
             width: double.infinity,
             height: _isExpanded ? 200 : 150,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               color: Colors.white.withOpacity(0.3),
               border:
               Border.all(color: Colors.white.withOpacity(0.5), width: 1),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 20,
                   spreadRadius: 5,
                   offset: const Offset(0, 10),
@@ -598,7 +600,7 @@ class _ConversationsCardState
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(),
@@ -622,12 +624,12 @@ class _ConversationsCardState
                         padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                         margin: const EdgeInsets.only(bottom: 10.0),
                         decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(5)
+                          color: MangoPalette.black,
+                          borderRadius: BorderRadius.circular(MangoRadius.sm)
                         ),
                         child: const Text(
                           "Active",
-                          style: TextStyle(fontSize: 7, color: Colors.grey, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 12, color: MangoPalette.grey500, fontWeight: FontWeight.bold),
                         ),
                       ),
                       Text(
@@ -641,13 +643,13 @@ class _ConversationsCardState
                         "Morning stories",
                         style: TextStyle(
                             color: Theme.of(context).primaryColorLight,
-                            fontSize: 9),
+                            fontSize: 12),
                       ),
                       const SizedBox(height: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GestureDetector(
+                          MangoPressable(
                             onTap: () {
                               setState(() {
                                 _isExpanded = !_isExpanded;
@@ -659,15 +661,15 @@ class _ConversationsCardState
                                 Text(
                                   'tap for more',
                                   style: TextStyle(
-                                    fontSize: 8,
-                                    color: Colors.black.withOpacity(0.8),
+                                    fontSize: 12,
+                                    color: MangoPalette.black.withOpacity(0.8),
                                   ),
                                 ),
                                 Icon(
                                   _isExpanded
                                       ? Icons.keyboard_arrow_up
                                       : Icons.keyboard_arrow_down,
-                                  color: Colors.black.withOpacity(0.8),
+                                  color: MangoPalette.black.withOpacity(0.8),
                                   size: 10,
                                 ),
                               ],
@@ -683,8 +685,8 @@ class _ConversationsCardState
                                     'This is a short description that expands when you click the dropdown button. It provides more details about the content. You can add as much text as you want here, and the glass container will expand accordingly.',
                                     maxLines: 2,
                                     style: TextStyle(
-                                      fontSize: 8,
-                                      color: Colors.black.withOpacity(0.6),
+                                      fontSize: 12,
+                                      color: MangoPalette.black.withOpacity(0.6),
                                     ),
                                   ),
                                   const SizedBox(
@@ -692,15 +694,15 @@ class _ConversationsCardState
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(8),
+                                      color: MangoPalette.black,
+                                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                                     ),
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 2, horizontal: 5),
                                     child: Text(
                                       "Say something..",
-                                      style: GoogleFonts.montserrat(
-                                          fontSize: 11, color: Colors.white),
+                                      style: TextStyle(fontFamily: 'Poppins', 
+                                          fontSize: 12, color: Colors.white),
                                     ),
                                   ),
                                 ],
@@ -724,10 +726,10 @@ class _ConversationsCardState
                           width: _isExpanded ? 140 : 90,
                           height: _isExpanded ? 160 : 120,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(MangoRadius.lg),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
+                                color: MangoPalette.black.withOpacity(0.1),
                                 blurRadius: 20,
                                 spreadRadius: 5,
                                 offset: const Offset(10, 10),
@@ -735,7 +737,7 @@ class _ConversationsCardState
                             ],
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(MangoRadius.sm),
                             child: Image.asset(
                               "asset/images/mango-13.jpg", 
                               fit: BoxFit.cover,
@@ -824,13 +826,13 @@ class _LiveSessionsCardState
             width: double.infinity,
             height: _isExpanded ? 200 : 150,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               color: Colors.white.withOpacity(0.3),
               border:
               Border.all(color: Colors.white.withOpacity(0.5), width: 1),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 20,
                   spreadRadius: 5,
                   offset: const Offset(0, 10),
@@ -838,7 +840,7 @@ class _LiveSessionsCardState
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(),
@@ -862,12 +864,12 @@ class _LiveSessionsCardState
                         padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                         margin: const EdgeInsets.only(bottom: 10.0),
                         decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(5)
+                          color: MangoPalette.black,
+                          borderRadius: BorderRadius.circular(MangoRadius.sm)
                         ),
                         child: const Text(
                           "3hrs 45s",
-                          style: TextStyle(fontSize: 7, color: Colors.grey, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 12, color: MangoPalette.grey500, fontWeight: FontWeight.bold),
                         ),
                       ),
                       Text(
@@ -885,14 +887,14 @@ class _LiveSessionsCardState
                           Text(
                             "201 listeners.",
                             style: TextStyle(
-                                fontSize: 9,
-                                color: Colors.black),
+                                fontSize: 12,
+                                color: MangoPalette.black),
                           ),
                           Text(
                             "Live",
                             style: TextStyle(
                                 color: Colors.amber,
-                                fontSize: 9),
+                                fontSize: 12),
                           ),
                         ],
                       ),
@@ -900,7 +902,7 @@ class _LiveSessionsCardState
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GestureDetector(
+                          MangoPressable(
                             onTap: () {
                               setState(() {
                                 _isExpanded = !_isExpanded;
@@ -912,15 +914,15 @@ class _LiveSessionsCardState
                                 Text(
                                   'tap for more',
                                   style: TextStyle(
-                                    fontSize: 8,
-                                    color: Colors.black.withOpacity(0.8),
+                                    fontSize: 12,
+                                    color: MangoPalette.black.withOpacity(0.8),
                                   ),
                                 ),
                                 Icon(
                                   _isExpanded
                                       ? Icons.keyboard_arrow_up
                                       : Icons.keyboard_arrow_down,
-                                  color: Colors.black.withOpacity(0.8),
+                                  color: MangoPalette.black.withOpacity(0.8),
                                   size: 10,
                                 ),
                               ],
@@ -936,8 +938,8 @@ class _LiveSessionsCardState
                                     'Serenade, marinate and pollinate. The meter is broken, there is no limit to what you can imagine. Join this session, what\'s stoping you?',
                                     maxLines: 2,
                                     style: TextStyle(
-                                      fontSize: 8,
-                                      color: Colors.black.withOpacity(0.6),
+                                      fontSize: 12,
+                                      color: MangoPalette.black.withOpacity(0.6),
                                     ),
                                   ),
                                   const SizedBox(
@@ -945,15 +947,15 @@ class _LiveSessionsCardState
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(8),
+                                      color: MangoPalette.black,
+                                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                                     ),
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 2, horizontal: 5),
                                     child: Text(
                                       "join now",
-                                      style: GoogleFonts.montserrat(
-                                          fontSize: 11, color: Colors.white),
+                                      style: TextStyle(fontFamily: 'Poppins', 
+                                          fontSize: 12, color: Colors.white),
                                     ),
                                   ),
                                 ],
@@ -979,7 +981,7 @@ class _LiveSessionsCardState
                           
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: MangoPalette.black.withOpacity(0.1),
                               blurRadius: 20,
                               spreadRadius: 5,
                               offset: const Offset(10, 10),
@@ -987,7 +989,7 @@ class _LiveSessionsCardState
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           child: Image.asset(
                             "asset/images/mango-13.jpg", 
                             fit: BoxFit.cover,
@@ -1000,7 +1002,7 @@ class _LiveSessionsCardState
                           animation: _shimmerController,
                           builder: (context, child) {
                             return ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                               child: ShaderMask(
                                 shaderCallback: (rect) {
                                   return LinearGradient(

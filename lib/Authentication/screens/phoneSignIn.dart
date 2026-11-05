@@ -4,6 +4,7 @@ import 'package:mango/Authentication/controllers/auth_controller.dart';
 import 'package:mango/utils.dart';
 
 import '../../Models/animation.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class PhoneSignInScreen extends StatefulWidget {
   static String routeName = '/phone';
@@ -32,7 +33,7 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: MangoPalette.black,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -85,11 +86,11 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                     ),
 
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                       borderSide: const BorderSide(color: Colors.white24),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                       borderSide: const BorderSide(color: Colors.white),
                     ),
                   ),
@@ -114,16 +115,16 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                           snackPosition: SnackPosition.BOTTOM,
                           context: context,
                           backgroundColor: Colors.white,
-                          colorText: Colors.black,
+                          colorText: MangoPalette.black,
                         );
                       }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
+                      foregroundColor: MangoPalette.black,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                     ),
                     child: const Text(

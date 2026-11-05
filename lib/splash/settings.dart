@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mango/app/themes/app_themes.dart';
+import 'package:mango/App/themes/app_themes.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

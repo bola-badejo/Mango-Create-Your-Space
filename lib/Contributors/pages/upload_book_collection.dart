@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mango/utils.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class BookItem {
   String id;
@@ -272,7 +273,7 @@ class UploadBookCollectionController extends GetxController {
       });
 
       UtilsService().showSnackbar('Success', 'Book collection uploaded successfully',
-          backgroundColor: Colors.green, colorText: Colors.white, context: context);
+          backgroundColor: MangoPalette.green500, colorText: Colors.white, context: context);
 
       _clearAll();
     } catch (e) {
@@ -413,6 +414,7 @@ class _UploadBookCollectionPageState extends State<UploadBookCollectionPage> {
                         title: Text(c.books[i].title),
                         subtitle: Text(c.books[i].filePath),
                         trailing: IconButton(
+        tooltip: 'Delete',
                           icon: const Icon(Icons.delete),
                           onPressed: () => c.removeBook(i),
                         ),
@@ -529,7 +531,7 @@ class _UploadBookCollectionPageState extends State<UploadBookCollectionPage> {
                     Text("Contributors: ${c.contributors.join(', ')}"),
                     Text("Books: ${c.books.length} added"),
                     if (c.isUploading.value)
-                      LinearProgressIndicator(value: c.uploadProgress.value),
+                      LinearProgressIndicator(semanticsLabel: 'Loading', value: c.uploadProgress.value),
                   ],
                 ),
               ),

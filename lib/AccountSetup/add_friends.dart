@@ -10,6 +10,7 @@ import 'package:mango/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class MakeFriends extends StatefulWidget {
   const MakeFriends({super.key});
@@ -54,7 +55,7 @@ class _MakeFriendsState extends State<MakeFriends> {
             child: const Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(
                 Icons.done,
-                color: Colors.black,
+                color: MangoPalette.black,
                 size: 22,
               ),
               SizedBox(
@@ -63,7 +64,7 @@ class _MakeFriendsState extends State<MakeFriends> {
               Text(
                 "Ok, I'm done",
                 style: TextStyle(
-                    color: Colors.black,
+                    color: MangoPalette.black,
                     fontWeight: FontWeight.w600,
                     fontSize: 18),
               ),
@@ -96,7 +97,7 @@ class _MakeFriendsState extends State<MakeFriends> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.grey,
+                      MangoPalette.grey500,
                       Colors.transparent,
                       Colors.transparent,
                       Colors.transparent
@@ -146,7 +147,7 @@ class AddFriends extends StatelessWidget {
           String token = snapshot.data!.fcmToken;
           if (!snapshot.hasData) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(semanticsLabel: 'Loading'),
             );
           }
         return OptimizedListView(
@@ -168,7 +169,7 @@ class AddFriends extends StatelessWidget {
                       
                         border: Border.symmetric(
                             horizontal: BorderSide(
-                                color: Colors.grey.shade100))),
+                                color: MangoPalette.grey100))),
                     child: Row(
                       mainAxisAlignment:
                       MainAxisAlignment.spaceBetween,
@@ -207,7 +208,7 @@ class AddFriends extends StatelessWidget {
                               Text(
                                 user.displayName,
                                 style: const TextStyle(
-                                  color: Colors.black,
+                                  color: MangoPalette.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -215,7 +216,7 @@ class AddFriends extends StatelessWidget {
                               Text(
                                 "@${user.username}",
                                 style: const TextStyle(
-                                  color: Colors.grey,
+                                  color: MangoPalette.grey500,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -234,7 +235,7 @@ class AddFriends extends StatelessWidget {
                                 (BuildContext context, AsyncSnapshot<bool> followingSnapshot) {
                               if (!followingSnapshot.hasData) {
                                 return const Center(
-                                  child: CircularProgressIndicator(),
+                                  child: CircularProgressIndicator(semanticsLabel: 'Loading'),
                                 );
                               }
                             return Expanded(
@@ -265,7 +266,7 @@ class AddFriends extends StatelessWidget {
                                   ),
                                   child: Text(
                                     "follow",
-                                    style: postTextBoxText4.copyWith(color: Colors.white, fontSize: 11),
+                                    style: postTextBoxText4.copyWith(color: Colors.white, fontSize: 12),
                                   )) : TextButton(
                                   onPressed: () {
                                     users.removeAt(index);
@@ -288,12 +289,12 @@ class AddFriends extends StatelessWidget {
                                             horizontal: 20.0)),
                                     backgroundColor: MaterialStateProperty.all<
                                         Color>(
-                                      Colors.black,
+                                      MangoPalette.black,
                                     ),
                                   ),
                                   child: Text(
                                     "unfollow",
-                                    style: postTextBoxText4.copyWith(color: Colors.white, fontSize: 11),
+                                    style: postTextBoxText4.copyWith(color: Colors.white, fontSize: 12),
                                   )),
                             );
                           }

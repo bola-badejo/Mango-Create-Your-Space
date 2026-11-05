@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class TwoSideRoundedButton extends StatelessWidget {
   final String text;
@@ -13,7 +14,7 @@ class TwoSideRoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: ()=>press,
       child: Container(
         alignment: Alignment.center,

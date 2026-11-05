@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'Authentication/controllers/auth_controller.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 String API_KEY = "AIzaSyAm09dvA3oZ0B-Ve5nxuwStUoi2wCigKNg";
 
@@ -14,8 +15,8 @@ FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 GoogleSignIn googleSign = GoogleSignIn.instance;
 
-Color kCoral = const Color(0xFFFF8243);
-Color kCoralMono = const Color(0xFFFF6010);
+Color kCoral = const Color(0xFF369365);
+Color kCoralMono = const Color(0xFF28734F);
 Color kCoralComp = const Color(0xFF43C0FF);
 Color kKhaki = const Color(0xFFFFFC59);
 Color kKhakiMono = const Color(0xFFD9D506);
@@ -23,14 +24,14 @@ Color kKhakiComp = const Color(0xFF595CFF);
 Color kGoldComp = const Color(0xFF2460FF);
 Color kGold = const Color(0xFFFFC324);
 Color kGoldMono = const Color(0xFFF0AE00);
-Color kMidSeaGreen = const Color(0xFF44AF56);
-Color kMidSeaGreenComp = const Color(0xFF44AF56);
-Color kMidSeaGreenMono = const Color(0xFF63C373);
+Color kMidSeaGreen = const Color(0xFF369365);
+Color kMidSeaGreenComp = const Color(0xFF369365);
+Color kMidSeaGreenMono = const Color(0xFF5FBF8A);
 
 
 Color kDeepBlue = const Color(0xFF2460FF);
 Color kDeepBlueMono = const Color(0xFF0041CC);
-Color kDeepBlueComp = const Color(0xFFFF9C24);
+Color kDeepBlueComp = const Color(0xFF369365);
 
 Color kPurple = const Color(0xFF8A2BE2);
 Color kPurpleMono = const Color(0xFF7B1FD6);
@@ -53,8 +54,8 @@ const apiKey = "8f87d6f2801b0c7e61ea62a63731e05d8a4e3de48720b5bc29ca0d62276a8eb5
 const white = Color(0xffffffff);
 const grey = Color(0xffc4c4c4);
 const mkk = Colors.white;
-const priMangoOrange = Color(0xfff3a70f);
-const priMangoOrangeAccent = Color(0xfff3a94d);
+const priMangoOrange = Color(0xFF369365);
+const priMangoOrangeAccent = Color(0xFF5FBF8A);
 const kBlueColor = Color(0xFF6E8AFA);
 const kBestSellerColor = Color(0xFFFFD073);
 const kGreenColor = Color(0xFF49CC96);
@@ -78,12 +79,12 @@ const splashText = TextStyle(
 );
 
 const bodyText = TextStyle(
-  fontSize: 10,
+  fontSize: 12,
   
 );
 
 const bodyText2 = TextStyle(
-  fontSize: 10,
+  fontSize: 12,
   fontWeight: FontWeight.w300,
   
 );
@@ -188,12 +189,12 @@ const inactivewidgetTitleText = TextStyle(
 );
 
 const bioCardText = TextStyle(
-  fontSize: 11,
+  fontSize: 12,
   
 );
 
 const userNameCardText = TextStyle(
-  fontSize: 10,
+  fontSize: 12,
   
 );
 
@@ -204,7 +205,7 @@ const displayNameCardText = TextStyle(
 );
 
 const likesCardText = TextStyle(
-  fontSize: 10,
+  fontSize: 12,
   
   letterSpacing: 0.07200000000000001,
 );
@@ -216,7 +217,7 @@ const profileBio = TextStyle(
 );
 
 const postLabel = TextStyle(
-  fontSize: 10,
+  fontSize: 12,
   
   
 );
@@ -328,7 +329,8 @@ Widget? appbar(){
       shadowColor: Colors.transparent,
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
+        child: MangoPressable(
+        semanticLabel: 'Menu',
           onTap: () => visibility(isVisible),
           child: const Icon(Icons.menu),
         ),

@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:mango/AccountSetup/user_detail/user_detail_controller.dart';
 import 'profile_picture_section.dart';
 import 'image_source_dialog.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class Step1Profile extends StatelessWidget {
   Step1Profile({super.key});
@@ -88,7 +90,7 @@ class _BannerSection extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: [Colors.black.withOpacity(0.4), Colors.transparent],
+                colors: [MangoPalette.black.withOpacity(0.4), Colors.transparent],
               ),
             ),
           ),
@@ -97,7 +99,7 @@ class _BannerSection extends StatelessWidget {
           Positioned(
             bottom: 16,
             right: 16,
-            child: GestureDetector(
+            child: MangoPressable(
               onTap: () => showImageSourceDialog(context, 1),
               child: Container(
                 padding: const EdgeInsets.all(12),
@@ -106,7 +108,7 @@ class _BannerSection extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: MangoPalette.black.withOpacity(0.2),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -114,7 +116,7 @@ class _BannerSection extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.camera_alt,
-                  color: Colors.grey.shade700,
+                  color: MangoPalette.grey700,
                   size: 20,
                 ),
               ),
@@ -127,10 +129,10 @@ class _BannerSection extends StatelessWidget {
 
   Widget _buildPlaceholder(bool isDark) {
     return Container(
-      color: isDark ? Colors.grey[800] : Colors.grey.shade200,
+      color: isDark ? MangoPalette.grey800 : MangoPalette.grey200,
       child: Icon(
         Icons.photo_library,
-        color: isDark ? Colors.grey[400] : Colors.grey,
+        color: isDark ? MangoPalette.grey400 : MangoPalette.grey500,
         size: 50,
       ),
     );
@@ -150,22 +152,22 @@ class _ChangePhotoButton extends StatelessWidget {
         icon: Icon(
           Icons.camera_alt,
           size: 16,
-          color: isSelected ? Colors.green : Colors.orange,
+          color: isSelected ? MangoPalette.green500 : MangoPalette.green500,
         ),
         label: Text(
           isSelected ? "Photo Updated!" : "Change Profile Picture",
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: isSelected ? Colors.green : Colors.orange,
+            color: isSelected ? MangoPalette.green500 : MangoPalette.green500,
           ),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: isSelected
-              ? Colors.green.withOpacity(0.1)
-              : Colors.orange.withOpacity(0.1),
-          foregroundColor: isSelected ? Colors.green : Colors.orange,
+              ? MangoPalette.green500.withOpacity(0.1)
+              : MangoPalette.green500.withOpacity(0.1),
+          foregroundColor: isSelected ? MangoPalette.green500 : MangoPalette.green500,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(MangoRadius.lg),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           elevation: 0,
@@ -190,11 +192,11 @@ class _UserInfoForm extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: isDark ? Colors.black : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? MangoPalette.black : Colors.white,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: MangoPalette.black.withOpacity(0.1),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -249,7 +251,7 @@ class _UserInfoForm extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w600,
             color: textColor.withOpacity(0.8),
           ),
@@ -257,26 +259,26 @@ class _UserInfoForm extends StatelessWidget {
         const SizedBox(height: 8),
         TextField(
           controller: controller,
-          style: TextStyle(color: textColor, fontSize: 11, fontWeight: FontWeight.w500),
+          style: TextStyle(color: textColor, fontSize: 12, fontWeight: FontWeight.w500),
           decoration: InputDecoration(
             hintText: 'e.g., john_doe or johndoe',
-            hintStyle: TextStyle(color: textColor.withOpacity(0.5), fontSize: 11),
+            hintStyle: TextStyle(color: textColor.withOpacity(0.5), fontSize: 12),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade400),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
+              borderSide: BorderSide(color: MangoPalette.grey400),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade400),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
+              borderSide: BorderSide(color: MangoPalette.grey400),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.orange, width: 2),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
+              borderSide: BorderSide(color: MangoPalette.green500, width: 2),
             ),
             filled: true,
-            fillColor: isDark ? Colors.grey[800] : Colors.grey.shade50,
+            fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
             contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            prefix: Text('@', style: TextStyle(color: textColor.withOpacity(0.5), fontSize: 11)),
+            prefix: Text('@', style: TextStyle(color: textColor.withOpacity(0.5), fontSize: 12)),
           ),
           maxLength: ValidationPatterns.maxUsernameLength,
           onChanged: (value) {
@@ -299,7 +301,7 @@ class _UserInfoForm extends StatelessWidget {
             padding: const EdgeInsets.only(top: 4),
             child: Text(
               error,
-              style: const TextStyle(fontSize: 10, color: Colors.red),
+              style: const TextStyle(fontSize: 12, color: Colors.red),
             ),
           );
         }),
@@ -331,24 +333,24 @@ class _UserInfoForm extends StatelessWidget {
         const SizedBox(height: 8),
         TextField(
           controller: controller,            
-          style: TextStyle(color: textColor, fontSize: 11),
+          style: TextStyle(color: textColor, fontSize: 12),
           decoration: InputDecoration(
             hintText: 'Enter your $label',
-            hintStyle: TextStyle(color: textColor.withOpacity(0.5), fontSize: 11),
+            hintStyle: TextStyle(color: textColor.withOpacity(0.5), fontSize: 12),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade400),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
+              borderSide: BorderSide(color: MangoPalette.grey400),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade400),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
+              borderSide: BorderSide(color: MangoPalette.grey400),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.orange, width: 2),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
+              borderSide: BorderSide(color: MangoPalette.green500, width: 2),
             ),
             filled: true,
-            fillColor: isDark ? Colors.grey[800] : Colors.grey.shade50,
+            fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
             contentPadding: EdgeInsets.symmetric(
               horizontal: 8,
               vertical: isBio ? 16 : 12,
@@ -366,7 +368,7 @@ class _UserInfoForm extends StatelessWidget {
             return Text(
               '$length/500 characters',
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 color: length > 500 ? Colors.red : textColor.withOpacity(0.6),
               ),
             );

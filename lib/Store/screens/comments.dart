@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mango/Models/customModel/MangoProduct.dart';
 import 'package:mango/Store/controller/product_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class ProductComments extends StatelessWidget {
   final String productId;
@@ -34,7 +35,7 @@ class ProductComments extends StatelessWidget {
                 const SizedBox(width: 8),
                 Chip(
                   label: Text(comments.length.toString()),
-                  backgroundColor: Colors.orange.withOpacity(0.1),
+                  backgroundColor: MangoPalette.green500.withOpacity(0.1),
                 ),
               ],
             ),
@@ -61,14 +62,14 @@ class ProductComments extends StatelessWidget {
           Icon(
             Icons.comment,
             size: 48,
-            color: Colors.grey[400],
+            color: MangoPalette.grey400,
           ),
           const SizedBox(height: 16),
           const Text(
             'No comments yet',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey,
+              color: MangoPalette.grey500,
             ),
           ),
           const SizedBox(height: 8),
@@ -76,7 +77,7 @@ class ProductComments extends StatelessWidget {
             'Be the first to share your thoughts!',
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey,
+              color: MangoPalette.grey500,
             ),
           ),
         ],
@@ -111,7 +112,7 @@ class ProductComments extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 16,
-                  backgroundColor: Colors.orange,
+                  backgroundColor: MangoPalette.green500,
                   child: Text(
                     comment.userEmail[0].toUpperCase(),
                     style: const TextStyle(
@@ -145,7 +146,7 @@ class ProductComments extends StatelessWidget {
                               comment.rating.toStringAsFixed(1),
                               style: const TextStyle(
                                 fontSize: 12,
-                                color: Colors.grey,
+                                color: MangoPalette.grey500,
                               ),
                             ),
                           ],
@@ -156,8 +157,8 @@ class ProductComments extends StatelessWidget {
                 Text(
                   _formatDate(comment.createdAt),
                   style: const TextStyle(
-                    fontSize: 10,
-                    color: Colors.grey,
+                    fontSize: 12,
+                    color: MangoPalette.grey500,
                   ),
                 ),
               ],
@@ -180,7 +181,7 @@ class ProductComments extends StatelessWidget {
                         final isLiked = controller.isCommentLiked(comment);
                         return Icon(
                           isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
-                          color: isLiked ? Colors.blue : Colors.grey,
+                          color: isLiked ? Colors.blue : MangoPalette.grey500,
                           size: 16,
                         );
                       }),
@@ -189,7 +190,7 @@ class ProductComments extends StatelessWidget {
                         comment.likeCount.toString(),
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Colors.grey,
+                          color: MangoPalette.grey500,
                         ),
                       ),
                     ],
@@ -204,13 +205,13 @@ class ProductComments extends StatelessWidget {
                     onTap: () => _showEditCommentDialog(comment, controller),
                     child: const Row(
                       children: [
-                        Icon(Icons.edit, size: 16, color: Colors.grey),
+                        Icon(Icons.edit, size: 16, color: MangoPalette.grey500),
                         SizedBox(width: 4),
                         Text(
                           'Edit',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: MangoPalette.grey500,
                           ),
                         ),
                       ],
@@ -248,7 +249,7 @@ class ProductComments extends StatelessWidget {
       child: ElevatedButton.icon(
         onPressed: () => _showAddCommentDialog(context, controller),
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.orange,
+          backgroundColor: MangoPalette.green500,
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 50),
         ),

@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class PostShimmer extends StatelessWidget {
   const PostShimmer({super.key});
@@ -11,9 +13,9 @@ class PostShimmer extends StatelessWidget {
       
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
+        child: MangoShimmer(
+          baseColor: MangoPalette.grey300,
+          highlightColor: MangoPalette.grey100,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

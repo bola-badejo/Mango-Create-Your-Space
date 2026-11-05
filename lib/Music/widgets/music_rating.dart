@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class MusicRating extends StatelessWidget {
   final int score;
@@ -13,7 +14,7 @@ class MusicRating extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         boxShadow: [
           BoxShadow(
             offset: const Offset(3, 7),

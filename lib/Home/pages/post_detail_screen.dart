@@ -5,7 +5,7 @@ import 'package:mango/Home/components/post_card.dart';
 import 'package:mango/Home/controllers/dashboard_controller.dart';
 import 'package:mango/Home/home.dart';
 import 'package:mango/Models/customModel/post.dart';
-import 'package:mango/home/home.dart';
+import 'package:mango/Home/home.dart';
 
 class PostDetailScreen extends StatelessWidget {
   final String postId;
@@ -19,6 +19,7 @@ class PostDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Post'),
         leading: IconButton(
+        tooltip: 'Back',
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Get.back(),
         ),
@@ -27,7 +28,7 @@ class PostDetailScreen extends StatelessWidget {
           stream: controller.getPost(postId),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return const CircularProgressIndicator();
+              return const CircularProgressIndicator(semanticsLabel: 'Loading');
             }
           
           final post = snapshot.data!;

@@ -199,176 +199,38 @@ exports.sendChatNotification = onDocumentCreated(
 );
 
 // ==================== POST NOTIFICATION ====================
-exports.sendPostNotification = onDocumentCreated(
-  "posts/{postId}",
-  async (event) => {
-    const post = event.data.data();
-    if (!post?.authorId) return;
-
-    try {
-      // Get all followers with their tokens
-      const followersSnap = await db
-        .collection("users")
-        .doc(post.authorId)
-        .collection("followers")
-        .get();
-
-      const allTokens = [];
-      const followerIds = [];
-      
-      followersSnap.forEach((doc) => {
-        const followerData = doc.data();
-        followerIds.push(doc.id);
-        
-        // Get tokens from follower's user document
-        if (followerData.fcmToken) {
-          allTokens.push(followerData.fcmToken);
-        }
-      });
-      
-      // Also check each follower's user document for multiple tokens
-      for (const followerId of followerIds) {
-        const userDoc = await db.collection("users").doc(followerId).get();
-        if (userDoc.exists) {
-          const userData = userDoc.data();
-          if (userData.fcmTokens && Array.isArray(userData.fcmTokens)) {
-            allTokens.push(...userData.fcmTokens);
-          } else if (userData.fcmToken) {
-            allTokens.push(userData.fcmToken);
-          }
-        }
-      }
-      
-      // Remove duplicates
-      const uniqueTokens = [...new Set(allTokens)];
-      
-      if (uniqueTokens.length === 0) {
-        logger.info(`No tokens for followers of post ${event.params.postId}`);
-        return;
-      }
-
-      const payload = {
-        notification: {
-          title: `${post.authorName || "Someone"} posted on Mango`,
-          body: post.text || "Check out their new post!",
-        },
-        data: {
-          type: "post",
-          postId: event.params.postId,
-          authorId: post.authorId,
-        },
-        webpush: {
-          fcmOptions: {
-            link: `https://yourdomain.com/post/${event.params.postId}`,
-          },
-        },
-      };
-
-      await sendToTokens(uniqueTokens, payload);
-      logger.info(`✅ Post notification sent to ${uniqueTokens.length} followers`);
-      
-    } catch (error) {
-      logger.error("🔥 Error sending post notification:", error);
-    }
-  }
-);
+// sendPostNotification: removed. It checked post.authorId, which posts never have, so it never ran. Followers are not pushed for every post; replies and mentions are (notify/functions.js).
 
 // ==================== SONG PLAY NOTIFICATION ====================
-exports.onSongPlayed = onDocumentCreated("plays/{playId}", async (event) => {
-  const play = event.data.data();
-  if (!play?.artistId) return;
-
-  return sendNotificationToUser(
-    play.artistId,
-    "Your song was played 🎧",
-    `${play.listenerName || "Someone"} just played "${play.songTitle || ""}"`,
-    { 
-      type: "song", 
-      songId: play.songId,
-      listenerId: play.listenerId,
-      listenerName: play.listenerName 
-    }
-  );
-});
+// onSongPlayed: replaced by content milestones in mediaRecord (the app never wrote plays/).
 
 // ==================== PROFILE VIEW NOTIFICATION ====================
-exports.onProfileViewed = onDocumentCreated(
-  "profileViews/{viewId}",
-  async (event) => {
-    const view = event.data.data();
-    if (!view?.profileOwnerId) return;
-
-    return sendNotificationToUser(
-      view.profileOwnerId,
-      "Someone viewed your profile 👀",
-      `${view.viewerName || "Someone"} checked out your profile`,
-      { 
-        type: "profile", 
-        viewerId: view.viewerId,
-        viewerName: view.viewerName 
-      }
-    );
-  }
-);
+// onProfileViewed: removed (the app never wrote profileViews/).
 
 // ==================== BOOK READ NOTIFICATION ====================
-exports.onBookRead = onDocumentCreated("bookReads/{readId}", async (event) => {
-  const read = event.data.data();
-  if (!read?.authorId) return;
-
-  return sendNotificationToUser(
-    read.authorId,
-    "Your book was read 📖",
-    `${read.readerName || "Someone"} read "${read.bookTitle || ""}"`,
-    { 
-      type: "book", 
-      bookId: read.bookId,
-      readerId: read.readerId,
-      bookTitle: read.bookTitle 
-    }
-  );
-});
+// onBookRead: replaced by content milestones and reading reminders (the app never wrote bookReads/).
 
 // ==================== POST LIKE NOTIFICATION ====================
-exports.onPostLiked = onDocumentCreated(
-  "posts/{postId}/likes/{likeId}",
-  async (event) => {
-    const like = event.data.data();
-    if (!like) return;
-
-    const postDoc = await db.collection("posts").doc(event.params.postId).get();
-    const post = postDoc.exists ? postDoc.data() : null;
-    if (!post?.authorId) return;
-
-    // Don't notify if user likes their own post
-    if (post.authorId === like.likerId) return;
-
-    return sendNotificationToUser(
-      post.authorId,
-      "Your post got a like ❤️",
-      `${like.likerName || "Someone"} liked your post`,
-      { 
-        type: "post", 
-        postId: event.params.postId,
-        likerId: like.likerId,
-        likerName: like.likerName 
-      }
-    );
-  }
-);
+// onPostLiked: replaced by notifyOnLike, which groups likes and fills the in-app centre.
 
 // ==================== PROXY IMAGE ====================
+// Only images from trusted hosts can be proxied (it fetched any URL before).
+const PROXY_HOSTS = new Set(["firebasestorage.googleapis.com", "storage.googleapis.com", "lh3.googleusercontent.com", "i.scdn.co", "mosaic.scdn.co", "image-cdn-ak.spotifycdn.com", "i.ytimg.com", "covers.openlibrary.org", "books.google.com"]);
 exports.proxyImage = functions.https.onRequest(async (req, res) => {
   const url = req.query.url;
   if (!url) return res.status(400).send("Missing URL");
+  let parsed;
+  try { parsed = new URL(String(url)); } catch { return res.status(400).send("Invalid URL"); }
+  if (parsed.protocol !== "https:" || !PROXY_HOSTS.has(parsed.hostname)) return res.status(403).send("Host not allowed");
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(parsed.toString(), { redirect: "error" });
+    if (!(response.headers.get("content-type") || "").startsWith("image/")) return res.status(415).send("Not an image");
     const buffer = await response.arrayBuffer();
     res.set("Content-Type", response.headers.get("content-type"));
     res.send(Buffer.from(buffer));
   } catch (e) {
-    res.status(500).send(e.toString());
+    res.status(502).send("Could not fetch image");
   }
 });
 
@@ -382,30 +244,24 @@ exports.healthCheck = functions.https.onRequest(async (req, res) => {
 });
 
 // ==================== TEST NOTIFICATION ====================
-exports.sendTestNotification = functions.https.onRequest(async (req, res) => {
-  const { userId, title, body, type } = req.body;
-  
-  if (!userId) {
-    res.status(400).json({ error: 'userId is required' });
-    return;
-  }
-  
-  try {
-    const result = await sendNotificationToUser(
-      userId,
-      title || "Test Notification",
-      body || "This is a test notification",
-      { type: type || "test" }
-    );
-    
-    if (result) {
-      res.json({ success: true, message: "Test notification sent" });
-    } else {
-      res.status(404).json({ error: "No tokens found for user" });
-    }
-    
-  } catch (error) {
-    logger.error("Error sending test notification:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
+// sendTestNotification: replaced by the notifyTest callable, which only reaches your own devices (this endpoint let anyone notify anyone).
+
+// ==================== MANGOCHAIN LEDGER ====================
+// Server-validated MangoCoin ledger: activity mining, transfers, signed
+// blocks and audits. See functions/ledger/README.md.
+Object.assign(exports, require("./ledger/functions"));
+
+// ==================== VIRTUAL SPACES ====================
+Object.assign(exports, require("./spaces/functions"));
+
+// ==================== MEDIA: TASTE, RECOMMENDATIONS, AI SHUFFLE ====================
+Object.assign(exports, require("./media/functions"));
+
+// ==================== CHAT ====================
+Object.assign(exports, require("./chat/functions"));
+
+// ==================== CREATOR CONTENT ====================
+Object.assign(exports, require("./content/functions"));
+
+// ==================== NOTIFICATIONS & ACCOUNTS ====================
+Object.assign(exports, require("./notify/functions"));

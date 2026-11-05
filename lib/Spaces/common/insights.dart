@@ -5,6 +5,7 @@ import 'package:mango/Models/animation.dart';
 import '../controllers/space_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class SpaceInsightsScreen extends StatelessWidget {
   final SpaceModel space;
@@ -28,6 +29,7 @@ class SpaceInsightsScreen extends StatelessWidget {
         ),
         centerTitle: true,
         leading: IconButton(
+        tooltip: 'Back',
           icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryColorLight),
           onPressed: () => Get.back(),
         ),
@@ -39,7 +41,7 @@ class SpaceInsightsScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
           }
 
           final spaceData = snapshot.data!.data() as Map<String, dynamic>? ?? {};
@@ -80,8 +82,8 @@ class SpaceInsightsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(12),
+        color: MangoPalette.black,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         children: [
@@ -100,7 +102,7 @@ class SpaceInsightsScreen extends StatelessWidget {
                 'Active Today',
                 '24',
                 Icons.online_prediction,
-                Colors.green,
+                MangoPalette.green500,
               ),
             ],
           ),
@@ -113,7 +115,7 @@ class SpaceInsightsScreen extends StatelessWidget {
                 'New This Week',
                 '12',
                 Icons.trending_up,
-                Colors.orange,
+                MangoPalette.green500,
               ),
               _buildMetricItem(
                 context,
@@ -136,7 +138,7 @@ class SpaceInsightsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 30, 30, 30),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(MangoRadius.sm),
         ),
         child: Column(
           children: [
@@ -154,8 +156,8 @@ class SpaceInsightsScreen extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: 10,
-                color: Colors.grey[400],
+                fontSize: 12,
+                color: MangoPalette.grey400,
               ),
               textAlign: TextAlign.center,
             ),
@@ -190,7 +192,7 @@ class SpaceInsightsScreen extends StatelessWidget {
       subtitle: Text(
         "Member growth and trends",
         style: TextStyle(
-          fontSize: 9,
+          fontSize: 12,
           color: Theme.of(context).primaryColorLight,
           fontWeight: FontWeight.w500,
         ),
@@ -227,16 +229,16 @@ class SpaceInsightsScreen extends StatelessWidget {
                       ],
                       xValueMapper: (GrowthData data, _) => data.day,
                       yValueMapper: (GrowthData data, _) => data.members,
-                      color: Colors.orange,
+                      color: MangoPalette.green500,
                       markerSettings: const MarkerSettings(isVisible: true),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
-              _buildAnalyticsRow(context, 'Weekly Growth', '+15%', Colors.green),
+              _buildAnalyticsRow(context, 'Weekly Growth', '+15%', MangoPalette.green500),
               _buildAnalyticsRow(context, 'Active Rate', '68%', Colors.blue),
-              _buildAnalyticsRow(context, 'Retention', '92%', Colors.orange),
+              _buildAnalyticsRow(context, 'Retention', '92%', MangoPalette.green500),
             ],
           ),
         ),
@@ -295,7 +297,7 @@ class SpaceInsightsScreen extends StatelessWidget {
       subtitle: Text(
         "User activity and interaction",
         style: TextStyle(
-          fontSize: 9,
+          fontSize: 12,
           color: Theme.of(context).primaryColorLight,
           fontWeight: FontWeight.w500,
         ),
@@ -347,16 +349,16 @@ class SpaceInsightsScreen extends StatelessWidget {
           Container(
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey[800],
-              borderRadius: BorderRadius.circular(2),
+              color: MangoPalette.grey800,
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
               widthFactor: progress,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.circular(2),
+                  color: MangoPalette.green500,
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                 ),
               ),
             ),
@@ -391,7 +393,7 @@ class SpaceInsightsScreen extends StatelessWidget {
       subtitle: Text(
         "Most active members",
         style: TextStyle(
-          fontSize: 9,
+          fontSize: 12,
           color: Theme.of(context).primaryColorLight,
           fontWeight: FontWeight.w500,
         ),
@@ -419,8 +421,8 @@ class SpaceInsightsScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(8),
+        color: MangoPalette.black,
+        borderRadius: BorderRadius.circular(MangoRadius.sm),
       ),
       child: Row(
         children: [
@@ -429,7 +431,7 @@ class SpaceInsightsScreen extends StatelessWidget {
             height: 30,
             decoration: BoxDecoration(
               color: _getRankColor(rank).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               border: Border.all(color: _getRankColor(rank)),
             ),
             child: Center(
@@ -459,8 +461,8 @@ class SpaceInsightsScreen extends StatelessWidget {
                 Text(
                   activity,
                   style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.grey[400],
+                    fontSize: 12,
+                    color: MangoPalette.grey400,
                   ),
                 ),
               ],
@@ -469,7 +471,7 @@ class SpaceInsightsScreen extends StatelessWidget {
           Icon(
             Icons.arrow_forward_ios,
             size: 14,
-            color: Colors.grey[400],
+            color: MangoPalette.grey400,
           ),
         ],
       ),
@@ -479,8 +481,8 @@ class SpaceInsightsScreen extends StatelessWidget {
   Color _getRankColor(int rank) {
     switch (rank) {
       case 1: return Colors.amber;
-      case 2: return Colors.grey;
-      case 3: return Colors.orange;
+      case 2: return MangoPalette.grey500;
+      case 3: return MangoPalette.green500;
       default: return Colors.blue;
     }
   }

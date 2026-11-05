@@ -8,6 +8,8 @@ import 'package:mango/Contributors/controllers/product_detail_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../Models/customModel/MangoProduct.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class ProductDetailScreen extends GetView<ProductDetailController> {
   final String productId;
@@ -31,7 +33,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     });
     
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.black : Colors.white,
       body: Obx(() {
         if (controller.isLoading.value && controller.currentProduct.value == null) {
           return _buildShimmerLoading(isDarkMode);
@@ -84,17 +86,18 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
       leading: Container(
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[850] : Colors.white,
+          color: isDarkMode ? MangoPalette.grey850 : Colors.white,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: MangoPalette.black.withOpacity(0.05),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
           ],
         ),
         child: IconButton(
+        tooltip: 'Back',
           icon: const Icon(Icons.chevron_left),
           onPressed: () => Get.back(),
         ),
@@ -103,11 +106,11 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
         Container(
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isDarkMode ? Colors.grey[850] : Colors.white,
+            color: isDarkMode ? MangoPalette.grey850 : Colors.white,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: MangoPalette.black.withOpacity(0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),
@@ -124,17 +127,18 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
         Container(
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isDarkMode ? Colors.grey[850] : Colors.white,
+            color: isDarkMode ? MangoPalette.grey850 : Colors.white,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: MangoPalette.black.withOpacity(0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),
             ],
           ),
           child: IconButton(
+        tooltip: 'Share',
             icon: const Icon(Icons.share_outlined),
             onPressed: () {
               // Share product
@@ -149,12 +153,12 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     if (product.imageUrls.isEmpty) {
       return Container(
         height: 400,
-        color: isDarkMode ? Colors.grey[900] : Colors.grey[100],
+        color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey100,
         child: Center(
           child: Icon(
             Icons.photo_library,
             size: 80,
-            color: isDarkMode ? Colors.grey[800] : Colors.grey[300],
+            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey300,
           ),
         ),
       );
@@ -171,11 +175,11 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               imageUrl: product.imageUrls[index],
               fit: BoxFit.contain,
               placeholder: (context, url) => Container(
-                color: isDarkMode ? Colors.grey[900] : Colors.grey[100],
-                child: const Center(child: CircularProgressIndicator()),
+                color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey100,
+                child: const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading')),
               ),
               errorWidget: (context, url, error) => Container(
-                color: isDarkMode ? Colors.grey[900] : Colors.grey[100],
+                color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey100,
                 child: const Icon(Icons.image_not_supported, size: 50),
               ),
             ),
@@ -197,7 +201,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               fontSize: 12,
               fontWeight: FontWeight.w500,
               letterSpacing: 1,
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -206,7 +210,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
               height: 1.2,
             ),
           ),
@@ -220,14 +224,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey700,
                 ),
               ),
               Text(
                 ' (${product.reviewCount} reviews)',
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
+                  color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey500,
                 ),
               ),
             ],
@@ -241,7 +245,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -249,7 +253,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   '₦${product.price.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 20,
-                    color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                    color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                     decoration: TextDecoration.lineThrough,
                   ),
                 ),
@@ -257,8 +261,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(20),
+                    color: MangoPalette.green500,
+                    borderRadius: BorderRadius.circular(MangoRadius.lg),
                   ),
                   child: Text(
                     'SAVE ${((product.price - product.salePrice!) / product.price * 100).toStringAsFixed(0)}%',
@@ -275,7 +279,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
               ],
@@ -287,7 +291,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: Colors.red.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -329,11 +333,11 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             child: OutlinedButton(
               onPressed: product.inStock ? () => controller.addToCart(product) : null,
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.green,
-                side: const BorderSide(color: Colors.green),
+                foregroundColor: MangoPalette.green500,
+                side: const BorderSide(color: MangoPalette.green500),
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
               child: const Text(
@@ -347,11 +351,11 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             child: ElevatedButton(
               onPressed: product.inStock ? () => controller.buyNow(product) : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: MangoPalette.green500,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
               child: const Text(
@@ -370,8 +374,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[850] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
+        color: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,7 +385,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
           ),
           const SizedBox(height: 16),
@@ -417,14 +421,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     return Expanded(
       child: Row(
         children: [
-          Icon(icon, size: 20, color: Colors.green),
+          Icon(icon, size: 20, color: MangoPalette.green500),
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
-                style: const TextStyle(fontSize: 11, color: Colors.grey),
+                style: const TextStyle(fontSize: 12, color: MangoPalette.grey500),
               ),
               Text(
                 value,
@@ -448,7 +452,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
           ),
           const SizedBox(height: 12),
@@ -457,7 +461,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             style: TextStyle(
               fontSize: 14,
               height: 1.5,
-              color: isDarkMode ? Colors.grey[300] : Colors.grey[700],
+              color: isDarkMode ? MangoPalette.grey300 : MangoPalette.grey700,
             ),
           ),
         ],
@@ -485,7 +489,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: Colors.grey[600],
+                color: MangoPalette.grey600,
               ),
             ),
             const SizedBox(height: 8),
@@ -510,7 +514,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: Colors.grey[600],
+                color: MangoPalette.grey600,
               ),
             ),
             const SizedBox(height: 8),
@@ -521,7 +525,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   label: Text(size),
                   selected: false,
                   onSelected: (selected) {},
-                  backgroundColor: Colors.grey[200],
+                  backgroundColor: MangoPalette.grey200,
                   labelStyle: const TextStyle(fontSize: 12),
                 );
               }).toList(),
@@ -545,7 +549,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
           ),
           const SizedBox(height: 12),
@@ -555,14 +559,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
+                  color: MangoPalette.green500.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                 ),
                 child: Text(
                   tag,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.green,
+                    color: MangoPalette.green500,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -579,8 +583,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[850] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
+        color: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Row(
         children: [
@@ -588,7 +592,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
+              color: MangoPalette.green500.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -597,7 +601,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green,
+                  color: MangoPalette.green500,
                 ),
               ),
             ),
@@ -611,7 +615,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   'Sold by',
                   style: TextStyle(
                     fontSize: 12,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
                 Text(
@@ -619,7 +623,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
               ],
@@ -634,8 +638,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             },
             child: const Text('View Shop'),
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.green,
-              side: const BorderSide(color: Colors.green),
+              foregroundColor: MangoPalette.green500,
+              side: const BorderSide(color: MangoPalette.green500),
             ),
           ),
         ],
@@ -657,14 +661,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               ),
               TextButton(
                 onPressed: () => _showAddReviewDialog(product, controller),
                 child: const Text(
                   'Write a Review',
-                  style: TextStyle(color: Colors.green),
+                  style: TextStyle(color: MangoPalette.green500),
                 ),
               ),
             ],
@@ -680,14 +684,14 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                       Icon(
                         Icons.chat_bubble_outline,
                         size: 48,
-                        color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                        color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                       ),
                       const SizedBox(height: 12),
                       Text(
                         'No reviews yet',
                         style: TextStyle(
                           fontSize: 14,
-                          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                         ),
                       ),
                     ],
@@ -725,10 +729,10 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[850] : Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: isDarkMode ? MangoPalette.grey850 : Colors.white,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: Border.all(
-          color: isDarkMode ? Colors.grey[800]! : Colors.grey[200]!,
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
         ),
       ),
       child: Column(
@@ -738,10 +742,10 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundColor: Colors.green.withOpacity(0.1),
+                backgroundColor: MangoPalette.green500.withOpacity(0.1),
                 child: Text(
                   comment.userEmail[0].toUpperCase(),
-                  style: const TextStyle(color: Colors.green),
+                  style: const TextStyle(color: MangoPalette.green500),
                 ),
               ),
               const SizedBox(width: 12),
@@ -753,7 +757,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                       comment.userEmail.split('@')[0],
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -764,8 +768,8 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               Text(
                 _formatDate(comment.createdAt),
                 style: TextStyle(
-                  fontSize: 11,
-                  color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                  fontSize: 12,
+                  color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                 ),
               ),
             ],
@@ -775,7 +779,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
             comment.text,
             style: TextStyle(
               fontSize: 14,
-              color: isDarkMode ? Colors.grey[300] : Colors.grey[700],
+              color: isDarkMode ? MangoPalette.grey300 : MangoPalette.grey700,
               height: 1.4,
             ),
           ),
@@ -790,10 +794,10 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: Theme.of(Get.context!).brightness == Brightness.dark ? Colors.black : Colors.white,
+        color: Theme.of(Get.context!).brightness == Brightness.dark ? MangoPalette.black : Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: MangoPalette.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -811,7 +815,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                     'Total',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: MangoPalette.grey600,
                     ),
                   ),
                   Text(
@@ -819,7 +823,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.green,
+                      color: MangoPalette.green500,
                     ),
                   ),
                 ],
@@ -829,11 +833,11 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
               child: ElevatedButton(
                 onPressed: product.inStock ? () => controller.buyNow(product) : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                  backgroundColor: MangoPalette.green500,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                 ),
                 child: const Text(
@@ -854,7 +858,7 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     
     Get.dialog(
       Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.lg)),
         child: Container(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -943,36 +947,36 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
   }
   
   Widget _buildShimmerLoading(bool isDarkMode) {
-    return Shimmer.fromColors(
-      baseColor: isDarkMode ? Colors.grey[850]! : Colors.grey[300]!,
-      highlightColor: isDarkMode ? Colors.grey[800]! : Colors.grey[100]!,
+    return MangoShimmer(
+      baseColor: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey300,
+      highlightColor: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
       child: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               height: 400,
-              color: isDarkMode ? Colors.grey[850] : Colors.grey[300],
+              color: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey300,
             ),
             const SizedBox(height: 20),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               height: 30,
               width: double.infinity,
-              color: isDarkMode ? Colors.grey[850] : Colors.grey[300],
+              color: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey300,
             ),
             const SizedBox(height: 10),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               height: 20,
               width: 200,
-              color: isDarkMode ? Colors.grey[850] : Colors.grey[300],
+              color: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey300,
             ),
             const SizedBox(height: 30),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               height: 50,
               width: double.infinity,
-              color: isDarkMode ? Colors.grey[850] : Colors.grey[300],
+              color: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey300,
             ),
           ],
         ),
@@ -988,21 +992,21 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
           Icon(
             Icons.error_outline,
             size: 64,
-            color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+            color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
           ),
           const SizedBox(height: 16),
           Text(
             controller.errorMessage.value,
             style: TextStyle(
               fontSize: 14,
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
           CupertinoButton(
             onPressed: () => controller.loadProduct(productId),
-            color: Colors.green,
+            color: MangoPalette.green500,
             child: const Text('Try Again'),
           ),
         ],
@@ -1014,18 +1018,18 @@ class ProductDetailScreen extends GetView<ProductDetailController> {
     final colorMap = {
       'Red': Colors.red,
       'Blue': Colors.blue,
-      'Green': Colors.green,
-      'Black': Colors.black,
+      'Green': MangoPalette.green500,
+      'Black': MangoPalette.black,
       'White': Colors.white,
       'Yellow': Colors.yellow,
       'Purple': Colors.purple,
       'Pink': Colors.pink,
-      'Orange': Colors.orange,
+      'Orange': MangoPalette.green500,
       'Brown': Colors.brown,
-      'Gray': Colors.grey,
+      'Gray': MangoPalette.grey500,
       'Multi-color': Colors.purpleAccent,
     };
     
-    return colorMap[colorName] ?? Colors.grey;
+    return colorMap[colorName] ?? MangoPalette.grey500;
   }
 }

@@ -45,5 +45,17 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Mango uses your camera when you choose to go on video in a live event, or to take photos for posts.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Mango uses your microphone when you speak in a live event or record a voice note.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Mango lets you pick photos and videos to post or to use in your Space.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Mango uses Bluetooth headsets for audio in live events.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 </dict>
 </plist>

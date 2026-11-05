@@ -3,10 +3,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:mango/App/router/app_routes.dart';
+import 'package:mango/AccountSetup/onboarding_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mango/utils.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class AuthController extends GetxController {
   static AuthController get instance => Get.find<AuthController>();
@@ -67,12 +71,12 @@ class AuthController extends GetxController {
       message,
       snackPosition: SnackPosition.BOTTOM,
       context: context,
-      backgroundColor: Colors.greenAccent.withOpacity(0.9),
-      colorText: Colors.black,
+      backgroundColor: MangoPalette.green400.withOpacity(0.9),
+      colorText: MangoPalette.black,
       borderRadius: 8,
       margin: const EdgeInsets.all(16),
       duration: const Duration(seconds: 4),
-      icon: const Icon(Icons.check_circle, color: Colors.black),
+      icon: const Icon(Icons.check_circle, color: MangoPalette.black),
       shouldIconPulse: true,
       
     );
@@ -80,13 +84,12 @@ class AuthController extends GetxController {
 
   Future<void> signUpWithEmailAndPassword(String email, String password, BuildContext context) async {
     try {
-      await auth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-      await auth.currentUser!.sendEmailVerification();
-      _showSuccessSnackbar('Account created! Please verify your email', context);
-      Get.offNamed('/add-details');
+      await auth.createUserWithEmailAndPassword(email: email.trim(), password: password.trim());
+      // Verification is sent but never blocks getting started.
+      try {
+        await auth.currentUser!.sendEmailVerification();
+      } catch (_) {}
+      await OnboardingService.instance.continueAfterSignIn();
     } catch (e) {
       _showErrorSnackbar(_parseFirebaseError(e), context);
     }
@@ -94,110 +97,64 @@ class AuthController extends GetxController {
 
   Future<void> signInWithEmailAndPassword(String email, String password, BuildContext context) async {
     try {
-      final userCredential = await auth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-      
-      if (!userCredential.user!.emailVerified) {
-        await auth.currentUser!.sendEmailVerification();
-        _showSuccessSnackbar('Verification email sent. Please check your inbox', context);
-      }
-      
-      Get.offNamed('/home');
+      await auth.signInWithEmailAndPassword(email: email.trim(), password: password.trim());
+      await OnboardingService.instance.continueAfterSignIn();
     } catch (e) {
       _showErrorSnackbar(_parseFirebaseError(e), context);
     }
   }
 
+  static bool _googleReady = false;
+
+  /// Google sign-in: a popup on web; google_sign_in 7 (initialise once, then
+  /// authenticate and use the ID token) on phones.
   Future<void> signInWithGoogle(context) async {
-  try {
-    
-    final GoogleSignIn signIn = GoogleSignIn.instance;
-
-    
-    final GoogleSignInAccount? googleUser = await signIn.authenticate();
-
-    if (googleUser == null) {
-      _showErrorSnackbar('Google sign-in was cancelled', context);
-      return;
-    }
-
-    
-    final GoogleSignInClientAuthorization? googleAuth = await googleUser
-        .authorizationClient
-        .authorizationForScopes(['email', 'profile']);
-
-    
-    if (googleAuth == null) {
-      _showErrorSnackbar('Google sign-in failed. No authorization received', context);
-      return;
-    }
-
-    
-    final String? idToken = googleAuth.accessToken;
-    final String? accessToken = googleAuth.accessToken;
-
-    if (idToken == null) {
-      _showErrorSnackbar('Google sign-in failed. No ID token received', context);
-      return;
-    }
-
-    
-    final credential = GoogleAuthProvider.credential(
-      accessToken: accessToken, 
-    );
-
-    
-    
-    final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-
-    if (userCredential.user != null) {
-      _showSuccessSnackbar('Signed in with Google successfully', context);
-      Get.offNamed('/add-details');
-    } else {
-      _showErrorSnackbar('Google sign-in failed. Please try again', context);
-    }
-  } on FirebaseAuthException catch (e) {
-    _showErrorSnackbar(_parseFirebaseError(e), context);
-  } catch (e) {
-    if (e.toString().contains('canceled')) {
-      _showErrorSnackbar('Google sign-in was cancelled', context);
-    } else if (e.toString().contains('network')) {
-      _showErrorSnackbar('Network error. Please check your connection', context);
-    } else {
-      _showErrorSnackbar('Google sign-in failed: ${e.toString()}', context);
+    try {
+      if (kIsWeb) {
+        await auth.signInWithPopup(GoogleAuthProvider()..addScope('email'));
+      } else {
+        final signIn = GoogleSignIn.instance;
+        if (!_googleReady) {
+          await signIn.initialize();
+          _googleReady = true;
+        }
+        final account = await signIn.authenticate();
+        final idToken = account.authentication.idToken;
+        if (idToken == null) {
+          _showErrorSnackbar('Google sign-in failed. Please try again', context);
+          return;
+        }
+        await auth.signInWithCredential(GoogleAuthProvider.credential(idToken: idToken));
+      }
+      await OnboardingService.instance.continueAfterSignIn();
+    } on GoogleSignInException catch (e) {
+      if (e.code != GoogleSignInExceptionCode.canceled) _showErrorSnackbar('Google sign-in failed. Please try again', context);
+    } on FirebaseAuthException catch (e) {
+      if (e.code != 'popup-closed-by-user' && e.code != 'cancelled-popup-request') _showErrorSnackbar(_parseFirebaseError(e), context);
+    } catch (e) {
+      _showErrorSnackbar(e.toString().contains('network') ? 'Network error. Please check your connection' : 'Google sign-in failed. Please try again', context);
     }
   }
-}
 
   Future<void> signInWithApple(context) async {
     try {
-      final AuthorizationCredentialAppleID appleIdCredential =
-          await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
+      final apple = await SignInWithApple.getAppleIDCredential(
+        scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
       );
-      
-      if (appleIdCredential.identityToken == null) {
+      if (apple.identityToken == null) {
         _showErrorSnackbar('Apple sign-in failed. Please try again', context);
         return;
       }
-      
-      final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
-      final OAuthCredential credential = oAuthProvider.credential(
-        idToken: appleIdCredential.identityToken,
-        accessToken: appleIdCredential.authorizationCode,
-      );
-      
-      await auth.signInWithCredential(credential);
-      
-      _showSuccessSnackbar('Signed in with Apple successfully', context);
-      Get.offNamed('/add-details');
-    } on SignInWithAppleException catch (_) {
-      _showErrorSnackbar('Apple sign-in was cancelled', context);
+      final credential = OAuthProvider('apple.com').credential(idToken: apple.identityToken, accessToken: apple.authorizationCode);
+      final result = await auth.signInWithCredential(credential);
+      // Apple shares the name only on the first sign-in: keep it.
+      final name = [apple.givenName, apple.familyName].whereType<String>().where((s) => s.isNotEmpty).join(' ');
+      if (name.isNotEmpty && (result.user?.displayName ?? '').isEmpty) {
+        await result.user?.updateDisplayName(name);
+      }
+      await OnboardingService.instance.continueAfterSignIn();
+    } on SignInWithAppleAuthorizationException catch (e) {
+      if (e.code != AuthorizationErrorCode.canceled) _showErrorSnackbar('Apple sign-in failed. Please try again', context);
     } catch (e) {
       _showErrorSnackbar(_parseFirebaseError(e), context);
     }
@@ -210,15 +167,14 @@ class AuthController extends GetxController {
         phoneNumber: formattedPhoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await auth.signInWithCredential(credential);
-          _showSuccessSnackbar('Phone authentication successful', context);
-          Get.offNamed('/home');
+          await OnboardingService.instance.continueAfterSignIn();
         },
         verificationFailed: (FirebaseAuthException e) {
           _showErrorSnackbar(_parseFirebaseError(e), context);
         },
         codeSent: (String verificationId, int? resendToken) {
           _showSuccessSnackbar('Verification code sent to your phone', context);
-          Get.offNamed('/otp-screen', arguments: verificationId);
+          Get.toNamed(AppRoutes.otp, arguments: verificationId);
         },
         codeAutoRetrievalTimeout: (String verificationId) {},
         timeout: const Duration(seconds: 120),
@@ -288,7 +244,11 @@ class AuthController extends GetxController {
         await auth.applyActionCode(code);
         _showSuccessSnackbar('Email verified successfully', context);
       }
-      Get.offNamed('/home');
+      if (isPhoneNumberVerification) {
+        await OnboardingService.instance.continueAfterSignIn();
+      } else {
+        Get.offNamed('/home');
+      }
     } catch (e) {
       _showErrorSnackbar(_parseFirebaseError(e), context);
     }

@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/scheduler.dart' hide Priority;
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -26,22 +27,21 @@ import 'package:mango/Notifications/notifications_controller.dart';
 import 'package:mango/SpaceLive/sessions_service.dart';
 import 'package:mango/Store/controller/product_services.dart';
 import 'package:mango/Utils/theme.dart';
-import 'package:mango/Wallet/data/coin_helper.dart';
 import 'package:mango/Wallet/data/currency_service.dart';
-import 'package:mango/Wallet/data/transactions.dart';
 import 'package:mango/Wallet/services/wallet_services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mango/core/config/app_config.dart';
+import 'package:mango/Core/config/app_config.dart';
 import 'package:mango/Authentication/controllers/auth_controller.dart';
-import 'package:mango/Wallet/data/blockchain.dart';
+import 'package:mango/Wallet/data/content_mining_services.dart' show ContentMiningService;
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:mango/Store/controller/cart_controller.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_strategy/url_strategy.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
-import 'utils/mobile_ui_color.dart'
-    if (dart.library.html) 'utils/web_ui_color.dart';
+import 'Utils/mobile_ui_color.dart'
+    if (dart.library.html) 'Utils/web_ui_color.dart';
 
 final FlutterLocalNotificationsPlugin? localNotificationsPlugin =
     kIsWeb ? null : FlutterLocalNotificationsPlugin();
@@ -108,6 +108,11 @@ bool _isInitialized = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Flutter web builds its accessibility tree only after a user finds a
+  // hidden "Enable accessibility" button. Mango turns it on from the start
+  // so NVDA, JAWS and VoiceOver work without that step (small web
+  // performance cost).
+  if (kIsWeb) SemanticsBinding.instance.ensureSemantics();
   
   // MEMORY OPTIMIZATION: Configure image cache
   PaintingBinding.instance.imageCache.maximumSize = MAX_IMAGE_CACHE_SIZE;
@@ -128,7 +133,7 @@ void main() async {
     
     final isDarkMode = prefs.getBool('isDarkMode') ?? false;
     Get.put(ThemeController());
-    setSystemUiColor(isDarkMode ? Colors.black : Colors.white);
+    setSystemUiColor(isDarkMode ? MangoPalette.black : Colors.white);
     
     if (!kIsWeb) {
       _initializeMobileNotifications();
@@ -328,11 +333,9 @@ Future<void> _initializeCoreServicesSafely() async {
     debugPrint('WalletService init failed: $e');
   }
   
-  try {
-    _initializeBlockchain();
-  } catch (e) {
-    debugPrint('Blockchain init failed: $e');
-  }
+  // MangoChain runs on the server (functions/ledger). The old on-device
+  // demo chain, which mined a fake block at every launch, is gone.
+  Get.lazyPut<ContentMiningService>(() => ContentMiningService(), fenix: true);
   
   // MEMORY OPTIMIZATION: Only initialize essential controllers
   Get.put(NotificationController(), permanent: true);
@@ -393,24 +396,10 @@ void _initializePostFrameServicesSafely() {
   }
 }
 
-void _initializeBlockchain() {
-  try {
-    final blockchain = Blockchain(difficultyValue: 2);
-    blockchain.addTransaction(
-      MangoTransaction(
-        sender: 'Telli',
-        receiver: 'Gun',
-        amount: EuniceHelper.toEunice(0.5),
-      ),
-    );
-    blockchain.minePendingTransactions('Miner1');
-    Get.put<Blockchain>(blockchain, permanent: true);
-  } catch (e) {
-    debugPrint('Blockchain initialization error: $e');
-  }
-}
-
 class MangoApp extends StatelessWidget {
+  static bool get _reduceMotion => WidgetsBinding
+      .instance.platformDispatcher.accessibilityFeatures.disableAnimations;
+
   final bool isDarkMode;
   const MangoApp({super.key, required this.isDarkMode});
 
@@ -434,8 +423,15 @@ class MangoApp extends StatelessWidget {
         name: AppRoutes.notFound,
         page: () => const Scaffold(body: Center(child: Text('Page not found'))),
       ),
-      transitionDuration: const Duration(milliseconds: 200),
-      defaultTransition: kIsWeb ? Transition.fade : Transition.cupertino,
+      // Platform-appropriate transitions: iOS slide on iOS, native Material
+      // transition on Android, fade on web. A short fade when the user has
+      // asked the system to reduce motion.
+      transitionDuration: _reduceMotion
+          ? const Duration(milliseconds: 150)
+          : const Duration(milliseconds: 250),
+      defaultTransition: _reduceMotion || kIsWeb
+          ? Transition.fade
+          : (GetPlatform.isIOS ? Transition.cupertino : Transition.native),
       navigatorKey: Get.key,
       
       // MEMORY OPTIMIZATION: Keep only essential pages alive
@@ -490,30 +486,30 @@ class ErrorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.grey[100],
+        backgroundColor: MangoPalette.grey100,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, size: 64, color: Colors.orange),
+                const Icon(Icons.error_outline, size: 64, color: MangoPalette.green500),
                 const SizedBox(height: 24),
                 Text(
                   'Having Trouble Loading',
-                  style: GoogleFonts.montserrat(
+                  style: TextStyle(fontFamily: 'Poppins', 
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.orange[700],
+                    color: MangoPalette.green700,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
                 Text(
                   'Please check your internet connection and try again.',
-                  style: GoogleFonts.montserrat(
+                  style: TextStyle(fontFamily: 'Poppins', 
                     fontSize: 16,
-                    color: Colors.grey[700],
+                    color: MangoPalette.grey700,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -527,13 +523,13 @@ class ErrorApp extends StatelessWidget {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: MangoPalette.green500,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
                   child: Text(
                     'Retry',
-                    style: GoogleFonts.montserrat(
+                    style: TextStyle(fontFamily: 'Poppins', 
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),

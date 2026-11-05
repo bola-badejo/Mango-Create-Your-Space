@@ -8,6 +8,8 @@ import 'package:mango/Contributors/controllers/contributor_service.dart';
 import 'package:mango/Contributors/models/contributors_profile.dart';
 import 'package:mango/Contributors/components/edit_contributors_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class ContributorProfileScreen extends StatefulWidget {
   final String contributorId;
@@ -56,11 +58,11 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
       case 'creator':
         return Colors.blue;
       case 'distributor':
-        return Colors.green;
+        return MangoPalette.green500;
       case 'vendor':
-        return Colors.orange;
+        return MangoPalette.green500;
       default:
-        return Colors.grey;
+        return MangoPalette.grey500;
     }
   }
 
@@ -121,7 +123,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? Colors.black : Colors.white,
+      backgroundColor: isDark ? MangoPalette.black : Colors.white,
       body: StreamBuilder<ContributorProfile?>(
         stream: _contributorService.getContributorStream(widget.contributorId),
         builder: (context, snapshot) {
@@ -171,7 +173,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                   floating: false,
                   pinned: true,
                   stretch: true,
-                  backgroundColor: isDark ? Colors.black : Colors.white,
+                  backgroundColor: isDark ? MangoPalette.black : Colors.white,
                   elevation: innerBoxIsScrolled ? 1 : 0,
                   iconTheme: IconThemeData(
                     color: isDark ? Colors.white : Colors.black87,
@@ -189,6 +191,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                   actions: [
                     if (isOwnProfile)
                       IconButton(
+        tooltip: 'Edit',
                         icon: Icon(
                           Icons.edit_outlined,
                           color: isDark ? Colors.white : Colors.black87,
@@ -202,6 +205,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                         },
                       ),
                     IconButton(
+        tooltip: 'Share',
                       icon: Icon(
                         Icons.share_outlined,
                         color: isDark ? Colors.white : Colors.black87,
@@ -227,7 +231,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                (isDark ? Colors.black : Colors.white).withOpacity(0.9),
+                                (isDark ? MangoPalette.black : Colors.white).withOpacity(0.9),
                               ],
                               stops: const [0.3, 1.0],
                             ),
@@ -279,7 +283,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                                                 Text(
                                                   profile.roleTitle.toUpperCase(),
                                                   style: TextStyle(
-                                                    fontSize: 10,
+                                                    fontSize: 12,
                                                     fontWeight: FontWeight.w700,
                                                     color: roleColor,
                                                     letterSpacing: 0.8,
@@ -302,7 +306,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                               decoration: BoxDecoration(
                                                 color: Colors.amber.withOpacity(0.2),
-                                                borderRadius: BorderRadius.circular(12),
+                                                borderRadius: BorderRadius.circular(MangoRadius.md),
                                                 border: Border.all(
                                                   color: Colors.amber.withOpacity(0.4),
                                                   width: 1,
@@ -320,7 +324,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                                                   Text(
                                                     'PREMIUM',
                                                     style: TextStyle(
-                                                      fontSize: 8,
+                                                      fontSize: 12,
                                                       fontWeight: FontWeight.w700,
                                                       color: Colors.amber,
                                                     ),
@@ -345,7 +349,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                                           shadows: [
                                             Shadow(
                                               blurRadius: 8,
-                                              color: Colors.black.withOpacity(0.3),
+                                              color: MangoPalette.black.withOpacity(0.3),
                                             ),
                                           ],
                                         ),
@@ -367,7 +371,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                                             Text(
                                               profile.location!,
                                               style: TextStyle(
-                                                fontSize: 11,
+                                                fontSize: 12,
                                                 color: isDark ? Colors.white60 : Colors.black45,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -405,15 +409,15 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                                 ),
                                 
                                 // Contributor ID Badge
-                                GestureDetector(
+                                MangoPressable(
                                   onTap: () => _showContributorIdDialog(context, profile, isDark),
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                     decoration: BoxDecoration(
-                                      color: (isDark ? Colors.white : Colors.black).withOpacity(0.15),
+                                      color: (isDark ? Colors.white : MangoPalette.black).withOpacity(0.15),
                                       borderRadius: BorderRadius.circular(30),
                                       border: Border.all(
-                                        color: (isDark ? Colors.white : Colors.black).withOpacity(0.2),
+                                        color: (isDark ? Colors.white : MangoPalette.black).withOpacity(0.2),
                                         width: 1,
                                       ),
                                     ),
@@ -456,10 +460,10 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                                       ),
                                       label: Text(_isFollowing ? 'Following' : 'Follow'),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: _isFollowing ? Colors.grey : roleColor,
+                                        backgroundColor: _isFollowing ? MangoPalette.grey500 : roleColor,
                                         foregroundColor: Colors.white,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius: BorderRadius.circular(MangoRadius.lg),
                                         ),
                                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                       ),
@@ -490,13 +494,13 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                       const SizedBox(height: 12),
                       Card(
                         elevation: 0,
-                        color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF8F8FA),
+                        color: isDark ? const Color(0xFF1B241E) : const Color(0xFFF5F6F3),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           side: BorderSide(
                             color: isDark 
                                 ? Colors.white.withOpacity(0.06) 
-                                : Colors.black.withOpacity(0.04),
+                                : MangoPalette.black.withOpacity(0.04),
                           ),
                         ),
                         child: Padding(
@@ -527,7 +531,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                               roleColor.withOpacity(0.05),
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           border: Border.all(
                             color: roleColor.withOpacity(0.2),
                           ),
@@ -568,7 +572,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                             decoration: BoxDecoration(
                               color: roleColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(MangoRadius.lg),
                               border: Border.all(
                                 color: roleColor.withOpacity(0.2),
                                 width: 1,
@@ -611,13 +615,13 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                             label: Text(
                               subCategory,
                               style: TextStyle(
-                                fontSize: 11,
+                                fontSize: 12,
                                 color: isDark ? Colors.white70 : Colors.black54,
                               ),
                             ),
-                            backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
+                            backgroundColor: isDark ? MangoPalette.grey800 : MangoPalette.grey200,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(MangoRadius.lg),
                             ),
                           );
                         }).toList(),
@@ -637,7 +641,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                             decoration: BoxDecoration(
                               color: roleColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(MangoRadius.lg),
                               border: Border.all(
                                 color: roleColor.withOpacity(0.2),
                                 width: 1,
@@ -663,13 +667,13 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                       const SizedBox(height: 12),
                       Card(
                         elevation: 0,
-                        color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF8F8FA),
+                        color: isDark ? const Color(0xFF1B241E) : const Color(0xFFF5F6F3),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           side: BorderSide(
                             color: isDark 
                                 ? Colors.white.withOpacity(0.06) 
-                                : Colors.black.withOpacity(0.04),
+                                : MangoPalette.black.withOpacity(0.04),
                           ),
                         ),
                         child: Padding(
@@ -717,17 +721,17 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                     if (profile.portfolio.isNotEmpty) ...[
                       _buildSectionHeader('Portfolio', isDark),
                       const SizedBox(height: 12),
-                      GestureDetector(
+                      MangoPressable(
                         onTap: () => _launchUrl(profile.portfolio),
                         child: Card(
                           elevation: 0,
-                          color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF8F8FA),
+                          color: isDark ? const Color(0xFF1B241E) : const Color(0xFFF5F6F3),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                             side: BorderSide(
                               color: isDark 
                                   ? Colors.white.withOpacity(0.06) 
-                                  : Colors.black.withOpacity(0.04),
+                                  : MangoPalette.black.withOpacity(0.04),
                             ),
                           ),
                           child: Padding(
@@ -738,7 +742,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     color: roleColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(MangoRadius.md),
                                   ),
                                   child: Icon(
                                     Icons.work_outline,
@@ -774,7 +778,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                                 Icon(
                                   Icons.open_in_new,
                                   size: 16,
-                                  color: isDark ? Colors.grey.shade400 : Colors.black38,
+                                  color: isDark ? MangoPalette.grey400 : Colors.black38,
                                 ),
                               ],
                             ),
@@ -790,13 +794,13 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                       const SizedBox(height: 12),
                       Card(
                         elevation: 0,
-                        color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF8F8FA),
+                        color: isDark ? const Color(0xFF1B241E) : const Color(0xFFF5F6F3),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           side: BorderSide(
                             color: isDark 
                                 ? Colors.white.withOpacity(0.06) 
-                                : Colors.black.withOpacity(0.04),
+                                : MangoPalette.black.withOpacity(0.04),
                           ),
                         ),
                         child: Padding(
@@ -850,7 +854,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(MangoRadius.lg),
                         border: Border.all(
                           color: roleColor.withOpacity(0.2),
                           width: 1,
@@ -956,8 +960,8 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 11,
-                  color: isDark ? Colors.grey.shade400 : Colors.black38,
+                  fontSize: 12,
+                  color: isDark ? MangoPalette.grey400 : Colors.black38,
                 ),
               ),
               const SizedBox(height: 2),
@@ -984,7 +988,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
         imageUrl: bannerUrl,
         fit: BoxFit.cover,
         placeholder: (context, url) => Container(
-          color: isDark ? Colors.grey[900] : Colors.grey[200],
+          color: isDark ? MangoPalette.grey900 : MangoPalette.grey200,
         ),
         errorWidget: (_, __, ___) => _buildDefaultBanner(roleColor, isDark),
       );
@@ -1015,7 +1019,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
               child: Icon(
                 Icons.person,
                 size: 200,
-                color: isDark ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : MangoPalette.black,
               ),
             ),
           ),
@@ -1032,12 +1036,12 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: (isDark ? Colors.white : Colors.black).withOpacity(0.2),
+          color: (isDark ? Colors.white : MangoPalette.black).withOpacity(0.2),
           width: 3,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -1061,7 +1065,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
     bool isLink = false,
     VoidCallback? onTap,
   }) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Row(
         children: [
@@ -1078,8 +1082,8 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                 Text(
                   label,
                   style: TextStyle(
-                    fontSize: 11,
-                    color: isDark ? Colors.grey.shade400 : Colors.black38,
+                    fontSize: 12,
+                    color: isDark ? MangoPalette.grey400 : Colors.black38,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -1127,7 +1131,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
         Text(
           label,
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             color: isDark ? Colors.white60 : Colors.black54,
           ),
         ),
@@ -1174,7 +1178,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
     
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? const Color(0xFF1C1C1E) : Colors.white,
+      backgroundColor: isDark ? const Color(0xFF1B241E) : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -1191,7 +1195,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: roleColor.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Icon(
                       Icons.fingerprint,
@@ -1229,8 +1233,8 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.black38 : Colors.grey[100],
-                  borderRadius: BorderRadius.circular(12),
+                  color: isDark ? Colors.black38 : MangoPalette.grey100,
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
                 child: Row(
                   children: [
@@ -1245,6 +1249,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                       ),
                     ),
                     IconButton(
+        tooltip: 'Copy',
                       onPressed: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -1260,8 +1265,8 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                               ],
                             ),
                             behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            backgroundColor: isDark ? const Color(0xFF2C2C2E) : Colors.white,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)),
+                            backgroundColor: isDark ? const Color(0xFF243028) : Colors.white,
                           ),
                         );
                       },
@@ -1283,7 +1288,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                   ),
                   child: const Text('Close'),
@@ -1299,7 +1304,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
   void _showShareOptions(BuildContext context, ContributorProfile profile, bool isDark) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? const Color(0xFF1C1C1E) : Colors.white,
+      backgroundColor: isDark ? const Color(0xFF1B241E) : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -1338,7 +1343,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
                   _buildShareOption(
                     icon: Icons.share,
                     label: 'Share',
-                    color: Colors.green,
+                    color: MangoPalette.green500,
                     onTap: () {
                       Navigator.pop(context);
                       // Implement share functionality
@@ -1369,7 +1374,7 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
     required Color color,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Column(
         children: [
@@ -1399,8 +1404,8 @@ class _ContributorProfileScreenState extends State<ContributorProfileScreen>
       context: context,
       builder: (context) {
         return Dialog(
-          backgroundColor: isDark ? const Color(0xFF1C1C1E) : Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          backgroundColor: isDark ? const Color(0xFF1B241E) : Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.lg)),
           child: Container(
             padding: const EdgeInsets.all(24),
             child: Column(

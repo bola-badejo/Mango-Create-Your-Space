@@ -5,6 +5,8 @@ import 'package:iconify_flutter_plus/iconify_flutter_plus.dart';
 import 'package:iconify_flutter_plus/icons/mingcute.dart'; 
 import 'package:iconify_flutter_plus/icons/ph.dart'; 
 import 'package:iconify_flutter_plus/icons/ri.dart'; 
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class ImageViewerDialog extends StatefulWidget {
   final List<dynamic> images;
@@ -116,7 +118,7 @@ class _ImageViewerDialogState extends State<ImageViewerDialog> with SingleTicker
                             });
                           },
                           itemBuilder: (context, index) {
-                            return GestureDetector(
+                            return MangoPressable(
                               onTap: _closeDialog,
                               child: InteractiveViewer(
                                 panEnabled: true,
@@ -133,7 +135,7 @@ class _ImageViewerDialogState extends State<ImageViewerDialog> with SingleTicker
                                     loadingBuilder: (context, child, loadingProgress) {
                                       if (loadingProgress == null) return child;
                                       return Center(
-                                        child: CircularProgressIndicator(
+                                        child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                           value: loadingProgress.expectedTotalBytes != null
                                               ? loadingProgress.cumulativeBytesLoaded /
                                                   loadingProgress.expectedTotalBytes!
@@ -161,8 +163,8 @@ class _ImageViewerDialogState extends State<ImageViewerDialog> with SingleTicker
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         margin: const EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(12),
+                          color: MangoPalette.black.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           border: Border.all(color: Colors.white.withOpacity(0.2)),
                         ),
                         child: Column(
@@ -262,7 +264,7 @@ class _ImageViewerDialogState extends State<ImageViewerDialog> with SingleTicker
         
         
         Container(
-          color: Colors.black.withOpacity(0.6),
+          color: MangoPalette.black.withOpacity(0.6),
         ),
       ],
     ),
@@ -275,7 +277,7 @@ class _ImageViewerDialogState extends State<ImageViewerDialog> with SingleTicker
       margin: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
         color: Colors.black54,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         children: [
@@ -365,6 +367,7 @@ class _ImageViewerDialogState extends State<ImageViewerDialog> with SingleTicker
           
           if (_currentIndex > 0)
             IconButton(
+        tooltip: 'Back',
               onPressed: () {
                 _pageController.previousPage(
                   duration: const Duration(milliseconds: 300),
@@ -386,6 +389,7 @@ class _ImageViewerDialogState extends State<ImageViewerDialog> with SingleTicker
           
           if (_currentIndex < widget.images.length - 1)
             IconButton(
+        tooltip: 'Next',
               onPressed: () {
                 _pageController.nextPage(
                   duration: const Duration(milliseconds: 300),

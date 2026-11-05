@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:mango/Conversations/utils/audio_player_service.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class VoiceNotePlayer extends StatefulWidget {
   final String audioUrl;
@@ -77,12 +78,13 @@ class _VoiceNotePlayerState extends State<VoiceNotePlayer> {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(20),
+        color: MangoPalette.grey100,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
       ),
       child: Row(
         children: [
           IconButton(
+        tooltip: 'Pause',
             icon: Icon(
               _playerState == PlayerState.playing
                   ? Icons.pause
@@ -109,11 +111,11 @@ class _VoiceNotePlayerState extends State<VoiceNotePlayer> {
                   children: [
                     Text(
                       _formatDuration(_position),
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                     ),
                     Text(
                       _formatDuration(_duration),
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                     ),
                   ],
                 ),

@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:mango/Home/controllers/video_effects.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class EffectsDialog extends StatefulWidget {
   final String currentFilter;
@@ -47,7 +49,7 @@ class _EffectsDialogState extends State<EffectsDialog> {
             final filter = availableFilters[index];
             final isSelected = _selectedFilter == filter;
             
-            return GestureDetector(
+            return MangoPressable(
               onTap: () {
                 setState(() => _selectedFilter = filter);
                 widget.onFilterSelected(filter);
@@ -55,9 +57,9 @@ class _EffectsDialogState extends State<EffectsDialog> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   border: Border.all(
-                    color: isSelected ? Colors.blue : Colors.grey,
+                    color: isSelected ? Colors.blue : MangoPalette.grey500,
                     width: 2,
                   ),
                   color: _getFilterColor(filter),
@@ -78,7 +80,7 @@ class _EffectsDialogState extends State<EffectsDialog> {
                       filter,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 10,
+                        fontSize: 12,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -102,15 +104,15 @@ class _EffectsDialogState extends State<EffectsDialog> {
     final colors = {
       'vintage': const Color(0xFF8B7355),
       'cool': const Color(0xFF87CEEB),
-      'warm': const Color(0xFFFFA500),
+      'warm': const Color(0xFF369365),
       'cinematic': const Color(0xFF2F4F4F),
       'dramatic': const Color(0xFF4B0082),
-      'noir': Colors.black,
+      'noir': MangoPalette.black,
       'comic': const Color(0xFFFFD700),
       'pastel': const Color(0xFFFFB6C1),
       'neon': const Color(0xFF39FF14),
-      'normal': Colors.grey,
+      'normal': MangoPalette.grey500,
     };
-    return colors[filter] ?? Colors.grey.shade700;
+    return colors[filter] ?? MangoPalette.grey700;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/AccountSetup/user_detail/user_detail_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class NavigationButtons extends StatelessWidget {
   final int currentStep;
@@ -38,10 +39,10 @@ class NavigationButtons extends StatelessWidget {
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: canProceed ? Colors.orange : Colors.grey,
+                  backgroundColor: canProceed ? MangoPalette.green500 : MangoPalette.grey500,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   elevation: 2,
                 ),
@@ -49,7 +50,7 @@ class NavigationButtons extends StatelessWidget {
                     ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(
+                        child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                           strokeWidth: 2,
                           valueColor: AlwaysStoppedAnimation(Colors.white),
                         ),
@@ -129,16 +130,16 @@ class ValidationSummary extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.orange.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.orange),
+        color: MangoPalette.green500.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.green500),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Please fix the following issues:',
-            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.orange),
+            style: TextStyle(fontWeight: FontWeight.w600, color: MangoPalette.green500),
           ),
           const SizedBox(height: 8),
           ...issues.map(

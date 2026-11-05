@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class ShimmerWidget extends StatelessWidget {
   final double width;
@@ -32,17 +32,25 @@ class ShimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-        highlightColor: Colors.grey[200]!,
-        baseColor: Colors.grey[100]!,
-        child: Container(
-          margin: margin,
-          width: width,
-          height: height,
-          decoration: ShapeDecoration(
-            shape: shapeBorder,
-            color: Colors.grey,
-          ),
-        ));
+    // Skeleton colours follow the theme, so dark screens get dark
+    // skeletons. MangoShimmer stops the sweep under reduced motion and
+    // keeps placeholders silent for screen readers.
+    final c = context.colors;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final base = dark ? c.surfaceElevated : c.borderSubtle;
+    final highlight = dark ? c.surfaceRaised : c.bgSecondary;
+    return MangoShimmer(
+      baseColor: base,
+      highlightColor: highlight,
+      child: Container(
+        margin: margin,
+        width: width,
+        height: height,
+        decoration: ShapeDecoration(
+          shape: shapeBorder,
+          color: base,
+        ),
+      ),
+    );
   }
 }

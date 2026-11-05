@@ -18,6 +18,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mango/utils.dart';
 import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class UploadMusicController extends GetxController {
   
@@ -146,7 +148,7 @@ class UploadMusicController extends GetxController {
         'Contributor Required',
         'Please register as a creator first to upload music.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -163,7 +165,7 @@ class UploadMusicController extends GetxController {
         'Missing Info',
         'Please complete all required fields',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -523,7 +525,7 @@ class UploadMusicController extends GetxController {
       title,
       message,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white,
       duration: duration,
       context: context,
@@ -546,7 +548,7 @@ class UploadMusicController extends GetxController {
       title,
       message,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.orange,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white,
       context: context,
     );
@@ -597,9 +599,9 @@ class _UploadSongPageState extends State<UploadSongPage>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
-    final cardColor = isDark ? Colors.grey[800]! : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final backgroundColor = isDark ? MangoPalette.grey900 : MangoPalette.grey50;
+    final cardColor = isDark ? MangoPalette.grey800 : Colors.white;
+    final textColor = isDark ? Colors.white : MangoPalette.black;
 
     return WillPopScope(
       onWillPop: () async => await _showExitDialog(context),
@@ -675,15 +677,15 @@ class _UploadSongPageState extends State<UploadSongPage>
       final isActive = _controller.currentStep.value == stepNumber;
       final isCompleted = _controller.currentStep.value > stepNumber;
       final isAccessible = _controller.currentStep.value >= stepNumber;
-      return GestureDetector(
+      return MangoPressable(
         onTap: isAccessible ? () => _controller.currentStep.value = stepNumber : null,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: isActive ? Colors.orange.withOpacity(0.1) : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            border: isActive ? Border.all(color: Colors.orange.withOpacity(0.3)) : null,
+            color: isActive ? MangoPalette.green500.withOpacity(0.1) : Colors.transparent,
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            border: isActive ? Border.all(color: MangoPalette.green500.withOpacity(0.3)) : null,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -692,8 +694,8 @@ class _UploadSongPageState extends State<UploadSongPage>
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: isCompleted
-                      ? Colors.green
-                      : (isActive ? Colors.orange : Colors.grey.withOpacity(0.2)),
+                      ? MangoPalette.green500
+                      : (isActive ? MangoPalette.green500 : MangoPalette.grey500.withOpacity(0.2)),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(isCompleted ? Icons.check : icon, color: Colors.white, size: 14),
@@ -702,9 +704,9 @@ class _UploadSongPageState extends State<UploadSongPage>
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                  color: isDark ? Colors.white : Colors.black,
+                  color: isDark ? Colors.white : MangoPalette.black,
                 ),
               ),
             ],
@@ -715,7 +717,7 @@ class _UploadSongPageState extends State<UploadSongPage>
   }
 
   Widget _buildStepDivider(bool isDark) {
-    return Container(width: 16, height: 1, color: isDark ? Colors.grey[700] : Colors.grey[300]);
+    return Container(width: 16, height: 1, color: isDark ? MangoPalette.grey700 : MangoPalette.grey300);
   }
 
   
@@ -739,10 +741,10 @@ class _UploadSongPageState extends State<UploadSongPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -751,7 +753,7 @@ class _UploadSongPageState extends State<UploadSongPage>
             child: Column(
               children: [
                 Obx(
-                  () => GestureDetector(
+                  () => MangoPressable(
                     onTap: (){
                       _controller.pickImage(context);
                     },
@@ -760,36 +762,36 @@ class _UploadSongPageState extends State<UploadSongPage>
                       width: 200,
                       height: 200,
                       decoration: BoxDecoration(
-                        color: _controller.isArtworkSelected.value ? Colors.transparent : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(16),
+                        color: _controller.isArtworkSelected.value ? Colors.transparent : MangoPalette.grey200,
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                         border: Border.all(
-                          color: _controller.isArtworkSelected.value ? Colors.orange : Colors.grey[300]!,
+                          color: _controller.isArtworkSelected.value ? MangoPalette.green500 : MangoPalette.grey300,
                           width: 2,
                         ),
                       ),
                       child: _controller.isArtworkSelected.value
                           ? ClipRRect(
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                               child: _buildArtworkImage(), 
                             )
                           : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.add_photo_alternate, size: 48, color: Colors.grey[400]),
+                                Icon(Icons.add_photo_alternate, size: 48, color: MangoPalette.grey400),
                                 const SizedBox(height: 12),
-                                Text('Add Artwork', style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.w500)),
+                                Text('Add Artwork', style: TextStyle(color: MangoPalette.grey600, fontWeight: FontWeight.w500)),
                               ],
                             ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 24),
-                Text('Upload Album Artwork', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black)),
+                Text('Upload Album Artwork', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : MangoPalette.black)),
                 const SizedBox(height: 8),
                 Text(
                   'Choose a square image for best results. Recommended: 1000x1000px',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
+                  style: TextStyle(color: isDark ? MangoPalette.grey400 : MangoPalette.grey600),
                 ),
               ],
             ),
@@ -819,10 +821,10 @@ class _UploadSongPageState extends State<UploadSongPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -835,10 +837,10 @@ class _UploadSongPageState extends State<UploadSongPage>
                     duration: const Duration(milliseconds: 400),
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: _controller.isTrackSelected.value ? Colors.green.withOpacity(0.1) : Colors.orange.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(16),
+                      color: _controller.isTrackSelected.value ? MangoPalette.green500.withOpacity(0.1) : MangoPalette.green500.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                       border: Border.all(
-                        color: _controller.isTrackSelected.value ? Colors.green : Colors.orange,
+                        color: _controller.isTrackSelected.value ? MangoPalette.green500 : MangoPalette.green500,
                         width: 2,
                       ),
                     ),
@@ -847,7 +849,7 @@ class _UploadSongPageState extends State<UploadSongPage>
                         Icon(
                           _controller.isTrackSelected.value ? Icons.check_circle : Icons.music_note,
                           size: 48,
-                          color: _controller.isTrackSelected.value ? Colors.green : Colors.orange,
+                          color: _controller.isTrackSelected.value ? MangoPalette.green500 : MangoPalette.green500,
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -860,19 +862,19 @@ class _UploadSongPageState extends State<UploadSongPage>
                               ? 'Your track has been selected and processed'
                               : 'Choose your audio file to continue',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
+                          style: TextStyle(color: isDark ? MangoPalette.grey400 : MangoPalette.grey600),
                         ),
                         if (_controller.uploadProgress.value > 0) ...[
                           const SizedBox(height: 16),
-                          LinearProgressIndicator(
+                          LinearProgressIndicator(semanticsLabel: 'Loading', 
                             value: _controller.uploadProgress.value,
-                            backgroundColor: Colors.grey[300],
-                            color: Colors.orange,
+                            backgroundColor: MangoPalette.grey300,
+                            color: MangoPalette.green500,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             '${(_controller.uploadProgress.value * 100).toStringAsFixed(0)}%',
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.orange),
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: MangoPalette.green500),
                           ),
                         ],
                       ],
@@ -883,9 +885,9 @@ class _UploadSongPageState extends State<UploadSongPage>
                 ElevatedButton.icon(
                   onPressed: (){_controller.isUploading.value ? null : _controller.pickAndUploadAudio(context);},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: MangoPalette.green500,
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
                   ),
                   icon: const Icon(Icons.upload_file, color: Colors.white),
                   label: Text(
@@ -896,7 +898,7 @@ class _UploadSongPageState extends State<UploadSongPage>
                 const SizedBox(height: 8),
                 Text(
                   'Supported: MP3, WAV, M4A, AAC, FLAC (max 50MB)',
-                  style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600], fontSize: 12),
+                  style: TextStyle(color: isDark ? MangoPalette.grey400 : MangoPalette.grey600, fontSize: 12),
                 ),
               ],
             ),
@@ -916,10 +918,10 @@ class _UploadSongPageState extends State<UploadSongPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -1002,15 +1004,15 @@ class _UploadSongPageState extends State<UploadSongPage>
       maxLines: maxLines,
       keyboardType: keyboardType,
       onChanged: onChanged,
-      style: TextStyle(color: isDark ? Colors.white : Colors.black, fontSize: 14),
+      style: TextStyle(color: isDark ? Colors.white : MangoPalette.black, fontSize: 14),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
-        prefixIcon: Icon(icon, color: Colors.orange),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey[400]!)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.orange)),
+        labelStyle: TextStyle(color: isDark ? MangoPalette.grey400 : MangoPalette.grey600),
+        prefixIcon: Icon(icon, color: MangoPalette.green500),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(MangoRadius.md), borderSide: BorderSide(color: MangoPalette.grey400)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(MangoRadius.md), borderSide: BorderSide(color: MangoPalette.green500)),
         filled: true,
-        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+        fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
       ),
     );
   }
@@ -1030,7 +1032,7 @@ class _UploadSongPageState extends State<UploadSongPage>
         items: items.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(value, style: TextStyle(color: isDark ? Colors.white : Colors.black, fontSize: 14)),
+            child: Text(value, style: TextStyle(color: isDark ? Colors.white : MangoPalette.black, fontSize: 14)),
           );
         }).toList(),
         onChanged: (String? newValue) {
@@ -1039,12 +1041,12 @@ class _UploadSongPageState extends State<UploadSongPage>
         },
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
-          prefixIcon: Icon(icon, color: Colors.orange),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey[400]!)),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.orange)),
+          labelStyle: TextStyle(color: isDark ? MangoPalette.grey400 : MangoPalette.grey600),
+          prefixIcon: Icon(icon, color: MangoPalette.green500),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(MangoRadius.md), borderSide: BorderSide(color: MangoPalette.grey400)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(MangoRadius.md), borderSide: BorderSide(color: MangoPalette.green500)),
           filled: true,
-          fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+          fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
         ),
       ),
     );
@@ -1055,16 +1057,16 @@ class _UploadSongPageState extends State<UploadSongPage>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[400]!),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.grey400),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.orange),
+          Icon(icon, color: MangoPalette.green500),
           const SizedBox(width: 12),
-          Expanded(child: Text(title, style: TextStyle(color: isDark ? Colors.white : Colors.black, fontWeight: FontWeight.w500))),
-          Switch(value: value, onChanged: onChanged, activeColor: Colors.orange),
+          Expanded(child: Text(title, style: TextStyle(color: isDark ? Colors.white : MangoPalette.black, fontWeight: FontWeight.w500))),
+          Switch(value: value, onChanged: onChanged, activeColor: MangoPalette.green500),
         ],
       ),
     );
@@ -1083,7 +1085,7 @@ class _UploadSongPageState extends State<UploadSongPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Credits & \nContributors', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: textColor)),
-                Text('Add everyone involved\nin your track', style: TextStyle(fontSize: 10, color: textColor.withOpacity(0.6))),
+                Text('Add everyone involved\nin your track', style: TextStyle(fontSize: 12, color: textColor.withOpacity(0.6))),
               ],
             ),
             _buildAddCreditButton(isDark),
@@ -1106,8 +1108,8 @@ class _UploadSongPageState extends State<UploadSongPage>
       child: ElevatedButton.icon(
         onPressed: () => _showCreditModal(),
         style: ElevatedButton.styleFrom(
-          backgroundColor: isDark ? Colors.white : Colors.black,
-          foregroundColor: isDark ? Colors.black : Colors.white,
+          backgroundColor: isDark ? Colors.white : MangoPalette.black,
+          foregroundColor: isDark ? MangoPalette.black : Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           elevation: 2,
@@ -1124,13 +1126,13 @@ class _UploadSongPageState extends State<UploadSongPage>
       width: double.infinity,
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.grey500.withOpacity(0.2)),
       ),
       child: Column(
         children: [
-          Icon(FontAwesomeIcons.users, size: 48, color: Colors.grey.withOpacity(0.4)),
+          Icon(FontAwesomeIcons.users, size: 48, color: MangoPalette.grey500.withOpacity(0.4)),
           const SizedBox(height: 16),
           Text('No credits added yet', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: textColor.withOpacity(0.7))),
           const SizedBox(height: 8),
@@ -1154,7 +1156,7 @@ class _UploadSongPageState extends State<UploadSongPage>
             key: Key('credit-${entry.key}'),
             direction: DismissDirection.endToStart,
             background: Container(
-              decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(MangoRadius.md)),
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 20),
               child: const Icon(FontAwesomeIcons.trash, color: Colors.red),
@@ -1165,10 +1167,10 @@ class _UploadSongPageState extends State<UploadSongPage>
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey[800] : Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  color: isDark ? MangoPalette.grey800 : Colors.white,
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                   border: Border.all(color: Colors.blue.withOpacity(0.1)),
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, 2))],
+                  boxShadow: [BoxShadow(color: MangoPalette.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, 2))],
                 ),
                 child: Row(
                   children: [
@@ -1189,7 +1191,7 @@ class _UploadSongPageState extends State<UploadSongPage>
                       ),
                     ),
                     IconButton(
-                      icon: Icon(FontAwesomeIcons.penToSquare, size: 14, color: Colors.grey.withOpacity(0.6)),
+                      icon: Icon(FontAwesomeIcons.penToSquare, size: 14, color: MangoPalette.grey500.withOpacity(0.6)),
                       onPressed: () => _showCreditModal(editIndex: entry.key),
                     ),
                   ],
@@ -1225,13 +1227,14 @@ class _UploadSongPageState extends State<UploadSongPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3), borderRadius: BorderRadius.circular(2))),
+              Container(width: 40, height: 4, decoration: BoxDecoration(color: MangoPalette.grey500.withOpacity(0.3), borderRadius: BorderRadius.circular(MangoRadius.xs))),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(isEditing ? 'Edit Credit' : 'Add Credit', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-                  IconButton(icon: const Icon(FontAwesomeIcons.xmark, size: 16), onPressed: () => Navigator.pop(context)),
+                  IconButton(
+        tooltip: 'Close',icon: const Icon(FontAwesomeIcons.xmark, size: 16), onPressed: () => Navigator.pop(context)),
                 ],
               ),
               const SizedBox(height: 16),
@@ -1243,10 +1246,10 @@ class _UploadSongPageState extends State<UploadSongPage>
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: ActionChip(
-                        label: Text(role, style: const TextStyle(fontSize: 11)),
+                        label: Text(role, style: const TextStyle(fontSize: 12)),
                         onPressed: () => roleController.text = role,
-                        backgroundColor: Colors.grey.withOpacity(0.1),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        backgroundColor: MangoPalette.grey500.withOpacity(0.1),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)),
                         labelPadding: const EdgeInsets.symmetric(horizontal: 12),
                       ),
                     );
@@ -1304,7 +1307,7 @@ class _UploadSongPageState extends State<UploadSongPage>
                     }
                     Navigator.pop(context);
                   },
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.orange, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                  style: ElevatedButton.styleFrom(backgroundColor: MangoPalette.green500, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.sm))),
                   child: Text(isEditing ? 'Update Credit' : 'Add Credit', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14)),
                 ),
               ),
@@ -1345,7 +1348,7 @@ class _UploadSongPageState extends State<UploadSongPage>
                     roleController.text = role;
                     Navigator.pop(context);
                   },
-                  backgroundColor: Colors.grey.withOpacity(0.1),
+                  backgroundColor: MangoPalette.grey500.withOpacity(0.1),
                 );
               }).toList(),
             ),
@@ -1357,7 +1360,7 @@ class _UploadSongPageState extends State<UploadSongPage>
                   Navigator.pop(context);
                   _showCustomRoleInput(roleController);
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.grey.withOpacity(0.1), foregroundColor: Theme.of(context).textTheme.bodyLarge?.color),
+                style: ElevatedButton.styleFrom(backgroundColor: MangoPalette.grey500.withOpacity(0.1), foregroundColor: Theme.of(context).textTheme.bodyLarge?.color),
                 child: const Text('Custom Role'),
               ),
             ),
@@ -1410,22 +1413,22 @@ class _UploadSongPageState extends State<UploadSongPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 15, offset: const Offset(0, 5)),
+                BoxShadow(color: MangoPalette.black.withOpacity(0.1), blurRadius: 15, offset: const Offset(0, 5)),
               ],
             ),
             child: Obx(
               () => Column(
                 children: [
-                  const Icon(Icons.task_alt, size: 64, color: Colors.green),
+                  const Icon(Icons.task_alt, size: 64, color: MangoPalette.green500),
                   const SizedBox(height: 16),
                   Text('Ready to Upload!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textColor)),
                   const SizedBox(height: 8),
                   Text(
                     'Review your track details before uploading',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600], fontSize: 11, height: 1.2),
+                    style: TextStyle(color: isDark ? MangoPalette.grey400 : MangoPalette.grey600, fontSize: 12, height: 1.2),
                   ),
                   const SizedBox(height: 32),
                   _buildArtworkPreview(isDark, textColor),
@@ -1459,28 +1462,28 @@ class _UploadSongPageState extends State<UploadSongPage>
       () => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _controller.selectedImage.value != null ? Colors.green.withOpacity(0.3) : Colors.grey.withOpacity(0.2)),
+          color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          border: Border.all(color: _controller.selectedImage.value != null ? MangoPalette.green500.withOpacity(0.3) : MangoPalette.grey500.withOpacity(0.2)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(FontAwesomeIcons.image, color: _controller.selectedImage.value != null ? Colors.green : Colors.grey, size: 16),
+                Icon(FontAwesomeIcons.image, color: _controller.selectedImage.value != null ? MangoPalette.green500 : MangoPalette.grey500, size: 16),
                 const SizedBox(width: 8),
                 Text('Artwork', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: textColor)),
                 const Spacer(),
                 if (_controller.selectedImage.value != null)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+                    decoration: BoxDecoration(color: MangoPalette.green500.withOpacity(0.1), borderRadius: BorderRadius.circular(MangoRadius.sm)),
                     child: Row(
                       children: [
-                        Icon(FontAwesomeIcons.check, color: Colors.green, size: 10),
+                        Icon(FontAwesomeIcons.check, color: MangoPalette.green500, size: 10),
                         const SizedBox(width: 4),
-                        Text('Ready', style: TextStyle(fontSize: 10, color: Colors.green, fontWeight: FontWeight.w600)),
+                        Text('Ready', style: TextStyle(fontSize: 12, color: MangoPalette.green500, fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
@@ -1494,10 +1497,10 @@ class _UploadSongPageState extends State<UploadSongPage>
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       child: _buildArtworkImage(), 
                     ),
                   ),
@@ -1508,11 +1511,12 @@ class _UploadSongPageState extends State<UploadSongPage>
                       children: [
                         Text(_controller.selectedImage.value!.name, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600), maxLines: 1, overflow: TextOverflow.ellipsis),
                         const SizedBox(height: 4),
-                        Text('Artwork selected', style: TextStyle(fontSize: 10, color: Colors.grey[600])),
+                        Text('Artwork selected', style: TextStyle(fontSize: 12, color: MangoPalette.grey600)),
                       ],
                     ),
                   ),
                   IconButton(
+        tooltip: 'Delete',
                     icon: Icon(FontAwesomeIcons.trash, color: Colors.red, size: 14),
                     onPressed: () => _controller.selectedImage.value = null,
                     padding: EdgeInsets.zero,
@@ -1535,11 +1539,11 @@ class _UploadSongPageState extends State<UploadSongPage>
           width: 80,
           height: 80,
           decoration: BoxDecoration(
-            color: isDark ? Colors.grey[700] : Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey.withOpacity(0.3), style: BorderStyle.solid),
+            color: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
+            border: Border.all(color: MangoPalette.grey500.withOpacity(0.3), style: BorderStyle.solid),
           ),
-          child: Icon(FontAwesomeIcons.image, color: Colors.grey.withOpacity(0.5), size: 24),
+          child: Icon(FontAwesomeIcons.image, color: MangoPalette.grey500.withOpacity(0.5), size: 24),
         ),
         const SizedBox(height: 8),
         Text('No artwork selected', style: TextStyle(fontSize: 12, color: textColor.withOpacity(0.6))),
@@ -1552,12 +1556,12 @@ class _UploadSongPageState extends State<UploadSongPage>
       () => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
             color: (_controller.selectedTrackFile.value != null || _controller.downloadUrl.value.isNotEmpty)
-                ? Colors.green.withOpacity(0.3)
-                : Colors.grey.withOpacity(0.2),
+                ? MangoPalette.green500.withOpacity(0.3)
+                : MangoPalette.grey500.withOpacity(0.2),
           ),
         ),
         child: Column(
@@ -1566,7 +1570,7 @@ class _UploadSongPageState extends State<UploadSongPage>
             Row(
               children: [
                 Icon(FontAwesomeIcons.music,
-                    color: (_controller.selectedTrackFile.value != null || _controller.downloadUrl.value.isNotEmpty) ? Colors.green : Colors.grey,
+                    color: (_controller.selectedTrackFile.value != null || _controller.downloadUrl.value.isNotEmpty) ? MangoPalette.green500 : MangoPalette.grey500,
                     size: 16),
                 const SizedBox(width: 8),
                 Text('Audio Track', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: textColor)),
@@ -1574,12 +1578,12 @@ class _UploadSongPageState extends State<UploadSongPage>
                 if (_controller.selectedTrackFile.value != null || _controller.downloadUrl.value.isNotEmpty)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+                    decoration: BoxDecoration(color: MangoPalette.green500.withOpacity(0.1), borderRadius: BorderRadius.circular(MangoRadius.sm)),
                     child: Row(
                       children: [
-                        Icon(FontAwesomeIcons.check, color: Colors.green, size: 10),
+                        Icon(FontAwesomeIcons.check, color: MangoPalette.green500, size: 10),
                         const SizedBox(width: 4),
-                        Text('Ready', style: TextStyle(fontSize: 10, color: Colors.green, fontWeight: FontWeight.w600)),
+                        Text('Ready', style: TextStyle(fontSize: 12, color: MangoPalette.green500, fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
@@ -1592,8 +1596,8 @@ class _UploadSongPageState extends State<UploadSongPage>
                   Container(
                     width: 60,
                     height: 60,
-                    decoration: BoxDecoration(color: Colors.orange.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                    child: Icon(FontAwesomeIcons.music, color: Colors.orange, size: 24),
+                    decoration: BoxDecoration(color: MangoPalette.green500.withOpacity(0.1), borderRadius: BorderRadius.circular(MangoRadius.sm)),
+                    child: Icon(FontAwesomeIcons.music, color: MangoPalette.green500, size: 24),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -1608,11 +1612,12 @@ class _UploadSongPageState extends State<UploadSongPage>
                         ),
                         const SizedBox(height: 4),
                         Text(_controller.selectedTrackFile.value != null ? 'Local file' : 'Cloud file',
-                            style: TextStyle(fontSize: 10, color: Colors.grey[600])),
+                            style: TextStyle(fontSize: 12, color: MangoPalette.grey600)),
                       ],
                     ),
                   ),
                   IconButton(
+        tooltip: 'Delete',
                     icon: Icon(FontAwesomeIcons.trash, color: Colors.red, size: 14),
                     onPressed: () {
                       _controller.selectedTrackFile.value = null;
@@ -1628,10 +1633,10 @@ class _UploadSongPageState extends State<UploadSongPage>
               _buildTrackEmptyState(isDark, textColor),
             if (_controller.uploadProgress.value > 0 && _controller.uploadProgress.value < 1) ...[
               const SizedBox(height: 12),
-              LinearProgressIndicator(value: _controller.uploadProgress.value, backgroundColor: Colors.grey.withOpacity(0.3), color: Colors.orange),
+              LinearProgressIndicator(semanticsLabel: 'Loading', value: _controller.uploadProgress.value, backgroundColor: MangoPalette.grey500.withOpacity(0.3), color: MangoPalette.green500),
               const SizedBox(height: 4),
               Text('Uploading... ${(_controller.uploadProgress.value * 100).toStringAsFixed(0)}%',
-                  style: const TextStyle(fontSize: 10, color: Colors.orange, fontWeight: FontWeight.w600)),
+                  style: const TextStyle(fontSize: 12, color: MangoPalette.green500, fontWeight: FontWeight.w600)),
             ],
           ],
         ),
@@ -1646,11 +1651,11 @@ class _UploadSongPageState extends State<UploadSongPage>
           width: 80,
           height: 80,
           decoration: BoxDecoration(
-            color: isDark ? Colors.grey[700] : Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey.withOpacity(0.3), style: BorderStyle.solid),
+            color: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
+            border: Border.all(color: MangoPalette.grey500.withOpacity(0.3), style: BorderStyle.solid),
           ),
-          child: Icon(FontAwesomeIcons.music, color: Colors.grey.withOpacity(0.5), size: 24),
+          child: Icon(FontAwesomeIcons.music, color: MangoPalette.grey500.withOpacity(0.5), size: 24),
         ),
         const SizedBox(height: 8),
         Text('No audio file selected', style: TextStyle(fontSize: 12, color: textColor.withOpacity(0.6))),
@@ -1662,16 +1667,16 @@ class _UploadSongPageState extends State<UploadSongPage>
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: MangoPalette.grey100, borderRadius: BorderRadius.circular(MangoRadius.sm)),
       child: Row(
         children: [
-          Icon(icon, color: Colors.orange, size: 20),
+          Icon(icon, color: MangoPalette.green500, size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                Text(label, style: const TextStyle(fontSize: 12, color: MangoPalette.grey500)),
                 Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
@@ -1691,20 +1696,20 @@ class _UploadSongPageState extends State<UploadSongPage>
             ElevatedButton(
               onPressed: _controller.isUploading.value ? null : () => _controller.currentStep.value--,
               style: ElevatedButton.styleFrom(
-                backgroundColor: isDark ? Colors.grey[700] : Colors.grey[200],
+                backgroundColor: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
               ),
-              child: Text('Back', style: TextStyle(color: isDark ? Colors.white : Colors.black, fontWeight: FontWeight.w600)),
+              child: Text('Back', style: TextStyle(color: isDark ? Colors.white : MangoPalette.black, fontWeight: FontWeight.w600)),
             )
           else
             const SizedBox(width: 100),
           ElevatedButton(
             onPressed: _canProceedToNextStep() && !_controller.isUploading.value ? _goToNextStep : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: _canProceedToNextStep() && !_controller.isUploading.value ? Colors.orange : Colors.grey,
+              backgroundColor: _canProceedToNextStep() && !_controller.isUploading.value ? MangoPalette.green500 : MangoPalette.grey500,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
             ),
             child: Text(
               _controller.currentStep.value == 3
@@ -1741,9 +1746,9 @@ class _UploadSongPageState extends State<UploadSongPage>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: const TextStyle(fontSize: 14)),
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         behavior: SnackBarBehavior.fixed,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -1755,7 +1760,7 @@ class _UploadSongPageState extends State<UploadSongPage>
         content: Text(message, style: const TextStyle(fontSize: 14)),
         backgroundColor: Colors.red,
         behavior: SnackBarBehavior.fixed,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)),
         duration: const Duration(seconds: 3),
       ),
     );
@@ -1768,7 +1773,7 @@ class _UploadSongPageState extends State<UploadSongPage>
       builder: (context) => Container(
         margin: const EdgeInsets.all(16),
         padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
+        decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(MangoRadius.lg)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -1789,7 +1794,7 @@ class _UploadSongPageState extends State<UploadSongPage>
                     onPressed: () => Navigator.pop(context, false),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
                     ),
                     child: const Text('Cancel'),
                   ),
@@ -1801,7 +1806,7 @@ class _UploadSongPageState extends State<UploadSongPage>
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
                     ),
                     child: const Text('Remove', style: TextStyle(color: Colors.white)),
                   ),
@@ -1818,15 +1823,15 @@ class _UploadSongPageState extends State<UploadSongPage>
   Future<bool> _showExitDialog(BuildContext context) async {
     return await showDialog<bool>(
           context: context,
-          barrierColor: Colors.black.withOpacity(0.4),
+          barrierColor: MangoPalette.black.withOpacity(0.4),
           builder: (context) => Dialog(
             backgroundColor: Colors.transparent,
             insetPadding: const EdgeInsets.all(24),
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(24), boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20, offset: const Offset(0, 8)),
+              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(MangoRadius.lg), boxShadow: [
+                BoxShadow(color: MangoPalette.black.withOpacity(0.1), blurRadius: 20, offset: const Offset(0, 8)),
               ]),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -1855,8 +1860,8 @@ class _UploadSongPageState extends State<UploadSongPage>
                           onPressed: () => Navigator.of(context).pop(false),
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            side: BorderSide(color: Colors.grey.withOpacity(0.3)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
+                            side: BorderSide(color: MangoPalette.grey500.withOpacity(0.3)),
                           ),
                           icon: const Icon(FontAwesomeIcons.rotateLeft, size: 14),
                           label: Text('Continue', style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color, fontWeight: FontWeight.w600)),
@@ -1872,7 +1877,7 @@ class _UploadSongPageState extends State<UploadSongPage>
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
                             padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
                             elevation: 0,
                           ),
                           icon: const Icon(FontAwesomeIcons.trash, size: 14, color: Colors.white),

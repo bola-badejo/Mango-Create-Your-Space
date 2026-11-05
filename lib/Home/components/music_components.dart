@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mango/MusicPlayer/music.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class RecentPlayedCard extends StatelessWidget {
   final Music music;
@@ -17,7 +19,7 @@ class RecentPlayedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: () => pressDetails(),
         child: Container(
           width: 100,
@@ -26,19 +28,19 @@ class RecentPlayedCard extends StatelessWidget {
               image: NetworkImage(music.artworkUrl),
               fit: BoxFit.cover,
             ),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.black.withOpacity(0.5),
-                  Colors.black.withOpacity(0.1)
+                  MangoPalette.black.withOpacity(0.5),
+                  MangoPalette.black.withOpacity(0.1)
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
               ),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -51,7 +53,7 @@ class RecentPlayedCard extends StatelessWidget {
                     Text(
                       music.title,
                       style: TextStyle(
-                        fontSize: 10, 
+                        fontSize: 12, 
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
@@ -61,7 +63,7 @@ class RecentPlayedCard extends StatelessWidget {
                     Text(
                       music.artistName,
                       style: TextStyle(
-                        fontSize: 9, 
+                        fontSize: 12, 
                         color: Colors.white70,
                       ),
                       maxLines: 1,
@@ -94,7 +96,7 @@ class MusicCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: () => pressDetails(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +109,7 @@ class MusicCard extends StatelessWidget {
                   image: NetworkImage(music.artworkUrl),
                   fit: BoxFit.cover,
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
             ),
             const SizedBox(height: 5),
@@ -117,7 +119,7 @@ class MusicCard extends StatelessWidget {
                 music.title,
                 style: TextStyle(
                   color: Theme.of(context).primaryColorLight, 
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
                 maxLines: 1,
@@ -130,8 +132,8 @@ class MusicCard extends StatelessWidget {
               child: Text(
                 music.artistName,
                 style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 9,
+                  color: MangoPalette.grey500,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
                 maxLines: 1,

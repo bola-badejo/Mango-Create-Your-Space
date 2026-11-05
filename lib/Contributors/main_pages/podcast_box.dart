@@ -6,6 +6,8 @@ import 'package:mango/Contributors/pages/upload_podcast.dart';
 import 'package:mango/Models/customModel/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class PodcastBoxPage extends StatefulWidget {
   final MangoUser user;  
@@ -111,10 +113,10 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDarkMode ? Colors.white : Colors.black;
-    final backgroundColor = isDarkMode ? Colors.grey[900] : Colors.white;
-    final cardColor = isDarkMode ? Colors.grey[800] : Colors.grey[50];
-    final secondaryTextColor = isDarkMode ? Colors.grey[400] : Colors.grey[600];
+    final textColor = isDarkMode ? Colors.white : MangoPalette.black;
+    final backgroundColor = isDarkMode ? MangoPalette.grey900 : Colors.white;
+    final cardColor = isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50;
+    final secondaryTextColor = isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600;
 
     
     if (_contributorId == null || _contributorId!.isEmpty) {
@@ -137,7 +139,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
               Icon(
                 Icons.error_outline,
                 size: 64,
-                color: Colors.orange,
+                color: MangoPalette.green500,
               ),
               const SizedBox(height: 16),
               Text(
@@ -224,7 +226,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                     child: Text(
                       'Mango Podcast. © 2025',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                      style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                     ),
                   ),
                 ),
@@ -308,17 +310,17 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDarkMode ? 0.4 : 0.1),
+            color: MangoPalette.black.withOpacity(isDarkMode ? 0.4 : 0.1),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
         ],
         border: Border.all(
-          color: isDarkMode ? Colors.grey[800]! : Colors.grey[200]!,
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
         ),
       ),
       child: Column(
@@ -329,7 +331,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: Colors.purple.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 child: Icon(
                   Icons.analytics,
@@ -343,7 +345,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               ),
             ],
@@ -378,7 +380,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 value: monthlyListens ?? 0,
                 label: 'Monthly Listens',
                 icon: Icons.trending_up,
-                color: Colors.green,
+                color: MangoPalette.green500,
                 isLoading: isLoading,
                 isDarkMode: isDarkMode,
               ),
@@ -386,7 +388,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 value: totalSubscribers ?? 0,
                 label: 'Total Subscribers',
                 icon: Icons.people,
-                color: Colors.orange,
+                color: MangoPalette.green500,
                 isLoading: isLoading,
                 isDarkMode: isDarkMode,
               ),
@@ -408,8 +410,8 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[800] : color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
+        color: isDarkMode ? MangoPalette.grey800 : color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: Border.all(
           color: color.withOpacity(0.2),
         ),
@@ -424,7 +426,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 child: Icon(
                   icon,
@@ -443,8 +445,8 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                   width: 60,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
-                    borderRadius: BorderRadius.circular(4),
+                    color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                 )
               else
@@ -457,7 +459,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                       style: TextStyle(
                         fontSize: 45,
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                         fontFamily: 'Inter',
                       ),
                     );
@@ -469,8 +471,8 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 10,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  fontSize: 12,
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -486,8 +488,8 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
       ),
       child: Column(
         children: [
@@ -500,7 +502,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
           Text(
             error,
             style: TextStyle(
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -514,10 +516,10 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 400),
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(16),
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
-            color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade300,
+            color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
           ),
         ),
         child: Column(
@@ -536,6 +538,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                     ),
                   ),
                   IconButton(
+        tooltip: 'Show options',
                     icon: AnimatedRotation(
                       turns: _showUploadOptions ? 0.5 : 0,
                       duration: const Duration(milliseconds: 300),
@@ -554,7 +557,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
               firstChild: Column(
                 children: [
                   Divider(
-                    color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                    color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                   ),
                   _buildUploadOption(
                     'Upload a Podcast',
@@ -605,7 +608,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           child: Container(
             padding: const EdgeInsets.all(16),
             child: Row(
@@ -615,7 +618,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                   title,
                   style: TextStyle(
                     fontSize: 14,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -658,8 +661,8 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: isDarkMode ? Colors.white : Colors.black,
+                child: CircularProgressIndicator(semanticsLabel: 'Loading', 
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               );
             }
@@ -669,7 +672,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 child: Text(
                   "Error loading podcasts",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -680,7 +683,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 child: Text(
                   "No podcasts yet",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -721,8 +724,8 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: isDarkMode ? Colors.white : Colors.black,
+                child: CircularProgressIndicator(semanticsLabel: 'Loading', 
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               );
             }
@@ -732,7 +735,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 child: Text(
                   "Error loading series",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -743,7 +746,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 child: Text(
                   "No series yet",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -780,26 +783,26 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
           Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
                   placeholder: (context, url) => Container(
                     width: 120,
                     height: 120,
-                    color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                    color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                     child: Icon(
                       Icons.podcasts,
-                      color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                      color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                       size: 40,
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
                     width: 120,
                     height: 120,
-                    color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                    color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                     child: Icon(
                       Icons.podcasts,
-                      color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                      color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                       size: 40,
                     ),
                   ),
@@ -824,7 +827,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                   child: Text(
                     episodeCount,
                     style: const TextStyle(
-                      fontSize: 8,
+                      fontSize: 12,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -844,7 +847,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                     overflow: TextOverflow.ellipsis,
                   ),
                   maxLines: 2,
@@ -852,8 +855,8 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                 Text(
                   host,
                   style: TextStyle(
-                    fontSize: 10,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    fontSize: 12,
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                     overflow: TextOverflow.ellipsis,
                   ),
                   maxLines: 1,
@@ -876,26 +879,26 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
           Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
                   placeholder: (context, url) => Container(
                     width: 120,
                     height: 120,
-                    color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                    color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                     child: Icon(
                       Icons.podcasts_outlined,
-                      color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                      color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                       size: 40,
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
                     width: 120,
                     height: 120,
-                    color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                    color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                     child: Icon(
                       Icons.podcasts_outlined,
-                      color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                      color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                       size: 40,
                     ),
                   ),
@@ -919,7 +922,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                   child: Text(
                     podcastCount,
                     style: const TextStyle(
-                      fontSize: 8,
+                      fontSize: 12,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -936,7 +939,7 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
                 overflow: TextOverflow.ellipsis,
               ),
               maxLines: 2,
@@ -955,13 +958,13 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
     return SliverToBoxAdapter(
       child: Column(
         children: [
-          GestureDetector(
+          MangoPressable(
             onTap: _toggleYourPodcasts,
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-                borderRadius: BorderRadius.circular(16),
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -995,8 +998,8 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
-                    child: CircularProgressIndicator(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', 
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                   );
                 }
@@ -1063,35 +1066,35 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
           onTap: () {
             
           },
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-              borderRadius: BorderRadius.circular(12),
+              color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   child: CachedNetworkImage(
                     imageUrl: imageUrl,
                     placeholder: (context, url) => Container(
                       width: 50,
                       height: 50,
-                      color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                      color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                       child: Icon(
                         Icons.podcasts,
-                        color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                        color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                       ),
                     ),
                     errorWidget: (context, url, error) => Container(
                       width: 50,
                       height: 50,
-                      color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                      color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                       child: Icon(
                         Icons.podcasts,
-                        color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                        color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                       ),
                     ),
                     width: 50,
@@ -1134,12 +1137,12 @@ class _PodcastBoxPageState extends State<PodcastBoxPage>
                   ),
                   decoration: BoxDecoration(
                     color: Colors.purple.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   child: Text(
                     '$listens listens',
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       color: Colors.purple,
                       fontWeight: FontWeight.bold,
                     ),

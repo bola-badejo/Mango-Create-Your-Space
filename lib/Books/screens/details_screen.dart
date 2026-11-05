@@ -6,6 +6,7 @@ import 'package:mango/Spaces/common/space_it.dart';
 
 import '../widgets/book_rating.dart';
 import '../widgets/two_side_rounded_button.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class BookDetailsScreen extends StatelessWidget {
   BookDetailsScreen({super.key});
@@ -49,13 +50,13 @@ class BookDetailsScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Colors.black.withOpacity(1.0),
-                            Colors.black.withOpacity(0.6),
+                            MangoPalette.black.withOpacity(1.0),
+                            MangoPalette.black.withOpacity(0.6),
                           ],
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
                         ),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                       child: BookInfo(size: size, book: controller.book),
                     ),
@@ -138,7 +139,7 @@ class BookDetailsScreen extends StatelessWidget {
                     child: Text(
                       "Mango Best Seller For 16th March 2024",
                       style: TextStyle(
-                        fontSize: 9,
+                        fontSize: 12,
                         color: Theme.of(context).primaryColorLight,
                       ),
                     ),
@@ -167,7 +168,7 @@ class BookDetailsScreen extends StatelessWidget {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: Theme.of(context).primaryColorLight,
                             ),
                           ),
@@ -325,7 +326,7 @@ class BookInfo extends StatelessWidget {
                             book['text'] ?? '',
                             maxLines: 5,
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: Theme.of(context).primaryColorLight,
                             ),
                           ),
@@ -360,7 +361,7 @@ class BookInfo extends StatelessWidget {
                           icon: const Icon(
                             Icons.favorite_border,
                             size: 20,
-                            color: Colors.grey,
+                            color: MangoPalette.grey500,
                           ),
                           onPressed: () {},
                         ),
@@ -378,7 +379,7 @@ class BookInfo extends StatelessWidget {
               height: double.infinity,
               
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     offset: const Offset(3, 7),

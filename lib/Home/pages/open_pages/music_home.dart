@@ -7,6 +7,8 @@ import 'package:mango/Utils/optimized_lists.dart';
 
 import '../../../MusicPlayer/music_player.dart';
 import '../../controllers/dashboard_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MusicHomePage extends StatefulWidget {
   const MusicHomePage({super.key});
@@ -79,7 +81,7 @@ class _MusicHomePageState extends State<MusicHomePage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? Colors.black : Colors.white,
+      backgroundColor: isDark ? MangoPalette.black : Colors.white,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -111,7 +113,7 @@ class _MusicHomePageState extends State<MusicHomePage> {
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
       child: Row(
         children: [
-          GestureDetector(
+          MangoPressable(
             onTap: () => Get.back(),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
@@ -144,10 +146,10 @@ class _MusicHomePageState extends State<MusicHomePage> {
       child: Container(
         height: 48,
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[900] : Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
+          color: isDark ? MangoPalette.grey900 : MangoPalette.grey100,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
-            color: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+            color: isDark ? MangoPalette.grey800 : MangoPalette.grey300,
             width: 1,
           ),
         ),
@@ -163,19 +165,20 @@ class _MusicHomePageState extends State<MusicHomePage> {
           decoration: InputDecoration(
             hintText: 'Search songs, artists, or albums...',
             hintStyle: TextStyle(
-              color: isDark ? Colors.grey[600] : Colors.grey[500],
+              color: isDark ? MangoPalette.grey600 : MangoPalette.grey500,
               fontSize: 14,
             ),
             prefixIcon: Icon(
               Icons.search,
-              color: isDark ? Colors.grey[400] : Colors.grey[600],
+              color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
               size: 22,
             ),
             suffixIcon: _searchController.text.isNotEmpty
                 ? IconButton(
+        tooltip: 'Clear',
                     icon: Icon(
                       Icons.clear,
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                       size: 20,
                     ),
                     onPressed: () {
@@ -204,7 +207,7 @@ class _MusicHomePageState extends State<MusicHomePage> {
           final genre = _genreFilters[index];
           final isSelected = _selectedGenre == genre;
 
-          return GestureDetector(
+          return MangoPressable(
             onTap: () {
               if (_selectedGenre == genre) return;
               setState(() {
@@ -217,13 +220,13 @@ class _MusicHomePageState extends State<MusicHomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? Colors.orange
-                    : (isDark ? Colors.grey[800] : Colors.grey[200]),
+                    ? MangoPalette.green500
+                    : (isDark ? MangoPalette.grey800 : MangoPalette.grey200),
                 borderRadius: BorderRadius.circular(25),
                 border: Border.all(
                   color: isSelected
-                      ? Colors.orange
-                      : (isDark ? Colors.grey[700]! : Colors.grey[300]!),
+                      ? MangoPalette.green500
+                      : (isDark ? MangoPalette.grey700 : MangoPalette.grey300),
                 ),
               ),
               child: Center(
@@ -287,14 +290,14 @@ class _MusicHomePageState extends State<MusicHomePage> {
               Icon(
                 _searchController.text.isNotEmpty ? Icons.search_off : Icons.music_off,
                 size: 60,
-                color: isDark ? Colors.grey[600] : Colors.grey[400],
+                color: isDark ? MangoPalette.grey600 : MangoPalette.grey400,
               ),
               const SizedBox(height: 16),
               Text(
                 _searchController.text.isNotEmpty ? 'No results found' : 'No songs found',
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDark ? Colors.grey[500] : Colors.grey[600],
+                  color: isDark ? MangoPalette.grey500 : MangoPalette.grey600,
                 ),
               ),
               if (_searchController.text.isNotEmpty) ...[
@@ -303,7 +306,7 @@ class _MusicHomePageState extends State<MusicHomePage> {
                   'Try searching with different keywords',
                   style: TextStyle(
                     fontSize: 14,
-                    color: isDark ? Colors.grey[600] : Colors.grey[500],
+                    color: isDark ? MangoPalette.grey600 : MangoPalette.grey500,
                   ),
                 ),
               ],
@@ -335,7 +338,7 @@ class _MusicHomePageState extends State<MusicHomePage> {
   }
 
   Widget _buildSongCard(Music song, int index, bool isDark) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Navigator.push(
           context,
@@ -346,11 +349,11 @@ class _MusicHomePageState extends State<MusicHomePage> {
       },
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: isDark ? const Color(0xFF1E1E2E) : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
+          color: isDark ? const Color(0xFF1B241E) : Colors.white,
           boxShadow: [
             BoxShadow(
-              color: (isDark ? Colors.black : Colors.grey).withOpacity(0.1),
+              color: (isDark ? MangoPalette.black : MangoPalette.grey500).withOpacity(0.1),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -372,13 +375,13 @@ class _MusicHomePageState extends State<MusicHomePage> {
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Container(
                   height: 140,
-                  color: Colors.grey[300],
-                  child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                  color: MangoPalette.grey300,
+                  child: const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2)),
                 ),
                 errorWidget: (context, url, error) => Container(
                   height: 140,
-                  color: Colors.grey[300],
-                  child: const Icon(Icons.music_note, size: 40, color: Colors.grey),
+                  color: MangoPalette.grey300,
+                  child: const Icon(Icons.music_note, size: 40, color: MangoPalette.grey500),
                 ),
               ),
             ),
@@ -402,8 +405,8 @@ class _MusicHomePageState extends State<MusicHomePage> {
                   Text(
                     song.primaryArtistName,
                     style: TextStyle(
-                      fontSize: 11,
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      fontSize: 12,
+                      color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -414,14 +417,14 @@ class _MusicHomePageState extends State<MusicHomePage> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(8),
+                          color: MangoPalette.green500.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         child: Text(
                           song.genre,
                           style: const TextStyle(
-                            fontSize: 8,
-                            color: Colors.orange,
+                            fontSize: 12,
+                            color: MangoPalette.green500,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -429,11 +432,11 @@ class _MusicHomePageState extends State<MusicHomePage> {
                       const Spacer(),
                       Row(
                         children: [
-                          const Icon(Icons.play_circle_outline, size: 10, color: Colors.grey),
+                          const Icon(Icons.play_circle_outline, size: 10, color: MangoPalette.grey500),
                           const SizedBox(width: 2),
                           Text(
                             _formatPlays(song.plays),
-                            style: const TextStyle(fontSize: 9, color: Colors.grey),
+                            style: const TextStyle(fontSize: 12, color: MangoPalette.grey500),
                           ),
                         ],
                       ),
@@ -449,13 +452,13 @@ class _MusicHomePageState extends State<MusicHomePage> {
   }
 
   Widget _buildShimmerCard(bool isDark) {
-    return Shimmer.fromColors(
-      baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
-      highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
+    return MangoShimmer(
+      baseColor: isDark ? MangoPalette.grey800 : MangoPalette.grey300,
+      highlightColor: isDark ? MangoPalette.grey700 : MangoPalette.grey100,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: isDark ? Colors.grey[800] : Colors.grey[300],
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
+          color: isDark ? MangoPalette.grey800 : MangoPalette.grey300,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

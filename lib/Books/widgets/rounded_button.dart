@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class RoundedButton extends StatelessWidget {
 
@@ -19,7 +20,7 @@ class RoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: ()=>press,
       child: Container(
         width: double.infinity,
@@ -34,7 +35,7 @@ class RoundedButton extends StatelessWidget {
             BoxShadow(
               offset: Offset(0, 15),
               blurRadius: 30,
-              color: Color(0xFF666666).withOpacity(.11),
+              color: Color(0xFF5C665F).withOpacity(.11),
             ),
           ],
         ),

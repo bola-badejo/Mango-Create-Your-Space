@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mango/AccountSetup/user_detail/user_detail_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 void showImageSourceDialog(BuildContext context, int type) {
   final controller = Get.find<UserDetailsController>(
@@ -33,8 +34,8 @@ void showImageSourceDialog(BuildContext context, int type) {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(2),
+                color: MangoPalette.grey300,
+                borderRadius: BorderRadius.circular(MangoRadius.xs),
               ),
             ),
             const SizedBox(height: 20),
@@ -71,7 +72,7 @@ void showImageSourceDialog(BuildContext context, int type) {
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
               child: const Text('Cancel'),
@@ -92,17 +93,17 @@ Widget _buildOption(BuildContext context, {
     color: Colors.transparent,
     child: InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(MangoRadius.md),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.orange.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.orange.withOpacity(0.2)),
+          color: MangoPalette.green500.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          border: Border.all(color: MangoPalette.green500.withOpacity(0.2)),
         ),
         child: Row(
           children: [
-            Icon(icon, color: Colors.orange),
+            Icon(icon, color: MangoPalette.green500),
             const SizedBox(width: 16),
             Text(
               title,
@@ -112,7 +113,7 @@ Widget _buildOption(BuildContext context, {
               ),
             ),
             const Spacer(),
-            const Icon(Icons.chevron_right, color: Colors.grey),
+            const Icon(Icons.chevron_right, color: MangoPalette.grey500),
           ],
         ),
       ),

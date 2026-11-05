@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 import '../controllers/playlist_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class CreatePlaylistPage extends StatelessWidget {
   final PlaylistController controller = Get.put(PlaylistController());
@@ -12,9 +13,9 @@ class CreatePlaylistPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Playlist'),
-        backgroundColor: Colors.black,
+        backgroundColor: MangoPalette.black,
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: MangoPalette.black,
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Obx(() {
@@ -67,7 +68,7 @@ class CreatePlaylistPage extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           filled: true,
-          fillColor: Colors.grey[900],
+          fillColor: MangoPalette.grey900,
           border: const OutlineInputBorder(),
         ),
         onChanged: (text) => value.value = text,
@@ -87,7 +88,7 @@ class CreatePlaylistPage extends StatelessWidget {
           decoration: InputDecoration(
             labelText: 'Song Title',
             filled: true,
-            fillColor: Colors.grey[900],
+            fillColor: MangoPalette.grey900,
             border: const OutlineInputBorder(),
           ),
         ),
@@ -98,7 +99,7 @@ class CreatePlaylistPage extends StatelessWidget {
           decoration: InputDecoration(
             labelText: 'Artist',
             filled: true,
-            fillColor: Colors.grey[900],
+            fillColor: MangoPalette.grey900,
             border: const OutlineInputBorder(),
           ),
         ),
@@ -135,11 +136,12 @@ class CreatePlaylistPage extends StatelessWidget {
           final song = controller.songs[index];
           return Card(
             key: ValueKey(index),
-            color: Colors.grey[900],
+            color: MangoPalette.grey900,
             child: ListTile(
               title: Text(song['title']!, style: const TextStyle(color: Colors.white)),
-              subtitle: Text(song['artist']!, style: const TextStyle(color: Colors.grey)),
+              subtitle: Text(song['artist']!, style: const TextStyle(color: MangoPalette.grey500)),
               trailing: IconButton(
+        tooltip: 'Delete',
                 icon: const Icon(Icons.delete, color: Colors.red),
                 onPressed: () => controller.removeSong(index),
               ),

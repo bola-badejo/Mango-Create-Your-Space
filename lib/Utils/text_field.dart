@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 
 
@@ -92,7 +93,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ? theme.colorScheme.surfaceVariant
         : theme.colorScheme.surface;
 
-    final textColor = theme.textTheme.bodyMedium?.color ?? Colors.black;
+    final textColor = theme.textTheme.bodyMedium?.color ?? MangoPalette.black;
     final hintColor = theme.hintColor;
     final iconColor = theme.iconTheme.color ?? Colors.black54;
 
@@ -103,7 +104,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           height: 50,
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             border: Border.all(color: borderColor, width: hasError ? 2 : 1),
           ),
           child: Row(
@@ -267,7 +268,7 @@ class _CustomMultilineTextFieldState extends State<CustomMultilineTextField> {
         ? theme.colorScheme.surfaceVariant
         : theme.colorScheme.surface;
 
-    final textColor = theme.textTheme.bodyMedium?.color ?? Colors.black;
+    final textColor = theme.textTheme.bodyMedium?.color ?? MangoPalette.black;
     final hintColor = theme.hintColor;
     final iconColor = theme.iconTheme.color ?? Colors.black54;
 
@@ -278,7 +279,7 @@ class _CustomMultilineTextFieldState extends State<CustomMultilineTextField> {
           height: widget.height ?? 120,
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             border: Border.all(color: borderColor, width: hasError ? 2 : 1),
           ),
           child: Row(
@@ -423,7 +424,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
         ? theme.colorScheme.surfaceVariant
         : theme.colorScheme.surface;
 
-    final textColor = theme.textTheme.bodyMedium?.color ?? Colors.black;
+    final textColor = theme.textTheme.bodyMedium?.color ?? MangoPalette.black;
     final hintColor = theme.hintColor;
     final iconColor = theme.iconTheme.color ?? Colors.black54;
 
@@ -434,7 +435,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
           height: 50,
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             border: Border.all(color: borderColor, width: hasError ? 2 : 1),
           ),
           child: Row(

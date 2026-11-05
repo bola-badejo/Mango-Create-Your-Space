@@ -1,19 +1,14 @@
-import 'dart:async';
-import 'dart:io' show File; 
-import 'dart:typed_data';
-
-import 'package:cross_file/cross_file.dart';
-import 'package:flutter/foundation.dart';
+// Create a post or a reply. Photos (up to 10) and videos go through the
+// Mango composer for preview, filters and crop before posting; tap a photo
+// to edit it again, drag to reorder, or remove it. Progress and cancel are
+// shown while uploading.
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:mango/Utils/optimized_lists.dart';
-import 'package:mango/ImageSetup/image_editor_screen.dart';
-import 'package:mango/ImageSetup/link_dialog.dart';
-import 'package:mango/ImageSetup/music_dialog.dart';
-import 'package:mango/Models/cloud/new_post_service.dart';
-import 'package:mango/Utils/theme.dart';
-import 'package:mango/utils/media_picker.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
+import 'package:mango/Home/compose/mango_post_service.dart';
+import 'package:mango/Media/compose/mango_composer.dart';
+import 'package:mango/Media/compose/mango_uploader.dart';
 
 class PostCreationBox extends StatefulWidget {
   final String? replyTo;
@@ -34,720 +29,267 @@ class PostCreationBox extends StatefulWidget {
 }
 
 class _PostCreationBoxState extends State<PostCreationBox> {
-  final TextEditingController _controller = TextEditingController();
-  final PostService _postService = PostService();
-  final FocusNode _focusNode = FocusNode();
-  final ThemeController themeController = Get.find<ThemeController>();
+  final _text = TextEditingController();
+  final _focus = FocusNode();
+  final List<ComposedMedia> _media = [];
+  String? _link;
+  double? _progress;
+  UploadHandle? _handle;
+  String? _error;
 
-  
-  List<XFile> _selectedFiles = [];
-  List<Uint8List> _webImageBytes = []; 
-  List<ImageEdit> _imageEdits = [];
-
-  XFile? _selectedVideo; 
-  Uint8List? _webVideoBytes; 
-
-  String? _selectedMusicUrl;
-  String? _linkUrl;
-  String? _linkType;
-
-  bool _isUploading = false;
-  double _uploadProgress = 0.0;
-  bool _hasContent = false;
-
-  static const int _maxChars = 280;
-  static const int _maxImages = 10;
-
-  
-  Color get _cardColor =>
-      themeController.isDarkMode.value ? const Color(0xFF1E1E1E) : Colors.white;
-  Color get _textColor =>
-      themeController.isDarkMode.value ? Colors.white : Colors.black;
-  Color get _secondaryTextColor =>
-      themeController.isDarkMode.value ? const Color(0xFFB0B0B0) : const Color(0xFF666666);
-  Color get _surfaceColor =>
-      themeController.isDarkMode.value ? const Color(0xFF2D2D2D) : const Color(0xFFF5F5F5);
-  Color get _dividerColor =>
-      themeController.isDarkMode.value ? const Color(0xFF333333) : const Color(0xFFE0E0E0);
-  Color get _primaryColor => themeController.primaryColorValue;
+  bool get _hasVideo => _media.any((m) => m.kind == MediaKind.video);
+  bool get _canPost => _progress == null && (_text.text.trim().isNotEmpty || _media.isNotEmpty || _link != null) && _text.text.length <= MangoPostService.maxChars;
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(_updateContentState);
-    _focusNode.requestFocus();
-  }
-
-  void _updateContentState() {
-    setState(() {
-      _hasContent = _controller.text.trim().isNotEmpty ||
-          _selectedFiles.isNotEmpty ||
-          _selectedVideo != null ||
-          _linkUrl != null;
+    _focus.addListener(() {
+      if (mounted) setState(() {});
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      return Container(
-        margin: const EdgeInsets.all(0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: _cardColor,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 30),
-              _buildHeader(),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _controller,
-                focusNode: _focusNode,
-                decoration: InputDecoration(
-                  hintText: widget.replyTo != null ? "Post your reply..." : "How far na?",
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(color: _secondaryTextColor, fontSize: 16),
-                ),
-                maxLines: null,
-                maxLength: _maxChars,
-                style: TextStyle(color: _textColor, fontSize: 16),
-              ),
-              _buildCharCounter(),
-              const SizedBox(height: 16),
-              if (_selectedFiles.isNotEmpty) _buildImageGrid(),
-              if (_selectedVideo != null) _buildVideoPreview(),
-              if (_linkUrl != null) _buildLinkPreview(),
-              if (_selectedMusicUrl != null) _buildMusicIndicator(),
-              if (_isUploading) _buildProgressIndicator(),
-              Divider(height: 32, color: _dividerColor),
-              _buildActionBar(),
-            ],
-          ),
-        ),
-      );
-    });
-  }
-
-  
-  Widget _buildHeader() => Row(
-        children: [
-          if (widget.onCancel != null)
-            IconButton(
-              icon: Icon(Icons.close, color: _textColor),
-              onPressed: widget.onCancel,
-              tooltip: 'Cancel',
-            ),
-          Expanded(
-            child: Text(
-              widget.replyTo != null ? 'Reply to ${widget.replyTo}' : 'Create Post',
-              style: TextStyle(color: _textColor, fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          if (_isUploading)
-            const SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-        ],
-      );
-
-  Widget _buildCharCounter() {
-    final textLength = _controller.text.length;
-    final nearLimit = textLength > _maxChars * 0.8;
-    final overLimit = textLength > _maxChars;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        if (nearLimit)
-          Text(
-            '${_maxChars - textLength}',
-            style: TextStyle(
-              color: overLimit ? Colors.red : Colors.orange,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-      ],
-    );
-  }
-
-  
-  Widget _buildImageGrid() {
-    return Container(
-      height: 120,
-      margin: const EdgeInsets.only(bottom: 12),
-      child: OptimizedListView(
-        scrollDirection: Axis.horizontal,
-        itemCount: _selectedFiles.length,
-        itemBuilder: (context, index) => _buildImageThumbnail(index),
-      ),
-    );
-  }
-
-  Widget _buildImageThumbnail(int index) {
-    return Stack(
-      children: [
-        Container(
-          width: 100,
-          height: 100,
-          margin: const EdgeInsets.only(right: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: _surfaceColor,
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: kIsWeb
-                ? (index < _webImageBytes.length)
-                    ? Image.memory(
-                        _webImageBytes[index],
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => _buildErrorIcon(),
-                      )
-                    : _buildLoadingPlaceholder()
-                : FutureBuilder<Uint8List?>(
-                    future: _selectedFiles[index].readAsBytes(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done &&
-                          snapshot.hasData) {
-                        return Image.memory(
-                          snapshot.data!,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => _buildErrorIcon(),
-                        );
-                      }
-                      return _buildLoadingPlaceholder();
-                    },
-                  ),
-          ),
-        ),
-        Positioned(
-          top: 4,
-          right: 4,
-          child: _buildSmallIconButton(
-            icon: Icons.close,
-            onPressed: () => _removeImage(index),
-          ),
-        ),
-        Positioned(
-          bottom: 4,
-          right: 4,
-          child: _buildSmallIconButton(
-            icon: Icons.edit,
-            onPressed: () => _editImage(index),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSmallIconButton({required IconData icon, required VoidCallback onPressed}) {
-    return Container(
-      decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
-      child: IconButton(
-        icon: Icon(icon, size: 16, color: Colors.white),
-        onPressed: onPressed,
-        padding: EdgeInsets.zero,
-        constraints: const BoxConstraints(),
-      ),
-    );
-  }
-
-  Widget _buildErrorIcon() {
-    return Container(
-      color: _surfaceColor,
-      child: Icon(Icons.photo, color: _secondaryTextColor, size: 40),
-    );
-  }
-
-  Widget _buildLoadingPlaceholder() {
-    return Container(
-      color: _surfaceColor,
-      child: Center(
-        child: CircularProgressIndicator(strokeWidth: 2, color: _primaryColor),
-      ),
-    );
-  }
-
-  
-  Widget _buildVideoPreview() {
-    return Container(
-      width: double.infinity,
-      height: 150,
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: _surfaceColor,
-      ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.videocam, size: 48, color: _secondaryTextColor),
-                const SizedBox(height: 8),
-                if (_selectedVideo != null) ...[
-                  Text(
-                    _selectedVideo!.name,
-                    style: TextStyle(color: _textColor, fontSize: 12),
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  FutureBuilder<int>(
-                    future: _selectedVideo!.length(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data! > 0) {
-                        final sizeMB = snapshot.data! / (1024 * 1024);
-                        return Text(
-                          '${sizeMB.toStringAsFixed(1)} MB',
-                          style: TextStyle(color: _secondaryTextColor, fontSize: 11),
-                        );
-                      }
-                      return const SizedBox();
-                    },
-                  ),
-                ],
-              ],
-            ),
-          ),
-          Positioned(
-            top: 8,
-            right: 8,
-            child: _buildSmallIconButton(
-              icon: Icons.close,
-              onPressed: () {
-                setState(() {
-                  _selectedVideo = null;
-                  _webVideoBytes = null;
-                  _updateContentState();
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-  
-  Widget _buildLinkPreview() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        border: Border.all(color: _dividerColor),
-        borderRadius: BorderRadius.circular(8),
-        color: _surfaceColor,
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.link, color: _primaryColor),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _linkType ?? 'Link',
-                  style: TextStyle(color: _secondaryTextColor, fontSize: 12),
-                ),
-                Text(
-                  _linkUrl!,
-                  style: TextStyle(color: _textColor, fontSize: 14),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.close, size: 16, color: _secondaryTextColor),
-            onPressed: () => setState(() {
-              _linkUrl = null;
-              _linkType = null;
-              _updateContentState();
-            }),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMusicIndicator() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: _primaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.music_note, size: 16, color: _primaryColor),
-          const SizedBox(width: 8),
-          Text(
-            'Music added',
-            style: TextStyle(color: _textColor, fontSize: 14),
-          ),
-          const SizedBox(width: 8),
-          IconButton(
-            icon: Icon(Icons.close, size: 16, color: _secondaryTextColor),
-            onPressed: () => setState(() {
-              _selectedMusicUrl = null;
-              _updateContentState();
-            }),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProgressIndicator() {
-    return Column(
-      children: [
-        LinearProgressIndicator(
-          value: _uploadProgress,
-          backgroundColor: _surfaceColor,
-          valueColor: AlwaysStoppedAnimation<Color>(_primaryColor),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Uploading... ${(_uploadProgress * 100).toStringAsFixed(0)}%',
-          style: TextStyle(color: _secondaryTextColor, fontSize: 12),
-        ),
-        const SizedBox(height: 16),
-      ],
-    );
-  }
-
-  Widget _buildActionBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        if (!_isUploading)
-          Row(
-            children: [
-              _buildMediaButton(
-                icon: Icons.photo_library,
-                tooltip: 'Add photos',
-                onPressed: _pickImages,
-              ),
-              _buildMediaButton(
-                icon: Icons.videocam,
-                tooltip: 'Add video',
-                onPressed: _pickVideo,
-              ),
-              _buildMediaButton(
-                icon: Icons.music_note,
-                tooltip: 'Add music',
-                onPressed: _pickMusic,
-              ),
-              _buildMediaButton(
-                icon: Icons.link,
-                tooltip: 'Add link',
-                onPressed: _addLink,
-              ),
-            ],
-          )
-        else
-          const Expanded(child: SizedBox()),
-        ElevatedButton(
-          onPressed: _hasContent && !_isUploading ? _createPost : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _primaryColor,
-            foregroundColor: Colors.white,
-            disabledBackgroundColor: _primaryColor.withOpacity(0.5),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          ),
-          child: Text(widget.replyTo != null ? 'Reply' : 'Post'),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMediaButton({
-    required IconData icon,
-    required String tooltip,
-    required VoidCallback onPressed,
-  }) {
-    return IconButton(
-      icon: Icon(icon),
-      onPressed: onPressed,
-      tooltip: tooltip,
-      color: _secondaryTextColor,
-    );
-  }
-
-  
-  Future<void> _pickImages() async {
-    if (_selectedVideo != null) {
-      _showError('Cannot add images when video is selected');
-      return;
-    }
-    final remainingSlots = _maxImages - _selectedFiles.length;
-    if (remainingSlots <= 0) {
-      _showError('Maximum $_maxImages images allowed');
-      return;
-    }
-
-    try {
-      final images = await MediaPicker.pickImages(
-        context,
-        maxImages: remainingSlots,
-      ) as List<dynamic>?;
-
-      if (images != null && images.isNotEmpty) {
-        final xImages = images.map((f) => XFile(f.path)).toList();
-        for (final image in xImages) {
-          await _addImage(image);
-        }
-      }
-    } catch (e) {
-      _showError('Failed to pick images: ${e.toString()}');
-    }
-  }
-
-  Future<void> _addImage(XFile image) async {
-    try {
-      Uint8List? bytes;
-      if (kIsWeb) {
-        bytes = await image.readAsBytes();
-        
-      }
-
-      setState(() {
-        _selectedFiles.add(image);
-        if (kIsWeb) {
-          _webImageBytes.add(bytes ?? Uint8List(0));
-        }
-        _imageEdits.add(ImageEdit(imageIndex: _selectedFiles.length - 1));
-        _updateContentState();
-      });
-    } catch (e) {
-      _showError('Failed to read image: $e');
-    }
-  }
-
-  Future<void> _pickVideo() async {
-    if (_selectedFiles.isNotEmpty) {
-      _showError('Cannot add video when images are selected');
-      return;
-    }
-
-    try {
-      final video = await MediaPicker.pickVideo(context) as dynamic;
-      if (video != null) {
-        final xVideo = XFile(video.path);
-        if (kIsWeb) {
-          final bytes = await xVideo.readAsBytes();
-          _webVideoBytes = bytes;
-        }
-        setState(() {
-          _selectedVideo = xVideo;
-          _updateContentState();
-        });
-      }
-    } catch (e) {
-      _showError('Failed to pick video: ${e.toString()}');
-    }
-  }
-
-  Future<void> _pickMusic() async {
-    final musicUrl = await showDialog<String>(
-      context: context,
-      builder: (context) => const MusicPickerDialog(),
-    );
-    if (musicUrl != null) {
-      setState(() {
-        _selectedMusicUrl = musicUrl;
-        _updateContentState();
-      });
-    }
-  }
-
-  Future<void> _addLink() async {
-    final result = await showDialog<Map<String, String>>(
-      context: context,
-      builder: (context) => const LinkDialog(),
-    );
-    if (result != null) {
-      setState(() {
-        _linkUrl = result['url'];
-        _linkType = result['type'];
-        _updateContentState();
-      });
-    }
-  }
-
-  void _removeImage(int index) {
-    setState(() {
-      _selectedFiles.removeAt(index);
-      if (kIsWeb && index < _webImageBytes.length) {
-        _webImageBytes.removeAt(index);
-      }
-      _imageEdits.clear();
-      for (int i = 0; i < _selectedFiles.length; i++) {
-        _imageEdits.add(ImageEdit(imageIndex: i));
-      }
-      _updateContentState();
-    });
-  }
-
-  Future<void> _editImage(int index) async {
-    if (index >= _selectedFiles.length) return;
-
-    dynamic imageForEditor;
-    if (kIsWeb) {
-      if (index < _webImageBytes.length) {
-        imageForEditor = _webImageBytes[index];
-      } else {
-        _showError('Image data not available');
-        return;
-      }
-    } else {
-      imageForEditor = _selectedFiles[index];
-    }
-
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ImageEditorScreen(
-          image: imageForEditor,
-          initialEdit: _imageEdits.firstWhere(
-            (edit) => edit.imageIndex == index,
-            orElse: () => ImageEdit(imageIndex: index),
-          ),
-        ),
-      ),
-    );
-
-    if (result != null && result is ImageEdit) {
-      setState(() {
-        final existingIndex = _imageEdits.indexWhere((edit) => edit.imageIndex == index);
-        if (existingIndex != -1) {
-          _imageEdits[existingIndex] = result;
-        }
-      });
-    }
-  }
-
-  
-  Future<void> _createPost() async {
-    if (!_hasContent) return;
-    if (_controller.text.length > _maxChars) {
-      _showError('Post cannot exceed $_maxChars characters');
-      return;
-    }
-
-    setState(() {
-      _isUploading = true;
-      _uploadProgress = 0.0;
-    });
-
-    try {
-      final text = _controller.text.trim();
-
-      
-      List<File>? fileImages;
-      if (!kIsWeb && _selectedFiles.isNotEmpty) {
-        fileImages = _selectedFiles.map((x) => File(x.path)).toList();
-      }
-
-      File? fileVideo;
-      if (!kIsWeb && _selectedVideo != null) {
-        fileVideo = File(_selectedVideo!.path);
-      }
-
-      final webImageBytesMap = kIsWeb && _webImageBytes.isNotEmpty
-          ? {for (int i = 0; i < _webImageBytes.length; i++) 'image_$i': _webImageBytes[i]}
-          : null;
-
-      final post = await _postService.createPost(
-        text: text,
-        images: fileImages,          
-        video: fileVideo,           
-        link: _linkUrl,
-        linkType: _linkType,
-        isLinked: _linkUrl != null,
-        musicUrl: _selectedMusicUrl,
-        imageEdits: _imageEdits.isNotEmpty ? _imageEdits : null,
-        replyTo: widget.replyTo,
-        repliedPostID: widget.repliedPostID,
-        onUploadProgress: (progress) {
-          setState(() => _uploadProgress = progress);
-        },
-        webImageBytesMap: webImageBytesMap, 
-        webVideoBytes: kIsWeb ? _webVideoBytes : null, 
-      );
-
-      _resetForm();
-      widget.onPostCreated?.call();
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(widget.replyTo != null ? 'Reply posted!' : 'Post created!'),
-            backgroundColor: Colors.green,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    } on PostCreationException catch (e) {
-      _showError(e.message);
-    } catch (e) {
-      _showError('An unexpected error occurred: ${e.toString()}');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isUploading = false;
-          _uploadProgress = 0.0;
-        });
-      }
-    }
-  }
-
-  void _resetForm() {
-    _controller.clear();
-    setState(() {
-      _selectedFiles.clear();
-      _webImageBytes.clear();
-      _selectedVideo = null;
-      _webVideoBytes = null;
-      _selectedMusicUrl = null;
-      _linkUrl = null;
-      _linkType = null;
-      _imageEdits.clear();
-      _hasContent = false;
-    });
-  }
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    _webImageBytes.clear();
-    _webVideoBytes = null;
+    _text.dispose();
+    _focus.dispose();
     super.dispose();
+  }
+
+  Future<void> _addMedia() async {
+    if (_hasVideo) return _say('A post can have one video, or up to ${MangoPostService.maxImages} photos.');
+    if (_media.length >= MangoPostService.maxImages) return _say('Up to ${MangoPostService.maxImages} photos per post.');
+    final m = await MangoComposer.pick(
+      context,
+      allow: _media.isEmpty ? const {ComposeKind.image, ComposeKind.video} : const {ComposeKind.image},
+      actionLabel: 'Add',
+      allowCaption: false,
+    );
+    if (m == null) return;
+    if (m.kind == MediaKind.video && _media.isNotEmpty) return _say('Remove the photos to add a video.');
+    setState(() {
+      _media.add(m);
+      _error = null;
+    });
+  }
+
+  Future<void> _edit(int i) async {
+    final m = _media[i];
+    if (m.kind != MediaKind.image) return;
+    final edited = await Navigator.of(context).push<ComposedMedia>(MaterialPageRoute(
+      fullscreenDialog: true,
+      builder: (_) => MangoImageEditor(media: m, actionLabel: 'Done', allowCaption: false),
+    ));
+    if (edited != null) setState(() => _media[i] = edited);
+  }
+
+  Future<void> _addLink() async {
+    final ctrl = TextEditingController(text: _link ?? '');
+    final url = await showDialog<String>(
+      context: context,
+      builder: (d) => AlertDialog(
+        title: const Text('Add a link'),
+        content: TextField(controller: ctrl, autofocus: true, keyboardType: TextInputType.url, decoration: const InputDecoration(hintText: 'https://')),
+        actions: [
+          if (_link != null) TextButton(onPressed: () => Navigator.pop(d, ''), child: const Text('Remove')),
+          TextButton(onPressed: () => Navigator.pop(d), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(d, ctrl.text.trim()), child: const Text('Add')),
+        ],
+      ),
+    );
+    if (url == null) return;
+    if (url.isEmpty) return setState(() => _link = null);
+    final u = Uri.tryParse(url.startsWith('http') ? url : 'https://$url');
+    if (u == null || u.host.isEmpty) return _say("That doesn't look like a link.");
+    setState(() => _link = u.toString());
+  }
+
+  void _say(String msg) => MangoToast.show(context, message: msg, kind: MangoToastKind.error);
+
+  Future<void> _post() async {
+    if (!_canPost) return;
+    final handle = UploadHandle();
+    setState(() {
+      _progress = 0;
+      _handle = handle;
+      _error = null;
+    });
+    try {
+      await MangoPostService.instance.create(
+        text: _text.text,
+        media: List.of(_media),
+        link: _link,
+        linkType: _link == null ? null : 'web',
+        replyTo: widget.replyTo,
+        repliedPostID: widget.repliedPostID,
+        handle: handle,
+        onProgress: (p) {
+          if (mounted) setState(() => _progress = p);
+        },
+      );
+      if (!mounted) return;
+      _text.clear();
+      setState(() {
+        _media.clear();
+        _link = null;
+      });
+      _focus.unfocus();
+      MangoToast.show(context, message: widget.replyTo != null ? 'Reply posted' : 'Posted', kind: MangoToastKind.success);
+      widget.onPostCreated?.call();
+    } on PostException catch (e) {
+      if (mounted) setState(() => _error = e.message);
+    } on UploadTooLarge catch (e) {
+      if (mounted) setState(() => _error = e.message);
+    } catch (e) {
+      if (mounted && !handle.cancelled) setState(() => _error = "Couldn't post. Check your connection and try again.");
+    } finally {
+      if (mounted) {
+        setState(() {
+          _progress = null;
+          _handle = null;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final user = FirebaseAuth.instance.currentUser;
+    final count = _text.text.length;
+    final left = MangoPostService.maxChars - count;
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: MangoSpace.s3, vertical: MangoSpace.s2),
+      padding: const EdgeInsets.all(MangoSpace.s3),
+      decoration: BoxDecoration(
+        color: c.surfaceElevated,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
+        border: Border.all(color: _focus.hasFocus ? c.actionPrimary : c.borderSubtle),
+      ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: c.surfaceSelected,
+            backgroundImage: (user?.photoURL ?? '').isEmpty ? null : CachedNetworkImageProvider(user!.photoURL!),
+            child: (user?.photoURL ?? '').isEmpty ? Icon(Icons.person_rounded, color: c.textBrand) : null,
+          ),
+          const SizedBox(width: MangoSpace.s3),
+          Expanded(
+            child: TextField(
+              controller: _text,
+              focusNode: _focus,
+              minLines: 1,
+              maxLines: 8,
+              onChanged: (_) => setState(() {}),
+              style: context.type.bodyLarge,
+              decoration: InputDecoration(
+                hintText: widget.replyTo != null ? 'Post your reply' : "What's happening?",
+                border: InputBorder.none,
+                filled: false,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: MangoSpace.s2),
+              ),
+            ),
+          ),
+        ]),
+        if (_media.isNotEmpty) ...[
+          const SizedBox(height: MangoSpace.s2),
+          SizedBox(
+            height: 112,
+            child: ReorderableListView.builder(
+              scrollDirection: Axis.horizontal,
+              buildDefaultDragHandles: false,
+              itemCount: _media.length,
+              onReorder: (o, n) => setState(() => _media.insert(n > o ? n - 1 : n, _media.removeAt(o))),
+              itemBuilder: (context, i) {
+                final m = _media[i];
+                return ReorderableDelayedDragStartListener(
+                  key: ValueKey(m),
+                  index: i,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: MangoSpace.s2),
+                    child: Stack(children: [
+                      MangoPressable(
+                        semanticLabel: m.kind == MediaKind.image ? 'Photo ${i + 1}. Edit' : 'Video',
+                        onTap: () => _edit(i),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
+                          child: SizedBox(
+                            width: 112,
+                            height: 112,
+                            child: m.kind == MediaKind.image
+                                ? Image.memory(m.bytes, fit: BoxFit.cover, cacheWidth: 336)
+                                : ColoredBox(color: Colors.black, child: Icon(Icons.play_circle_fill_rounded, color: Colors.white.withValues(alpha: 0.9), size: 40)),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 4,
+                        right: 4,
+                        child: Material(
+                          color: Colors.black54,
+                          shape: const CircleBorder(),
+                          child: IconButton(
+                            tooltip: 'Remove',
+                            iconSize: 16,
+                            color: Colors.white,
+                            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                            icon: const Icon(Icons.close_rounded),
+                            onPressed: () => setState(() => _media.removeAt(i)),
+                          ),
+                        ),
+                      ),
+                      if (m.kind == MediaKind.image)
+                        const Positioned(left: 6, bottom: 6, child: Icon(Icons.tune_rounded, color: Colors.white, size: 18, shadows: [Shadow(blurRadius: 4)])),
+                    ]),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+        if (_link != null)
+          Padding(
+            padding: const EdgeInsets.only(top: MangoSpace.s2),
+            child: InputChip(avatar: const Icon(Icons.link_rounded, size: 18), label: Text(Uri.parse(_link!).host), onDeleted: () => setState(() => _link = null), deleteButtonTooltipMessage: 'Remove link'),
+          ),
+        if (_error != null)
+          Padding(padding: const EdgeInsets.only(top: MangoSpace.s2), child: Semantics(liveRegion: true, child: Text(_error!, style: context.type.bodySmall?.copyWith(color: c.error)))),
+        if (_progress != null)
+          Padding(
+            padding: const EdgeInsets.only(top: MangoSpace.s2),
+            child: Row(children: [
+              Expanded(child: LinearProgressIndicator(value: _progress, semanticsLabel: 'Posting')),
+              TextButton(onPressed: () => _handle?.cancel(), child: const Text('Cancel')),
+            ]),
+          ),
+        const Divider(height: MangoSpace.s4),
+        Row(children: [
+          MangoIconButton(icon: Icons.image_outlined, semanticLabel: 'Add photos or a video', onPressed: _progress == null ? _addMedia : null),
+          MangoIconButton(icon: Icons.link_rounded, semanticLabel: _link == null ? 'Add a link' : 'Change link', selected: _link != null, onPressed: _progress == null ? _addLink : null),
+          const Spacer(),
+          if (count > 0)
+            Semantics(
+              label: '$left characters left',
+              child: SizedBox(
+                width: 28,
+                height: 28,
+                child: Stack(alignment: Alignment.center, children: [
+                  CircularProgressIndicator(
+                    value: (count / MangoPostService.maxChars).clamp(0.0, 1.0).toDouble(),
+                    strokeWidth: 3,
+                    color: left < 0 ? c.error : (left <= 20 ? c.warning : c.actionPrimary),
+                    backgroundColor: c.borderSubtle,
+                  ),
+                  if (left <= 20) Text('$left', style: context.type.labelSmall?.copyWith(color: left < 0 ? c.error : c.textSecondary)),
+                ]),
+              ),
+            ),
+          const SizedBox(width: MangoSpace.s3),
+          if (widget.onCancel != null) TextButton(onPressed: widget.onCancel, child: const Text('Cancel')),
+          MangoButton(label: widget.replyTo != null ? 'Reply' : 'Post', size: MangoButtonSize.medium, onPressed: _canPost ? _post : null),
+        ]),
+      ]),
+    );
   }
 }

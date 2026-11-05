@@ -10,6 +10,8 @@ import 'package:mango/utils.dart';
 import '../../../Home/controllers/dashboard_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 import '../../../Home/pages/post_shimmer.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpacePodcasts extends StatelessWidget {
   SpacePodcasts({super.key});
@@ -69,7 +71,7 @@ class SpacePodcasts extends StatelessWidget {
   Widget _buildLoadingScaffold() {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(semanticsLabel: 'Loading'),
       ),
     );
   }
@@ -97,7 +99,8 @@ class SpacePodcasts extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                GestureDetector(
+                MangoPressable(
+        semanticLabel: 'Next',
                   onTap: onSeeAll,
                   child: const Icon(Icons.arrow_forward_ios, size: 14),
                 ),
@@ -117,11 +120,11 @@ class SpacePodcasts extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.podcasts, size: 32, color: Colors.grey[400]),
+              Icon(Icons.podcasts, size: 32, color: MangoPalette.grey400),
               SizedBox(height: 8),
               Text(
                 message,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -143,11 +146,11 @@ class SpacePodcasts extends StatelessWidget {
                   width: 140,
                   height: 140,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5),
+                    color: MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                   ),
                   child: Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2),
                   ),
                 ),
               ],
@@ -156,10 +159,10 @@ class SpacePodcasts extends StatelessWidget {
             Container(
               width: 100,
               height: 12,
-              color: Colors.grey[300],
+              color: MangoPalette.grey300,
               margin: EdgeInsets.only(bottom: 4),
             ),
-            Container(width: 80, height: 10, color: Colors.grey[300]),
+            Container(width: 80, height: 10, color: MangoPalette.grey300),
           ],
         ),
       );
@@ -178,7 +181,7 @@ class SpacePodcasts extends StatelessWidget {
                   width: 140,
                   height: 140,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                     image: DecorationImage(
                       image: NetworkImage(
                         podcastData['thumbnail'] ?? podcastData['coverImage'] ?? '',
@@ -197,7 +200,7 @@ class SpacePodcasts extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.black87,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Text(
                       '#${index + 1}',
@@ -216,7 +219,7 @@ class SpacePodcasts extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: Row(
                       children: [
@@ -226,7 +229,7 @@ class SpacePodcasts extends StatelessWidget {
                           podcastData['duration']?.toString() ?? '0:00',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: 12,
                           ),
                         ),
                       ],
@@ -244,7 +247,7 @@ class SpacePodcasts extends StatelessWidget {
             ),
             Text(
               podcastData['host'] ?? 'Unknown Host',
-              style: TextStyle(fontSize: 10, color: Colors.grey),
+              style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -269,7 +272,7 @@ class SpacePodcasts extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 180,
                 width: 160,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -317,23 +320,23 @@ class SpacePodcasts extends StatelessWidget {
                                     width: 140,
                                     height: 140,
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(5),
+                                      color: MangoPalette.grey300,
+                                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                                     ),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.podcasts,
-                                          color: Colors.grey[600],
+                                          color: MangoPalette.grey600,
                                           size: 24,
                                         ),
                                         SizedBox(height: 4),
                                         Text(
                                           'Podcast not found',
                                           style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey[600],
+                                            fontSize: 12,
+                                            color: MangoPalette.grey600,
                                           ),
                                         ),
                                       ],
@@ -345,7 +348,7 @@ class SpacePodcasts extends StatelessWidget {
                               Text(
                                 'Podcast not available',
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 maxLines: 1,
@@ -354,8 +357,8 @@ class SpacePodcasts extends StatelessWidget {
                               Text(
                                 'Unknown',
                                 style: TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  color: MangoPalette.grey500,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -393,7 +396,7 @@ class SpacePodcasts extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 180,
                 width: 160,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -576,7 +579,7 @@ class SpacePodcastsActions extends StatelessWidget {
           ),
           _buildButton(
             context,
-            color: Colors.orange,
+            color: MangoPalette.green500,
             icon: Icons.mic_none,
             text: "Studio",
             onTap: isAdmin 
@@ -597,14 +600,14 @@ class SpacePodcastsActions extends StatelessWidget {
     required VoidCallback onTap,
     bool isDisabled = false,
   }) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Container(
         height: 100,
         width: 90,
         decoration: BoxDecoration(
-          color: isDisabled ? Colors.grey[700] : color,
-          borderRadius: BorderRadius.circular(20),
+          color: isDisabled ? MangoPalette.grey700 : color,
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
         ),
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -744,7 +747,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                 width: double.infinity,
                 height: _isExpanded ? 200 : 150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   color: Colors.white.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.5),
@@ -752,7 +755,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(),
@@ -777,14 +780,14 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                             ),
                             margin: const EdgeInsets.only(bottom: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5),
+                              color: MangoPalette.black,
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: Text(
                               data['status'] ?? "Active",
                               style: const TextStyle(
-                                fontSize: 7,
-                                color: Colors.grey,
+                                fontSize: 12,
+                                color: MangoPalette.grey500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -801,12 +804,12 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                           Text(
                             "${data['members'] ?? 0} members listening",
                             style: const TextStyle(
-                              fontSize: 9,
-                              color: Colors.black,
+                              fontSize: 12,
+                              color: MangoPalette.black,
                             ),
                           ),
                           const SizedBox(height: 10),
-                          GestureDetector(
+                          MangoPressable(
                             onTap: () {
                               setState(() {
                                 _isExpanded = !_isExpanded;
@@ -817,15 +820,15 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                                 Text(
                                   'tap for more',
                                   style: TextStyle(
-                                    fontSize: 8,
-                                    color: Colors.black.withOpacity(0.8),
+                                    fontSize: 12,
+                                    color: MangoPalette.black.withOpacity(0.8),
                                   ),
                                 ),
                                 Icon(
                                   _isExpanded
                                       ? Icons.keyboard_arrow_up
                                       : Icons.keyboard_arrow_down,
-                                  color: Colors.black.withOpacity(0.8),
+                                  color: MangoPalette.black.withOpacity(0.8),
                                   size: 10,
                                 ),
                               ],
@@ -837,8 +840,8 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                               child: Text(
                                 data['description'] ?? 'Join our podcast discussions!',
                                 style: TextStyle(
-                                  fontSize: 8,
-                                  color: Colors.black.withOpacity(0.6),
+                                  fontSize: 12,
+                                  color: MangoPalette.black.withOpacity(0.6),
                                 ),
                                 maxLines: 2,
                               ),
@@ -855,7 +858,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: MangoPalette.black.withOpacity(0.1),
                               blurRadius: 20,
                               spreadRadius: 5,
                               offset: const Offset(10, 10),
@@ -863,7 +866,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           child: data['image'] != null
                               ? Image.network(
                                   data['image'],
@@ -892,10 +895,10 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
       height: 150,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -911,7 +914,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -923,7 +926,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -931,10 +934,10 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -947,7 +950,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.deepPurple.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.deepPurple.withOpacity(0.5),
@@ -964,7 +967,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                     "PODCAST CLUB",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -987,7 +990,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1005,7 +1008,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1035,7 +1038,7 @@ class _PodcastClubCardState extends State<PodcastClubCard> {
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),
@@ -1123,7 +1126,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                 width: double.infinity,
                 height: _isExpanded ? 200 : 150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   color: Colors.white.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.5),
@@ -1131,7 +1134,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(),
@@ -1156,14 +1159,14 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                             ),
                             margin: const EdgeInsets.only(bottom: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5),
+                              color: MangoPalette.black,
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: Text(
                               _getRecordingTimeText(currentSession),
                               style: const TextStyle(
-                                fontSize: 7,
-                                color: Colors.grey,
+                                fontSize: 12,
+                                color: MangoPalette.grey500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -1182,8 +1185,8 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                               Text(
                                 "${currentSession['listeners'] ?? 0} listeners.",
                                 style: const TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.black,
+                                  fontSize: 12,
+                                  color: MangoPalette.black,
                                 ),
                               ),
                               const SizedBox(width: 5),
@@ -1194,13 +1197,13 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: _getStatusColor(currentSession),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                                 ),
                                 child: Text(
                                   _getStatusText(currentSession),
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 8,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -1219,7 +1222,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: MangoPalette.black.withOpacity(0.1),
                               blurRadius: 20,
                               spreadRadius: 5,
                               offset: const Offset(10, 10),
@@ -1227,7 +1230,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           child: currentSession['image'] != null
                               ? Image.network(
                                   currentSession['image'],
@@ -1277,7 +1280,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
 
   Color _getStatusColor(Map<String, dynamic> session) {
     if (session['isLive'] == true) return Colors.red;
-    if (session['isScheduled'] == true) return Colors.orange;
+    if (session['isScheduled'] == true) return MangoPalette.green500;
     return Colors.red;
   }
 
@@ -1287,10 +1290,10 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
       height: 150,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -1306,7 +1309,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -1318,7 +1321,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -1326,10 +1329,10 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -1342,7 +1345,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.red.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.red.withOpacity(0.5),
@@ -1359,7 +1362,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                     "RECORDING",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1382,7 +1385,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1400,7 +1403,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1430,7 +1433,7 @@ class _LiveRecordingSessionsCardState extends State<LiveRecordingSessionsCard> {
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),
@@ -1523,7 +1526,7 @@ class StudioCornerList extends StatelessWidget {
                                 child: Text(
                                   data["genre"] ?? "Studio Session",
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     color: Theme.of(context).primaryColorLight,
                                   ),
                                 ),
@@ -1595,10 +1598,10 @@ class _StudioCornerCarouselState extends State<_StudioCornerCarousel> {
       height: 150,
       margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -1614,7 +1617,7 @@ class _StudioCornerCarouselState extends State<_StudioCornerCarousel> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -1626,7 +1629,7 @@ class _StudioCornerCarouselState extends State<_StudioCornerCarousel> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -1634,10 +1637,10 @@ class _StudioCornerCarouselState extends State<_StudioCornerCarousel> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -1649,11 +1652,11 @@ class _StudioCornerCarouselState extends State<_StudioCornerCarousel> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                color: MangoPalette.green500.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.orange.withOpacity(0.5),
+                    color: MangoPalette.green500.withOpacity(0.5),
                     blurRadius: 8,
                     spreadRadius: 2,
                   ),
@@ -1667,7 +1670,7 @@ class _StudioCornerCarouselState extends State<_StudioCornerCarousel> {
                     "STUDIO",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1690,7 +1693,7 @@ class _StudioCornerCarouselState extends State<_StudioCornerCarousel> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1708,7 +1711,7 @@ class _StudioCornerCarouselState extends State<_StudioCornerCarousel> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1734,11 +1737,11 @@ class _StudioCornerCarouselState extends State<_StudioCornerCarousel> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _currentImageIndex == index
-                        ? Colors.orange
+                        ? MangoPalette.green500
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),

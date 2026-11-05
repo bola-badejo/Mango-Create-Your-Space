@@ -12,6 +12,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../controllers/space_model.dart';
 import '../controllers/space_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpaceLanding extends StatefulWidget {
   const SpaceLanding(this.space, this.spaceStations, {super.key});
@@ -149,7 +151,7 @@ class _SpaceLandingState extends State<SpaceLanding>
         UtilsService().showSnackbar(
           'Success',
           '${stationTitle} image updated successfully',
-          backgroundColor: Colors.green,
+          backgroundColor: MangoPalette.green500,
           colorText: Colors.white,
           context: context,
         );
@@ -184,8 +186,8 @@ class _SpaceLandingState extends State<SpaceLanding>
         margin: const EdgeInsets.all(16),
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: const Color(0xFF1C1C1E),
-          borderRadius: BorderRadius.circular(24),
+          color: const Color(0xFF1B241E),
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -195,8 +197,8 @@ class _SpaceLandingState extends State<SpaceLanding>
               height: 4,
               margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
-                color: Colors.grey[600],
-                borderRadius: BorderRadius.circular(2),
+                color: MangoPalette.grey600,
+                borderRadius: BorderRadius.circular(MangoRadius.xs),
               ),
             ),
             const Text(
@@ -212,7 +214,7 @@ class _SpaceLandingState extends State<SpaceLanding>
             Text(
               widget.spaceStations[index]['Title'],
               style: TextStyle(
-                color: Colors.grey[400],
+                color: MangoPalette.grey400,
                 fontSize: 14,
               ),
             ),
@@ -250,7 +252,7 @@ class _SpaceLandingState extends State<SpaceLanding>
                   _buildImageSourceOption(
                     icon: Icons.refresh_rounded,
                     label: 'Reset',
-                    color: Colors.orange,
+                    color: MangoPalette.green500,
                     onTap: () async {
                       Navigator.pop(context);
                       await _resetStationImage(index);
@@ -271,7 +273,7 @@ class _SpaceLandingState extends State<SpaceLanding>
     required Color color,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Column(
         children: [
@@ -299,7 +301,7 @@ class _SpaceLandingState extends State<SpaceLanding>
           Text(
             label,
             style: TextStyle(
-              color: Colors.grey[300],
+              color: MangoPalette.grey300,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -340,7 +342,7 @@ class _SpaceLandingState extends State<SpaceLanding>
         UtilsService().showSnackbar(
           'Success',
           '${stationTitle} image reset to default',
-          backgroundColor: Colors.green,
+          backgroundColor: MangoPalette.green500,
           colorText: Colors.white,
           context: context,
         );
@@ -433,30 +435,30 @@ class _SpaceLandingState extends State<SpaceLanding>
         width: double.infinity,
         height: double.infinity,
         placeholder: (context, url) => Container(
-          color: Colors.grey[900],
+          color: MangoPalette.grey900,
           child: Center(
-            child: CircularProgressIndicator(
+            child: CircularProgressIndicator(semanticsLabel: 'Loading', 
               color: Colors.white.withOpacity(0.5),
               strokeWidth: 2,
             ),
           ),
         ),
         errorWidget: (context, url, error) => Container(
-          color: Colors.grey[900],
+          color: MangoPalette.grey900,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.image_not_supported_outlined,
-                  color: Colors.grey[600],
+                  color: MangoPalette.grey600,
                   size: 48,
                 ),
                 const SizedBox(height: 12),
                 Text(
                   'Failed to load image',
                   style: TextStyle(
-                    color: Colors.grey[400],
+                    color: MangoPalette.grey400,
                     fontSize: 14,
                   ),
                 ),
@@ -473,11 +475,11 @@ class _SpaceLandingState extends State<SpaceLanding>
         height: double.infinity,
         errorBuilder: (context, error, stackTrace) {
           return Container(
-            color: Colors.grey[900],
+            color: MangoPalette.grey900,
             child: Center(
               child: Icon(
                 Icons.broken_image_outlined,
-                color: Colors.grey[600],
+                color: MangoPalette.grey600,
                 size: 48,
               ),
             ),
@@ -492,11 +494,11 @@ class _SpaceLandingState extends State<SpaceLanding>
         height: double.infinity,
         errorBuilder: (context, error, stackTrace) {
           return Container(
-            color: Colors.grey[900],
+            color: MangoPalette.grey900,
             child: Center(
               child: Icon(
                 Icons.broken_image_outlined,
-                color: Colors.grey[600],
+                color: MangoPalette.grey600,
                 size: 48,
               ),
             ),
@@ -514,11 +516,11 @@ class _SpaceLandingState extends State<SpaceLanding>
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
             colors: [
-              Colors.black.withOpacity(0.95),
-              Colors.black.withOpacity(0.8),
-              Colors.black.withOpacity(0.5),
-              Colors.black.withOpacity(0.2),
-              Colors.black.withOpacity(0.05),
+              MangoPalette.black.withOpacity(0.95),
+              MangoPalette.black.withOpacity(0.8),
+              MangoPalette.black.withOpacity(0.5),
+              MangoPalette.black.withOpacity(0.2),
+              MangoPalette.black.withOpacity(0.05),
               Colors.transparent,
             ],
             stops: const [0.0, 0.15, 0.35, 0.55, 0.75, 1.0],
@@ -540,12 +542,12 @@ class _SpaceLandingState extends State<SpaceLanding>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Back Button
-              GestureDetector(
+              MangoPressable(
                 onTap: () => Get.back(),
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
+                    color: MangoPalette.black.withOpacity(0.5),
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: Colors.white.withOpacity(0.1),
@@ -567,7 +569,7 @@ class _SpaceLandingState extends State<SpaceLanding>
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
+                  color: MangoPalette.black.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.1),
@@ -579,7 +581,7 @@ class _SpaceLandingState extends State<SpaceLanding>
                   children: [
                     Icon(
                       Icons.rocket_launch_rounded,
-                      color: Colors.orange[300],
+                      color: MangoPalette.green300,
                       size: 16,
                     ),
                     const SizedBox(width: 6),
@@ -600,7 +602,7 @@ class _SpaceLandingState extends State<SpaceLanding>
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
+                  color: MangoPalette.black.withOpacity(0.5),
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: Colors.white.withOpacity(0.1),
@@ -632,15 +634,15 @@ class _SpaceLandingState extends State<SpaceLanding>
             child: child,
           );
         },
-        child: GestureDetector(
+        child: MangoPressable(
           onTap: () => _pickImage(currentIndex),
           child: Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.orange.shade400,
-                  Colors.orange.shade600,
+                  MangoPalette.green400,
+                  MangoPalette.green600,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -648,7 +650,7 @@ class _SpaceLandingState extends State<SpaceLanding>
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.orange.withOpacity(0.4),
+                  color: MangoPalette.green500.withOpacity(0.4),
                   blurRadius: 12,
                   spreadRadius: 2,
                 ),
@@ -658,7 +660,7 @@ class _SpaceLandingState extends State<SpaceLanding>
                 ? const SizedBox(
                     width: 22,
                     height: 22,
-                    child: CircularProgressIndicator(
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                       strokeWidth: 2.5,
                       color: Colors.white,
                     ),
@@ -683,8 +685,8 @@ class _SpaceLandingState extends State<SpaceLanding>
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.4),
-            borderRadius: BorderRadius.circular(20),
+            color: MangoPalette.black.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(MangoRadius.lg),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -765,7 +767,7 @@ class _SpaceLandingState extends State<SpaceLanding>
 
           return Builder(
             builder: (BuildContext context) {
-              return GestureDetector(
+              return MangoPressable(
                 onTap: () => _navigateToStation(station),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 400),
@@ -782,10 +784,10 @@ class _SpaceLandingState extends State<SpaceLanding>
                         height: 320,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(MangoRadius.lg),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
+                              color: MangoPalette.black.withOpacity(0.5),
                               blurRadius: 20,
                               spreadRadius: isActive ? 2 : 0,
                               offset: const Offset(0, 8),
@@ -793,7 +795,7 @@ class _SpaceLandingState extends State<SpaceLanding>
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(MangoRadius.lg),
                           child: Stack(
                             children: [
                               // Image
@@ -806,8 +808,8 @@ class _SpaceLandingState extends State<SpaceLanding>
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
                                     colors: [
-                                      Colors.black.withOpacity(0.8),
-                                      Colors.black.withOpacity(0.3),
+                                      MangoPalette.black.withOpacity(0.8),
+                                      MangoPalette.black.withOpacity(0.3),
                                       Colors.transparent,
                                     ],
                                     stops: const [0.0, 0.5, 1.0],
@@ -819,7 +821,7 @@ class _SpaceLandingState extends State<SpaceLanding>
                               if (isActive)
                                 Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(24),
+                                    borderRadius: BorderRadius.circular(MangoRadius.lg),
                                     border: Border.all(
                                       color: Colors.white.withOpacity(0.5),
                                       width: 2.5,
@@ -840,14 +842,14 @@ class _SpaceLandingState extends State<SpaceLanding>
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
-                                          Colors.orange.shade400,
-                                          Colors.orange.shade600,
+                                          MangoPalette.green400,
+                                          MangoPalette.green600,
                                         ],
                                       ),
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(MangoRadius.lg),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.orange.withOpacity(0.3),
+                                          color: MangoPalette.green500.withOpacity(0.3),
                                           blurRadius: 8,
                                         ),
                                       ],
@@ -865,7 +867,7 @@ class _SpaceLandingState extends State<SpaceLanding>
                                           'ACTIVE',
                                           style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 10,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 0.5,
                                           ),
@@ -893,7 +895,7 @@ class _SpaceLandingState extends State<SpaceLanding>
                                         shadows: [
                                           Shadow(
                                             blurRadius: 8,
-                                            color: Colors.black.withOpacity(0.5),
+                                            color: MangoPalette.black.withOpacity(0.5),
                                           ),
                                         ],
                                       ),
@@ -935,7 +937,7 @@ class _SpaceLandingState extends State<SpaceLanding>
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 13,
-                                color: Colors.grey[300],
+                                color: MangoPalette.grey300,
                                 height: 1.4,
                               ),
                               maxLines: 2,
@@ -963,8 +965,8 @@ class _SpaceLandingState extends State<SpaceLanding>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(20),
+        color: MangoPalette.black.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         border: Border.all(
           color: Colors.white.withOpacity(0.1),
         ),
@@ -978,7 +980,7 @@ class _SpaceLandingState extends State<SpaceLanding>
             label,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
           ),

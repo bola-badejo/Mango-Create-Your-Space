@@ -7,6 +7,8 @@ import 'package:mango/Store/components/vendor_card.dart';
 import 'package:mango/Store/controller/store_controller.dart';
 import 'package:mango/Store/screens/general_store.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class StoreFront extends GetView<StoreController> {
   const StoreFront({Key? key}) : super(key: key);
@@ -22,7 +24,7 @@ class StoreFront extends GetView<StoreController> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : MangoPalette.black,
           ),
         ),
         backgroundColor: Colors.transparent,
@@ -37,6 +39,7 @@ class StoreFront extends GetView<StoreController> {
               return Stack(
                 children: [
                   IconButton(
+        tooltip: 'Cart',
                     icon: Icon(Icons.shopping_cart_outlined),
                     onPressed: () => Get.toNamed(AppRoutes.cart),
                   ),
@@ -48,7 +51,7 @@ class StoreFront extends GetView<StoreController> {
                         padding: EdgeInsets.all(2),
                         decoration: BoxDecoration(
                           color: Colors.red,
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         constraints: BoxConstraints(
                           minWidth: 16,
@@ -58,7 +61,7 @@ class StoreFront extends GetView<StoreController> {
                           count > 99 ? '99+' : count.toString(),
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -81,10 +84,10 @@ class StoreFront extends GetView<StoreController> {
                 hintText: 'Search vendors or products...',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
                 filled: true,
-                fillColor: isDarkMode ? Colors.grey[800] : Colors.grey[100],
+                fillColor: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
               ),
               onChanged: (query) {
                 controller.searchQuery.value = query;
@@ -107,7 +110,7 @@ class StoreFront extends GetView<StoreController> {
           Expanded(
             child: Obx(() {
               if (controller.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
               }
               
               if (controller.filteredVendors.isEmpty) {
@@ -118,14 +121,14 @@ class StoreFront extends GetView<StoreController> {
                       Icon(
                         Icons.store_outlined,
                         size: 64,
-                        color: Colors.grey[400],
+                        color: MangoPalette.grey400,
                       ),
                       SizedBox(height: 16),
                       Text(
                         'No vendors found',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.grey[600],
+                          color: MangoPalette.grey600,
                         ),
                       ),
                     ],
@@ -164,7 +167,7 @@ class StoreFront extends GetView<StoreController> {
     final storeController = Get.find<StoreController>();
     
     return Expanded(
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: () => storeController.selectedTabIndex.value = index,
         child: Obx(() => Container(
           padding: EdgeInsets.symmetric(vertical: 12),
@@ -172,7 +175,7 @@ class StoreFront extends GetView<StoreController> {
             border: Border(
               bottom: BorderSide(
                 color: storeController.selectedTabIndex.value == index
-                    ? Colors.orange
+                    ? MangoPalette.green500
                     : Colors.transparent,
                 width: 2,
               ),
@@ -187,8 +190,8 @@ class StoreFront extends GetView<StoreController> {
                     ? FontWeight.bold
                     : FontWeight.normal,
                 color: storeController.selectedTabIndex.value == index
-                    ? Colors.orange
-                    : (isDarkMode ? Colors.grey[400] : Colors.grey[600]),
+                    ? MangoPalette.green500
+                    : (isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600),
               ),
             ),
           ),

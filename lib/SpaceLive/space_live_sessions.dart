@@ -3,6 +3,8 @@ import 'package:mango/SpaceLive/sessions_service.dart';
 import 'package:mango/SpaceLive/space_live_sessions_model.dart';
 import 'package:provider/provider.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class LiveSessionScreen extends StatefulWidget {
   final String sessionId;
@@ -120,12 +122,12 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
         
         if (currentSession == null) {
           return Scaffold(
-            backgroundColor: Colors.black,
+            backgroundColor: MangoPalette.black,
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(color: Colors.white),
+                  CircularProgressIndicator(semanticsLabel: 'Loading', color: Colors.white),
                   SizedBox(height: 20),
                   Text(
                     'Joining session...',
@@ -141,11 +143,12 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
         final listeners = currentSession.listeners;
 
         return Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: MangoPalette.black,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
+        tooltip: 'Back',
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: _leaveSession,
             ),
@@ -163,7 +166,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
                 Text(
                   '${speakers.length} speakers • ${listeners.length} listeners',
                   style: const TextStyle(
-                    color: Colors.grey,
+                    color: MangoPalette.grey500,
                     fontSize: 12,
                   ),
                 ),
@@ -259,8 +262,8 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
   Widget _buildSpeakerTile(SessionUser speaker) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12),
+        color: MangoPalette.grey900,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -302,7 +305,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
           ),
           Text(
             '@${speaker.user.username}',
-            style: const TextStyle(color: Colors.grey, fontSize: 10),
+            style: const TextStyle(color: MangoPalette.grey500, fontSize: 12),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -320,6 +323,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
                   onPressed: () => _toggleMuteParticipant(speaker.user.id, speaker.isMuted),
                 ),
                 IconButton(
+        tooltip: 'Remove',
                   icon: const Icon(Icons.remove_circle, size: 16, color: Colors.red),
                   onPressed: () => _removeParticipant(speaker.user.id),
                 ),
@@ -350,7 +354,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
               ),
               Text(
                 '${listeners.length}',
-                style: const TextStyle(color: Colors.grey, fontSize: 14),
+                style: const TextStyle(color: MangoPalette.grey500, fontSize: 14),
               ),
             ],
           ),
@@ -394,7 +398,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: const BoxDecoration(
-                      color: Colors.orange,
+                      color: MangoPalette.green500,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.waving_hand, size: 12, color: Colors.white),
@@ -407,23 +411,23 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
             listener.user.displayName.isNotEmpty 
                 ? listener.user.displayName.split(' ').first 
                 : listener.user.username,
-            style: const TextStyle(color: Colors.white, fontSize: 10),
+            style: const TextStyle(color: Colors.white, fontSize: 12),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           if (_isHost && listener.hasRequestedToSpeak) ...[
             const SizedBox(height: 4),
-            GestureDetector(
+            MangoPressable(
               onTap: () => _makeSpeaker(listener.user.id),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(8),
+                  color: MangoPalette.green500,
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 child: const Text(
                   'Approve',
-                  style: TextStyle(color: Colors.white, fontSize: 8),
+                  style: TextStyle(color: Colors.white, fontSize: 12),
                 ),
               ),
             ),
@@ -437,7 +441,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: MangoPalette.grey900,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -457,6 +461,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
           ),
           
           IconButton(
+        tooltip: 'End call',
             icon: const Icon(Icons.call_end, color: Colors.red, size: 30),
             onPressed: _leaveSession,
           ),
@@ -468,6 +473,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
             ),
           
           IconButton(
+        tooltip: 'Chat',
             icon: const Icon(Icons.chat, color: Colors.white, size: 30),
             onPressed: _openChat,
           ),
@@ -528,7 +534,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: MangoPalette.grey900,
         title: const Text('Session Settings', style: TextStyle(color: Colors.white)),
         content: const Column(
           mainAxisSize: MainAxisSize.min,
@@ -542,7 +548,7 @@ class _LiveSessionScreenState extends State<LiveSessionScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close', style: TextStyle(color: Colors.grey)),
+            child: const Text('Close', style: TextStyle(color: MangoPalette.grey500)),
           ),
         ],
       ),

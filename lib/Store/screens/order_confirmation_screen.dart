@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class OrderConfirmationScreen extends StatelessWidget {
   final String orderId;
@@ -27,7 +28,7 @@ class OrderConfirmationScreen extends StatelessWidget {
               Icon(
                 Icons.check_circle_outline,
                 size: 100,
-                color: Colors.green,
+                color: MangoPalette.green500,
               ),
               SizedBox(height: 24),
               Text(
@@ -35,7 +36,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               ),
               SizedBox(height: 16),
@@ -43,7 +44,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                 'Order ID: $orderId',
                 style: TextStyle(
                   fontSize: 14,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
               ),
               SizedBox(height: 16),
@@ -52,7 +53,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDarkMode ? Colors.grey[300] : Colors.grey[700],
+                  color: isDarkMode ? MangoPalette.grey300 : MangoPalette.grey700,
                 ),
               ),
               SizedBox(height: 32),
@@ -62,11 +63,11 @@ class OrderConfirmationScreen extends StatelessWidget {
                 },
                 child: Text('Continue Shopping'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: MangoPalette.green500,
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                 ),
               ),

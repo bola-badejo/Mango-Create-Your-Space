@@ -7,6 +7,8 @@ import 'package:shimmer/shimmer.dart';
 import '../../../Models/customModel/MangoProduct.dart';
 import '../../../Store/screens/product_detail_screen.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MarketPlace extends StatefulWidget {
   const MarketPlace({Key? key}) : super(key: key);
@@ -45,7 +47,7 @@ class _MarketPlaceState extends State<MarketPlace> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.black : Colors.white,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -77,7 +79,7 @@ class _MarketPlaceState extends State<MarketPlace> {
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
       child: Row(
         children: [
-          GestureDetector(
+          MangoPressable(
             onTap: () => Get.back(),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -105,6 +107,7 @@ class _MarketPlaceState extends State<MarketPlace> {
           Obx(() => Stack(
             children: [
               IconButton(
+        tooltip: 'Cart',
                 icon: Icon(
                   Icons.shopping_cart_outlined,
                   color: isDarkMode ? Colors.white : Colors.black87,
@@ -119,7 +122,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                   child: Container(
                     padding: const EdgeInsets.all(2),
                     decoration: const BoxDecoration(
-                      color: Colors.orange,
+                      color: MangoPalette.green500,
                       shape: BoxShape.circle,
                     ),
                     constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
@@ -127,7 +130,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                       controller.cartItemCount.toString(),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
@@ -138,6 +141,7 @@ class _MarketPlaceState extends State<MarketPlace> {
           )),
           // Filter Button
           IconButton(
+        tooltip: 'Filter',
             icon: Icon(
               Icons.filter_list,
               color: isDarkMode ? Colors.white : Colors.black87,
@@ -156,35 +160,36 @@ class _MarketPlaceState extends State<MarketPlace> {
       child: Container(
         height: 48,
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[900] : Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
+          color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey100,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
-            color: isDarkMode ? Colors.grey[800]! : Colors.grey[300]!,
+            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey300,
           ),
         ),
         child: TextField(
           controller: _searchController,
           style: TextStyle(
             fontSize: 14,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : MangoPalette.black,
           ),
           decoration: InputDecoration(
             hintText: 'Search products...',
             hintStyle: TextStyle(
               fontSize: 14,
-              color: isDarkMode ? Colors.grey[600] : Colors.grey[500],
+              color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey500,
             ),
             prefixIcon: Icon(
               Icons.search,
               size: 22,
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
             suffixIcon: Obx(() => controller.searchQuery.isNotEmpty
                 ? IconButton(
+        tooltip: 'Clear',
                     icon: Icon(
                       Icons.clear,
                       size: 20,
-                      color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                      color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                     ),
                     onPressed: () {
                       _searchController.clear();
@@ -212,7 +217,7 @@ class _MarketPlaceState extends State<MarketPlace> {
           final category = controller.categories[index];
           final isSelected = controller.selectedCategory.value == category;
 
-          return GestureDetector(
+          return MangoPressable(
             onTap: () {
               controller.selectedCategory.value = category;
             },
@@ -221,13 +226,13 @@ class _MarketPlaceState extends State<MarketPlace> {
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? Colors.orange
-                    : (isDarkMode ? Colors.grey[800] : Colors.grey[200]),
+                    ? MangoPalette.green500
+                    : (isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200),
                 borderRadius: BorderRadius.circular(25),
                 border: Border.all(
                   color: isSelected
-                      ? Colors.orange
-                      : (isDarkMode ? Colors.grey[700]! : Colors.grey[300]!),
+                      ? MangoPalette.green500
+                      : (isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300),
                 ),
               ),
               child: Center(
@@ -293,18 +298,18 @@ class _MarketPlaceState extends State<MarketPlace> {
   }
 
   Widget _buildProductCard(MangoProductItem product, bool isDarkMode) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: () => Get.to(
         () => ProductDetailScreen(productId: product.id),
         transition: Transition.rightToLeft,
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[850] : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: isDarkMode ? MangoPalette.grey850 : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: MangoPalette.black.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -326,26 +331,26 @@ class _MarketPlaceState extends State<MarketPlace> {
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(
                             height: 150,
-                            color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                             child: const Center(
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                              child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2),
                             ),
                           ),
                           errorWidget: (context, url, error) => Container(
                             height: 150,
-                            color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                             child: Icon(
                               Icons.image_not_supported,
-                              color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                              color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                             ),
                           ),
                         )
                       : Container(
                           height: 150,
-                          color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                           child: Icon(
                             Icons.image,
-                            color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                            color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                           ),
                         ),
                 ),
@@ -358,12 +363,12 @@ class _MarketPlaceState extends State<MarketPlace> {
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.red,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                       child: Text(
                         '-${((product.price - product.salePrice!) / product.price * 100).toStringAsFixed(0)}%',
                         style: const TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -375,7 +380,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                       ),
                       child: const Center(
@@ -383,7 +388,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                           'OUT OF STOCK',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -418,16 +423,16 @@ class _MarketPlaceState extends State<MarketPlace> {
                       Text(
                         product.rating.toStringAsFixed(1),
                         style: TextStyle(
-                          fontSize: 10,
-                          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                          fontSize: 12,
+                          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                         ),
                       ),
                       const SizedBox(width: 4),
                       Text(
                         '(${product.reviewCount})',
                         style: TextStyle(
-                          fontSize: 9,
-                          color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
+                          fontSize: 12,
+                          color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey500,
                         ),
                       ),
                     ],
@@ -437,8 +442,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                   Text(
                     product.vendorName,
                     style: TextStyle(
-                      fontSize: 10,
-                      color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
+                      fontSize: 12,
+                      color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey500,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -452,7 +457,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
-                          color: Colors.orange,
+                          color: MangoPalette.green500,
                         ),
                       ),
                       if (product.onSale)
@@ -461,8 +466,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                           child: Text(
                             '₦${product.price.toStringAsFixed(0)}',
                             style: TextStyle(
-                              fontSize: 11,
-                              color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                              fontSize: 12,
+                              color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                               decoration: TextDecoration.lineThrough,
                             ),
                           ),
@@ -478,17 +483,17 @@ class _MarketPlaceState extends State<MarketPlace> {
                           ? () => controller.addToCart(product)
                           : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor: MangoPalette.green500,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         minimumSize: const Size(double.infinity, 32),
                       ),
                       child: Text(
                         product.inStock ? 'Add to Cart' : 'Out of Stock',
-                        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
@@ -511,13 +516,13 @@ class _MarketPlaceState extends State<MarketPlace> {
               width: 100,
               height: 100,
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[100],
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.inventory_2_outlined,
                 size: 40,
-                color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
               ),
             ),
             const SizedBox(height: 20),
@@ -539,7 +544,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
               )),
             ),
@@ -555,11 +560,11 @@ class _MarketPlaceState extends State<MarketPlace> {
                     icon: const Icon(Icons.clear, size: 16),
                     label: const Text('Clear Search'),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.orange,
-                      side: const BorderSide(color: Colors.orange),
+                      foregroundColor: MangoPalette.green500,
+                      side: const BorderSide(color: MangoPalette.green500),
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(MangoRadius.lg),
                       ),
                     ),
                   ),
@@ -584,13 +589,13 @@ class _MarketPlaceState extends State<MarketPlace> {
           mainAxisSpacing: 12,
         ),
         delegate: SliverChildBuilderDelegate(
-          (context, index) => Shimmer.fromColors(
-            baseColor: isDarkMode ? Colors.grey[850]! : Colors.grey[300]!,
-            highlightColor: isDarkMode ? Colors.grey[800]! : Colors.grey[100]!,
+          (context, index) => MangoShimmer(
+            baseColor: isDarkMode ? MangoPalette.grey850 : MangoPalette.grey300,
+            highlightColor: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
             child: Container(
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[800] : Colors.white,
-                borderRadius: BorderRadius.circular(16),
+                color: isDarkMode ? MangoPalette.grey800 : Colors.white,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
             ),
           ),
@@ -607,9 +612,9 @@ class _MarketPlaceState extends State<MarketPlace> {
         child: SizedBox(
           width: 30,
           height: 30,
-          child: CircularProgressIndicator(
+          child: CircularProgressIndicator(semanticsLabel: 'Loading', 
             strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+            valueColor: AlwaysStoppedAnimation<Color>(MangoPalette.green500),
           ),
         ),
       ),
@@ -619,7 +624,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   void _showFilterBottomSheet(BuildContext context, bool isDarkMode) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDarkMode ? Colors.grey[850] : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.grey850 : Colors.white,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -634,8 +639,8 @@ class _MarketPlaceState extends State<MarketPlace> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[600] : Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
+                color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey300,
+                borderRadius: BorderRadius.circular(MangoRadius.xs),
               ),
             ),
             const SizedBox(height: 20),
@@ -658,7 +663,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -674,8 +679,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                   onChanged: (values) {
                     controller.priceRange.value = values;
                   },
-                  activeColor: Colors.orange,
-                  inactiveColor: isDarkMode ? Colors.grey[600] : Colors.grey[300],
+                  activeColor: MangoPalette.green500,
+                  inactiveColor: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey300,
                 )),
               ],
             ),
@@ -689,7 +694,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -705,11 +710,11 @@ class _MarketPlaceState extends State<MarketPlace> {
                           controller.selectedSort.value = option;
                         }
                       },
-                      backgroundColor: isDarkMode ? Colors.grey[800] : Colors.grey[100],
-                      selectedColor: Colors.orange.withOpacity(0.2),
-                      checkmarkColor: Colors.orange,
+                      backgroundColor: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
+                      selectedColor: MangoPalette.green500.withOpacity(0.2),
+                      checkmarkColor: MangoPalette.green500,
                       labelStyle: TextStyle(
-                        color: isSelected ? Colors.orange : (isDarkMode ? Colors.white : Colors.black),
+                        color: isSelected ? MangoPalette.green500 : (isDarkMode ? Colors.white : MangoPalette.black),
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                         fontSize: 12,
                       ),
@@ -729,13 +734,13 @@ class _MarketPlaceState extends State<MarketPlace> {
                       Navigator.pop(context);
                     },
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: isDarkMode ? Colors.white : Colors.black,
+                      foregroundColor: isDarkMode ? Colors.white : MangoPalette.black,
                       side: BorderSide(
-                        color: isDarkMode ? Colors.grey[600]! : Colors.grey[300]!,
+                        color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey300,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                     ),
                     child: const Text('Reset'),
@@ -749,11 +754,11 @@ class _MarketPlaceState extends State<MarketPlace> {
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
+                      backgroundColor: MangoPalette.green500,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                     ),
                     child: const Text('Apply'),

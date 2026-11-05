@@ -1,0 +1,45 @@
+rules_version = '2';
+// Mango Storage rules. Uploads go through the Mango uploader
+// (lib/Media/compose/mango_uploader.dart), which writes to these paths.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function signedIn() { return request.auth != null; }
+    function isUser(uid) { return signedIn() && request.auth.uid == uid; }
+    function sizeUnder(mb) { return request.resource.size < mb * 1024 * 1024; }
+    function typeIs(pattern) { return request.resource.contentType.matches(pattern); }
+    function media() { return typeIs('image/.*') || typeIs('video/.*') || typeIs('audio/.*'); }
+    function document() { return typeIs('application/pdf') || typeIs('application/epub\\+zip') || typeIs('text/plain'); }
+
+    // Chat media: only the two people in the chat can read it; only the
+    // sender writes, into their own folder. Removed by the server when it expires.
+    match /chats/{chatId}/{uid}/{file} {
+      allow read: if signedIn()
+        && request.auth.uid in firestore.get(/databases/(default)/documents/dm_chats/$(chatId)).data.members;
+      allow create: if isUser(uid)
+        && request.auth.uid in firestore.get(/databases/(default)/documents/dm_chats/$(chatId)).data.members
+        && sizeUnder(100) && (media() || document() || typeIs('application/.*'));
+      allow update, delete: if false;
+    }
+
+    // Profile photos, banners and post media: public to read, owner writes.
+    match /users/{uid}/{path=**} {
+      allow read: if true;
+      allow write: if isUser(uid) && (request.resource == null || (sizeUnder(50) && (media() || document())));
+    }
+
+    // Creator content (songs, episodes, films, books, products, vines).
+    match /content/{uid}/{path=**} {
+      allow read: if true;
+      allow write: if isUser(uid) && (request.resource == null || (sizeUnder(2048) && (media() || document())));
+    }
+
+    // Older upload paths keep working as before so existing files load.
+    // New uploads use the folders above; tighten these once migrated.
+    match /{top}/{path=**} {
+      allow read: if !(top in ['chats']);
+      allow write: if signedIn() && !(top in ['chats', 'users', 'content'])
+        && (request.resource == null || sizeUnder(2048));
+    }
+  }
+}

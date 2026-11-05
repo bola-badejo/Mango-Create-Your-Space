@@ -10,6 +10,8 @@ import 'package:mango/Spaces/controllers/space_controller.dart';
 import 'package:mango/Spaces/controllers/space_model.dart';
 import 'package:mango/Utils/text_field.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpaceSettingsScreen extends StatefulWidget {
   final SpaceModel space;
@@ -106,7 +108,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
       UtilsService().showSnackbar(
         'Success',
         'Background image updated',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -139,7 +141,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
       UtilsService().showSnackbar(
         'Removed',
         'Background image removed',
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -201,7 +203,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
       UtilsService().showSnackbar(
         'Success',
         'Space settings updated',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -241,17 +243,19 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
         ),
         centerTitle: true,
         leading: IconButton(
+        tooltip: 'Back',
           icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Get.back(),
         ),
         actions: [
           Obx(
             () => IconButton(
+        tooltip: 'Save',
               icon: _isLoading
                   ? SizedBox(
                       width: 20,
                       height: 20,
-                      child: CircularProgressIndicator(
+                      child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                         strokeWidth: 2,
                         color: textColor,
                       ),
@@ -288,7 +292,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
               ),
               subtitle: Text(
                 "Space details and configuration",
-                style: TextStyle(fontSize: 9, color: textColor, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 12, color: textColor, fontWeight: FontWeight.w500),
               ),
               children: <Widget>[
                 const Divider(thickness: 0.10, height: 0.10),
@@ -362,7 +366,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
               ),
               subtitle: Text(
                 "Control who can access your space",
-                style: TextStyle(fontSize: 9, color: textColor, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 12, color: textColor, fontWeight: FontWeight.w500),
               ),
               children: <Widget>[
                 const Divider(thickness: 0.10, height: 0.10),
@@ -415,7 +419,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
               ),
               subtitle: Text(
                 "Enable or disable space functionalities",
-                style: TextStyle(fontSize: 9, color: textColor, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 12, color: textColor, fontWeight: FontWeight.w500),
               ),
               children: <Widget>[
                 const Divider(thickness: 0.10, height: 0.10),
@@ -441,7 +445,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
               ),
               subtitle: Text(
                 "Irreversible actions - proceed with caution",
-                style: TextStyle(fontSize: 9, color: Colors.red, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 12, color: Colors.red, fontWeight: FontWeight.w500),
               ),
               children: <Widget>[
                 const Divider(thickness: 0.10, height: 0.10),
@@ -452,7 +456,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
                       _buildDangerButton(
                         'Transfer Ownership',
                         Icons.swap_horiz,
-                        Colors.orange,
+                        MangoPalette.green500,
                         () => _showTransferDialog(),
                       ),
                       _buildDangerButton(
@@ -488,17 +492,17 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: MangoPalette.black.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         child: Stack(
           children: [
             // Background image or placeholder
@@ -522,8 +526,8 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.6),
+                    MangoPalette.black.withOpacity(0.3),
+                    MangoPalette.black.withOpacity(0.6),
                   ],
                 ),
               ),
@@ -535,7 +539,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (_isUploadingBg)
-                      const CircularProgressIndicator(color: Colors.white)
+                      const CircularProgressIndicator(semanticsLabel: 'Loading', color: Colors.white)
                     else ...[
                       IconButton(
                         icon: const Icon(Icons.photo_camera, color: Colors.white, size: 32),
@@ -609,7 +613,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
                 ),
                 Text(
                   subtitle,
-                  style: TextStyle(fontSize: 10, color: Colors.grey[400]),
+                  style: TextStyle(fontSize: 12, color: MangoPalette.grey400),
                 ),
               ],
             ),
@@ -618,7 +622,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
             () => Switch(
               value: value.value,
               onChanged: (newValue) => value.value = newValue,
-              activeColor: Colors.orange,
+              activeColor: MangoPalette.green500,
             ),
           ),
         ],
@@ -649,16 +653,16 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
   Widget _buildFeatureCard(String title, IconData icon, RxBool isEnabled, String description) {
     final theme = Theme.of(context);
     return Obx(
-      () => GestureDetector(
+      () => MangoPressable(
         onTap: () => isEnabled.value = !isEnabled.value,
         child: Container(
           decoration: BoxDecoration(
             color: isEnabled.value
-                ? Colors.orange.withOpacity(0.15)
-                : Colors.grey.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+                ? MangoPalette.green500.withOpacity(0.15)
+                : MangoPalette.grey500.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: Border.all(
-              color: isEnabled.value ? Colors.orange : Colors.grey.withOpacity(0.3),
+              color: isEnabled.value ? MangoPalette.green500 : MangoPalette.grey500.withOpacity(0.3),
               width: 1,
             ),
           ),
@@ -667,22 +671,22 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
             children: [
               Icon(
                 icon,
-                color: isEnabled.value ? Colors.orange : Colors.grey,
+                color: isEnabled.value ? MangoPalette.green500 : MangoPalette.grey500,
                 size: 28,
               ),
               const SizedBox(height: 6),
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 10,
-                  color: isEnabled.value ? Colors.orange : Colors.grey,
+                  fontSize: 12,
+                  color: isEnabled.value ? MangoPalette.green500 : MangoPalette.grey500,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               if (isEnabled.value)
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
-                  child: Icon(Icons.check_circle, size: 12, color: Colors.orange),
+                  child: Icon(Icons.check_circle, size: 12, color: MangoPalette.green500),
                 ),
             ],
           ),
@@ -700,7 +704,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
         onPressed: onTap,
         padding: const EdgeInsets.all(16),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(MangoRadius.sm),
           side: BorderSide(color: color),
         ),
         child: Row(
@@ -737,7 +741,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
           const SizedBox(height: 16),
           Text(
             "Coming soon!",
-            style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+            style: TextStyle(color: MangoPalette.green500, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -799,7 +803,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
           UtilsService().showSnackbar(
             'Deleting Space',
             'Please wait...',
-            backgroundColor: Colors.orange,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -808,7 +812,7 @@ class _SpaceSettingsScreenState extends State<SpaceSettingsScreen> {
             UtilsService().showSnackbar(
               'Space Deleted',
               '${widget.space.title} has been deleted',
-              backgroundColor: Colors.green,
+              backgroundColor: MangoPalette.green500,
               colorText: Colors.white,
               context: context,
             );

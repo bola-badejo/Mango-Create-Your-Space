@@ -5,6 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mango/Models/customModel/interest_elements.dart';
 import 'package:mango/constants.dart';
 import 'add_friends.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class Interests extends StatefulWidget {
   const Interests({super.key});
@@ -80,13 +81,13 @@ class _InterestsState extends State<Interests> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
-    final Color backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
-    final Color textColor = isDark ? Colors.white : Colors.black;
-    final Color dividerColor = isDark ? Colors.grey[700]! : Colors.blueGrey;
-    final Color chipBackground = isDark ? Colors.grey[800]! : const Color(0xffededed);
+    final Color backgroundColor = isDark ? MangoPalette.grey900 : MangoPalette.grey50;
+    final Color textColor = isDark ? Colors.white : MangoPalette.black;
+    final Color dividerColor = isDark ? MangoPalette.grey700 : Colors.blueGrey;
+    final Color chipBackground = isDark ? MangoPalette.grey800 : const Color(0xffededed);
     final Color selectedChipColor = isDark 
-        ? Colors.deepOrange.withOpacity(0.8) 
-        : Colors.deepOrangeAccent.withOpacity(0.6);
+        ? MangoPalette.green500.withOpacity(0.8) 
+        : MangoPalette.green500.withOpacity(0.6);
 
     return Scaffold(
       appBar: AppBar(
@@ -372,7 +373,7 @@ class _InterestsState extends State<Interests> {
           ),
         ),
         Divider(
-          color: isDark ? Colors.grey[700] : Colors.blueGrey,
+          color: isDark ? MangoPalette.grey700 : Colors.blueGrey,
           height: 20.0,
         ),
         const SizedBox(height: 20),
@@ -516,7 +517,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
         style: TextStyle(
           color: _isSelected 
               ? Colors.white 
-              : (widget.isDark ? Colors.white : Colors.black),
+              : (widget.isDark ? Colors.white : MangoPalette.black),
           fontSize: 14.0,
           fontWeight: FontWeight.w600,
         ),

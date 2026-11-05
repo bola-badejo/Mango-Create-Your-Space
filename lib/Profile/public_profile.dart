@@ -23,6 +23,8 @@ import 'package:mango/Utils/text_highlighter.dart';
 import 'package:mango/Wallet/components/wallet_screen.dart';
 import 'package:mango/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class PublicProfilePage extends StatefulWidget {
   final String userId;
@@ -74,7 +76,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
       UtilsService().showSnackbar(
         'Cannot Follow',
         'You cannot follow yourself',
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -99,7 +101,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
         _isFollowing.value
             ? 'You are now following @${profileController.username}'
             : 'You unfollowed @${profileController.username}',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -178,7 +180,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
     UtilsService().showSnackbar(
       'Reported',
       'Thank you for your report. We will review this user.',
-      backgroundColor: Colors.green,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white,
       context: context,
     );
@@ -233,7 +235,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.person_off, size: 64, color: Colors.grey),
+                Icon(Icons.person_off, size: 64, color: MangoPalette.grey500),
                 const SizedBox(height: 16),
                 Text(
                   'User not found',
@@ -262,11 +264,13 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
               stretch: true,
               backgroundColor: _getBackgroundColor(context),
               leading: IconButton(
+        tooltip: 'Back',
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context),
               ),
               actions: [
                 IconButton(
+        tooltip: 'More options',
                   icon: const Icon(Icons.more_vert),
                   onPressed: () => _showUserMenu(context),
                 ),
@@ -333,7 +337,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                                     : 'Location unavailable',
                                 style: TextStyle(
                                   color: _getSecondaryTextColor(context),
-                                  fontSize: 10,
+                                  fontSize: 12,
                                 ),
                               ),
                             ],
@@ -353,25 +357,25 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                                 color: _getSecondaryTextColor(context),
                               ),
                               const SizedBox(width: 4),
-                              GestureDetector(
+                              MangoPressable(
                                 onTap: () => _navigateToFollowers(),
                                 child: Text(
                                   '${profileController.followersCount.value} followers',
                                   style: TextStyle(
                                     color: _getTextColor(context),
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
                               const SizedBox(width: 8),
-                              GestureDetector(
+                              MangoPressable(
                                 onTap: () => _navigateToFollowing(),
                                 child: Text(
                                   '${profileController.followingCount.value} following',
                                   style: TextStyle(
                                     color: _getTextColor(context),
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -382,14 +386,14 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                                   profileController.profileType,
                                 ),
                                 size: 9,
-                                color: Colors.orange,
+                                color: MangoPalette.green500,
                               ),
                               const SizedBox(width: 2),
                               Text(
                                 profileController.profileType.toUpperCase(),
                                 style: TextStyle(
-                                  color: Colors.orange,
-                                  fontSize: 10,
+                                  color: MangoPalette.green500,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -462,7 +466,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 child: SizedBox(
                   width: 100,
                   height: 36,
-                  child: CircularProgressIndicator(
+                  child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                     strokeWidth: 2,
                     valueColor: AlwaysStoppedAnimation<Color>(
                       Theme.of(context).primaryColor,
@@ -470,13 +474,13 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                   ),
                 ),
               )
-            : GestureDetector(
+            : MangoPressable(
                 onTap: _toggleFollow,
                 child: Container(
                   width: double.infinity,
                   height: 44,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                     color: _isFollowing.value
                         ? Colors.transparent
                         : Theme.of(context).primaryColor,
@@ -516,7 +520,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.report, color: Colors.orange),
+              leading: const Icon(Icons.report, color: MangoPalette.green500),
               title: const Text('Report User'),
               onTap: () {
                 Navigator.pop(context);
@@ -573,7 +577,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
     UtilsService().showSnackbar(
       'Blocked',
       'User has been blocked',
-      backgroundColor: Colors.green,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white,
       context: context,
     );
@@ -626,8 +630,8 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
               end: Alignment.bottomCenter,
               colors: isDarkMode
                   ? [
-                      Colors.black.withOpacity(0.3),
-                      Colors.black.withOpacity(0.7),
+                      MangoPalette.black.withOpacity(0.3),
+                      MangoPalette.black.withOpacity(0.7),
                     ]
                   : [
                       Colors.white.withOpacity(0.3),
@@ -647,7 +651,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: MangoPalette.black.withOpacity(0.2),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -669,14 +673,14 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(MangoRadius.xs),
                       gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: isDarkMode
                             ? [
-                                Colors.black.withOpacity(0.7),
-                                Colors.black.withOpacity(0.4),
+                                MangoPalette.black.withOpacity(0.7),
+                                MangoPalette.black.withOpacity(0.4),
                               ]
                             : [
                                 Colors.white.withOpacity(0.7),
@@ -692,7 +696,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                       child: Text(
                         profileController.displayName,
                         style: TextStyle(
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : MangoPalette.black,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
@@ -702,14 +706,14 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                   const SizedBox(height: 4),
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(MangoRadius.xs),
                       gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: isDarkMode
                             ? [
-                                Colors.black.withOpacity(0.6),
-                                Colors.black.withOpacity(0.3),
+                                MangoPalette.black.withOpacity(0.6),
+                                MangoPalette.black.withOpacity(0.3),
                               ]
                             : [
                                 Colors.white.withOpacity(0.6),
@@ -725,8 +729,8 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                       child: Text(
                         '@${profileController.username}',
                         style: TextStyle(
-                          color: isDarkMode ? Colors.grey : Colors.black54,
-                          fontSize: 10,
+                          color: isDarkMode ? MangoPalette.grey500 : Colors.black54,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -744,7 +748,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
   Widget _buildShimmerLoading(BuildContext context) {
     // Implementation similar to ProfilePage's shimmer loading
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final baseColor = isDarkMode ? Colors.grey[800]! : Colors.grey[300]!;
+    final baseColor = isDarkMode ? MangoPalette.grey800 : MangoPalette.grey300;
 
     return Scaffold(
       backgroundColor: _getBackgroundColor(context),
@@ -771,7 +775,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                         height: 44,
                         decoration: BoxDecoration(
                           color: baseColor,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                         ),
                       ),
                     ),
@@ -782,7 +786,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                         height: 16,
                         decoration: BoxDecoration(
                           color: baseColor,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                       ),
                     ),
@@ -793,7 +797,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                         height: 12,
                         decoration: BoxDecoration(
                           color: baseColor,
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                       ),
                     ),
@@ -804,7 +808,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                         height: 12,
                         decoration: BoxDecoration(
                           color: baseColor,
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                       ),
                     ),
@@ -851,14 +855,14 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 title: 'Distributor',
                 isRegistered: profileController.isDistributor.value,
                 icon: FontAwesomeIcons.shareNodes,
-                color: Colors.green,
+                color: MangoPalette.green500,
                 context: context,
               ),
               _buildContributorCard(
                 title: 'Vendor',
                 isRegistered: profileController.isVendor.value,
                 icon: FontAwesomeIcons.store,
-                color: Colors.orange,
+                color: MangoPalette.green500,
                 context: context,
               ),
             ],
@@ -882,8 +886,8 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
           margin: const EdgeInsets.symmetric(horizontal: 4),
           height: 120,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.withOpacity(0.3), width: 1),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            border: Border.all(color: MangoPalette.grey500.withOpacity(0.3), width: 1),
             color: _getCardColor(context),
           ),
           child: Column(
@@ -892,7 +896,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: MangoPalette.grey500.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: FaIcon(
@@ -906,7 +910,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 title,
                 style: TextStyle(
                   color: _getSecondaryTextColor(context),
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -915,7 +919,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 'Not registered',
                 style: TextStyle(
                   color: _getSecondaryTextColor(context),
-                  fontSize: 8,
+                  fontSize: 12,
                 ),
               ),
             ],
@@ -978,7 +982,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
     final String contributorId = getContributorId();
 
     return Expanded(
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: () {
           if (contributorId.isNotEmpty) {
             Get.to(
@@ -998,14 +1002,14 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
           margin: const EdgeInsets.symmetric(horizontal: 4),
           height: 120,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: Border.all(color: color, width: 2),
             image: hasImage
                 ? DecorationImage(
                     image: NetworkImage(imageUrl),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.4),
+                      MangoPalette.black.withOpacity(0.4),
                       BlendMode.darken,
                     ),
                   )
@@ -1032,13 +1036,13 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                   displayName,
                   style: TextStyle(
                     color: hasImage ? Colors.white : _getTextColor(context),
-                    fontSize: 10,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     shadows: hasImage
                         ? [
                             Shadow(
                               blurRadius: 4,
-                              color: Colors.black.withOpacity(0.8),
+                              color: MangoPalette.black.withOpacity(0.8),
                             ),
                           ]
                         : null,
@@ -1055,13 +1059,13 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                   color: hasImage
                       ? color.withOpacity(0.9)
                       : color.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 child: Text(
                   title,
                   style: TextStyle(
                     color: hasImage ? Colors.white : color,
-                    fontSize: 8,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -1150,7 +1154,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                   height: 100,
                   decoration: BoxDecoration(
                     color: _getCardColor(context),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1173,7 +1177,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                         item['label'] as String,
                         style: TextStyle(
                           color: _getSecondaryTextColor(context),
-                          fontSize: 11,
+                          fontSize: 12,
                         ),
                       ),
                     ],
@@ -1366,7 +1370,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 backgroundColor: Colors.lightGreenAccent.withOpacity(.4),
@@ -1375,7 +1379,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
               child: const Text(
                 "View more posts",
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
@@ -1401,7 +1405,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 width: 140,
                 height: 140,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   image: DecorationImage(
                     image: NetworkImage(playlist.artworkUrl),
                     fit: BoxFit.cover,
@@ -1418,12 +1422,12 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                   ),
                   decoration: BoxDecoration(
                     color: isDarkMode ? Colors.black87 : Colors.white70,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   child: Text(
                     'free',
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -1440,13 +1444,13 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                   ),
                   decoration: BoxDecoration(
                     color: isDarkMode ? Colors.black54 : Colors.white54,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   child: Text(
                     _formatCount(playlist.plays),
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.black,
-                      fontSize: 10,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1470,7 +1474,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
           Text(
             playlist.title,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.bold,
               color: _getTextColor(context),
             ),
@@ -1480,7 +1484,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
           Text(
             playlist.artistName == '' ? 'Unknown Artiste' : playlist.artistName,
             style: TextStyle(
-              fontSize: 9,
+              fontSize: 12,
               color: _getSecondaryTextColor(context),
             ),
             maxLines: 1,
@@ -1511,13 +1515,13 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
         clipBehavior: Clip.none,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             child: Card(
               elevation: 4,
               margin: const EdgeInsets.only(right: 10, top: 40),
               color: _getCardColor(context),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               child: Stack(
                 children: [
@@ -1551,9 +1555,9 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                                         Colors.transparent,
                                         Colors.transparent,
                                         Colors.transparent,
-                                        Colors.black.withOpacity(0.1),
-                                        Colors.black.withOpacity(0.3),
-                                        Colors.black.withOpacity(0.6),
+                                        MangoPalette.black.withOpacity(0.1),
+                                        MangoPalette.black.withOpacity(0.3),
+                                        MangoPalette.black.withOpacity(0.6),
                                       ]
                                     : [
                                         Colors.transparent,
@@ -1599,8 +1603,8 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                         Text(
                           space.category,
                           style: TextStyle(
-                            fontSize: 6,
-                            color: isDarkMode ? Colors.white : Colors.black,
+                            fontSize: 12,
+                            color: isDarkMode ? Colors.white : MangoPalette.black,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -1608,23 +1612,23 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                           space.description,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 9,
+                            fontSize: 12,
                             height: 1,
-                            color: isDarkMode ? Colors.white : Colors.black,
+                            color: isDarkMode ? Colors.white : MangoPalette.black,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 5),
                         Divider(
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : MangoPalette.black,
                           thickness: 0.6,
                         ),
                         const SizedBox(height: 4),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            GestureDetector(
+                            MangoPressable(
                               onTap: () {
                                 Get.to(
                                   () => SpaceDetailScreen(space),
@@ -1639,11 +1643,11 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                                 decoration: BoxDecoration(
                                   color: isDarkMode
                                       ? Colors.white
-                                      : Colors.black,
-                                  borderRadius: BorderRadius.circular(2),
+                                      : MangoPalette.black,
+                                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                                   border: Border.all(
                                     color: isDarkMode
-                                        ? Colors.black.withOpacity(0.1)
+                                        ? MangoPalette.black.withOpacity(0.1)
                                         : Colors.white.withOpacity(0.1),
                                   ),
                                 ),
@@ -1651,9 +1655,9 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                                   'View Space',
                                   style: TextStyle(
                                     color: isDarkMode
-                                        ? Colors.black
+                                        ? MangoPalette.black
                                         : Colors.white,
-                                    fontSize: 9,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: -0.1,
                                   ),
@@ -1669,8 +1673,8 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                                   style: TextStyle(
                                     color: isDarkMode
                                         ? Colors.white
-                                        : Colors.black,
-                                    fontSize: 9,
+                                        : MangoPalette.black,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     letterSpacing: 0,
                                   ),
@@ -1739,8 +1743,8 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
         decoration: BoxDecoration(
           color: isDarkMode
               ? Colors.white.withOpacity(0.25)
-              : Colors.black.withOpacity(0.25),
-          borderRadius: BorderRadius.circular(5),
+              : MangoPalette.black.withOpacity(0.25),
+          borderRadius: BorderRadius.circular(MangoRadius.sm),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -1758,8 +1762,8 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
               rating,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 6,
-                color: isDarkMode ? Colors.white : Colors.black,
+                fontSize: 12,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
               ),
             ),
           ],
@@ -1800,8 +1804,8 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final baseColor = isDarkMode ? Colors.grey[800]! : Colors.grey[300]!;
-    final highlightColor = isDarkMode ? Colors.grey[700]! : Colors.grey[100]!;
+    final baseColor = isDarkMode ? MangoPalette.grey800 : MangoPalette.grey300;
+    final highlightColor = isDarkMode ? MangoPalette.grey700 : MangoPalette.grey100;
 
     return AnimatedBuilder(
       animation: _controller,

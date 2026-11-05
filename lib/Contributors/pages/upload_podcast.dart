@@ -12,6 +12,8 @@ import 'package:mango/utils.dart';
 import 'package:uuid/uuid.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class UploadPodcastController extends GetxController {
   final RxDouble uploadProgress = 0.0.obs;
@@ -141,7 +143,7 @@ class UploadPodcastController extends GetxController {
             'Artwork Added',
             'Podcast artwork selected successfully',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             duration: const Duration(seconds: 2),
             context: context,
@@ -163,7 +165,7 @@ class UploadPodcastController extends GetxController {
             'Artwork Added',
             'Podcast artwork selected successfully',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             duration: const Duration(seconds: 2),
             context: context,
@@ -198,7 +200,7 @@ class UploadPodcastController extends GetxController {
         'Upload in Progress',
         'Please wait for current upload to complete',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -211,7 +213,7 @@ class UploadPodcastController extends GetxController {
         'Audio Already Uploaded',
         'Podcast audio has already been uploaded',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -261,7 +263,7 @@ class UploadPodcastController extends GetxController {
           'Audio Selected',
           'Starting upload...',
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.orange,
+          backgroundColor: MangoPalette.green500,
           colorText: Colors.white,
           duration: const Duration(seconds: 2),
           context: context,
@@ -286,7 +288,7 @@ class UploadPodcastController extends GetxController {
           'Upload Complete',
           'Podcast audio uploaded successfully',
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
+          backgroundColor: MangoPalette.green500,
           colorText: Colors.white,
           duration: const Duration(seconds: 2),
           context: context,
@@ -313,7 +315,7 @@ class UploadPodcastController extends GetxController {
         'Audio Selected',
         'Starting upload...',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
         context: context,
@@ -340,7 +342,7 @@ class UploadPodcastController extends GetxController {
         'Upload Complete',
         'Podcast audio uploaded successfully',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
         context: context,
@@ -422,7 +424,7 @@ class UploadPodcastController extends GetxController {
         'Creator Required',
         'Please register as a creator first to upload podcasts.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -435,7 +437,7 @@ class UploadPodcastController extends GetxController {
         'Upload in Progress',
         'Please wait for current upload to complete',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -451,7 +453,7 @@ class UploadPodcastController extends GetxController {
         'Missing Info',
         'Please complete all required fields',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -553,7 +555,7 @@ class UploadPodcastController extends GetxController {
         '🎙️ Success!',
         'Your podcast has been uploaded',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
         context: context,
@@ -668,9 +670,9 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
-    final cardColor = isDark ? Colors.grey[800]! : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final backgroundColor = isDark ? MangoPalette.grey900 : MangoPalette.grey50;
+    final cardColor = isDark ? MangoPalette.grey800 : Colors.white;
+    final textColor = isDark ? Colors.white : MangoPalette.black;
 
     return WillPopScope(
       onWillPop: () async => await _showExitDialog(context),
@@ -771,7 +773,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
           break;
       }
 
-      return GestureDetector(
+      return MangoPressable(
         onTap: isAccessible
             ? () {
                 _controller.currentStep.value = stepNumber;
@@ -783,11 +785,11 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: isActive
-                ? Colors.orange.withOpacity(0.1)
+                ? MangoPalette.green500.withOpacity(0.1)
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: isActive
-                ? Border.all(color: Colors.orange.withOpacity(0.3))
+                ? Border.all(color: MangoPalette.green500.withOpacity(0.3))
                 : null,
           ),
           child: Column(
@@ -797,12 +799,12 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: isCompleted
-                      ? Colors.green
+                      ? MangoPalette.green500
                       : (isActive
-                            ? Colors.orange
+                            ? MangoPalette.green500
                             : (isStepValid && stepNumber < _controller.currentStep.value
-                                ? Colors.green.withOpacity(0.5)
-                                : Colors.grey.withOpacity(0.2))),
+                                ? MangoPalette.green500.withOpacity(0.5)
+                                : MangoPalette.grey500.withOpacity(0.2))),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -815,9 +817,9 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                  color: isDark ? Colors.white : Colors.black,
+                  color: isDark ? Colors.white : MangoPalette.black,
                 ),
               ),
             ],
@@ -831,7 +833,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
     return Container(
       width: 16,
       height: 1,
-      color: isDark ? Colors.grey[700] : Colors.grey[300],
+      color: isDark ? MangoPalette.grey700 : MangoPalette.grey300,
     );
   }
 
@@ -861,10 +863,10 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -873,7 +875,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
             child: Column(
               children: [
                 Obx(
-                  () => GestureDetector(
+                  () => MangoPressable(
                     onTap: _showImagePicker,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 400),
@@ -882,12 +884,12 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                       decoration: BoxDecoration(
                         color: _controller.isArtworkSelected.value
                             ? Colors.transparent
-                            : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(16),
+                            : MangoPalette.grey200,
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                         border: Border.all(
                           color: _controller.isArtworkSelected.value
-                              ? Colors.orange
-                              : Colors.grey[300]!,
+                              ? MangoPalette.green500
+                              : MangoPalette.grey300,
                           width: 2,
                         ),
                         image: _controller.selectedImage.value != null
@@ -906,13 +908,13 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                                 Icon(
                                   Icons.podcasts,
                                   size: 48,
-                                  color: Colors.grey[400],
+                                  color: MangoPalette.grey400,
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
                                   'Add Podcast Artwork',
                                   style: TextStyle(
-                                    color: Colors.grey[600],
+                                    color: MangoPalette.grey600,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -927,6 +929,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                                     radius: 14,
                                     backgroundColor: Colors.black54,
                                     child: IconButton(
+        tooltip: 'Close',
                                       icon: const Icon(Icons.close, size: 14, color: Colors.white),
                                       onPressed: _controller.removeImage,
                                       padding: EdgeInsets.zero,
@@ -944,7 +947,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black,
+                    color: isDark ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -952,7 +955,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                   'Choose a square image for best results. Recommended: 1000x1000px',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               ],
@@ -972,10 +975,10 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -989,13 +992,13 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: _controller.isAudioSelected.value
-                          ? Colors.green.withOpacity(0.1)
-                          : Colors.orange.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(16),
+                          ? MangoPalette.green500.withOpacity(0.1)
+                          : MangoPalette.green500.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                       border: Border.all(
                         color: _controller.isAudioSelected.value
-                            ? Colors.green
-                            : Colors.orange,
+                            ? MangoPalette.green500
+                            : MangoPalette.green500,
                         width: 2,
                       ),
                     ),
@@ -1007,8 +1010,8 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                               : Icons.mic,
                           size: 48,
                           color: _controller.isAudioSelected.value
-                              ? Colors.green
-                              : Colors.orange,
+                              ? MangoPalette.green500
+                              : MangoPalette.green500,
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -1028,16 +1031,16 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                               : 'Choose your audio file to continue',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
+                            color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                           ),
                         ),
                         if (_controller.uploadProgress.value > 0 &&
                             _controller.uploadProgress.value < 1) ...[
                           const SizedBox(height: 16),
-                          LinearProgressIndicator(
+                          LinearProgressIndicator(semanticsLabel: 'Loading', 
                             value: _controller.uploadProgress.value,
-                            backgroundColor: Colors.grey[300],
-                            color: Colors.orange,
+                            backgroundColor: MangoPalette.grey300,
+                            color: MangoPalette.green500,
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -1045,7 +1048,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: Colors.orange,
+                              color: MangoPalette.green500,
                             ),
                           ),
                         ],
@@ -1054,14 +1057,14 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Colors.green.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
+                              color: MangoPalette.green500.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: const Text(
                               'Upload Complete ✓',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.green,
+                                color: MangoPalette.green500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -1077,13 +1080,13 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                       ? null
                       : () => _controller.pickAndUploadAudio(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: MangoPalette.green500,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                   ),
                   icon: const Icon(Icons.upload_file, color: Colors.white),
@@ -1103,7 +1106,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                 Text(
                   'Supported: MP3, M4A, WAV, AAC',
                   style: TextStyle(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                     fontSize: 12,
                   ),
                 ),
@@ -1124,10 +1127,10 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -1193,7 +1196,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                 Text(
                   '* Required fields',
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: MangoPalette.grey600,
                     fontSize: 12,
                     fontStyle: FontStyle.italic,
                   ),
@@ -1215,10 +1218,10 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -1227,7 +1230,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
             child: Obx(
               () => Column(
                 children: [
-                  Icon(Icons.task_alt, size: 64, color: Colors.green),
+                  Icon(Icons.task_alt, size: 64, color: MangoPalette.green500),
                   const SizedBox(height: 16),
                   Text(
                     'Ready to Upload!',
@@ -1243,8 +1246,8 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                       'Review your podcast details before uploading',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
-                        fontSize: 11,
+                        color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
+                        fontSize: 12,
                         height: 1.2,
                       ),
                     ),
@@ -1282,7 +1285,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                   if (_controller.isUploading.value)
                     Column(
                       children: [
-                        LinearProgressIndicator(value: _controller.uploadProgress.value),
+                        LinearProgressIndicator(semanticsLabel: 'Loading', value: _controller.uploadProgress.value),
                         const SizedBox(height: 8),
                         Text(
                           'Uploading... ${(_controller.uploadProgress.value * 100).toStringAsFixed(0)}%',
@@ -1304,12 +1307,12 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
       () => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
             color: _controller.selectedImage.value != null
-                ? Colors.green.withOpacity(0.3)
-                : Colors.grey.withOpacity(0.2),
+                ? MangoPalette.green500.withOpacity(0.3)
+                : MangoPalette.grey500.withOpacity(0.2),
           ),
         ),
         child: Column(
@@ -1320,8 +1323,8 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                 Icon(
                   Icons.graphic_eq,
                   color: _controller.selectedImage.value != null
-                      ? Colors.green
-                      : Colors.grey,
+                      ? MangoPalette.green500
+                      : MangoPalette.grey500,
                   size: 16,
                 ),
                 const SizedBox(width: 8),
@@ -1341,22 +1344,22 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      color: MangoPalette.green500.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: Row(
                       children: [
                         Icon(
                           Icons.check,
-                          color: Colors.green,
+                          color: MangoPalette.green500,
                           size: 10,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           'Ready',
                           style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.green,
+                            fontSize: 12,
+                            color: MangoPalette.green500,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -1383,7 +1386,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             image: DecorationImage(
               image: FileImage(File(_controller.selectedImage.value!.path)),
               fit: BoxFit.cover,
@@ -1407,12 +1410,13 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
               const SizedBox(height: 4),
               Text(
                 'Artwork selected',
-                style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
               ),
             ],
           ),
         ),
         IconButton(
+        tooltip: 'Delete',
           icon: Icon(Icons.delete, color: Colors.red, size: 14),
           onPressed: _controller.removeImage,
           padding: EdgeInsets.zero,
@@ -1429,16 +1433,16 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
           width: 80,
           height: 80,
           decoration: BoxDecoration(
-            color: isDark ? Colors.grey[700] : Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
+            color: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             border: Border.all(
-              color: Colors.grey.withOpacity(0.3),
+              color: MangoPalette.grey500.withOpacity(0.3),
               style: BorderStyle.solid,
             ),
           ),
           child: Icon(
             Icons.podcasts,
-            color: Colors.grey.withOpacity(0.5),
+            color: MangoPalette.grey500.withOpacity(0.5),
             size: 24,
           ),
         ),
@@ -1456,14 +1460,14 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
       () => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
             color:
                 (_controller.selectedAudioPath.value.isNotEmpty ||
                     _controller.downloadUrl.value.isNotEmpty)
-                ? Colors.green.withOpacity(0.3)
-                : Colors.grey.withOpacity(0.2),
+                ? MangoPalette.green500.withOpacity(0.3)
+                : MangoPalette.grey500.withOpacity(0.2),
           ),
         ),
         child: Column(
@@ -1476,8 +1480,8 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                   color:
                       (_controller.selectedAudioPath.value.isNotEmpty ||
                           _controller.downloadUrl.value.isNotEmpty)
-                      ? Colors.green
-                      : Colors.grey,
+                      ? MangoPalette.green500
+                      : MangoPalette.grey500,
                   size: 16,
                 ),
                 const SizedBox(width: 8),
@@ -1498,22 +1502,22 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      color: MangoPalette.green500.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: Row(
                       children: [
                         Icon(
                           Icons.check,
-                          color: Colors.green,
+                          color: MangoPalette.green500,
                           size: 10,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           'Ready',
                           style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.green,
+                            fontSize: 12,
+                            color: MangoPalette.green500,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -1531,17 +1535,17 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
             if (_controller.uploadProgress.value > 0 &&
                 _controller.uploadProgress.value < 1) ...[
               const SizedBox(height: 12),
-              LinearProgressIndicator(
+              LinearProgressIndicator(semanticsLabel: 'Loading', 
                 value: _controller.uploadProgress.value,
-                backgroundColor: Colors.grey.withOpacity(0.3),
-                color: Colors.orange,
+                backgroundColor: MangoPalette.grey500.withOpacity(0.3),
+                color: MangoPalette.green500,
               ),
               const SizedBox(height: 4),
               Text(
                 'Uploading... ${(_controller.uploadProgress.value * 100).toStringAsFixed(0)}%',
                 style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.orange,
+                  fontSize: 12,
+                  color: MangoPalette.green500,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -1564,10 +1568,10 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-            color: Colors.orange.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            color: MangoPalette.green500.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
           ),
-          child: Icon(Icons.mic, color: Colors.orange, size: 24),
+          child: Icon(Icons.mic, color: MangoPalette.green500, size: 24),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -1586,12 +1590,13 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
               const SizedBox(height: 4),
               Text(
                 hasFile ? 'Local file' : 'Cloud file',
-                style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
               ),
             ],
           ),
         ),
         IconButton(
+        tooltip: 'Delete',
           icon: Icon(Icons.delete, color: Colors.red, size: 14),
           onPressed: () {
             _controller.selectedAudioPath.value = '';
@@ -1614,16 +1619,16 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
           width: 80,
           height: 80,
           decoration: BoxDecoration(
-            color: isDark ? Colors.grey[700] : Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
+            color: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             border: Border.all(
-              color: Colors.grey.withOpacity(0.3),
+              color: MangoPalette.grey500.withOpacity(0.3),
               style: BorderStyle.solid,
             ),
           ),
           child: Icon(
             Icons.audio_file,
-            color: Colors.grey.withOpacity(0.5),
+            color: MangoPalette.grey500.withOpacity(0.5),
             size: 24,
           ),
         ),
@@ -1645,19 +1650,19 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
             ElevatedButton(
               onPressed: _controller.goToPreviousStep,
               style: ElevatedButton.styleFrom(
-                backgroundColor: isDark ? Colors.grey[700] : Colors.grey[200],
+                backgroundColor: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,
                   vertical: 12,
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
               child: Text(
                 'Back',
                 style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
+                  color: isDark ? Colors.white : MangoPalette.black,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -1671,11 +1676,11 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                 : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: _controller.isStepValid.value && !_controller.isUploading.value
-                  ? Colors.orange
-                  : Colors.grey,
+                  ? MangoPalette.green500
+                  : MangoPalette.grey500,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
             ),
             child: Text(
@@ -1707,25 +1712,25 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
       keyboardType: keyboardType,
       onChanged: (_) => _updateStepValidation(),
       style: TextStyle(
-        color: isDark ? Colors.white : Colors.black,
+        color: isDark ? Colors.white : MangoPalette.black,
         fontSize: 14,
       ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          color: isDark ? Colors.grey[400] : Colors.grey[600],
+          color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
         ),
-        prefixIcon: Icon(icon, color: Colors.orange),
+        prefixIcon: Icon(icon, color: MangoPalette.green500),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[400]!),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: BorderSide(color: MangoPalette.grey400),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.orange),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: const BorderSide(color: MangoPalette.green500),
         ),
         filled: true,
-        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+        fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
       ),
     );
   }
@@ -1746,7 +1751,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
             child: Text(
               value,
               style: TextStyle(
-                color: isDark ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : MangoPalette.black,
                 fontSize: 14,
               ),
             ),
@@ -1759,19 +1764,19 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(
-            color: isDark ? Colors.grey[400] : Colors.grey[600],
+            color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
           ),
-          prefixIcon: Icon(icon, color: Colors.orange),
+          prefixIcon: Icon(icon, color: MangoPalette.green500),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey[400]!),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: BorderSide(color: MangoPalette.grey400),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.orange),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: const BorderSide(color: MangoPalette.green500),
           ),
           filled: true,
-          fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+          fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
         ),
       ),
     );
@@ -1787,19 +1792,19 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[400]!),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.grey400),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.orange),
+          Icon(icon, color: MangoPalette.green500),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               title,
               style: TextStyle(
-                color: isDark ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : MangoPalette.black,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -1807,7 +1812,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: Colors.orange,
+            activeColor: MangoPalette.green500,
           ),
         ],
       ),
@@ -1821,12 +1826,12 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
+        color: MangoPalette.grey100,
+        borderRadius: BorderRadius.circular(MangoRadius.sm),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.orange, size: 20),
+          Icon(icon, color: MangoPalette.green500, size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -1834,7 +1839,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
               children: [
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  style: const TextStyle(fontSize: 12, color: MangoPalette.grey500),
                 ),
                 Text(
                   value,
@@ -1864,7 +1869,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.photo_library, color: Colors.orange),
+              leading: const Icon(Icons.photo_library, color: MangoPalette.green500),
               title: const Text('Choose from Gallery'),
               onTap: () {
                 _controller.pickImage(context);
@@ -1872,7 +1877,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
               },
             ),
             ListTile(
-              leading: const Icon(Icons.camera_alt, color: Colors.orange),
+              leading: const Icon(Icons.camera_alt, color: MangoPalette.green500),
               title: const Text('Take a Photo'),
               onTap: () async {
                 try {
@@ -1908,7 +1913,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
 
     return await showDialog<bool>(
           context: context,
-          barrierColor: Colors.black.withOpacity(0.4),
+          barrierColor: MangoPalette.black.withOpacity(0.4),
           builder: (context) => Dialog(
             backgroundColor: Colors.transparent,
             insetPadding: const EdgeInsets.all(24),
@@ -1917,10 +1922,10 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: MangoPalette.black.withOpacity(0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -1970,10 +1975,10 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             side: BorderSide(
-                              color: Colors.grey.withOpacity(0.3),
+                              color: MangoPalette.grey500.withOpacity(0.3),
                             ),
                           ),
                           icon: const Icon(
@@ -2000,7 +2005,7 @@ class _UploadPodcastPageState extends State<UploadPodcastPage>
                             backgroundColor: Colors.red,
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             elevation: 0,
                           ),

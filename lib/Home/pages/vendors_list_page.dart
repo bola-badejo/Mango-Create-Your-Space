@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:mango/Home/controllers/dashboard_controller.dart';
 import 'package:mango/Store/screens/general_store.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class VendorsListPage extends StatelessWidget {
   final MangoDashboardController controller = Get.find();
@@ -18,7 +20,7 @@ class VendorsListPage extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : MangoPalette.black,
           ),
         ),
         backgroundColor: Colors.transparent,
@@ -61,13 +63,13 @@ class VendorsListPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(),
+                  CircularProgressIndicator(semanticsLabel: 'Loading'),
                   SizedBox(height: 16),
                   Text(
                     'Loading vendors...',
                     style: TextStyle(
                       fontSize: 14,
-                      color: isDarkMode ? Colors.white70 : Colors.grey[600],
+                      color: isDarkMode ? Colors.white70 : MangoPalette.grey600,
                     ),
                   ),
                 ],
@@ -85,7 +87,7 @@ class VendorsListPage extends StatelessWidget {
                   Icon(
                     Icons.store_outlined,
                     size: 64,
-                    color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                    color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                   ),
                   SizedBox(height: 16),
                   Text(
@@ -93,7 +95,7 @@ class VendorsListPage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: isDarkMode ? Colors.white70 : Colors.grey[600],
+                      color: isDarkMode ? Colors.white70 : MangoPalette.grey600,
                     ),
                   ),
                   SizedBox(height: 8),
@@ -101,7 +103,7 @@ class VendorsListPage extends StatelessWidget {
                     'Check back later for new vendors',
                     style: TextStyle(
                       fontSize: 12,
-                      color: isDarkMode ? Colors.white54 : Colors.grey[500],
+                      color: isDarkMode ? Colors.white54 : MangoPalette.grey500,
                     ),
                   ),
                 ],
@@ -125,7 +127,7 @@ class VendorsListPage extends StatelessWidget {
   Widget _buildVendorCard(BuildContext context, Map<String, dynamic> vendor) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Navigator.push(
           context,
@@ -140,11 +142,11 @@ class VendorsListPage extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[850] : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: isDarkMode ? MangoPalette.grey850 : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: MangoPalette.black.withOpacity(0.05),
               blurRadius: 10,
               offset: Offset(0, 2),
             ),
@@ -161,7 +163,7 @@ class VendorsListPage extends StatelessWidget {
               child: Container(
                 width: 100,
                 height: 100,
-                color: Colors.grey[200],
+                color: MangoPalette.grey200,
                 child: vendor['logoImageUrl'] != null
                     ? Image.network(
                         vendor['logoImageUrl'],
@@ -170,14 +172,14 @@ class VendorsListPage extends StatelessWidget {
                           return Icon(
                             Icons.store,
                             size: 40,
-                            color: Colors.grey[400],
+                            color: MangoPalette.grey400,
                           );
                         },
                       )
                     : Icon(
                         Icons.store,
                         size: 40,
-                        color: Colors.grey[400],
+                        color: MangoPalette.grey400,
                       ),
               ),
             ),
@@ -193,7 +195,7 @@ class VendorsListPage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                       ),
                     ),
                     SizedBox(height: 4),
@@ -202,7 +204,7 @@ class VendorsListPage extends StatelessWidget {
                         vendor['bio'],
                         style: TextStyle(
                           fontSize: 12,
-                          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -213,14 +215,14 @@ class VendorsListPage extends StatelessWidget {
                         Icon(
                           Icons.location_on_outlined,
                           size: 14,
-                          color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                          color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                         ),
                         SizedBox(width: 4),
                         Text(
                           vendor['address']?.split(',')[0] ?? 'Location not specified',
                           style: TextStyle(
-                            fontSize: 11,
-                            color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
+                            fontSize: 12,
+                            color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey500,
                           ),
                         ),
                       ],
@@ -230,14 +232,14 @@ class VendorsListPage extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          color: MangoPalette.green500.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                         ),
                         child: Text(
                           vendor['skill'],
                           style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.orange,
+                            fontSize: 12,
+                            color: MangoPalette.green500,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -250,7 +252,7 @@ class VendorsListPage extends StatelessWidget {
               padding: EdgeInsets.only(right: 16),
               child: Icon(
                 Icons.chevron_right,
-                color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
               ),
             ),
           ],

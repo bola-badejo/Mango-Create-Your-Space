@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class LevitatingIcon extends StatefulWidget {
   const LevitatingIcon({super.key});
@@ -41,7 +42,7 @@ class _LevitatingIconState extends State<LevitatingIcon>
           child: const Icon(
             Icons.post_add,
             size: 100,
-            color: Colors.grey,
+            color: MangoPalette.grey500,
           ),
         );
       },

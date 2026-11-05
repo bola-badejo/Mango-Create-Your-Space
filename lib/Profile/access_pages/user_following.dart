@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/Profile/profile_controller.dart';
 import 'package:mango/utils.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class FollowingScreen extends StatelessWidget {
   final ProfileController profileController = Get.find<ProfileController>();
@@ -27,7 +28,7 @@ class FollowingScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -35,11 +36,11 @@ class FollowingScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.people_outline, size: 64, color: Colors.grey),
+                  Icon(Icons.people_outline, size: 64, color: MangoPalette.grey500),
                   SizedBox(height: 16),
                   Text(
                     'Not following anyone yet',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: TextStyle(fontSize: 16, color: MangoPalette.grey500),
                   ),
                 ],
               ),
@@ -102,7 +103,7 @@ class FollowingScreen extends StatelessWidget {
         _unfollowUser(followingId, context);
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.grey,
+        backgroundColor: MangoPalette.grey500,
         foregroundColor: Colors.white,
       ),
       child: const Text('Unfollow'),
@@ -120,7 +121,7 @@ class FollowingScreen extends StatelessWidget {
     UtilsService().showSnackbar(
       'Success',
       'Unfollowed user',
-      backgroundColor: Colors.green,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white, context: context,
     );
   }

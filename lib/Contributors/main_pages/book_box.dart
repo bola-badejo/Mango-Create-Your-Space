@@ -6,6 +6,8 @@ import 'package:mango/Contributors/pages/upload_book.dart';
 import 'package:mango/Models/customModel/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class BookBoxPage extends StatefulWidget {
   final MangoUser user;  
@@ -111,10 +113,10 @@ class _BookBoxPageState extends State<BookBoxPage>
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDarkMode ? Colors.white : Colors.black;
-    final backgroundColor = isDarkMode ? Colors.grey[900] : Colors.white;
-    final cardColor = isDarkMode ? Colors.grey[800] : Colors.grey[50];
-    final secondaryTextColor = isDarkMode ? Colors.grey[400] : Colors.grey[600];
+    final textColor = isDarkMode ? Colors.white : MangoPalette.black;
+    final backgroundColor = isDarkMode ? MangoPalette.grey900 : Colors.white;
+    final cardColor = isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50;
+    final secondaryTextColor = isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600;
 
     
     if (_contributorId == null || _contributorId!.isEmpty) {
@@ -137,7 +139,7 @@ class _BookBoxPageState extends State<BookBoxPage>
               Icon(
                 Icons.error_outline,
                 size: 64,
-                color: Colors.orange,
+                color: MangoPalette.green500,
               ),
               const SizedBox(height: 16),
               Text(
@@ -224,7 +226,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                     child: Text(
                       'Mango Books. © 2025',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                      style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                     ),
                   ),
                 ),
@@ -308,17 +310,17 @@ class _BookBoxPageState extends State<BookBoxPage>
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDarkMode ? 0.4 : 0.1),
+            color: MangoPalette.black.withOpacity(isDarkMode ? 0.4 : 0.1),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
         ],
         border: Border.all(
-          color: isDarkMode ? Colors.grey[800]! : Colors.grey[200]!,
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
         ),
       ),
       child: Column(
@@ -329,7 +331,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 child: Icon(
                   Icons.analytics,
@@ -343,7 +345,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               ),
             ],
@@ -378,7 +380,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                 value: monthlyReads ?? 0,
                 label: 'Monthly Reads',
                 icon: Icons.trending_up,
-                color: Colors.green,
+                color: MangoPalette.green500,
                 isLoading: isLoading,
                 isDarkMode: isDarkMode,
               ),
@@ -408,8 +410,8 @@ class _BookBoxPageState extends State<BookBoxPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[800] : color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
+        color: isDarkMode ? MangoPalette.grey800 : color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: Border.all(
           color: color.withOpacity(0.2),
         ),
@@ -424,7 +426,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
                 child: Icon(
                   icon,
@@ -443,8 +445,8 @@ class _BookBoxPageState extends State<BookBoxPage>
                   width: 60,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
-                    borderRadius: BorderRadius.circular(4),
+                    color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                 )
               else
@@ -457,7 +459,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                       style: TextStyle(
                         fontSize: 45,
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                         fontFamily: 'Inter',
                       ),
                     );
@@ -469,8 +471,8 @@ class _BookBoxPageState extends State<BookBoxPage>
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 10,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  fontSize: 12,
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -486,8 +488,8 @@ class _BookBoxPageState extends State<BookBoxPage>
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
       ),
       child: Column(
         children: [
@@ -500,7 +502,7 @@ class _BookBoxPageState extends State<BookBoxPage>
           Text(
             error,
             style: TextStyle(
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -514,10 +516,10 @@ class _BookBoxPageState extends State<BookBoxPage>
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 400),
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(16),
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
-            color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade300,
+            color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
           ),
         ),
         child: Column(
@@ -536,6 +538,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                     ),
                   ),
                   IconButton(
+        tooltip: 'Show options',
                     icon: AnimatedRotation(
                       turns: _showUploadOptions ? 0.5 : 0,
                       duration: const Duration(milliseconds: 300),
@@ -555,7 +558,7 @@ class _BookBoxPageState extends State<BookBoxPage>
               firstChild: Column(
                 children: [
                   Divider(
-                    color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                    color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                   ),
                   _buildUploadOption(
                     'Upload a Book',
@@ -606,7 +609,7 @@ class _BookBoxPageState extends State<BookBoxPage>
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           child: Container(
             padding: const EdgeInsets.all(16),
             child: Row(
@@ -616,7 +619,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                   title,
                   style: TextStyle(
                     fontSize: 14,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -659,8 +662,8 @@ class _BookBoxPageState extends State<BookBoxPage>
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: isDarkMode ? Colors.white : Colors.black,
+                child: CircularProgressIndicator(semanticsLabel: 'Loading', 
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               );
             }
@@ -670,7 +673,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                 child: Text(
                   "Error loading books",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -681,7 +684,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                 child: Text(
                   "No books yet",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -721,8 +724,8 @@ class _BookBoxPageState extends State<BookBoxPage>
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: isDarkMode ? Colors.white : Colors.black,
+                child: CircularProgressIndicator(semanticsLabel: 'Loading', 
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               );
             }
@@ -732,7 +735,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                 child: Text(
                   "Error loading series",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -743,7 +746,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                 child: Text(
                   "No series yet",
                   style: TextStyle(
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
               );
@@ -778,25 +781,25 @@ class _BookBoxPageState extends State<BookBoxPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             child: CachedNetworkImage(
               imageUrl: imageUrl,
               placeholder: (context, url) => Container(
                 width: 120,
                 height: 120,
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                 child: Icon(
                   Icons.book,
-                  color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                  color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                 ),
               ),
               errorWidget: (context, url, error) => Container(
                 width: 120,
                 height: 120,
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                 child: Icon(
                   Icons.book,
-                  color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                  color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                 ),
               ),
               width: 120,
@@ -816,7 +819,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                     overflow: TextOverflow.ellipsis,
                   ),
                   maxLines: 2,
@@ -824,8 +827,8 @@ class _BookBoxPageState extends State<BookBoxPage>
                 Text(
                   author,
                   style: TextStyle(
-                    fontSize: 10,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    fontSize: 12,
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                     overflow: TextOverflow.ellipsis,
                   ),
                   maxLines: 1,
@@ -846,7 +849,7 @@ class _BookBoxPageState extends State<BookBoxPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             child: Stack(
               children: [
                 CachedNetworkImage(
@@ -854,19 +857,19 @@ class _BookBoxPageState extends State<BookBoxPage>
                   placeholder: (context, url) => Container(
                     width: 120,
                     height: 120,
-                    color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                    color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                     child: Icon(
                       Icons.collections_bookmark,
-                      color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                      color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
                     width: 120,
                     height: 120,
-                    color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                    color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
                     child: Icon(
                       Icons.collections_bookmark,
-                      color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                      color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                     ),
                   ),
                   width: 120,
@@ -888,7 +891,7 @@ class _BookBoxPageState extends State<BookBoxPage>
                     child: Text(
                       bookCount,
                       style: const TextStyle(
-                        fontSize: 8,
+                        fontSize: 12,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
@@ -906,7 +909,7 @@ class _BookBoxPageState extends State<BookBoxPage>
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
                 overflow: TextOverflow.ellipsis,
               ),
               maxLines: 2,
@@ -925,13 +928,13 @@ class _BookBoxPageState extends State<BookBoxPage>
     return SliverToBoxAdapter(
       child: Column(
         children: [
-          GestureDetector(
+          MangoPressable(
             onTap: _toggleYourBooks,
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-                borderRadius: BorderRadius.circular(16),
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -965,8 +968,8 @@ class _BookBoxPageState extends State<BookBoxPage>
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
-                    child: CircularProgressIndicator(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', 
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                   );
                 }
@@ -1033,35 +1036,35 @@ class _BookBoxPageState extends State<BookBoxPage>
           onTap: () {
             
           },
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-              borderRadius: BorderRadius.circular(12),
+              color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                   child: CachedNetworkImage(
                     imageUrl: imageUrl,
                     placeholder: (context, url) => Container(
                       width: 50,
                       height: 50,
-                      color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                      color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                       child: Icon(
                         Icons.book,
-                        color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                        color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                       ),
                     ),
                     errorWidget: (context, url, error) => Container(
                       width: 50,
                       height: 50,
-                      color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                      color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                       child: Icon(
                         Icons.book,
-                        color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                        color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                       ),
                     ),
                     width: 50,
@@ -1104,12 +1107,12 @@ class _BookBoxPageState extends State<BookBoxPage>
                   ),
                   decoration: BoxDecoration(
                     color: Colors.blue.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   child: Text(
                     '$reads reads',
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
                     ),

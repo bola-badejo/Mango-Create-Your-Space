@@ -7,6 +7,8 @@ import 'package:mango/Store/controller/cart_controller.dart';
 import 'package:mango/Store/models/cart_item.dart';
 import 'package:mango/Store/screens/order_confirmation_screen.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class CartScreen extends GetView<CartController> {
   const CartScreen({Key? key}) : super(key: key);
@@ -16,10 +18,11 @@ class CartScreen extends GetView<CartController> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.black : Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: isDarkMode ? Colors.black : Colors.white,),
+        tooltip: 'Back',
+          icon: Icon(Icons.arrow_back, color: isDarkMode ? MangoPalette.black : Colors.white,),
           onPressed: () => Get.back(),
         ),
         title: Text(
@@ -27,16 +30,17 @@ class CartScreen extends GetView<CartController> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : MangoPalette.black,
           ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           IconButton(
+        tooltip: 'Delete',
             icon: Icon(
               Icons.delete_outline,
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
             onPressed: () {
               _showClearCartBottomSheet(context, isDarkMode);
@@ -48,7 +52,7 @@ class CartScreen extends GetView<CartController> {
         stream: controller.getCartItemsStream(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
           }
 
           if (snapshot.hasError) {
@@ -88,7 +92,7 @@ class CartScreen extends GetView<CartController> {
           Icon(
             Icons.shopping_cart_outlined,
             size: 80,
-            color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+            color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
           ),
           SizedBox(height: 16),
           Text(
@@ -96,7 +100,7 @@ class CartScreen extends GetView<CartController> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white70 : Colors.grey[600],
+              color: isDarkMode ? Colors.white70 : MangoPalette.grey600,
             ),
           ),
           SizedBox(height: 8),
@@ -104,7 +108,7 @@ class CartScreen extends GetView<CartController> {
             'Add items to get started',
             style: TextStyle(
               fontSize: 14,
-              color: isDarkMode ? Colors.white54 : Colors.grey[500],
+              color: isDarkMode ? Colors.white54 : MangoPalette.grey500,
             ),
           ),
           SizedBox(height: 24),
@@ -112,11 +116,11 @@ class CartScreen extends GetView<CartController> {
             onPressed: () => Get.back(),
             child: Text('Continue Shopping'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
+              backgroundColor: MangoPalette.green500,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
             ),
           ),
@@ -131,15 +135,15 @@ class CartScreen extends GetView<CartController> {
     return Card(
       margin: EdgeInsets.only(bottom: 12),
       elevation: 2,
-      color: isDarkMode ? Colors.grey[850] : Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: isDarkMode ? MangoPalette.grey850 : Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
       child: Padding(
         padding: EdgeInsets.all(12),
         child: Row(
           children: [
             // Product image
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               child: item.imageUrl.isNotEmpty
                   ? CachedNetworkImage(
                       imageUrl: item.imageUrl,
@@ -149,20 +153,20 @@ class CartScreen extends GetView<CartController> {
                       placeholder: (context, url) => Container(
                         width: 80,
                         height: 80,
-                        color: Colors.grey[200],
-                        child: Center(child: CircularProgressIndicator()),
+                        color: MangoPalette.grey200,
+                        child: Center(child: CircularProgressIndicator(semanticsLabel: 'Loading')),
                       ),
                       errorWidget: (context, url, error) => Container(
                         width: 80,
                         height: 80,
-                        color: Colors.grey[200],
+                        color: MangoPalette.grey200,
                         child: Icon(Icons.image_not_supported),
                       ),
                     )
                   : Container(
                       width: 80,
                       height: 80,
-                      color: Colors.grey[200],
+                      color: MangoPalette.grey200,
                       child: Icon(Icons.image),
                     ),
             ),
@@ -177,7 +181,7 @@ class CartScreen extends GetView<CartController> {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -186,8 +190,8 @@ class CartScreen extends GetView<CartController> {
                   Text(
                     item.vendorName,
                     style: TextStyle(
-                      fontSize: 11,
-                      color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                      fontSize: 12,
+                      color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                     ),
                   ),
                   SizedBox(height: 8),
@@ -199,12 +203,13 @@ class CartScreen extends GetView<CartController> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: Colors.orange,
+                          color: MangoPalette.green500,
                         ),
                       ),
                       Row(
                         children: [
                           IconButton(
+        tooltip: 'Remove',
                             icon: Icon(Icons.remove_circle_outline, size: 24),
                             onPressed: () {
                               if (item.quantity > 1) {
@@ -231,6 +236,7 @@ class CartScreen extends GetView<CartController> {
                             ),
                           ),
                           IconButton(
+        tooltip: 'Add',
                             icon: Icon(Icons.add_circle_outline, size: 24),
                             onPressed: () {
                               controller.updateQuantity(
@@ -243,6 +249,7 @@ class CartScreen extends GetView<CartController> {
                           ),
                           SizedBox(width: 8),
                           IconButton(
+        tooltip: 'Delete',
                             icon: Icon(Icons.delete_outline, size: 20),
                             onPressed: () {
                               controller.removeFromCart(item.id);
@@ -273,10 +280,10 @@ class CartScreen extends GetView<CartController> {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[850] : Colors.white,
+        color: isDarkMode ? MangoPalette.grey850 : Colors.white,
         border: Border(
           top: BorderSide(
-            color: isDarkMode ? Colors.grey[800]! : Colors.grey[200]!,
+            color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
           ),
         ),
       ),
@@ -320,18 +327,18 @@ class CartScreen extends GetView<CartController> {
                   ? SizedBox(
                       height: 20,
                       width: 20,
-                      child: CircularProgressIndicator(
+                      child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                         strokeWidth: 2,
                         color: Colors.white,
                       ),
                     )
                   : Text('Proceed to Checkout', style: TextStyle(fontSize: 16)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
+                backgroundColor: MangoPalette.green500,
                 foregroundColor: Colors.white,
                 minimumSize: Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
             ),
@@ -358,8 +365,8 @@ class CartScreen extends GetView<CartController> {
             fontSize: isTotal ? 16 : 14,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
             color: isTotal
-                ? (isDarkMode ? Colors.white : Colors.black)
-                : (isDarkMode ? Colors.grey[400] : Colors.grey[600]),
+                ? (isDarkMode ? Colors.white : MangoPalette.black)
+                : (isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600),
           ),
         ),
         Text(
@@ -368,8 +375,8 @@ class CartScreen extends GetView<CartController> {
             fontSize: isTotal ? 16 : 14,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
             color: isTotal
-                ? Colors.orange
-                : (isDarkMode ? Colors.grey[400] : Colors.grey[600]),
+                ? MangoPalette.green500
+                : (isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600),
           ),
         ),
       ],
@@ -386,7 +393,7 @@ class CartScreen extends GetView<CartController> {
       ),
       builder: (context) => Container(
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[850] : Colors.white,
+          color: isDarkMode ? MangoPalette.grey850 : Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -398,8 +405,8 @@ class CartScreen extends GetView<CartController> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[600] : Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
+                color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey300,
+                borderRadius: BorderRadius.circular(MangoRadius.xs),
               ),
             ),
             SizedBox(height: 20),
@@ -419,7 +426,7 @@ class CartScreen extends GetView<CartController> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
               ),
             ),
             SizedBox(height: 12),
@@ -431,7 +438,7 @@ class CartScreen extends GetView<CartController> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
               ),
             ),
@@ -447,15 +454,15 @@ class CartScreen extends GetView<CartController> {
                       style: OutlinedButton.styleFrom(
                         foregroundColor: isDarkMode
                             ? Colors.white
-                            : Colors.black,
+                            : MangoPalette.black,
                         side: BorderSide(
                           color: isDarkMode
-                              ? Colors.grey[600]!
-                              : Colors.grey[300]!,
+                              ? MangoPalette.grey600
+                              : MangoPalette.grey300,
                         ),
                         padding: EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                         ),
                       ),
                       child: Text('Cancel'),
@@ -473,7 +480,7 @@ class CartScreen extends GetView<CartController> {
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                         ),
                       ),
                       child: Text('Clear Cart'),
@@ -503,7 +510,7 @@ class CartScreen extends GetView<CartController> {
       ),
       builder: (context) => Container(
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[850] : Colors.white,
+          color: isDarkMode ? MangoPalette.grey850 : Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Padding(
@@ -520,8 +527,8 @@ class CartScreen extends GetView<CartController> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[600] : Colors.grey[300],
-                    borderRadius: BorderRadius.circular(2),
+                    color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -531,7 +538,7 @@ class CartScreen extends GetView<CartController> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 SizedBox(height: 8),
@@ -539,7 +546,7 @@ class CartScreen extends GetView<CartController> {
                   'Complete your order',
                   style: TextStyle(
                     fontSize: 14,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
                 SizedBox(height: 24),
@@ -549,8 +556,8 @@ class CartScreen extends GetView<CartController> {
                   child: Container(
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-                      borderRadius: BorderRadius.circular(12),
+                      color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Column(
                       children: [
@@ -562,8 +569,8 @@ class CartScreen extends GetView<CartController> {
                               style: TextStyle(
                                 fontSize: 14,
                                 color: isDarkMode
-                                    ? Colors.grey[400]
-                                    : Colors.grey[600],
+                                    ? MangoPalette.grey400
+                                    : MangoPalette.grey600,
                               ),
                             ),
                             Text(
@@ -571,7 +578,7 @@ class CartScreen extends GetView<CartController> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color: isDarkMode ? Colors.white : MangoPalette.black,
                               ),
                             ),
                           ],
@@ -585,8 +592,8 @@ class CartScreen extends GetView<CartController> {
                               style: TextStyle(
                                 fontSize: 14,
                                 color: isDarkMode
-                                    ? Colors.grey[400]
-                                    : Colors.grey[600],
+                                    ? MangoPalette.grey400
+                                    : MangoPalette.grey600,
                               ),
                             ),
                             Text(
@@ -596,7 +603,7 @@ class CartScreen extends GetView<CartController> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color: isDarkMode ? Colors.white : MangoPalette.black,
                               ),
                             ),
                           ],
@@ -610,8 +617,8 @@ class CartScreen extends GetView<CartController> {
                               style: TextStyle(
                                 fontSize: 14,
                                 color: isDarkMode
-                                    ? Colors.grey[400]
-                                    : Colors.grey[600],
+                                    ? MangoPalette.grey400
+                                    : MangoPalette.grey600,
                               ),
                             ),
                             Text(
@@ -619,7 +626,7 @@ class CartScreen extends GetView<CartController> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color: isDarkMode ? Colors.white : MangoPalette.black,
                               ),
                             ),
                           ],
@@ -633,7 +640,7 @@ class CartScreen extends GetView<CartController> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color: isDarkMode ? Colors.white : MangoPalette.black,
                               ),
                             ),
                             Text(
@@ -641,7 +648,7 @@ class CartScreen extends GetView<CartController> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.orange,
+                                color: MangoPalette.green500,
                               ),
                             ),
                           ],
@@ -658,28 +665,28 @@ class CartScreen extends GetView<CartController> {
                     controller: shippingController,
                     maxLines: 3,
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                     decoration: InputDecoration(
                       labelText: 'Shipping Address',
                       labelStyle: TextStyle(
-                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                       ),
                       hintText: 'Enter your full shipping address',
                       hintStyle: TextStyle(
-                        color: isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                        color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey400,
                       ),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.orange),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
+                        borderSide: BorderSide(color: MangoPalette.green500),
                       ),
                       filled: true,
                       fillColor: isDarkMode
-                          ? Colors.grey[800]
-                          : Colors.grey[50],
+                          ? MangoPalette.grey800
+                          : MangoPalette.grey50,
                     ),
                   ),
                 ),
@@ -695,7 +702,7 @@ class CartScreen extends GetView<CartController> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : MangoPalette.black,
                         ),
                       ),
                       SizedBox(height: 8),
@@ -750,15 +757,15 @@ class CartScreen extends GetView<CartController> {
                           style: OutlinedButton.styleFrom(
                             foregroundColor: isDarkMode
                                 ? Colors.white
-                                : Colors.black,
+                                : MangoPalette.black,
                             side: BorderSide(
                               color: isDarkMode
-                                  ? Colors.grey[600]!
-                                  : Colors.grey[300]!,
+                                  ? MangoPalette.grey600
+                                  : MangoPalette.grey300,
                             ),
                             padding: EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                           ),
                           child: Text('Cancel'),
@@ -801,7 +808,7 @@ class CartScreen extends GetView<CartController> {
                                 ? SizedBox(
                                     height: 20,
                                     width: 20,
-                                    child: CircularProgressIndicator(
+                                    child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                       strokeWidth: 2,
                                       color: Colors.white,
                                     ),
@@ -814,11 +821,11 @@ class CartScreen extends GetView<CartController> {
                                     ),
                                   ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange,
+                              backgroundColor: MangoPalette.green500,
                               foregroundColor: Colors.white,
                               padding: EdgeInsets.symmetric(vertical: 14),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(MangoRadius.md),
                               ),
                             ),
                           ),
@@ -843,20 +850,20 @@ class CartScreen extends GetView<CartController> {
     VoidCallback onTap,
     bool isDarkMode,
   ) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.only(bottom: 8),
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: isSelected
-              ? Colors.orange.withOpacity(0.1)
-              : (isDarkMode ? Colors.grey[800] : Colors.grey[50]),
-          borderRadius: BorderRadius.circular(12),
+              ? MangoPalette.green500.withOpacity(0.1)
+              : (isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
             color: isSelected
-                ? Colors.orange
-                : (isDarkMode ? Colors.grey[700]! : Colors.grey[200]!),
+                ? MangoPalette.green500
+                : (isDarkMode ? MangoPalette.grey700 : MangoPalette.grey200),
           ),
         ),
         child: Row(
@@ -864,8 +871,8 @@ class CartScreen extends GetView<CartController> {
             Icon(
               icon,
               color: isSelected
-                  ? Colors.orange
-                  : (isDarkMode ? Colors.grey[400] : Colors.grey[600]),
+                  ? MangoPalette.green500
+                  : (isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600),
               size: 24,
             ),
             SizedBox(width: 12),
@@ -876,13 +883,13 @@ class CartScreen extends GetView<CartController> {
                   fontSize: 14,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                   color: isSelected
-                      ? Colors.orange
-                      : (isDarkMode ? Colors.white : Colors.black),
+                      ? MangoPalette.green500
+                      : (isDarkMode ? Colors.white : MangoPalette.black),
                 ),
               ),
             ),
             if (isSelected)
-              Icon(Icons.check_circle, color: Colors.orange, size: 20),
+              Icon(Icons.check_circle, color: MangoPalette.green500, size: 20),
           ],
         ),
       ),

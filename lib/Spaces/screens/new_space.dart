@@ -9,6 +9,8 @@ import 'package:mango/Spaces/controllers/friends.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 import 'package:mango/Utils/text_field.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class NewSpaceScreen extends StatelessWidget {
   NewSpaceScreen({super.key});
@@ -50,7 +52,7 @@ class NewSpaceScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     TabBar(
-                      labelStyle: const TextStyle(fontSize: 10),
+                      labelStyle: const TextStyle(fontSize: 12),
                       tabs: const [
                         Tab(text: 'Planetary'),
                         Tab(text: 'Space Objects'),
@@ -97,7 +99,7 @@ class NewSpaceScreen extends StatelessWidget {
   ) {
     return Obx(() {
       if (isLoading) {
-        return Center(child: CircularProgressIndicator());
+        return Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
       }
 
       List<Map> filteredAvatars = avatars.where((avatar) {
@@ -128,7 +130,7 @@ class NewSpaceScreen extends StatelessWidget {
 
             bool isPremium = (avatar['price'] ?? 0) > 0;
 
-            return GestureDetector(
+            return MangoPressable(
               onTap: isPremium
                   ? null
                   : () {
@@ -157,7 +159,7 @@ class NewSpaceScreen extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 9,
+                            fontSize: 12,
                             color: Theme.of(context).primaryColorLight,
                           ),
                         ),
@@ -219,7 +221,7 @@ class NewSpaceScreen extends StatelessWidget {
                     'TM',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 8,
+                      fontSize: 12,
                       color: Theme.of(context).primaryColorLight,
                     ),
                   ),
@@ -240,11 +242,11 @@ class NewSpaceScreen extends StatelessWidget {
               children: [
                 Center(
                   child: Obx(
-                    () => GestureDetector(
+                    () => MangoPressable(
                       onTap: () => _showBottomModal(context),
                       child: avatarController.selectedAvatar.value.isEmpty
                           ? const CircleAvatar(
-                              backgroundColor: Colors.orange,
+                              backgroundColor: MangoPalette.green500,
                               radius: 50,
                               child: Icon(Icons.add),
                             )
@@ -282,7 +284,7 @@ class NewSpaceScreen extends StatelessWidget {
                     subtitle: Text(
                       "Customize your Space to your taste",
                       style: TextStyle(
-                        fontSize: 9,
+                        fontSize: 12,
                         color: Theme.of(context).primaryColorLight,
                         fontWeight: FontWeight.w500,
                       ),
@@ -366,7 +368,7 @@ class NewSpaceScreen extends StatelessWidget {
                                         child: Text(
                                           value,
                                           style: TextStyle(
-                                            fontSize: 10,
+                                            fontSize: 12,
                                             color: Theme.of(
                                               context,
                                             ).primaryColorLight,
@@ -413,7 +415,7 @@ class NewSpaceScreen extends StatelessWidget {
                             child: Text(
                               'Clear All',
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: Colors.red.shade300,
                               ),
                             ),
@@ -435,15 +437,15 @@ class NewSpaceScreen extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade800.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(12),
+                          color: MangoPalette.grey800.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                         ),
                         child: Center(
                           child: Text(
                             'No collaborators selected',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey.shade400,
+                              color: MangoPalette.grey400,
                             ),
                           ),
                         ),
@@ -474,7 +476,7 @@ class NewSpaceScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
                         'No more friends available to add',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                       ),
                     );
                   }
@@ -487,7 +489,7 @@ class NewSpaceScreen extends StatelessWidget {
                         ...availableFriends
                             .take(5)
                             .map(
-                              (friend) => GestureDetector(
+                              (friend) => MangoPressable(
                                 onTap: () =>
                                     controller.toggleSelectedFriend(friend),
                                 child: Padding(
@@ -508,7 +510,7 @@ class NewSpaceScreen extends StatelessWidget {
                                             right: 0,
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                color: Colors.green,
+                                                color: MangoPalette.green500,
                                                 shape: BoxShape.circle,
                                                 border: Border.all(
                                                   color: Theme.of(
@@ -530,8 +532,8 @@ class NewSpaceScreen extends StatelessWidget {
                                       Text(
                                         '@${friend.username}',
                                         style: TextStyle(
-                                          fontSize: 9,
-                                          color: Colors.grey.shade400,
+                                          fontSize: 12,
+                                          color: MangoPalette.grey400,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.center,
@@ -542,7 +544,7 @@ class NewSpaceScreen extends StatelessWidget {
                               ),
                             ),
                         if (availableFriends.length > 5)
-                          GestureDetector(
+                          MangoPressable(
                             onTap: () => showModalBottomSheet(
                               context: context,
                               builder: (_) => FriendsBottomSheet(),
@@ -551,7 +553,7 @@ class NewSpaceScreen extends StatelessWidget {
                               width: 60,
                               height: 60,
                               decoration: BoxDecoration(
-                                color: Colors.grey.shade800,
+                                color: MangoPalette.grey800,
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
@@ -561,7 +563,7 @@ class NewSpaceScreen extends StatelessWidget {
                             ),
                           )
                         else
-                          GestureDetector(
+                          MangoPressable(
                             onTap: () => showModalBottomSheet(
                               context: context,
                               builder: (_) => FriendsBottomSheet(),
@@ -570,7 +572,7 @@ class NewSpaceScreen extends StatelessWidget {
                               width: 60,
                               height: 60,
                               decoration: BoxDecoration(
-                                color: Colors.grey.shade800,
+                                color: MangoPalette.grey800,
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(Icons.add, color: Colors.white),
@@ -622,7 +624,7 @@ class NewSpaceScreen extends StatelessWidget {
                             subtitle: Text(
                               "Add pricing and details",
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: Theme.of(context).primaryColorLight,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -683,7 +685,7 @@ class NewSpaceScreen extends StatelessWidget {
                     return Container(
                       padding: const EdgeInsets.only(top: 3, left: 3),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                         border: Border(
                           bottom: BorderSide(
                             color: Theme.of(context).primaryColorLight,
@@ -725,14 +727,14 @@ class NewSpaceScreen extends StatelessWidget {
                                 }
                               },
                         color: controller.isLoading.value
-                            ? Colors.grey
-                            : Colors.orangeAccent,
+                            ? MangoPalette.grey500
+                            : MangoPalette.green500,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         child: controller.isLoading.value
-                            ? CircularProgressIndicator(
+                            ? CircularProgressIndicator(semanticsLabel: 'Loading', 
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                   Theme.of(context).primaryColorDark,
                                 ),
@@ -757,7 +759,7 @@ class NewSpaceScreen extends StatelessWidget {
                                           'TM',
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 6,
+                                            fontSize: 12,
                                             color: Theme.of(
                                               context,
                                             ).primaryColorDark,
@@ -797,7 +799,7 @@ class NewSpaceScreen extends StatelessWidget {
               Positioned(
                 top: -5,
                 right: -5,
-                child: GestureDetector(
+                child: MangoPressable(
                   onTap: () {
                     _showRemoveConfirmation(context, friend);
                   },
@@ -824,8 +826,8 @@ class NewSpaceScreen extends StatelessWidget {
           Text(
             '@${friend.username}',
             style: TextStyle(
-              fontSize: 9,
-              color: Colors.grey.shade400,
+              fontSize: 12,
+              color: MangoPalette.grey400,
               fontWeight: FontWeight.w500,
             ),
             overflow: TextOverflow.ellipsis,
@@ -854,7 +856,7 @@ class NewSpaceScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: TextStyle(color: Colors.grey.shade400),
+              style: TextStyle(color: MangoPalette.grey400),
             ),
           ),
           TextButton(
@@ -888,7 +890,7 @@ class NewSpaceScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: TextStyle(color: Colors.grey.shade400),
+              style: TextStyle(color: MangoPalette.grey400),
             ),
           ),
           TextButton(
@@ -910,19 +912,19 @@ class NewSpaceScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(12),
+        color: MangoPalette.grey200,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.grey),
+          Icon(icon, color: MangoPalette.grey500),
           const SizedBox(width: 10),
           Text(
             hintText,
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+            style: const TextStyle(fontSize: 16, color: MangoPalette.grey500),
           ),
           const Spacer(),
-          const Icon(Icons.add, color: Colors.grey),
+          const Icon(Icons.add, color: MangoPalette.grey500),
         ],
       ),
     );
@@ -933,7 +935,7 @@ class NewSpaceScreen extends StatelessWidget {
       children: [
         CircleAvatar(radius: 30, backgroundImage: AssetImage(imagePath)),
         const SizedBox(height: 5),
-        Text(name, style: const TextStyle(fontSize: 14, color: Colors.black)),
+        Text(name, style: const TextStyle(fontSize: 14, color: MangoPalette.black)),
       ],
     );
   }
@@ -1006,7 +1008,7 @@ class NewSpaceScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 0, 0, 0),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
         ),
         child: Column(
           children: [
@@ -1025,7 +1027,7 @@ class NewSpaceScreen extends StatelessWidget {
               Text(
                 subtitle,
                 style: const TextStyle(
-                  fontSize: 9,
+                  fontSize: 12,
                   color: Color.fromARGB(255, 117, 117, 117),
                 ),
                 textAlign: TextAlign.center,
@@ -1101,20 +1103,20 @@ class FriendsBottomSheet extends StatelessWidget {
               border: InputBorder.none,
               prefixIcon: const Icon(Icons.search),
               hintText: 'Search friends...',
-              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+              hintStyle: TextStyle(color: MangoPalette.grey400, fontSize: 14),
               filled: true,
-              fillColor: Colors.grey.shade800,
+              fillColor: MangoPalette.grey800,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 12,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.grey.shade700),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
+                borderSide: BorderSide(color: MangoPalette.grey700),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Colors.orange),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
+                borderSide: const BorderSide(color: MangoPalette.green500),
               ),
             ),
             onChanged: (value) {
@@ -1133,8 +1135,8 @@ class FriendsBottomSheet extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.grey.shade800,
-                borderRadius: BorderRadius.circular(12),
+                color: MangoPalette.grey800,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1143,7 +1145,7 @@ class FriendsBottomSheet extends StatelessWidget {
                     'Selected (${controller.selectedFriends.length})',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.orange.shade300,
+                      color: MangoPalette.green300,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -1158,8 +1160,8 @@ class FriendsBottomSheet extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.orange.shade900,
-                          borderRadius: BorderRadius.circular(16),
+                          color: MangoPalette.green900,
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -1174,12 +1176,13 @@ class FriendsBottomSheet extends StatelessWidget {
                             Text(
                               '@${friend.username}',
                               style: const TextStyle(
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: Colors.white,
                               ),
                             ),
                             const SizedBox(width: 4),
-                            GestureDetector(
+                            MangoPressable(
+        semanticLabel: 'Close',
                               onTap: () {
                                 controller.removeSelectedFriend(friend);
                               },
@@ -1210,14 +1213,14 @@ class FriendsBottomSheet extends StatelessWidget {
                       Icon(
                         Icons.people_outline,
                         size: 48,
-                        color: Colors.grey.shade600,
+                        color: MangoPalette.grey600,
                       ),
                       const SizedBox(height: 12),
                       Text(
                         controller.searchQuery.value.isEmpty
                             ? 'No friends found'
                             : 'No matching friends',
-                        style: TextStyle(color: Colors.grey.shade400),
+                        style: TextStyle(color: MangoPalette.grey400),
                       ),
                     ],
                   ),
@@ -1238,16 +1241,16 @@ class FriendsBottomSheet extends StatelessWidget {
                     friend,
                   );
 
-                  return GestureDetector(
+                  return MangoPressable(
                     onTap: () {
                       controller.toggleSelectedFriend(friend);
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                         border: Border.all(
                           color: isSelected
-                              ? Colors.orange
+                              ? MangoPalette.green500
                               : Colors.transparent,
                           width: 2,
                         ),
@@ -1269,7 +1272,7 @@ class FriendsBottomSheet extends StatelessWidget {
                                   right: 0,
                                   child: Container(
                                     decoration: const BoxDecoration(
-                                      color: Colors.orange,
+                                      color: MangoPalette.green500,
                                       shape: BoxShape.circle,
                                     ),
                                     child: const Icon(
@@ -1285,10 +1288,10 @@ class FriendsBottomSheet extends StatelessWidget {
                           Text(
                             '@${friend.username}',
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: isSelected
-                                  ? Colors.orange
-                                  : Colors.grey.shade400,
+                                  ? MangoPalette.green500
+                                  : MangoPalette.grey400,
                               fontWeight: isSelected
                                   ? FontWeight.w600
                                   : FontWeight.normal,
@@ -1313,10 +1316,10 @@ class FriendsBottomSheet extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: MangoPalette.green500,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                 ),
                 child: Obx(() {
@@ -1355,7 +1358,7 @@ class FriendsBottomSheet extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: TextStyle(color: Colors.grey.shade400),
+              style: TextStyle(color: MangoPalette.grey400),
             ),
           ),
           TextButton(

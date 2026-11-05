@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../Models/customModel/vine.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class VinesCard extends StatelessWidget {
   final MangoVine vine;
@@ -28,7 +29,7 @@ class VinesCard extends StatelessWidget {
                 image: NetworkImage(vine.thumbnailUrl),
                 fit: BoxFit.cover,
               ),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
           ),
           const SizedBox(height: 5),

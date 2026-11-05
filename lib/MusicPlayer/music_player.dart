@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/MusicPlayer/artwork_image.dart';
 import 'package:mango/MusicPlayer/controllers/global_music_controller.dart';
+import 'package:mango/Media/core/play_queue.dart';
+import 'package:mango/Media/ui/queue_sheet.dart';
 import 'package:mango/MusicPlayer/lyrics_page.dart';
 import 'package:mango/MusicPlayer/music.dart';
 import 'package:mango/Spaces/common/space_it.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class MusicPlayer extends StatefulWidget {
   final String musicId;
@@ -79,7 +82,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Theme.of(context).brightness == Brightness.dark 
-          ? Colors.grey[900] 
+          ? MangoPalette.grey900 
           : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -105,6 +108,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       ),
                     ),
                     IconButton(
+        tooltip: 'Close',
                       icon: const Icon(Icons.close),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -129,7 +133,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(MangoRadius.sm),
                             image: DecorationImage(
                               image: NetworkImage(music.artworkUrl),
                               fit: BoxFit.cover,
@@ -143,7 +147,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                             fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
                             color: isCurrent 
                                 ? Theme.of(context).primaryColor 
-                                : (isPlayed ? Colors.grey : null),
+                                : (isPlayed ? MangoPalette.grey500 : null),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -152,13 +156,13 @@ class _MusicPlayerState extends State<MusicPlayer> {
                           music.artistName,
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: MangoPalette.grey500,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         trailing: isUpcoming 
-                            ? const Icon(Icons.schedule, size: 16, color: Colors.grey)
+                            ? const Icon(Icons.schedule, size: 16, color: MangoPalette.grey500)
                             : (isCurrent ? Icon(Icons.play_arrow, size: 16, color: Theme.of(context).primaryColor) : null),
                         onTap: () {
                           musicController.playSpecificTrack(index);
@@ -180,7 +184,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final effectiveBgColor = backgroundColor ?? musicController.backgroundColor.value ?? 
-        (isDarkMode ? Colors.grey[900]! : Colors.grey[50]!);
+        (isDarkMode ? MangoPalette.grey900 : MangoPalette.grey50);
     final textColor = isDarkMode ? Colors.white : Colors.black87;
     final secondaryTextColor = isDarkMode ? Colors.white60 : Colors.black54;
     final iconSize = 24.0;
@@ -192,7 +196,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
       
       final music = musicController.currentMusic.value;
       if (music == null) {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
       }
       
       return Scaffold(
@@ -209,6 +213,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
+        tooltip: 'Back',
                       icon: Icon(Icons.arrow_back, color: textColor, size: 28),
                       onPressed: () => Navigator.pop(context),
                       padding: EdgeInsets.zero,
@@ -256,6 +261,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       ],
                     ),
                     IconButton(
+        tooltip: 'Queue',
                       icon: Icon(Icons.queue_music, color: textColor, size: 24),
                       onPressed: _showPlaylistInfo,
                       padding: EdgeInsets.zero,
@@ -278,17 +284,17 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         aspectRatio: 1,
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
+                                color: MangoPalette.black.withOpacity(0.2),
                                 blurRadius: 20,
                                 offset: const Offset(0, 10),
                               ),
                             ],
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                             child: ArtWorkImage(image: music.artworkUrl),
                           ),
                         ),
@@ -416,15 +422,29 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Obx(() => _buildControlButton(
-                            icon: Icons.shuffle,
+                            icon: musicController.isSmartShuffled.value ? Icons.auto_awesome : Icons.shuffle,
                             isActive: musicController.isShuffled.value,
-                            onPressed: musicController.toggleShuffle,
+                            tooltip: musicController.isSmartShuffled.value
+                                ? 'AI shuffle on. Tap to turn shuffle off'
+                                : musicController.isShuffled.value
+                                    ? 'Shuffle on. Tap for AI shuffle'
+                                    : 'Shuffle',
+                            onPressed: () {
+                              if (!musicController.isShuffled.value) {
+                                musicController.toggleShuffle();
+                              } else if (!musicController.isSmartShuffled.value) {
+                                musicController.smartShuffle();
+                              } else {
+                                musicController.toggleShuffle();
+                              }
+                            },
                             color: textColor,
                             activeColor: Theme.of(context).primaryColor,
                             size: iconSize,
                           )),
                           _buildControlButton(
                             icon: Icons.skip_previous,
+                            tooltip: 'Previous',
                             onPressed: () => musicController.playPreviousTrack(),
                             color: textColor,
                             size: iconSize + 4,
@@ -436,24 +456,27 @@ class _MusicPlayerState extends State<MusicPlayer> {
                               shape: BoxShape.circle,
                               color: Theme.of(context).primaryColor,
                             ),
-                            child: IconButton(
-                              icon: Obx(() => Icon(
+                            child: Obx(() => IconButton(
+                              tooltip: musicController.isPlaying.value ? 'Pause' : 'Play',
+                              icon: Icon(
                                 musicController.isPlaying.value ? Icons.pause : Icons.play_arrow,
                                 color: Colors.white,
                                 size: 32,
-                              )),
+                              ),
                               onPressed: musicController.togglePlayPause,
                               padding: EdgeInsets.zero,
-                            ),
+                            )),
                           ),
                           _buildControlButton(
                             icon: Icons.skip_next,
+                            tooltip: 'Next',
                             onPressed: () => musicController.playNextTrack(),
                             color: textColor,
                             size: iconSize + 4,
                           ),
                           _buildControlButton(
                             icon: Icons.lyrics,
+                            tooltip: 'Lyrics',
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -466,6 +489,40 @@ class _MusicPlayerState extends State<MusicPlayer> {
                                 ),
                               );
                             },
+                            color: textColor,
+                            size: iconSize,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(() {
+                            final mode = musicController.repeatMode.value;
+                            return _buildControlButton(
+                              icon: mode == RepeatMode.one ? Icons.repeat_one : Icons.repeat,
+                              isActive: mode != RepeatMode.off,
+                              tooltip: switch (mode) { RepeatMode.off => 'Repeat off', RepeatMode.all => 'Repeat all', RepeatMode.one => 'Repeat one' },
+                              onPressed: musicController.cycleRepeat,
+                              color: textColor,
+                              activeColor: Theme.of(context).primaryColor,
+                              size: iconSize,
+                            );
+                          }),
+                          Expanded(
+                            child: Obx(() => Text(
+                                  'Playing from ${musicController.source.value.label}',
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontSize: 12, color: secondaryTextColor),
+                                )),
+                          ),
+                          _buildControlButton(
+                            icon: Icons.queue_music,
+                            tooltip: 'Queue',
+                            onPressed: () => showQueueSheet(context),
                             color: textColor,
                             size: iconSize,
                           ),
@@ -489,22 +546,27 @@ class _MusicPlayerState extends State<MusicPlayer> {
     double size = 24,
     bool isActive = false,
     Color? activeColor,
+    String? tooltip,
   }) {
-    return IconButton(
-      icon: Icon(
-        icon,
-        color: isActive ? activeColor : color,
-        size: size,
+    return Semantics(
+      toggled: activeColor != null ? isActive : null,
+      child: IconButton(
+        tooltip: tooltip,
+        icon: Icon(
+          icon,
+          color: isActive ? activeColor : color,
+          size: size,
+        ),
+        onPressed: onPressed,
+        padding: const EdgeInsets.all(8),
+        constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
       ),
-      onPressed: onPressed,
-      padding: const EdgeInsets.all(8),
-      constraints: const BoxConstraints(),
     );
   }
   
   Widget _buildShimmerLoader(bool isDarkMode) {
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.grey[50],
+      backgroundColor: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey50,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -524,8 +586,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       aspectRatio: 1,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(12),
+                          color: MangoPalette.grey300,
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                         ),
                       ),
                     ),
@@ -554,15 +616,15 @@ class _MusicPlayerState extends State<MusicPlayer> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(width: 40, height: 40, color: Colors.grey[300]),
+        Container(width: 40, height: 40, color: MangoPalette.grey300),
         Column(
           children: [
-            Container(width: 80, height: 12, color: Colors.grey[300]),
+            Container(width: 80, height: 12, color: MangoPalette.grey300),
             const SizedBox(height: 8),
-            Container(width: 60, height: 12, color: Colors.grey[300]),
+            Container(width: 60, height: 12, color: MangoPalette.grey300),
           ],
         ),
-        Container(width: 40, height: 40, color: Colors.grey[300]),
+        Container(width: 40, height: 40, color: MangoPalette.grey300),
       ],
     );
   }
@@ -578,17 +640,17 @@ class _MusicPlayerState extends State<MusicPlayer> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(width: 200, height: 20, color: Colors.grey[300]),
+                  Container(width: 200, height: 20, color: MangoPalette.grey300),
                   const SizedBox(height: 8),
-                  Container(width: 150, height: 16, color: Colors.grey[300]),
+                  Container(width: 150, height: 16, color: MangoPalette.grey300),
                 ],
               ),
             ),
             Row(
               children: [
-                Container(width: 40, height: 40, color: Colors.grey[300]),
+                Container(width: 40, height: 40, color: MangoPalette.grey300),
                 const SizedBox(width: 8),
-                Container(width: 40, height: 40, color: Colors.grey[300]),
+                Container(width: 40, height: 40, color: MangoPalette.grey300),
               ],
             ),
           ],
@@ -602,15 +664,15 @@ class _MusicPlayerState extends State<MusicPlayer> {
       height: 40,
       child: Row(
         children: [
-          Container(width: 30, height: 12, color: Colors.grey[300]),
+          Container(width: 30, height: 12, color: MangoPalette.grey300),
           Expanded(
             child: Container(
               height: 4,
               margin: const EdgeInsets.symmetric(horizontal: 8),
-              color: Colors.grey[300],
+              color: MangoPalette.grey300,
             ),
           ),
-          Container(width: 30, height: 12, color: Colors.grey[300]),
+          Container(width: 30, height: 12, color: MangoPalette.grey300),
         ],
       ),
     );
@@ -625,7 +687,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
           height: index == 2 ? 56 : 40,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.grey[300],
+            color: MangoPalette.grey300,
           ),
         ),
       ),

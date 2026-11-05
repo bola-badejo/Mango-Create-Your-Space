@@ -28,6 +28,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mango/utils.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class UploadMovieController extends GetxController {
   final RxDouble uploadProgress = 0.0.obs;
@@ -186,7 +187,7 @@ class UploadMovieController extends GetxController {
             'Poster Added',
             'Movie poster selected successfully',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -207,7 +208,7 @@ class UploadMovieController extends GetxController {
             'Poster Added',
             'Movie poster selected successfully',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -309,7 +310,7 @@ class UploadMovieController extends GetxController {
         'Video Already Uploaded',
         'Movie video has already been uploaded',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -367,7 +368,7 @@ class UploadMovieController extends GetxController {
           'Video Selected',
           'Starting upload...',
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.orange,
+          backgroundColor: MangoPalette.green500,
           context: context,
         );
 
@@ -390,7 +391,7 @@ class UploadMovieController extends GetxController {
           'Upload Complete',
           'Movie video uploaded successfully',
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
+          backgroundColor: MangoPalette.green500,
           context: context,
         );
       }
@@ -424,7 +425,7 @@ class UploadMovieController extends GetxController {
         'Upload Complete',
         'Movie video uploaded successfully',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         context: context,
       );
     } catch (e) {
@@ -544,7 +545,7 @@ class UploadMovieController extends GetxController {
         'Creator Required',
         'Please register as a creator first to upload movies.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -700,7 +701,7 @@ class UploadMovieController extends GetxController {
         '🎬 Success!',
         'Your movie has been uploaded',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
         context: context,

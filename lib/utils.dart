@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as img;
+import 'package:mango/Core/theme/mango_context.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class UtilsService {
   final firebase_storage.FirebaseStorage _storage =
@@ -64,54 +66,67 @@ class UtilsService {
     SnackbarStatusCallback? snackbarStatus,
     double barBlur = 0,
   }) {
-    Widget? effectiveTitleText = titleText;
-    Widget? effectiveMessageText = messageText;
+    // Every feedback message shares one look. Tone (success, error,
+    // warning, information) is inferred from the caller's colour and title
+    // and shown with an icon and words, never colour alone. Caller colours
+    // are used only to infer tone, so all 355 call sites stay consistent.
+    final c = context.colors;
+    final type = Theme.of(context).textTheme;
+    final tone = _snackToneFor(backgroundColor, title);
+    final (IconData toneIcon, Color toneFg, Color toneBg) = switch (tone) {
+      _SnackTone.success =>
+        (Icons.check_circle_outline_rounded, c.success, c.successContainer),
+      _SnackTone.error =>
+        (Icons.error_outline_rounded, c.error, c.errorContainer),
+      _SnackTone.warning =>
+        (Icons.warning_amber_rounded, c.warning, c.warningContainer),
+      _SnackTone.info => (Icons.info_outline_rounded, c.info, c.infoContainer),
+    };
 
-    if (colorText != null) {
-      if (titleText == null) {
-        effectiveTitleText = Text(title, style: TextStyle(color: colorText));
-      }
-      if (messageText == null) {
-        effectiveMessageText = Text(
-          message,
-          style: TextStyle(color: colorText),
-        );
-      }
-    }
-
-    // Build the content widget
-    Widget content;
-    if (icon != null) {
-      content = Row(
-        children: [
-          icon,
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (effectiveTitleText != null) effectiveTitleText,
-                if (effectiveMessageText != null) effectiveMessageText,
-              ],
-            ),
+    final content = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ExcludeSemantics(
+          child: icon ?? Icon(toneIcon, color: toneFg, size: 22),
+        ),
+        const SizedBox(width: MangoSpace.s3),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (titleText != null)
+                titleText
+              else if (title.trim().isNotEmpty)
+                Text(
+                  title,
+                  style: type.titleSmall?.copyWith(
+                    color: c.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              if (messageText != null)
+                messageText
+              else if (message.trim().isNotEmpty)
+                Text(
+                  message,
+                  style: type.bodyMedium?.copyWith(color: c.textPrimary),
+                ),
+            ],
           ),
-        ],
-      );
-    } else {
-      content = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (effectiveTitleText != null) effectiveTitleText,
-          if (effectiveMessageText != null) effectiveMessageText,
-        ],
-      );
-    }
+        ),
+      ],
+    );
+
+    // Errors stay long enough to read and act on.
+    final effectiveDuration =
+        tone == _SnackTone.error && duration < const Duration(seconds: 6)
+            ? const Duration(seconds: 6)
+            : duration;
 
     final snackBar = SnackBar(
       content: content,
-      duration: duration,
+      duration: effectiveDuration,
       behavior: SnackBarBehavior.floating,
       margin: snackPosition == SnackPosition.TOP
           ? EdgeInsets.only(
@@ -121,27 +136,22 @@ class UtilsService {
             )
           : margin,
       padding: padding,
+      elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-        side: borderColor != null && borderWidth > 0
-            ? BorderSide(color: borderColor, width: borderWidth)
-            : BorderSide.none,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        side: BorderSide(color: toneFg.withValues(alpha: 0.4)),
       ),
-      backgroundColor:
-          backgroundColor ??
-          (Theme.of(context).brightness == Brightness.dark
-              ? Colors.grey.shade900
-              : Colors.grey.shade200),
-      elevation: boxShadows != null ? 0 : null,
-      dismissDirection: isDismissible
-          ? DismissDirection.down
-          : DismissDirection.none,
+      backgroundColor: toneBg,
+      dismissDirection:
+          isDismissible ? DismissDirection.down : DismissDirection.none,
       action: onTap != null
-          ? SnackBarAction(label: 'OK', onPressed: onTap)
+          ? SnackBarAction(label: 'OK', textColor: toneFg, onPressed: onTap)
           : null,
     );
 
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackBar);
 
     // Call snackbarStatus callback if provided
     if (snackbarStatus != null) {
@@ -333,4 +343,29 @@ class UtilsService {
   Future<String> _detectVideoQualityMobile(File videoFile) async {
     return '1080p';
   }
+}
+
+enum _SnackTone { success, error, warning, info }
+
+/// Infers a message's tone from its title, then from the hue of the colour
+/// the caller passed (red = error, amber = warning, green = success).
+_SnackTone _snackToneFor(Color? background, String title) {
+  final t = title.toLowerCase();
+  if (t.contains('error') || t.contains('fail') || t.contains('oops') ||
+      t.contains('denied') || t.contains('invalid')) {
+    return _SnackTone.error;
+  }
+  if (t.contains('warn') || t.contains('caution')) return _SnackTone.warning;
+  if (t.contains('success') || t.contains('done') || t.contains('saved') ||
+      t.contains('sent') || t.contains('added') || t.contains('updated')) {
+    return _SnackTone.success;
+  }
+  if (background == null || background.a < 0.5) return _SnackTone.info;
+  final hsv = HSVColor.fromColor(background);
+  if (hsv.saturation < 0.25) return _SnackTone.info;
+  final h = hsv.hue;
+  if (h < 20 || h >= 330) return _SnackTone.error;
+  if (h < 65) return _SnackTone.warning;
+  if (h < 175) return _SnackTone.success;
+  return _SnackTone.info;
 }

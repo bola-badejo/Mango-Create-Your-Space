@@ -11,6 +11,8 @@ import 'package:mango/Utils/format_naira.dart';
 import 'package:mango/Utils/text_highlighter.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 import 'package:mango/Utils/theme.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpaceContentScreen extends StatefulWidget {
   final SpaceContentArguments arguments;
@@ -236,9 +238,9 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                       colors: [
                         Colors.transparent,
                         Colors.transparent,
-                        Colors.black.withOpacity(0.3),
-                        Colors.black.withOpacity(0.6),
-                        Colors.black.withOpacity(0.8),
+                        MangoPalette.black.withOpacity(0.3),
+                        MangoPalette.black.withOpacity(0.6),
+                        MangoPalette.black.withOpacity(0.8),
                       ],
                       stops: const [0.0, 0.4, 0.6, 0.8, 1.0],
                     ),
@@ -364,6 +366,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                   _buildRatingBox(widget.arguments.rating),
                   const Spacer(),
                   IconButton(
+        tooltip: 'Back',
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () => Navigator.pop(context),
                   ),
@@ -384,10 +387,10 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
               height: 50,
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: MangoPalette.black.withOpacity(0.2),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -403,12 +406,13 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                         hintText: 'Search by title, description, category...',
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: TextStyle(color: MangoPalette.grey500),
                       ),
                       style: const TextStyle(fontSize: 16),
                     ),
                   ),
                   IconButton(
+        tooltip: 'Close',
                     icon: const Icon(Icons.close, size: 20),
                     onPressed: _toggleSearchBar,
                   ),
@@ -419,10 +423,10 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
               height: 50,
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: MangoPalette.black.withOpacity(0.2),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -430,15 +434,15 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
               ),
               child: InkWell(
                 onTap: _toggleSearchBar,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 child: Row(
                   children: [
                     const SizedBox(width: 16),
-                    Icon(Icons.search, color: Colors.grey[600], size: 20),
+                    Icon(Icons.search, color: MangoPalette.grey600, size: 20),
                     const SizedBox(width: 12),
                     Text(
                       'Search ${widget.arguments.title.toLowerCase()}...',
-                      style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                      style: TextStyle(color: MangoPalette.grey600, fontSize: 16),
                     ),
                   ],
                 ),
@@ -452,7 +456,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
     if (_isLoading) {
       return const SizedBox(
         height: 300,
-        child: Center(child: CircularProgressIndicator()),
+        child: Center(child: CircularProgressIndicator(semanticsLabel: 'Loading')),
       );
     }
 
@@ -482,7 +486,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
         _contentOpacityAnimation.value == 1.0 ? 0 : 30,
         0,
       ),
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: () {
           Get.to(
             () => SpaceDetailScreen(space),
@@ -501,8 +505,8 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                 padding: const EdgeInsets.only(left: 25, right: 20),
                 decoration: BoxDecoration(
                   color: _themeController.isDarkMode.value 
-                      ? Colors.grey[800] 
-                      : Colors.grey[200],
+                      ? MangoPalette.grey800 
+                      : MangoPalette.grey200,
                   borderRadius: BorderRadius.circular(29),
                   boxShadow: [
                     BoxShadow(
@@ -537,7 +541,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                         color: _themeController.isDarkMode.value 
                             ? Colors.white 
                             : _themeController.primaryColorValue,
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -573,7 +577,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                 child: Hero(
                   tag: space.image.isEmpty ? "space_image" : space.image,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(MangoRadius.lg),
                     child: space.image.isEmpty
                         ? Image.asset(
                             "asset/images/space3.png",
@@ -619,10 +623,10 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
         Text(
           name,
           style: TextStyle(
-            fontSize: 8,
+            fontSize: 12,
             color: _themeController.isDarkMode.value 
                 ? Colors.white70 
-                : Colors.grey[600],
+                : MangoPalette.grey600,
           ),
         ),
       ],
@@ -634,7 +638,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
     if (_isLoading) {
       return const SizedBox(
         height: 300,
-        child: Center(child: CircularProgressIndicator()),
+        child: Center(child: CircularProgressIndicator(semanticsLabel: 'Loading')),
       );
     }
 
@@ -680,13 +684,13 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
           clipBehavior: Clip.none,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               child: Card(
                 elevation: 4,
                 margin: EdgeInsets.zero,
                 color: Colors.transparent,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
                 child: Stack(
                   children: [
@@ -715,9 +719,9 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                                     Colors.transparent,
                                     Colors.transparent,
                                     Colors.transparent,
-                                    Colors.black.withOpacity(0.1),
-                                    Colors.black.withOpacity(0.3),
-                                    Colors.black.withOpacity(0.6),
+                                    MangoPalette.black.withOpacity(0.1),
+                                    MangoPalette.black.withOpacity(0.3),
+                                    MangoPalette.black.withOpacity(0.6),
                                   ],
                                   stops: const [
                                     0.0,
@@ -754,7 +758,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                           Text(
                             space.category,
                             style: const TextStyle(
-                              fontSize: 6,
+                              fontSize: 12,
                               color: Colors.white,
                             ),
                           ),
@@ -763,7 +767,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                             space.description,
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 9,
+                              fontSize: 12,
                               height: 1,
                               color: Colors.white,
                             ),
@@ -776,7 +780,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GestureDetector(
+                              MangoPressable(
                                 onTap: () {
                                   Get.to(
                                     () => SpaceDetailScreen(space),
@@ -790,16 +794,16 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.circular(2),
+                                    borderRadius: BorderRadius.circular(MangoRadius.xs),
                                     border: Border.all(
-                                      color: Colors.black.withOpacity(0.1),
+                                      color: MangoPalette.black.withOpacity(0.1),
                                     ),
                                   ),
                                   child: const Text(
                                     'View Space',
                                     style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 9,
+                                      color: MangoPalette.black,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                       letterSpacing: -0.1,
                                     ),
@@ -814,7 +818,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
                                     formatNaira(space.price),
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 9,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: 0,
                                     ),
@@ -900,7 +904,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
               child: Icon(
                 Icons.space_dashboard,
                 size: radius,
-                color: Colors.grey[600],
+                color: MangoPalette.grey600,
               ),
             ),
     );
@@ -950,8 +954,8 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
       return Container(
         height: height,
         width: height,
-        color: Colors.grey[300],
-        child: const Icon(Icons.image, color: Colors.grey),
+        color: MangoPalette.grey300,
+        child: const Icon(Icons.image, color: MangoPalette.grey500),
       );
     }
   }
@@ -961,8 +965,8 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.25),
-          borderRadius: BorderRadius.circular(12),
+          color: MangoPalette.black.withOpacity(0.25),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -971,13 +975,13 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
               4,
               (index) => const Icon(Icons.star, color: Colors.amber, size: 10),
             ),
-            const Icon(Icons.star, color: Colors.grey, size: 10),
+            const Icon(Icons.star, color: MangoPalette.grey500, size: 10),
             const SizedBox(width: 4),
             Text(
               rating,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 10,
+                fontSize: 12,
                 color: Colors.white,
               ),
             ),
@@ -993,7 +997,7 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.25),
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(MangoRadius.sm),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -1002,12 +1006,12 @@ class _SpaceContentScreenState extends State<SpaceContentScreen>
               4,
               (index) => const Icon(Icons.star, color: Colors.amber, size: 4),
             ),
-            const Icon(Icons.star, color: Colors.grey, size: 4),
+            const Icon(Icons.star, color: MangoPalette.grey500, size: 4),
             Text(
               rating,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 6,
+                fontSize: 12,
                 color: Colors.white,
               ),
             ),

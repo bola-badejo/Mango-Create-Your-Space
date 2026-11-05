@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class PlaylistController extends GetxController {
   var playlistTitle = ''.obs;
@@ -54,7 +55,7 @@ class PlaylistController extends GetxController {
       });
 
       UtilsService().showSnackbar('Success', 'Playlist uploaded successfully!',
-          backgroundColor: Colors.green, colorText: Colors.white, context: context);
+          backgroundColor: MangoPalette.green500, colorText: Colors.white, context: context);
     } catch (e) {
       UtilsService().showSnackbar('Error', 'Failed to upload playlist: $e',
           backgroundColor: Colors.red, colorText: Colors.white, context: context);

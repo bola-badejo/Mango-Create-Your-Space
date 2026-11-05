@@ -13,6 +13,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MoviePart {
   String id;
@@ -306,7 +308,7 @@ class UploadMovieSeriesController extends GetxController {
             'Cover Added',
             'Movie series cover art selected',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -323,7 +325,7 @@ class UploadMovieSeriesController extends GetxController {
             'Cover Added',
             'Movie series cover art selected',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -394,7 +396,7 @@ class UploadMovieSeriesController extends GetxController {
       'Part Added',
       '${part.titleController.text} has been added',
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white,
       context: context,
     );
@@ -523,7 +525,7 @@ class UploadMovieSeriesController extends GetxController {
         'Creator Required',
         'Please register as a creator first to upload movie series.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -536,7 +538,7 @@ class UploadMovieSeriesController extends GetxController {
         'Upload in Progress',
         'Please wait for current upload to complete',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -664,7 +666,7 @@ class UploadMovieSeriesController extends GetxController {
         '🎬 Success!',
         'Movie series "${seriesTitle.value}" uploaded',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
         context: context,
@@ -777,7 +779,7 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
 
     return await showDialog<bool>(
           context: context,
-          barrierColor: Colors.black.withOpacity(0.4),
+          barrierColor: MangoPalette.black.withOpacity(0.4),
           builder: (context) => Dialog(
             backgroundColor: Colors.transparent,
             insetPadding: const EdgeInsets.all(24),
@@ -786,10 +788,10 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: MangoPalette.black.withOpacity(0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -839,10 +841,10 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             side: BorderSide(
-                              color: Colors.grey.withOpacity(0.3),
+                              color: MangoPalette.grey500.withOpacity(0.3),
                             ),
                           ),
                           icon: const Icon(Icons.arrow_back, size: 14),
@@ -867,7 +869,7 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
                             backgroundColor: Colors.red,
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             elevation: 0,
                           ),
@@ -913,9 +915,10 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
           title: const Text('Upload Movie Series', style: TextStyle(fontSize: 16)),
           backgroundColor: theme.scaffoldBackgroundColor,
           elevation: 0,
-          iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
+          iconTheme: IconThemeData(color: isDark ? Colors.white : MangoPalette.black),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black),
+        tooltip: 'Back',
+            icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : MangoPalette.black),
             onPressed: () async {
               await controller._saveDraft();
               final discard = await _showDiscardDialog(context);
@@ -941,10 +944,10 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
                         ? details.onStepContinue
                         : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isLast ? Colors.green : Colors.orange,
+                      backgroundColor: isLast ? MangoPalette.green500 : MangoPalette.green500,
                     ),
                     child: Obx(() => controller.isUploading.value
-                        ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                        ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2, color: Colors.white))
                         : Text(isLast ? 'Upload Series' : 'Next')),
                   ),
                   const SizedBox(width: 8),
@@ -1004,7 +1007,7 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
                 Positioned(
                   top: 0,
                   right: 0,
-                  child: GestureDetector(
+                  child: MangoPressable(
                     onTap: controller.removeCoverArt,
                     child: Container(
                       padding: const EdgeInsets.all(4),
@@ -1023,14 +1026,14 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
             width: 120,
             height: 120,
             decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(8),
+              color: MangoPalette.grey200,
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               border: Border.all(
-                color: controller.isCoverSelected.value ? Colors.green : Colors.grey,
+                color: controller.isCoverSelected.value ? MangoPalette.green500 : MangoPalette.grey500,
                 width: 2,
               ),
             ),
-            child: const Icon(Icons.image, size: 60, color: Colors.grey),
+            child: const Icon(Icons.image, size: 60, color: MangoPalette.grey500),
           );
         }),
         const SizedBox(height: 8),
@@ -1050,8 +1053,8 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
+            color: MangoPalette.grey100,
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
           child: Column(
             children: [
@@ -1067,7 +1070,7 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
                       onPressed: () => controller.pickPartFile(context),
                       icon: const Icon(Icons.video_file),
                       label: const Text('Pick Video'),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                      style: ElevatedButton.styleFrom(backgroundColor: MangoPalette.green500),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -1087,7 +1090,7 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
                 onPressed: () => controller.addPart(context),
                 icon: const Icon(Icons.add),
                 label: const Text('Add Part'),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                style: ElevatedButton.styleFrom(backgroundColor: MangoPalette.green500),
               ),
             ],
           ),
@@ -1115,10 +1118,11 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
                 key: ValueKey(part.id),
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
-                  leading: const Icon(Icons.movie, color: Colors.orange),
+                  leading: const Icon(Icons.movie, color: MangoPalette.green500),
                   title: Text(part.titleController.text),
                   subtitle: Text(part.filePath.split('/').last),
                   trailing: IconButton(
+        tooltip: 'Delete',
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () => controller.removePart(index),
                   ),
@@ -1192,6 +1196,7 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
                     dense: true,
                     title: Text(entry.value),
                     trailing: IconButton(
+        tooltip: 'Delete',
                       icon: const Icon(Icons.delete, color: Colors.red, size: 18),
                       onPressed: () => controller.removeSeriesContributorAt(entry.key),
                     ),
@@ -1212,7 +1217,8 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.add, color: Colors.orange),
+        tooltip: 'Add',
+              icon: const Icon(Icons.add, color: MangoPalette.green500),
               onPressed: controller.addSeriesContributor,
             ),
           ],
@@ -1241,7 +1247,7 @@ class _UploadMovieSeriesPageState extends State<UploadMovieSeriesPage> {
         Obx(() => controller.isUploading.value
             ? Column(
                 children: [
-                  LinearProgressIndicator(value: controller.uploadProgress.value),
+                  LinearProgressIndicator(semanticsLabel: 'Loading', value: controller.uploadProgress.value),
                   const SizedBox(height: 8),
                   Text(controller.uploadStatus.value),
                   Text('${(controller.uploadProgress.value * 100).toStringAsFixed(0)}%'),

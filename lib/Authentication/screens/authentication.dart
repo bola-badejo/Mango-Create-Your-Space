@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mango/Models/animation.dart';
 
 import '../../constants.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({super.key});
@@ -17,11 +18,11 @@ class _AuthenticateState extends State<Authenticate> {
     final theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
-    final Color background = isDark ? Colors.black : Colors.white;
-    final Color textColor = isDark ? Colors.white : Colors.black;
+    final Color background = isDark ? MangoPalette.black : Colors.white;
+    final Color textColor = isDark ? Colors.white : MangoPalette.black;
     final Color borderColor = isDark ? Colors.white70 : Colors.black87;
-    final Color fillColor = isDark ? Colors.white : Colors.black;
-    final Color fillTextColor = isDark ? Colors.black : Colors.white;
+    final Color fillColor = isDark ? Colors.white : MangoPalette.black;
+    final Color fillTextColor = isDark ? MangoPalette.black : Colors.white;
 
     double width = MediaQuery.of(context).size.width;
 

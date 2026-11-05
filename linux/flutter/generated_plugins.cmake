@@ -8,6 +8,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   flutter_secure_storage_linux
   flutter_webrtc
   gtk
+  livekit_client
   printing
   record_linux
   syncfusion_pdfviewer_linux

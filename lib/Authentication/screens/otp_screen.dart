@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mango/AccountSetup/onboarding_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class OTPScreen extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -14,9 +16,9 @@ class OTPScreen extends StatelessWidget {
     final String verificationId = Get.arguments as String;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: MangoPalette.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: MangoPalette.black,
         elevation: 0,
         title: const Text(
           'OTP Verification',
@@ -58,11 +60,11 @@ class OTPScreen extends StatelessWidget {
                 hintStyle: const TextStyle(color: Colors.white30),
                 enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.white24),
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
             ),
@@ -78,10 +80,10 @@ class OTPScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
+                  foregroundColor: MangoPalette.black,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                 ),
                 child: const Text(
@@ -109,14 +111,14 @@ class OTPScreen extends StatelessWidget {
       );
 
       await _auth.signInWithCredential(credential);
-      Get.offNamed('/home');
+      await OnboardingService.instance.continueAfterSignIn();
     } catch (e) {
       UtilsService().showSnackbar(
         'Verification Failed',
         e.toString(),
         backgroundColor: Colors.white,
         context: context,
-        colorText: Colors.black,
+        colorText: MangoPalette.black,
         snackPosition: SnackPosition.BOTTOM,
       );
     }

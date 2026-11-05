@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/Profile/profile_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class FollowersScreen extends StatelessWidget {
   final ProfileController profileController = Get.find<ProfileController>();
@@ -26,7 +27,7 @@ class FollowersScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -34,11 +35,11 @@ class FollowersScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.people_outline, size: 64, color: Colors.grey),
+                  Icon(Icons.people_outline, size: 64, color: MangoPalette.grey500),
                   SizedBox(height: 16),
                   Text(
                     'No followers yet',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: TextStyle(fontSize: 16, color: MangoPalette.grey500),
                   ),
                 ],
               ),
@@ -112,7 +113,7 @@ class FollowersScreen extends StatelessWidget {
             _toggleFollow(followerId, isFollowing);
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: isFollowing ? Colors.grey : Colors.blue,
+            backgroundColor: isFollowing ? MangoPalette.grey500 : Colors.blue,
             foregroundColor: Colors.white,
           ),
           child: Text(isFollowing ? 'Following' : 'Follow Back'),

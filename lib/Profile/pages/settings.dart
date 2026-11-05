@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mango/Media/compose/mango_composer.dart';
 import 'package:mango/Notifications/notifications_controller.dart';
 import 'package:mango/Utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,22 +12,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:universal_html/html.dart' as html;
-import 'dart:js_interop';
-import 'dart:js_interop_unsafe';
 
 import '../../Models/animation.dart';
 import '../profile_controller.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
-extension JSHelper on JSAny? {
-  T? getProperty<T>(String property) {
-    return (this as JSObject).getProperty(property).dartify() as T?;
-  }
-
-  JSAny? callMethod(String method, List<JSAny?> args) {
-    return (this as JSObject).callMethod(method, args);
-  }
-}
 
 class AccountSettingsPage extends StatefulWidget {
   @override
@@ -110,14 +101,14 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.grey[900]
+                  ? MangoPalette.grey900
                   : Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CircularProgressIndicator(),
+                const CircularProgressIndicator(semanticsLabel: 'Loading'),
                 const SizedBox(height: 16),
                 Text(
                   'Enabling notifications...',
@@ -179,10 +170,10 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.lg)),
         title: Row(
           children: [
-            Icon(Icons.notifications_active, color: Colors.green),
+            Icon(Icons.notifications_active, color: MangoPalette.green500),
             const SizedBox(width: 8),
             const Text('Notifications Enabled!'),
           ],
@@ -198,12 +189,12 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                color: MangoPalette.green500.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.check_circle, color: Colors.green, size: 20),
+                  Icon(Icons.check_circle, color: MangoPalette.green500, size: 20),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -230,7 +221,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.lg)),
         title: Row(
           children: [
             Icon(Icons.info_outline, color: Colors.blue),
@@ -319,14 +310,14 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               ),
               Text(
                 description,
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
               ),
             ],
@@ -350,7 +341,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
       child: Material(
         elevation: 4,
         shadowColor: primaryColor.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -358,11 +349,11 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
               end: Alignment.bottomRight,
               colors: [primaryColor, primaryColor.withOpacity(0.8)],
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(MangoRadius.lg),
           ),
           child: InkWell(
             onTap: _requestIOSPWAPermission,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(MangoRadius.lg),
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
@@ -371,7 +362,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: const Icon(
                       Icons.apple,
@@ -412,7 +403,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(MangoRadius.lg),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -458,8 +449,8 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.blue[50],
-        borderRadius: BorderRadius.circular(16),
+        color: isDarkMode ? MangoPalette.grey900 : Colors.blue[50],
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: Border.all(
           color: Theme.of(context).primaryColor.withOpacity(0.3),
         ),
@@ -537,7 +528,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                 number,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -553,14 +544,14 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                   ),
                   TextSpan(
                     text: ' $instruction',
                     style: TextStyle(
                       fontSize: 12,
-                      color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                      color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                     ),
                   ),
                 ],
@@ -592,7 +583,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
             height: 40,
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Center(child: FaIcon(icon, size: 18, color: textColor)),
           ),
@@ -638,7 +629,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                             SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(
+                              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                 strokeWidth: 2,
                                 color: Colors.white,
                               ),
@@ -664,7 +655,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('✅ Notifications enabled!'),
-                        backgroundColor: Colors.green,
+                        backgroundColor: MangoPalette.green500,
                         duration: Duration(seconds: 2),
                       ),
                     );
@@ -688,89 +679,20 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     );
   }
 
+  /// Profile picture (square) or banner (wide), through the Mango composer.
   Future<void> _pickImage(bool isBanner) async {
-    try {
-      if (kIsWeb) {
-        FilePickerResult? result = await FilePicker.platform.pickFiles(
-          type: FileType.image,
-          allowMultiple: false,
-          withData: true,
-        );
-
-        if (result != null && result.files.isNotEmpty) {
-          PlatformFile file = result.files.first;
-          Uint8List? fileBytes = file.bytes;
-
-          if (fileBytes == null) {
-            throw Exception('Could not read file bytes');
-          }
-
-          if (fileBytes.length > 5 * 1024 * 1024) {
-            throw Exception('Image size must be less than 5MB');
-          }
-
-          if (isBanner) {
-            final compressedBytes = await _utilsService.compressImageForWeb(
-              fileBytes,
-              maxWidth: 1920,
-              quality: 85,
-            );
-
-            setState(() {
-              _webBannerImageBytes = compressedBytes;
-              _webBannerImageName = file.name;
-            });
-
-            await profileController.updateBannerImage({
-              'bytes': compressedBytes,
-              'name': file.name,
-              'size': file.size,
-              'platformFile': file,
-            }, context);
-          } else {
-            final compressedBytes = await _utilsService.compressImageForWeb(
-              fileBytes,
-              maxWidth: 800,
-              quality: 80,
-            );
-
-            setState(() {
-              _webProfileImageBytes = compressedBytes;
-              _webProfileImageName = file.name;
-            });
-
-            await profileController.updateProfileImage({
-              'bytes': compressedBytes,
-              'name': file.name,
-              'size': file.size,
-              'platformFile': file,
-            }, context);
-          }
-        }
-      } else {
-        final XFile? image = await _imagePicker.pickImage(
-          source: ImageSource.gallery,
-          maxWidth: 2000,
-          maxHeight: 2000,
-          imageQuality: 85,
-        );
-
-        if (image != null) {
-          if (isBanner) {
-            await profileController.updateBannerImage(image, context);
-          } else {
-            await profileController.updateProfileImage(image, context);
-          }
-        }
-      }
-    } catch (e) {
-      UtilsService().showSnackbar(
-        'Error',
-        'Failed to pick image: $e',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        context: context,
-      );
+    final media = await MangoComposer.pick(
+      context,
+      crop: isBanner ? CropShape.landscape : CropShape.square,
+      allowCaption: false,
+      actionLabel: 'Use',
+    );
+    if (media == null || !mounted) return;
+    final data = {'bytes': media.bytes, 'name': media.name};
+    if (isBanner) {
+      await profileController.updateBannerImage(data, context);
+    } else {
+      await profileController.updateProfileImage(data, context);
     }
   }
 
@@ -808,7 +730,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
   Color _getTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? Colors.white
-        : Colors.black;
+        : MangoPalette.black;
   }
 
   Color _getSecondaryTextColor(BuildContext context) {
@@ -846,8 +768,8 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                           end: Alignment.topCenter,
                           colors: isDarkMode
                               ? [
-                                  Colors.black.withOpacity(0.8),
-                                  Colors.black.withOpacity(0.3),
+                                  MangoPalette.black.withOpacity(0.8),
+                                  MangoPalette.black.withOpacity(0.3),
                                   Colors.transparent,
                                 ]
                               : [
@@ -875,11 +797,11 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: isDarkMode
-                                ? Colors.black.withOpacity(0.7)
+                                ? MangoPalette.black.withOpacity(0.7)
                                 : Colors.white.withOpacity(0.9),
                             foregroundColor: textColor,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(MangoRadius.lg),
                             ),
                           ),
                         ),
@@ -918,6 +840,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                             ),
                           ),
                           child: IconButton(
+        tooltip: 'Camera',
                             icon: FaIcon(
                               FontAwesomeIcons.camera,
                               size: 14,
@@ -948,7 +871,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                       child: Column(
                         children: [
                           const SizedBox(height: 10),
-                          CircularProgressIndicator(
+                          CircularProgressIndicator(semanticsLabel: 'Loading', 
                             valueColor: AlwaysStoppedAnimation<Color>(
                               Theme.of(context).primaryColor,
                             ),
@@ -1093,10 +1016,10 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: MangoPalette.black.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -1167,7 +1090,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
               height: 40,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               child: Center(child: FaIcon(icon, size: 18, color: textColor)),
             ),
@@ -1236,7 +1159,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: ListTile(
         leading: Container(
@@ -1244,7 +1167,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
           height: 40,
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
           child: Center(child: FaIcon(icon, size: 18, color: textColor)),
         ),
@@ -1287,10 +1210,10 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: MangoPalette.black.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -1302,7 +1225,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
           height: 40,
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
           child: Center(
             child: FaIcon(
@@ -1338,8 +1261,8 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
               },
               activeColor: Colors.white,
               activeTrackColor: Theme.of(context).primaryColor,
-              inactiveThumbColor: Colors.grey.shade300,
-              inactiveTrackColor: Colors.grey.shade400,
+              inactiveThumbColor: MangoPalette.grey300,
+              inactiveTrackColor: MangoPalette.grey400,
             ),
           ),
         ),
@@ -1352,7 +1275,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(color: Colors.red.withOpacity(0.3)),
         ),
         child: ListTile(
@@ -1361,7 +1284,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
             height: 40,
             decoration: BoxDecoration(
               color: Colors.red.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Center(
               child: FaIcon(
@@ -1408,7 +1331,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
         return AlertDialog(
           backgroundColor: Theme.of(context).cardColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(MangoRadius.lg),
           ),
           title: Text(
             'Logout',
@@ -1637,8 +1560,8 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[300]!),
-          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: MangoPalette.grey300),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
         ),
         child: Column(
           children: [
@@ -1658,7 +1581,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: isError ? Colors.red : Colors.green,
+        backgroundColor: isError ? Colors.red : MangoPalette.green500,
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
       ),
@@ -1695,7 +1618,7 @@ class _EditFieldPageState extends State<EditFieldPage> {
   Color _getTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? Colors.white
-        : Colors.black;
+        : MangoPalette.black;
   }
 
   Color _getSecondaryTextColor(BuildContext context) {
@@ -1769,7 +1692,7 @@ class _EditFieldPageState extends State<EditFieldPage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Center(
-                  child: CircularProgressIndicator(
+                  child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                     valueColor: AlwaysStoppedAnimation<Color>(
                       Theme.of(context).primaryColor,
                     ),
@@ -1786,7 +1709,7 @@ class _EditFieldPageState extends State<EditFieldPage> {
                     backgroundColor: Theme.of(context).primaryColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     elevation: 2,
@@ -1795,7 +1718,7 @@ class _EditFieldPageState extends State<EditFieldPage> {
                       ? SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               Colors.white,
@@ -1830,13 +1753,13 @@ class _EditFieldPageState extends State<EditFieldPage> {
       Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
             color: Theme.of(context).dividerColor.withOpacity(0.3),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: MangoPalette.black.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -1868,13 +1791,13 @@ class _EditFieldPageState extends State<EditFieldPage> {
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               border: Border.all(
                 color: Theme.of(context).dividerColor.withOpacity(0.3),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: MangoPalette.black.withOpacity(0.05),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -1900,13 +1823,13 @@ class _EditFieldPageState extends State<EditFieldPage> {
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               border: Border.all(
                 color: Theme.of(context).dividerColor.withOpacity(0.3),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: MangoPalette.black.withOpacity(0.05),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -2023,7 +1946,7 @@ class _EditFieldPageState extends State<EditFieldPage> {
       UtilsService().showSnackbar(
         'Success',
         '${widget.field} updated successfully',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
         context: context,
@@ -2082,7 +2005,7 @@ class _EditFieldPageState extends State<EditFieldPage> {
       UtilsService().showSnackbar(
         'Success',
         'Password updated successfully',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
         context: context,

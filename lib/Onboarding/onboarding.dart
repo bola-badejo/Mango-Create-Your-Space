@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 
 import 'onboarding_model.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class OnBoard extends StatefulWidget {
   const OnBoard({super.key});
@@ -31,7 +32,7 @@ class _OnBoardState extends State<OnBoard> {
       desc: "Set your moments and moods with music playlists for you",
       bg: kCoral,
       button: kCoralMono, 
-      textColor: Colors.black,
+      textColor: MangoPalette.black,
     ),
     OnboardModel(
       img: 'assets/images/img-2.png',
@@ -39,7 +40,7 @@ class _OnBoardState extends State<OnBoard> {
       desc: "Fill your library with books and reading friends for you",
       bg: kKhaki,
       button: kKhakiMono, 
-      textColor: Colors.black,
+      textColor: MangoPalette.black,
     ),
     OnboardModel(
       img: 'assets/images/img-3.png',
@@ -191,7 +192,7 @@ class _OnBoardState extends State<OnBoard> {
                             height: 8,
                             decoration: BoxDecoration(
                               color: screens[currentIndex].button,
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                           ),
                         ],
@@ -265,7 +266,7 @@ class _OnBoardState extends State<OnBoard> {
                     padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15),
                     decoration: BoxDecoration(
                       color: screens[index].button,
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,

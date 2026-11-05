@@ -8,6 +8,7 @@ import 'package:mango/Home/pages/post_shimmer.dart';
 import 'package:mango/Home/post_creation_box.dart';
 import 'package:mango/Models/customModel/post.dart';
 import 'package:mango/Utils/theme.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -114,8 +115,8 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     return Obx(() {
       final isDarkMode = themeController.isDarkMode.value;
-      final scaffoldBackground = isDarkMode ? Colors.black : Colors.white;
-      final textColor = isDarkMode ? Colors.white : Colors.black;
+      final scaffoldBackground = isDarkMode ? MangoPalette.black : Colors.white;
+      final textColor = isDarkMode ? Colors.white : MangoPalette.black;
       
       return Scaffold(
         backgroundColor: scaffoldBackground,
@@ -128,7 +129,7 @@ class _FeedPageState extends State<FeedPage> {
 
   Widget _buildInitialLoading(bool isDarkMode) {
     return Container(
-      color: isDarkMode ? Colors.black : Colors.white,
+      color: isDarkMode ? MangoPalette.black : Colors.white,
       child: Column(
         children: List.generate(5, (index) => PostShimmer()),
       ),
@@ -139,7 +140,7 @@ class _FeedPageState extends State<FeedPage> {
     return RefreshIndicator(
       onRefresh: _refreshPosts,
       color: themeController.primaryColorValue,
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.black : Colors.white,
       child: CustomScrollView(
         key: _pageStorageKey,
         controller: _scrollController,
@@ -171,7 +172,7 @@ class _FeedPageState extends State<FeedPage> {
       if (controller.posts.isEmpty && !controller.isLoading.value) {
         return SliverFillRemaining(
           child: Container(
-            color: isDarkMode ? Colors.black : Colors.white,
+            color: isDarkMode ? MangoPalette.black : Colors.white,
             child: const LevitatingIcon(),
           ),
         );
@@ -204,7 +205,7 @@ class _FeedPageState extends State<FeedPage> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
                 child: Center(
-                  child: CircularProgressIndicator(
+                  child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                     color: themeController.primaryColorValue,
                   ),
                 ),
@@ -225,7 +226,7 @@ class _FeedPageState extends State<FeedPage> {
                 'No more posts',
                 style: TextStyle(
                   color: textColor,
-                  fontSize: 11,
+                  fontSize: 12,
                 ),
               ),
             ),

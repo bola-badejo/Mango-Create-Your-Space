@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class PostShimmer extends StatelessWidget {
   const PostShimmer({super.key});
@@ -17,15 +19,15 @@ class PostShimmer extends StatelessWidget {
             
             Row(
               children: [
-                Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
+                MangoShimmer(
+                  baseColor: MangoPalette.grey300,
+                  highlightColor: MangoPalette.grey100,
                   child: Container(
                     width: 30,
                     height: 30,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(20), 
+                      color: MangoPalette.grey300,
+                      borderRadius: BorderRadius.circular(MangoRadius.lg), 
                     ),
                   ),
                 ),
@@ -33,28 +35,28 @@ class PostShimmer extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
+                    MangoShimmer(
+                      baseColor: MangoPalette.grey300,
+                      highlightColor: MangoPalette.grey100,
                       child: Container(
                         width: 100,
                         height: 10,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(20), 
+                          color: MangoPalette.grey300,
+                          borderRadius: BorderRadius.circular(MangoRadius.lg), 
                         ),
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
+                    MangoShimmer(
+                      baseColor: MangoPalette.grey300,
+                      highlightColor: MangoPalette.grey100,
                       child: Container(
                         width: 150,
                         height: 9,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(20), 
+                          color: MangoPalette.grey300,
+                          borderRadius: BorderRadius.circular(MangoRadius.lg), 
                         ),
                       ),
                     ),
@@ -64,35 +66,35 @@ class PostShimmer extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
+            MangoShimmer(
+              baseColor: MangoPalette.grey300,
+              highlightColor: MangoPalette.grey100,
               child: Container(
                 width: double.infinity,
                 height: 9,
-                color: Colors.grey[300], 
+                color: MangoPalette.grey300, 
               ),
             ),
             const SizedBox(height: 5),
             
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
+            MangoShimmer(
+              baseColor: MangoPalette.grey300,
+              highlightColor: MangoPalette.grey100,
               child: Container(
                 width: double.infinity,
                 height: 9,
-                color: Colors.grey[300], 
+                color: MangoPalette.grey300, 
               ),
             ),
             const SizedBox(height: 5),
             
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
+            MangoShimmer(
+              baseColor: MangoPalette.grey300,
+              highlightColor: MangoPalette.grey100,
               child: Container(
                 width: double.infinity,
                 height: 9,
-                color: Colors.grey[300], 
+                color: MangoPalette.grey300, 
               ),
             ),
             const SizedBox(height: 12),
@@ -101,15 +103,15 @@ class PostShimmer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                 4,
-                    (index) => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
+                    (index) => MangoShimmer(
+                      baseColor: MangoPalette.grey300,
+                      highlightColor: MangoPalette.grey100,
                       child: Container(
                                         width: 14,
                                         height: 14,
                                         decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(20), 
+                      color: MangoPalette.grey300,
+                      borderRadius: BorderRadius.circular(MangoRadius.lg), 
                                         ),
                                       ),
                     ),
@@ -134,15 +136,15 @@ class MusicShimmer extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: Row(
           children: [
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
+            MangoShimmer(
+              baseColor: MangoPalette.grey300,
+              highlightColor: MangoPalette.grey100,
               child: Container(
                 width: 30,
                 height: 30,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(20), 
+                  color: MangoPalette.grey300,
+                  borderRadius: BorderRadius.circular(MangoRadius.lg), 
                 ),
               ),
             ),
@@ -150,28 +152,28 @@ class MusicShimmer extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
+                MangoShimmer(
+                  baseColor: MangoPalette.grey300,
+                  highlightColor: MangoPalette.grey100,
                   child: Container(
                     width: 100,
                     height: 10,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(20), 
+                      color: MangoPalette.grey300,
+                      borderRadius: BorderRadius.circular(MangoRadius.lg), 
                     ),
                   ),
                 ),
                 const SizedBox(height: 4),
-                Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
+                MangoShimmer(
+                  baseColor: MangoPalette.grey300,
+                  highlightColor: MangoPalette.grey100,
                   child: Container(
                     width: 150,
                     height: 9,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(20), 
+                      color: MangoPalette.grey300,
+                      borderRadius: BorderRadius.circular(MangoRadius.lg), 
                     ),
                   ),
                 ),
@@ -195,9 +197,9 @@ class HorizontalShimmerList extends StatelessWidget {
     return Container(
       height: height,
       width: double.infinity,
-      child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
+      child: MangoShimmer(
+          baseColor: MangoPalette.grey300,
+          highlightColor: MangoPalette.grey100,
           child: OptimizedListView(
             scrollDirection: Axis.horizontal,
             itemCount: 10, 
@@ -232,9 +234,9 @@ class GridShimmerList extends StatelessWidget {
     return SizedBox(
       height: height,
       width: double.infinity,
-      child: Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
+      child: MangoShimmer(
+        baseColor: MangoPalette.grey300,
+        highlightColor: MangoPalette.grey100,
         child: OptimizedGridView(
           padding: const EdgeInsets.all(8.0), 
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

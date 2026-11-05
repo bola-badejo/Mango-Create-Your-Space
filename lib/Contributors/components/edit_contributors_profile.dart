@@ -10,6 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mango/Contributors/controllers/contributor_service.dart';
 import 'package:mango/Contributors/models/contributors_profile.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class EditContributorProfileScreen extends StatefulWidget {
   @override
@@ -362,7 +364,7 @@ class _EditContributorProfileScreenState
       UtilsService().showSnackbar(
         'Success',
         'Profile updated successfully',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         context: context,
         colorText: Colors.white,
       );
@@ -409,12 +411,12 @@ class _EditContributorProfileScreenState
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF8F8FA),
-        borderRadius: BorderRadius.circular(16),
+        color: isDark ? const Color(0xFF1B241E) : const Color(0xFFF5F6F3),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: Border.all(
           color: isDark
               ? Colors.white.withOpacity(0.06)
-              : Colors.black.withOpacity(0.04),
+              : MangoPalette.black.withOpacity(0.04),
           width: 1,
         ),
       ),
@@ -428,10 +430,10 @@ class _EditContributorProfileScreenState
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    color: MangoPalette.green500.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
-                  child: Icon(icon, size: 20, color: Colors.orange),
+                  child: Icon(icon, size: 20, color: MangoPalette.green500),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -450,7 +452,7 @@ class _EditContributorProfileScreenState
                       Text(
                         hasImage ? 'Tap to change image' : 'No image uploaded',
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 12,
                           color: isDark ? Colors.white60 : Colors.black54,
                         ),
                       ),
@@ -465,7 +467,7 @@ class _EditContributorProfileScreenState
               ],
             ),
           ),
-          GestureDetector(
+          MangoPressable(
             onTap: onPick,
             child: Container(
               height: title.contains('Banner') ? 140 : 120,
@@ -475,10 +477,10 @@ class _EditContributorProfileScreenState
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16),
                 ),
-                color: isDark ? Colors.black : Colors.grey[50],
+                color: isDark ? MangoPalette.black : MangoPalette.grey50,
               ),
               child: _isUploadingImage
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'))
                   : _webProfileImageBytes != null && title == 'Profile Image'
                       ? ClipRRect(
                           borderRadius: const BorderRadius.only(
@@ -608,8 +610,8 @@ class _EditContributorProfileScreenState
             width: 4,
             height: 20,
             decoration: BoxDecoration(
-              color: Colors.orange,
-              borderRadius: BorderRadius.circular(2),
+              color: MangoPalette.green500,
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
             ),
           ),
           const SizedBox(width: 12),
@@ -653,23 +655,23 @@ class _EditContributorProfileScreenState
           hintText: hint,
           prefixIcon: Icon(icon, size: 20),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             borderSide: BorderSide(
-              color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.1),
+              color: isDark ? Colors.white.withOpacity(0.1) : MangoPalette.black.withOpacity(0.1),
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             borderSide: BorderSide(
-              color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.1),
+              color: isDark ? Colors.white.withOpacity(0.1) : MangoPalette.black.withOpacity(0.1),
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.orange, width: 2),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: const BorderSide(color: MangoPalette.green500, width: 2),
           ),
           filled: true,
-          fillColor: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF8F8FA),
+          fillColor: isDark ? const Color(0xFF1B241E) : const Color(0xFFF5F6F3),
         ),
         validator: isRequired
             ? (value) {
@@ -685,7 +687,7 @@ class _EditContributorProfileScreenState
 
   Widget _buildTagsSection() {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final roleColor = _currentProfile?.roleColor ?? Colors.orange;
+    final roleColor = _currentProfile?.roleColor ?? MangoPalette.green500;
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -694,12 +696,12 @@ class _EditContributorProfileScreenState
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF8F8FA),
-            borderRadius: BorderRadius.circular(16),
+            color: isDark ? const Color(0xFF1B241E) : const Color(0xFFF5F6F3),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: Border.all(
               color: isDark
                   ? Colors.white.withOpacity(0.06)
-                  : Colors.black.withOpacity(0.04),
+                  : MangoPalette.black.withOpacity(0.04),
               width: 1,
             ),
           ),
@@ -728,9 +730,9 @@ class _EditContributorProfileScreenState
                   });
                 },
                 selectedColor: roleColor,
-                backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
+                backgroundColor: isDark ? MangoPalette.grey800 : MangoPalette.grey200,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   side: BorderSide(
                     color: isSelected ? roleColor : Colors.transparent,
                   ),
@@ -745,7 +747,7 @@ class _EditContributorProfileScreenState
 
   Widget _buildCategoriesSection() {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final roleColor = _currentProfile?.roleColor ?? Colors.orange;
+    final roleColor = _currentProfile?.roleColor ?? MangoPalette.green500;
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -754,12 +756,12 @@ class _EditContributorProfileScreenState
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF8F8FA),
-            borderRadius: BorderRadius.circular(16),
+            color: isDark ? const Color(0xFF1B241E) : const Color(0xFFF5F6F3),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: Border.all(
               color: isDark
                   ? Colors.white.withOpacity(0.06)
-                  : Colors.black.withOpacity(0.04),
+                  : MangoPalette.black.withOpacity(0.04),
               width: 1,
             ),
           ),
@@ -788,9 +790,9 @@ class _EditContributorProfileScreenState
                   });
                 },
                 selectedColor: roleColor,
-                backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
+                backgroundColor: isDark ? MangoPalette.grey800 : MangoPalette.grey200,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   side: BorderSide(
                     color: isSelected ? roleColor : Colors.transparent,
                   ),
@@ -806,12 +808,12 @@ class _EditContributorProfileScreenState
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final roleColor = _currentProfile?.roleColor ?? Colors.orange;
+    final roleColor = _currentProfile?.roleColor ?? MangoPalette.green500;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
-        backgroundColor: isDark ? Colors.black : Colors.white,
+        backgroundColor: isDark ? MangoPalette.black : Colors.white,
         elevation: 0,
         centerTitle: false,
         actions: [
@@ -822,14 +824,14 @@ class _EditContributorProfileScreenState
               style: TextButton.styleFrom(
                 backgroundColor: roleColor.withOpacity(0.1),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                 ),
               ),
               child: _isLoading
                   ? SizedBox(
                       width: 20,
                       height: 20,
-                      child: CircularProgressIndicator(
+                      child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                         strokeWidth: 2,
                         valueColor: AlwaysStoppedAnimation<Color>(roleColor),
                       ),
@@ -845,9 +847,9 @@ class _EditContributorProfileScreenState
           ),
         ],
       ),
-      backgroundColor: isDark ? Colors.black : Colors.white,
+      backgroundColor: isDark ? MangoPalette.black : Colors.white,
       body: _currentProfile == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'))
           : SingleChildScrollView(
               child: Column(
                 children: [
@@ -866,18 +868,18 @@ class _EditContributorProfileScreenState
                       offset: const Offset(0, -40),
                       child: Row(
                         children: [
-                          GestureDetector(
+                          MangoPressable(
                             onTap: _pickProfileImage,
                             child: Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: isDark ? Colors.black : Colors.white,
+                                  color: isDark ? MangoPalette.black : Colors.white,
                                   width: 4,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
+                                    color: MangoPalette.black.withOpacity(0.1),
                                     blurRadius: 10,
                                     offset: const Offset(0, 4),
                                   ),
@@ -905,7 +907,7 @@ class _EditContributorProfileScreenState
                                           color: roleColor,
                                           shape: BoxShape.circle,
                                           border: Border.all(
-                                            color: isDark ? Colors.black : Colors.white,
+                                            color: isDark ? MangoPalette.black : Colors.white,
                                             width: 2,
                                           ),
                                         ),
@@ -939,12 +941,12 @@ class _EditContributorProfileScreenState
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
                                     color: roleColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(MangoRadius.md),
                                   ),
                                   child: Text(
                                     _currentProfile?.roleTitle ?? 'Contributor',
                                     style: TextStyle(
-                                      fontSize: 11,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                       color: roleColor,
                                     ),
@@ -954,17 +956,17 @@ class _EditContributorProfileScreenState
                             ),
                           ),
                           if (_currentProfile?.isVendor ?? false)
-                            GestureDetector(
+                            MangoPressable(
                               onTap: _pickLogoImage,
                               child: Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF8F8FA),
-                                  borderRadius: BorderRadius.circular(12),
+                                  color: isDark ? const Color(0xFF1B241E) : const Color(0xFFF5F6F3),
+                                  borderRadius: BorderRadius.circular(MangoRadius.md),
                                   border: Border.all(
                                     color: isDark
                                         ? Colors.white.withOpacity(0.1)
-                                        : Colors.black.withOpacity(0.1),
+                                        : MangoPalette.black.withOpacity(0.1),
                                   ),
                                 ),
                                 child: Column(
@@ -978,7 +980,7 @@ class _EditContributorProfileScreenState
                                     Text(
                                       'Logo',
                                       style: TextStyle(
-                                        fontSize: 10,
+                                        fontSize: 12,
                                         color: isDark ? Colors.white60 : Colors.black54,
                                       ),
                                     ),
@@ -1063,14 +1065,14 @@ class _EditContributorProfileScreenState
                               foregroundColor: Colors.white,
                               elevation: 0,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(MangoRadius.md),
                               ),
                             ),
                             child: _isLoading
                                 ? const SizedBox(
                                     width: 24,
                                     height: 24,
-                                    child: CircularProgressIndicator(
+                                    child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation<Color>(
                                         Colors.white,

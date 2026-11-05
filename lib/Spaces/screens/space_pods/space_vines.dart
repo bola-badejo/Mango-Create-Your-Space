@@ -10,6 +10,8 @@ import 'package:mango/utils.dart';
 import '../../../Home/controllers/dashboard_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 import '../../../Home/pages/post_shimmer.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpaceVines extends StatelessWidget {
   SpaceVines({super.key});
@@ -69,7 +71,7 @@ class SpaceVines extends StatelessWidget {
   Widget _buildLoadingScaffold() {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(semanticsLabel: 'Loading'),
       ),
     );
   }
@@ -106,7 +108,8 @@ class SpaceVines extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                GestureDetector(
+                MangoPressable(
+        semanticLabel: 'Next',
                   onTap: onSeeAll,
                   child: const Icon(Icons.arrow_forward_ios, size: 14),
                 ),
@@ -126,11 +129,11 @@ class SpaceVines extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.video_library, size: 32, color: Colors.grey[400]),
+              Icon(Icons.video_library, size: 32, color: MangoPalette.grey400),
               SizedBox(height: 8),
               Text(
                 message,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -152,11 +155,11 @@ class SpaceVines extends StatelessWidget {
                   width: 140,
                   height: 180,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(12),
+                    color: MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   child: Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2),
                   ),
                 ),
               ],
@@ -165,10 +168,10 @@ class SpaceVines extends StatelessWidget {
             Container(
               width: 100,
               height: 12,
-              color: Colors.grey[300],
+              color: MangoPalette.grey300,
               margin: EdgeInsets.only(bottom: 4),
             ),
-            Container(width: 80, height: 10, color: Colors.grey[300]),
+            Container(width: 80, height: 10, color: MangoPalette.grey300),
           ],
         ),
       );
@@ -190,7 +193,7 @@ class SpaceVines extends StatelessWidget {
                   width: 140,
                   height: 180,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                     image: DecorationImage(
                       image: NetworkImage(
                         vineData['thumbnail'] ?? vineData['videoThumbnail'] ?? '',
@@ -210,7 +213,7 @@ class SpaceVines extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.black87,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Text(
                       '#${index + 1}',
@@ -230,13 +233,13 @@ class SpaceVines extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: Text(
                       vineData['duration'] ?? '0:15',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 10,
+                        fontSize: 12,
                       ),
                     ),
                   ),
@@ -273,24 +276,24 @@ class SpaceVines extends StatelessWidget {
             ),
             Text(
               vineData['creator'] ?? 'Unknown Creator',
-              style: TextStyle(fontSize: 10, color: Colors.grey),
+              style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             Row(
               children: [
-                Icon(Icons.play_circle, size: 10, color: Colors.grey),
+                Icon(Icons.play_circle, size: 10, color: MangoPalette.grey500),
                 SizedBox(width: 2),
                 Text(
                   _formatCount(views),
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
+                  style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                 ),
                 SizedBox(width: 8),
                 Icon(Icons.favorite, size: 10, color: Colors.red),
                 SizedBox(width: 2),
                 Text(
                   _formatCount(likes),
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
+                  style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                 ),
               ],
             ),
@@ -317,7 +320,7 @@ class SpaceVines extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 200,
                 width: 160,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -365,23 +368,23 @@ class SpaceVines extends StatelessWidget {
                                     width: 140,
                                     height: 180,
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(12),
+                                      color: MangoPalette.grey300,
+                                      borderRadius: BorderRadius.circular(MangoRadius.md),
                                     ),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.video_library,
-                                          color: Colors.grey[600],
+                                          color: MangoPalette.grey600,
                                           size: 24,
                                         ),
                                         SizedBox(height: 4),
                                         Text(
                                           'Vine not found',
                                           style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey[600],
+                                            fontSize: 12,
+                                            color: MangoPalette.grey600,
                                           ),
                                         ),
                                       ],
@@ -393,7 +396,7 @@ class SpaceVines extends StatelessWidget {
                               Text(
                                 'Vine not available',
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 maxLines: 1,
@@ -402,8 +405,8 @@ class SpaceVines extends StatelessWidget {
                               Text(
                                 'Unknown',
                                 style: TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  color: MangoPalette.grey500,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -441,7 +444,7 @@ class SpaceVines extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 200,
                 width: 160,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -484,7 +487,7 @@ class SpaceVines extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 120,
                 width: 100,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -517,7 +520,7 @@ class SpaceVines extends StatelessWidget {
                         Text(
                           creatorData['username'] ?? 'Unknown',
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 1,
@@ -525,7 +528,7 @@ class SpaceVines extends StatelessWidget {
                         ),
                         Text(
                           '${_formatCount(creatorData['followers'] ?? 0)} followers',
-                          style: TextStyle(fontSize: 9, color: Colors.grey),
+                          style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                         ),
                       ],
                     ),
@@ -696,7 +699,7 @@ class SpaceVinesActions extends StatelessWidget {
           ),
           _buildButton(
             context,
-            color: Colors.orange,
+            color: MangoPalette.green500,
             icon: Icons.emoji_events,
             text: "Creator",
             onTap: isAdmin 
@@ -717,14 +720,14 @@ class SpaceVinesActions extends StatelessWidget {
     required VoidCallback onTap,
     bool isDisabled = false,
   }) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Container(
         height: 100,
         width: 90,
         decoration: BoxDecoration(
-          color: isDisabled ? Colors.grey[700] : color,
-          borderRadius: BorderRadius.circular(20),
+          color: isDisabled ? MangoPalette.grey700 : color,
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
         ),
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -861,7 +864,7 @@ class _VineClubCardState extends State<VineClubCard> {
                 width: double.infinity,
                 height: _isExpanded ? 200 : 150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   color: Colors.white.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.5),
@@ -869,7 +872,7 @@ class _VineClubCardState extends State<VineClubCard> {
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(),
@@ -894,14 +897,14 @@ class _VineClubCardState extends State<VineClubCard> {
                             ),
                             margin: const EdgeInsets.only(bottom: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5),
+                              color: MangoPalette.black,
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: Text(
                               data['status'] ?? "Active",
                               style: const TextStyle(
-                                fontSize: 7,
-                                color: Colors.grey,
+                                fontSize: 12,
+                                color: MangoPalette.grey500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -918,12 +921,12 @@ class _VineClubCardState extends State<VineClubCard> {
                           Text(
                             "${data['members'] ?? 0} members watching",
                             style: const TextStyle(
-                              fontSize: 9,
-                              color: Colors.black,
+                              fontSize: 12,
+                              color: MangoPalette.black,
                             ),
                           ),
                           const SizedBox(height: 10),
-                          GestureDetector(
+                          MangoPressable(
                             onTap: () {
                               setState(() {
                                 _isExpanded = !_isExpanded;
@@ -934,15 +937,15 @@ class _VineClubCardState extends State<VineClubCard> {
                                 Text(
                                   'tap for more',
                                   style: TextStyle(
-                                    fontSize: 8,
-                                    color: Colors.black.withOpacity(0.8),
+                                    fontSize: 12,
+                                    color: MangoPalette.black.withOpacity(0.8),
                                   ),
                                 ),
                                 Icon(
                                   _isExpanded
                                       ? Icons.keyboard_arrow_up
                                       : Icons.keyboard_arrow_down,
-                                  color: Colors.black.withOpacity(0.8),
+                                  color: MangoPalette.black.withOpacity(0.8),
                                   size: 10,
                                 ),
                               ],
@@ -954,8 +957,8 @@ class _VineClubCardState extends State<VineClubCard> {
                               child: Text(
                                 data['description'] ?? 'Discuss vines, share reactions, and discover new creators!',
                                 style: TextStyle(
-                                  fontSize: 8,
-                                  color: Colors.black.withOpacity(0.6),
+                                  fontSize: 12,
+                                  color: MangoPalette.black.withOpacity(0.6),
                                 ),
                                 maxLines: 2,
                               ),
@@ -972,7 +975,7 @@ class _VineClubCardState extends State<VineClubCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: MangoPalette.black.withOpacity(0.1),
                               blurRadius: 20,
                               spreadRadius: 5,
                               offset: const Offset(10, 10),
@@ -980,7 +983,7 @@ class _VineClubCardState extends State<VineClubCard> {
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           child: data['image'] != null
                               ? Image.network(
                                   data['image'],
@@ -1009,10 +1012,10 @@ class _VineClubCardState extends State<VineClubCard> {
       height: 150,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -1028,7 +1031,7 @@ class _VineClubCardState extends State<VineClubCard> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -1040,7 +1043,7 @@ class _VineClubCardState extends State<VineClubCard> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -1048,10 +1051,10 @@ class _VineClubCardState extends State<VineClubCard> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -1064,7 +1067,7 @@ class _VineClubCardState extends State<VineClubCard> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.deepPurple.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.deepPurple.withOpacity(0.5),
@@ -1081,7 +1084,7 @@ class _VineClubCardState extends State<VineClubCard> {
                     "VINE CLUB",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1104,7 +1107,7 @@ class _VineClubCardState extends State<VineClubCard> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1122,7 +1125,7 @@ class _VineClubCardState extends State<VineClubCard> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1152,7 +1155,7 @@ class _VineClubCardState extends State<VineClubCard> {
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),
@@ -1240,7 +1243,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                 width: double.infinity,
                 height: _isExpanded ? 200 : 150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   color: Colors.white.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.5),
@@ -1248,7 +1251,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(),
@@ -1273,14 +1276,14 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                             ),
                             margin: const EdgeInsets.only(bottom: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5),
+                              color: MangoPalette.black,
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: Text(
                               _getPremiereTimeText(currentSession),
                               style: const TextStyle(
-                                fontSize: 7,
-                                color: Colors.grey,
+                                fontSize: 12,
+                                color: MangoPalette.grey500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -1299,8 +1302,8 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                               Text(
                                 "${currentSession['viewers'] ?? 0} viewers.",
                                 style: const TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.black,
+                                  fontSize: 12,
+                                  color: MangoPalette.black,
                                 ),
                               ),
                               const SizedBox(width: 5),
@@ -1311,13 +1314,13 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: _getStatusColor(currentSession),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                                 ),
                                 child: Text(
                                   _getStatusText(currentSession),
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 8,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -1336,7 +1339,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: MangoPalette.black.withOpacity(0.1),
                               blurRadius: 20,
                               spreadRadius: 5,
                               offset: const Offset(10, 10),
@@ -1344,7 +1347,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           child: currentSession['image'] != null
                               ? Image.network(
                                   currentSession['image'],
@@ -1394,7 +1397,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
 
   Color _getStatusColor(Map<String, dynamic> session) {
     if (session['isLive'] == true) return Colors.red;
-    if (session['isScheduled'] == true) return Colors.orange;
+    if (session['isScheduled'] == true) return MangoPalette.green500;
     return Colors.red;
   }
 
@@ -1404,10 +1407,10 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
       height: 150,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -1423,7 +1426,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -1435,7 +1438,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -1443,10 +1446,10 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -1459,7 +1462,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.red.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.red.withOpacity(0.5),
@@ -1476,7 +1479,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                     "PREMIERE",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1499,7 +1502,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1517,7 +1520,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1547,7 +1550,7 @@ class _LivePremieresCardState extends State<LivePremieresCard> {
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),
@@ -1640,7 +1643,7 @@ class CreatorSpotlightList extends StatelessWidget {
                                 child: Text(
                                   data["category"] ?? "Creator",
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     color: Theme.of(context).primaryColorLight,
                                   ),
                                 ),
@@ -1712,10 +1715,10 @@ class _CreatorSpotlightCarouselState extends State<_CreatorSpotlightCarousel> {
       height: 150,
       margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -1731,7 +1734,7 @@ class _CreatorSpotlightCarouselState extends State<_CreatorSpotlightCarousel> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -1743,7 +1746,7 @@ class _CreatorSpotlightCarouselState extends State<_CreatorSpotlightCarousel> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -1751,10 +1754,10 @@ class _CreatorSpotlightCarouselState extends State<_CreatorSpotlightCarousel> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -1766,11 +1769,11 @@ class _CreatorSpotlightCarouselState extends State<_CreatorSpotlightCarousel> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                color: MangoPalette.green500.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.orange.withOpacity(0.5),
+                    color: MangoPalette.green500.withOpacity(0.5),
                     blurRadius: 8,
                     spreadRadius: 2,
                   ),
@@ -1784,7 +1787,7 @@ class _CreatorSpotlightCarouselState extends State<_CreatorSpotlightCarousel> {
                     "CREATOR",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1807,7 +1810,7 @@ class _CreatorSpotlightCarouselState extends State<_CreatorSpotlightCarousel> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1825,7 +1828,7 @@ class _CreatorSpotlightCarouselState extends State<_CreatorSpotlightCarousel> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1851,11 +1854,11 @@ class _CreatorSpotlightCarouselState extends State<_CreatorSpotlightCarousel> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _currentImageIndex == index
-                        ? Colors.orange
+                        ? MangoPalette.green500
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),

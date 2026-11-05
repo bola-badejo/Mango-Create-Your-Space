@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mango/Models/customModel/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class FriendsController extends GetxController {
   var friends = <MangoUser>[].obs;
@@ -78,7 +79,7 @@ class FriendsController extends GetxController {
       Get.snackbar(
         'Contributor Removed',
         '@${friend.username} has been removed',
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 2),
@@ -100,7 +101,7 @@ class FriendsController extends GetxController {
       Get.snackbar(
         'All Removed',
         'All collaborators have been removed',
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 2),
@@ -143,7 +144,7 @@ class FriendsController extends GetxController {
       UtilsService().showSnackbar(
         'Success',
         'Space created successfully!',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white, 
         context: context,
       );

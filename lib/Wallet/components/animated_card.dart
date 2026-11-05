@@ -4,6 +4,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class AnimatedBalanceCard extends StatefulWidget {
   final bool isDarkMode;
@@ -39,7 +41,7 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Wallet address copied to clipboard'),
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
       ),
     );
   }
@@ -58,19 +60,19 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
               end: Alignment.bottomRight,
               colors: widget.isDarkMode
                   ? [
-                      Colors.deepOrange.shade600.withBlue(
+                      MangoPalette.green600.withBlue(
                         20,
                       ), 
-                      Colors.orange.shade300.withGreen(140), 
+                      MangoPalette.green300.withGreen(140), 
                       Colors.lime.shade400.withOpacity(
                         0.2 * _animation.value,
                       ), 
                     ]
                   : [
-                      Colors.deepOrange.shade800.withBlue(
+                      MangoPalette.green800.withBlue(
                         10,
                       ), 
-                      Colors.orange.shade400.withGreen(120), 
+                      MangoPalette.green400.withGreen(120), 
                       Colors.lime.shade500.withOpacity(
                         0.2 * _animation.value,
                       ), 
@@ -84,10 +86,10 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                 _animation.value * 0.1, 
               ),
             ),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             boxShadow: [
               BoxShadow(
-                color: Colors.orange.withOpacity(
+                color: MangoPalette.green500.withOpacity(
                   0.3 + _animation.value * 0.1,
                 ), 
                 blurRadius: 20,
@@ -125,14 +127,14 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                               child: Text(
                                 'Wallet balance',
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   color: Colors.white.withOpacity(0.9),
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
                             SizedBox(width: 4,),
-                            GestureDetector(
+                            MangoPressable(
                             onTap: () {
                               setState(() {
                                 _isBalanceVisible = !_isBalanceVisible;
@@ -159,7 +161,7 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                         ),
                         Semantics(
                           liveRegion: true,
-                          child: GestureDetector(
+                          child: MangoPressable(
                             onTap: () {
                               setState(() {
                                 _isBalanceVisible = !_isBalanceVisible;
@@ -196,7 +198,7 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                                       style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w900,
-                                        color: Colors.black,
+                                        color: MangoPalette.black,
                                         letterSpacing: -0.5,
                                       ),
                                     ),
@@ -225,7 +227,7 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                             ),
                           ],
                         ),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                         border: Border.all(
                           color: Colors.white.withOpacity(
                             0.5 + _animation.value * 0.1,
@@ -234,7 +236,7 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(
+                            color: MangoPalette.black.withOpacity(
                               0.2 + _animation.value * 0.1,
                             ),
                             blurRadius: 10,
@@ -261,7 +263,7 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                   color: Colors.white.withOpacity(
                     0.15 + _animation.value * 0.05,
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                 ),
                 child: Row(
                   children: [
@@ -271,14 +273,14 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                         Text(
                           'Wallet Address',
                           style: TextStyle(
-                            fontSize: 8,
+                            fontSize: 12,
                             color: Colors.white.withOpacity(0.7),
                           ),
                         ),
                         Text(
                           '${widget.balance.address.substring(0, 6)}...${widget.balance.address.substring(widget.balance.address.length - 4)}',
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 12,
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                           ),
@@ -286,7 +288,7 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                       ],
                     ),
                     SizedBox(width: 8),
-                    GestureDetector(
+                    MangoPressable(
                       onTap: _copyToClipboard,
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 300),
@@ -311,15 +313,15 @@ class _AnimatedBalanceCardState extends State<AnimatedBalanceCard>
                         Text(
                           'Status',
                           style: TextStyle(
-                            fontSize: 6,
-                            color: Colors.black.withOpacity(0.9),
+                            fontSize: 12,
+                            color: MangoPalette.black.withOpacity(0.9),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         Text(
                           'Reward Token',
                           style: TextStyle(
-                            fontSize: 9,
+                            fontSize: 12,
                             color: Colors.white.withOpacity(0.9),
                             fontWeight: FontWeight.w700,
                           ),

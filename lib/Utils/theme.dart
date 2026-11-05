@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mango/Core/theme/mango_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+
+/// Turns the Mango design system theme on or off app-wide.
+const bool kUseMangoDesignSystem = true;
 
 class ThemeController extends GetxController {
   static ThemeController get to => Get.find();
@@ -43,17 +48,17 @@ class ThemeController extends GetxController {
   Color get primaryColorValue {
     switch (primaryColor.value) {
       case 'green':
-        return const Color(0xFF4CAF50);
+        return const Color(0xFF369365);
       case 'orange':
       default:
-        return const Color(0xFFFF8243);
+        return const Color(0xFF369365);
     }
   }
 
   Color get secondaryColorValue {
     switch (primaryColor.value) {
       case 'green':
-        return const Color(0xFF8BC34A);
+        return const Color(0xFF5FBF8A);
       case 'orange':
       default:
         return const Color(0xFFFFC324);
@@ -62,7 +67,7 @@ class ThemeController extends GetxController {
 
   
   Color get primaryColorLight {
-    return Colors.black; 
+    return MangoPalette.black; 
   }
 }
 
@@ -76,7 +81,7 @@ class AppThemes {
       brightness: Brightness.light,
       primaryColor: primary,
       scaffoldBackgroundColor: Colors.white,
-      cardColor: Colors.grey.shade100,
+      cardColor: MangoPalette.grey100,
       appBarTheme: AppBarTheme(
         backgroundColor: primary,
         foregroundColor: Colors.white,
@@ -89,7 +94,7 @@ class AppThemes {
         surface: Colors.white,
         background: Colors.white,
         onPrimary: Colors.white,
-        onSecondary: Colors.black,
+        onSecondary: MangoPalette.black,
         onSurface: Colors.black87,
         onBackground: Colors.black87,
       ),
@@ -118,8 +123,8 @@ class AppThemes {
       
       extensions: <ThemeExtension<dynamic>>[
         CustomTheme(
-          primaryColorLight: Colors.black, 
-          primaryColorDark: Colors.black,  
+          primaryColorLight: MangoPalette.black, 
+          primaryColorDark: MangoPalette.black,  
         ),
       ],
     );
@@ -133,39 +138,39 @@ class AppThemes {
       useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: primary,
-      scaffoldBackgroundColor: Colors.black,
-      cardColor: Colors.black,
-      dialogBackgroundColor: Colors.black,
+      scaffoldBackgroundColor: MangoPalette.black,
+      cardColor: MangoPalette.black,
+      dialogBackgroundColor: MangoPalette.black,
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.black,
+        backgroundColor: MangoPalette.black,
         foregroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.white),
       ),
       iconTheme: const IconThemeData(color: Colors.white),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Colors.black,
+        backgroundColor: MangoPalette.black,
       ),
       navigationBarTheme: const NavigationBarThemeData(
-        backgroundColor: Colors.black,
+        backgroundColor: MangoPalette.black,
       ),
       drawerTheme: const DrawerThemeData(
-        backgroundColor: Colors.black,
+        backgroundColor: MangoPalette.black,
       ),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.black,
+        backgroundColor: MangoPalette.black,
       ),
       colorScheme: ColorScheme.dark(
         primary: primary,
         secondary: secondary,
-        surface: Colors.black,
-        background: Colors.black,
+        surface: MangoPalette.black,
+        background: MangoPalette.black,
         onPrimary: Colors.white,
-        onSecondary: Colors.black,
+        onSecondary: MangoPalette.black,
         onSurface: Colors.white,
         onBackground: Colors.white,
       ),
       textTheme: GoogleFonts.montserratTextTheme(ThemeData.dark().textTheme),
-      dividerColor: const Color(0xFF333333),
+      dividerColor: const Color(0xFF2E3B32),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: primary,
         foregroundColor: Colors.white,
@@ -190,8 +195,8 @@ class AppThemes {
       
       extensions: <ThemeExtension<dynamic>>[
         CustomTheme(
-          primaryColorLight: Colors.black, 
-          primaryColorDark: Colors.black,
+          primaryColorLight: MangoPalette.black, 
+          primaryColorDark: MangoPalette.black,
         ),
       ],
     );
@@ -200,17 +205,17 @@ class AppThemes {
   static Color _getPrimaryColor(String type) {
     switch (type) {
       case 'green':
-        return const Color(0xFF4CAF50);
+        return const Color(0xFF369365);
       case 'orange':
       default:
-        return const Color(0xFFFF8243);
+        return const Color(0xFF369365);
     }
   }
 
   static Color _getSecondaryColor(String type) {
     switch (type) {
       case 'green':
-        return const Color(0xFF8BC34A);
+        return const Color(0xFF5FBF8A);
       case 'orange':
       default:
         return const Color(0xFFFFC324);
@@ -218,8 +223,14 @@ class AppThemes {
   }
 
   
-  static final ThemeData lightTheme = getLightTheme('orange');
-  static final ThemeData darkTheme = getDarkTheme('orange');
+  // Mango design system theme (green brand, Poppins, semantic tokens).
+  // Set kUseMangoDesignSystem to false to restore the previous orange theme
+  // while the brand change is reviewed. Screens that hard-code colours keep
+  // them until they are migrated.
+  static final ThemeData lightTheme =
+      kUseMangoDesignSystem ? MangoTheme.light() : getLightTheme('orange');
+  static final ThemeData darkTheme =
+      kUseMangoDesignSystem ? MangoTheme.dark() : getDarkTheme('orange');
 }
 
 
@@ -267,7 +278,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
 
 extension ThemeExtensions on BuildContext {
   
-  Color get primaryColorLight => Colors.black;
+  Color get primaryColorLight => MangoPalette.black;
   
   
   Color get themePrimaryColorLight => ThemeController.to.primaryColorLight;

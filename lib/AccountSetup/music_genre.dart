@@ -7,6 +7,7 @@ import 'package:mango/AccountSetup/book_genre.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 
 import '../constants.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class MusicGenreSelection extends StatefulWidget {
   final String? uid;
@@ -78,7 +79,7 @@ class _MusicGenreSelectionState extends State<MusicGenreSelection> {
             child: const Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(
                 Icons.skip_next,
-                color: Colors.black,
+                color: MangoPalette.black,
                 size: 22,
               ),
               SizedBox(
@@ -87,7 +88,7 @@ class _MusicGenreSelectionState extends State<MusicGenreSelection> {
               Text(
                 "Next",
                 style: TextStyle(
-                    color: Colors.black,
+                    color: MangoPalette.black,
                     fontWeight: FontWeight.w600,
                     fontSize: 18),
               ),
@@ -125,7 +126,7 @@ class _MusicGenreSelectionState extends State<MusicGenreSelection> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.grey,
+                      MangoPalette.grey500,
                       Colors.transparent,
                       Colors.transparent,
                       Colors.transparent
@@ -170,7 +171,7 @@ class _MusicGenreSelectionState extends State<MusicGenreSelection> {
                               child: Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                    color: Colors.deepOrange,
+                                    color: MangoPalette.green500,
                                     borderRadius: BorderRadius.circular(30)),
                                 child: Text(
                                   genres[index],
@@ -204,7 +205,7 @@ class _MusicGenreSelectionState extends State<MusicGenreSelection> {
           ),
           label: Text('${_selectedGenre[i]}'),
           labelStyle: const TextStyle(color: Colors.white),
-          backgroundColor: Colors.grey,
+          backgroundColor: MangoPalette.grey500,
           selected: sttate,
           onDeleted: () {
             setState(() {

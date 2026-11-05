@@ -1,3 +1,6 @@
+// DEPRECATED: insecure on-device chain, replaced by MangoChain on the
+// server (functions/ledger). Not used for balances or rewards. Its
+// signatures are not real signatures; do not use for anything of value.
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';

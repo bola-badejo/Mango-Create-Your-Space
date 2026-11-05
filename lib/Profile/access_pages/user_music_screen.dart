@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/Profile/profile_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class MusicScreen extends StatelessWidget {
   final ProfileController profileController = Get.find<ProfileController>();
@@ -17,7 +18,7 @@ class MusicScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (profileController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
         }
 
         final playlists = profileController.userMusic;
@@ -27,11 +28,11 @@ class MusicScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.music_note, size: 64, color: Colors.grey),
+                Icon(Icons.music_note, size: 64, color: MangoPalette.grey500),
                 SizedBox(height: 16),
                 Text(
                   'No music playlists yet',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(fontSize: 16, color: MangoPalette.grey500),
                 ),
               ],
             ),
@@ -55,7 +56,7 @@ class MusicScreen extends StatelessWidget {
                   '${playlist.plays} tracks',
                   style: const TextStyle(fontSize: 12),
                 ),
-                trailing: const Icon(Icons.play_arrow, color: Colors.green),
+                trailing: const Icon(Icons.play_arrow, color: MangoPalette.green500),
                 onTap: () {
                   
                   

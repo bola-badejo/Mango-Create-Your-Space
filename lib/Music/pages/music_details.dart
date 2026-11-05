@@ -5,6 +5,8 @@ import 'package:mango/Music/controllers/mango_music_controller.dart';
 
 import '../widgets/music_rating.dart';
 import '../widgets/two_side_rounded_button.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MusicDetailsScreen extends StatelessWidget {
   MusicDetailsScreen({super.key});
@@ -50,13 +52,13 @@ class MusicDetailsScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      Colors.black.withOpacity(1.0),
-                                      Colors.black.withOpacity(0.6)
+                                      MangoPalette.black.withOpacity(1.0),
+                                      MangoPalette.black.withOpacity(0.6)
                                     ],
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
                                   ),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(MangoRadius.md),
                                 ),
                                 child: MusicInfo(
                                   size: size,
@@ -119,7 +121,7 @@ class MusicDetailsScreen extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: Obx(() {
-                    return musicController.isPanelVisible.value ? GestureDetector(
+                    return musicController.isPanelVisible.value ? MangoPressable(
                       onTap: musicController.togglePanel,
                       onLongPress: musicController.removePanel,
                       child: AnimatedContainer(
@@ -170,7 +172,7 @@ class MusicDetailsScreen extends StatelessWidget {
                 ),
                 Text(
                   musicController.nowPlaying["artist"] ?? '',
-                  style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                  style: TextStyle(color: MangoPalette.grey400, fontSize: 14),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
@@ -178,18 +180,21 @@ class MusicDetailsScreen extends StatelessWidget {
           ),
           
           IconButton(
+        tooltip: 'Previous track',
             icon: const Icon(Icons.skip_previous, color: Colors.white, size: 30),
             onPressed: () {
               
             },
           ),
           IconButton(
+        tooltip: 'Pause',
             icon: const Icon(Icons.pause, color: Colors.white, size: 40),
             onPressed: () {
               
             },
           ),
           IconButton(
+        tooltip: 'Next track',
             icon: const Icon(Icons.skip_next, color: Colors.white, size: 30),
             onPressed: () {
               
@@ -220,7 +225,7 @@ class MusicDetailsScreen extends StatelessWidget {
         
         Text(
           musicController.nowPlaying["artist"] ?? '',
-          style: TextStyle(color: Colors.grey[400], fontSize: 18),
+          style: TextStyle(color: MangoPalette.grey400, fontSize: 18),
         ),
         const SizedBox(height: 20),
         
@@ -228,18 +233,21 @@ class MusicDetailsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
+        tooltip: 'Previous track',
               icon: const Icon(Icons.skip_previous, color: Colors.white, size: 30),
               onPressed: () {
                 
               },
             ),
             IconButton(
+        tooltip: 'Pause',
               icon: const Icon(Icons.pause, color: Colors.white, size: 40),
               onPressed: () {
                 
               },
             ),
             IconButton(
+        tooltip: 'Next track',
               icon: const Icon(Icons.skip_next, color: Colors.white, size: 30),
               onPressed: () {
                 
@@ -283,7 +291,7 @@ class MusicDetailsScreen extends StatelessWidget {
                     child: Text(
                       "Mango Best Seller For 16th March 2024",
                       style: TextStyle(
-                        fontSize: 9,
+                        fontSize: 12,
                         color: Theme.of(context).primaryColorLight,
                       ),
                     ),
@@ -311,7 +319,7 @@ class MusicDetailsScreen extends StatelessWidget {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: Theme.of(context).primaryColorLight,
                             ),
                           ),
@@ -391,7 +399,7 @@ class ChapterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return GestureDetector(
+    return MangoPressable(
       onTap: () => controller.playMusic(link),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
@@ -430,6 +438,7 @@ class ChapterCard extends StatelessWidget {
             ),
             const Spacer(),
             IconButton(
+        tooltip: 'More options',
               icon: const Icon(
                 Icons.more_vert,
                 size: 18,
@@ -498,7 +507,7 @@ class MusicInfo extends StatelessWidget {
                               music['text'] ?? '',
                               maxLines: 5,
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: Theme.of(context).primaryColorLight,
                               ),
                             ),
@@ -532,7 +541,7 @@ class MusicInfo extends StatelessWidget {
                             icon: const Icon(
                               Icons.favorite_border,
                               size: 20,
-                              color: Colors.grey,
+                              color: MangoPalette.grey500,
                             ),
                             onPressed: () {},
                           ),
@@ -550,7 +559,7 @@ class MusicInfo extends StatelessWidget {
                 width: 200,
                 
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                   boxShadow: [
                     BoxShadow(
                       offset: const Offset(3, 7),

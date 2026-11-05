@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../Models/customModel/mango_movies.dart';
 
+import 'package:mango/Wallet/ledger/mango_activity_tracker.dart';
 class MangoMovieManager {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String collectionName = 'movies';
@@ -56,6 +57,8 @@ class MangoMovieManager {
 
   
   Future<void> incrementViews(String id) async {
+    // Playback started: open a server-timed session for MangoChain mining.
+    MangoActivityTracker.startInBackground(contentType: 'movie', contentId: id);
     try {
       await _firestore
           .collection(collectionName)

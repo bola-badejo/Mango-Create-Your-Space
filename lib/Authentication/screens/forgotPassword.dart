@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/Authentication/controllers/auth_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   ForgotPasswordScreen({super.key});
@@ -61,7 +62,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 filled: true,
                 fillColor: cs.surface,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
             ),
@@ -163,7 +164,7 @@ class _PhoneNumberForgotPasswordScreenState
                 filled: true,
                 fillColor: cs.surface,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
             ),
@@ -253,7 +254,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 filled: true,
                 fillColor: cs.surface,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
             ),

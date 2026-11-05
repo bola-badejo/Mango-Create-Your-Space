@@ -29,6 +29,8 @@ import '../../../Home/components/music_components.dart';
 import '../../../Home/controllers/dashboard_controller.dart';
 import '../../../Home/pages/post_shimmer.dart';
 import '../../../Models/customModel/playlist.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpaceMusic extends StatelessWidget {
   SpaceMusic({super.key});
@@ -88,7 +90,7 @@ class SpaceMusic extends StatelessWidget {
   Widget _buildLoadingScaffold() {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(semanticsLabel: 'Loading'),
       ),
     );
   }
@@ -107,11 +109,11 @@ class SpaceMusic extends StatelessWidget {
                   width: 140,
                   height: 140,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5),
+                    color: MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                   ),
                   child: Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2),
                   ),
                 ),
                 Positioned(
@@ -121,7 +123,7 @@ class SpaceMusic extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.black87,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Text(
                       '#$rank',
@@ -139,10 +141,10 @@ class SpaceMusic extends StatelessWidget {
             Container(
               width: 100,
               height: 12,
-              color: Colors.grey[300],
+              color: MangoPalette.grey300,
               margin: EdgeInsets.only(bottom: 4),
             ),
-            Container(width: 80, height: 10, color: Colors.grey[300]),
+            Container(width: 80, height: 10, color: MangoPalette.grey300),
           ],
         ),
       );
@@ -170,7 +172,8 @@ class SpaceMusic extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                GestureDetector(
+                MangoPressable(
+        semanticLabel: 'Next',
                   onTap: onSeeAll,
                   child: const Icon(Icons.arrow_forward_ios, size: 14),
                 ),
@@ -223,23 +226,23 @@ class SpaceMusic extends StatelessWidget {
                         width: 140,
                         height: 140,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(5),
+                          color: MangoPalette.grey300,
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
                               hasError ? Icons.error_outline : Icons.music_off,
-                              color: Colors.grey[600],
+                              color: MangoPalette.grey600,
                               size: 24,
                             ),
                             SizedBox(height: 4),
                             Text(
                               hasError ? 'Error' : 'Not found',
                               style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey[600],
+                                fontSize: 12,
+                                color: MangoPalette.grey600,
                               ),
                             ),
                           ],
@@ -255,7 +258,7 @@ class SpaceMusic extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: Colors.black87,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                           ),
                           child: Text(
                             '#$rank',
@@ -272,13 +275,13 @@ class SpaceMusic extends StatelessWidget {
                   SizedBox(height: 8),
                   Text(
                     hasError ? 'Failed to load' : 'Music not found',
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     hasError ? 'Tap to retry' : 'Unknown',
-                    style: TextStyle(fontSize: 9, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -309,7 +312,7 @@ class SpaceMusic extends StatelessWidget {
                         width: 140,
                         height: 140,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           image: DecorationImage(
                             image: NetworkImage(
                               musicData['artworkUrl'].toString(),
@@ -328,7 +331,7 @@ class SpaceMusic extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: Colors.black87,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                           ),
                           child: Text(
                             '#$rank',
@@ -350,13 +353,13 @@ class SpaceMusic extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: Colors.black54,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(MangoRadius.md),
                           ),
                           child: Text(
                             playValue(musicData['plays']),
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 10,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -383,13 +386,13 @@ class SpaceMusic extends StatelessWidget {
                   SizedBox(height: 8),
                   Text(
                     musicData['title'],
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     item.savedBy == '' ? 'Unknown Artiste' : item.savedBy,
-                    style: TextStyle(fontSize: 9, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -408,11 +411,11 @@ class SpaceMusic extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.music_note, size: 32, color: Colors.grey[400]),
+              Icon(Icons.music_note, size: 32, color: MangoPalette.grey400),
               SizedBox(height: 8),
               Text(
                 message,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
               ),
             ],
           ),
@@ -436,7 +439,7 @@ class SpaceMusic extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 180,
                 width: 160,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -636,7 +639,7 @@ class SpaceMusicActions extends StatelessWidget {
           ),
           _buildButton(
             context,
-            color: Colors.orange,
+            color: MangoPalette.green500,
             icon: Icons.headset,
             text: "DJ Booth",
             onTap: isAdmin 
@@ -657,14 +660,14 @@ class SpaceMusicActions extends StatelessWidget {
     required VoidCallback onTap,
     bool isDisabled = false,
   }) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Container(
         height: 100,
         width: 90,
         decoration: BoxDecoration(
-          color: isDisabled ? Colors.grey[700] : color,
-          borderRadius: BorderRadius.circular(20),
+          color: isDisabled ? MangoPalette.grey700 : color,
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
         ),
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -778,6 +781,7 @@ Future<void> _openConversationSheet(
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
+        tooltip: 'Close',
                     icon: const Icon(Icons.close),
                     onPressed: () => Navigator.pop(context),
                   ),
@@ -795,7 +799,7 @@ Future<void> _openConversationSheet(
               ),
               const SizedBox(height: 16),
 
-              GestureDetector(
+              MangoPressable(
                 onTap: () async {
                   final url = await _pickAndUploadImage();
                   if (url != null) {
@@ -806,10 +810,10 @@ Future<void> _openConversationSheet(
                   height: 150,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
+                    color: MangoPalette.grey100,
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                     border: Border.all(
-                      color: Colors.black.withOpacity(0.1),
+                      color: MangoPalette.black.withOpacity(0.1),
                       width: 1,
                     ),
                   ),
@@ -819,18 +823,18 @@ Future<void> _openConversationSheet(
                           children: [
                             Icon(
                               Icons.add_photo_alternate,
-                              color: Colors.grey[400],
+                              color: MangoPalette.grey400,
                               size: 40,
                             ),
                             const SizedBox(height: 8),
                             Text(
                               "Tap to add conversation image",
-                              style: TextStyle(color: Colors.grey[600]),
+                              style: TextStyle(color: MangoPalette.grey600),
                             ),
                           ],
                         )
                       : ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           child: Stack(
                             children: [
                               Image.network(
@@ -1007,6 +1011,7 @@ Future<void> _openLiveSessionSheet(
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
+        tooltip: 'Close',
                     icon: const Icon(Icons.close),
                     onPressed: () => Navigator.pop(context),
                   ),
@@ -1017,8 +1022,8 @@ Future<void> _openLiveSessionSheet(
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  borderRadius: BorderRadius.circular(12),
+                  color: MangoPalette.grey50,
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1045,7 +1050,7 @@ Future<void> _openLiveSessionSheet(
               const SizedBox(height: 16),
 
               if (isScheduled) ...[
-                GestureDetector(
+                MangoPressable(
                   onTap: () async {
                     final DateTime now = DateTime.now();
                     final DateTime? pickedDate = await showDatePicker(
@@ -1084,11 +1089,11 @@ Future<void> _openLiveSessionSheet(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.grey[50],
-                      borderRadius: BorderRadius.circular(12),
+                      color: MangoPalette.grey50,
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                       border: Border.all(
                         color: scheduledTime == null
-                            ? Colors.grey[300]!
+                            ? MangoPalette.grey300
                             : Colors.teal,
                         width: 1,
                       ),
@@ -1102,7 +1107,7 @@ Future<void> _openLiveSessionSheet(
                             Text(
                               "Session Time",
                               style: TextStyle(
-                                color: Colors.grey[600],
+                                color: MangoPalette.grey600,
                                 fontSize: 12,
                               ),
                             ),
@@ -1113,8 +1118,8 @@ Future<void> _openLiveSessionSheet(
                                   : _formatScheduledTime(scheduledTime!),
                               style: TextStyle(
                                 color: scheduledTime == null
-                                    ? Colors.grey[400]
-                                    : Colors.black,
+                                    ? MangoPalette.grey400
+                                    : MangoPalette.black,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -1123,7 +1128,7 @@ Future<void> _openLiveSessionSheet(
                         Icon(
                           Icons.calendar_today,
                           color: scheduledTime == null
-                              ? Colors.grey[400]
+                              ? MangoPalette.grey400
                               : Colors.teal,
                           size: 20,
                         ),
@@ -1141,7 +1146,7 @@ Future<void> _openLiveSessionSheet(
               ),
               const SizedBox(height: 16),
 
-              GestureDetector(
+              MangoPressable(
                 onTap: () async {
                   final url = await _pickAndUploadImage();
                   if (url != null) {
@@ -1152,10 +1157,10 @@ Future<void> _openLiveSessionSheet(
                   height: 150,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
+                    color: MangoPalette.grey100,
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                     border: Border.all(
-                      color: Colors.black.withOpacity(0.1),
+                      color: MangoPalette.black.withOpacity(0.1),
                       width: 1,
                     ),
                   ),
@@ -1165,18 +1170,18 @@ Future<void> _openLiveSessionSheet(
                           children: [
                             Icon(
                               Icons.add_photo_alternate,
-                              color: Colors.grey[400],
+                              color: MangoPalette.grey400,
                               size: 40,
                             ),
                             const SizedBox(height: 8),
                             Text(
                               "Tap to add cover image",
-                              style: TextStyle(color: Colors.grey[600]),
+                              style: TextStyle(color: MangoPalette.grey600),
                             ),
                           ],
                         )
                       : ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           child: Stack(
                             children: [
                               Image.network(
@@ -1248,7 +1253,7 @@ Future<void> _openLiveSessionSheet(
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isScheduled ? Colors.orange : Colors.teal,
+                    backgroundColor: isScheduled ? MangoPalette.green500 : Colors.teal,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
                     ),
@@ -1373,6 +1378,7 @@ Future<void> _openDjBoothSheet(
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
+        tooltip: 'Close',
                     icon: const Icon(Icons.close),
                     onPressed: () => Navigator.pop(context),
                   ),
@@ -1425,7 +1431,7 @@ Future<void> _openDjBoothSheet(
               ),
               const SizedBox(height: 16),
 
-              GestureDetector(
+              MangoPressable(
                 onTap: () async {
                   final url = await _pickAndUploadImage();
                   if (url != null) {
@@ -1436,10 +1442,10 @@ Future<void> _openDjBoothSheet(
                   height: 150,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
+                    color: MangoPalette.grey100,
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                     border: Border.all(
-                      color: Colors.black.withOpacity(0.1),
+                      color: MangoPalette.black.withOpacity(0.1),
                       width: 1,
                     ),
                   ),
@@ -1449,18 +1455,18 @@ Future<void> _openDjBoothSheet(
                           children: [
                             Icon(
                               Icons.add_photo_alternate,
-                              color: Colors.grey[400],
+                              color: MangoPalette.grey400,
                               size: 40,
                             ),
                             const SizedBox(height: 8),
                             Text(
                               "Tap to add event poster",
-                              style: TextStyle(color: Colors.grey[600]),
+                              style: TextStyle(color: MangoPalette.grey600),
                             ),
                           ],
                         )
                       : ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                           child: Stack(
                             children: [
                               Image.network(
@@ -1506,7 +1512,7 @@ Future<void> _openDjBoothSheet(
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: MangoPalette.green500,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
                     ),
@@ -1663,7 +1669,7 @@ class _ConversationsCardState extends State<ConversationsCard>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Joined conversation!'),
-              backgroundColor: Colors.green,
+              backgroundColor: MangoPalette.green500,
             ),
           );
         }
@@ -1766,7 +1772,7 @@ class _ConversationsCardState extends State<ConversationsCard>
                 width: double.infinity,
                 height: _isExpanded ? 200 : 150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   color: Colors.white.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.5),
@@ -1774,7 +1780,7 @@ class _ConversationsCardState extends State<ConversationsCard>
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: MangoPalette.black.withOpacity(0.1),
                       blurRadius: 20,
                       spreadRadius: 5,
                       offset: const Offset(0, 10),
@@ -1782,7 +1788,7 @@ class _ConversationsCardState extends State<ConversationsCard>
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(),
@@ -1807,14 +1813,14 @@ class _ConversationsCardState extends State<ConversationsCard>
                             ),
                             margin: const EdgeInsets.only(bottom: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5),
+                              color: MangoPalette.black,
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: const Text(
                               "Active",
                               style: TextStyle(
-                                fontSize: 7,
-                                color: Colors.grey,
+                                fontSize: 12,
+                                color: MangoPalette.grey500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -1831,14 +1837,14 @@ class _ConversationsCardState extends State<ConversationsCard>
                             data['category'] ?? "Uncategorized",
                             style: TextStyle(
                               color: Theme.of(context).primaryColorLight,
-                              fontSize: 9,
+                              fontSize: 12,
                             ),
                           ),
                           const SizedBox(height: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              GestureDetector(
+                              MangoPressable(
                                 onTap: () {
                                   setState(() {
                                     _isExpanded = !_isExpanded;
@@ -1850,15 +1856,15 @@ class _ConversationsCardState extends State<ConversationsCard>
                                     Text(
                                       'tap for more',
                                       style: TextStyle(
-                                        fontSize: 8,
-                                        color: Colors.black.withOpacity(0.8),
+                                        fontSize: 12,
+                                        color: MangoPalette.black.withOpacity(0.8),
                                       ),
                                     ),
                                     Icon(
                                       _isExpanded
                                           ? Icons.keyboard_arrow_up
                                           : Icons.keyboard_arrow_down,
-                                      color: Colors.black.withOpacity(0.8),
+                                      color: MangoPalette.black.withOpacity(0.8),
                                       size: 10,
                                     ),
                                   ],
@@ -1876,12 +1882,12 @@ class _ConversationsCardState extends State<ConversationsCard>
                                             'No description provided',
                                         maxLines: 2,
                                         style: TextStyle(
-                                          fontSize: 8,
-                                          color: Colors.black.withOpacity(0.6),
+                                          fontSize: 12,
+                                          color: MangoPalette.black.withOpacity(0.6),
                                         ),
                                       ),
                                       const SizedBox(height: 10),
-                                      GestureDetector(
+                                      MangoPressable(
                                         onTap: () => _navigateToConversation(
                                           conversationId,
                                           createdBy,
@@ -1890,7 +1896,7 @@ class _ConversationsCardState extends State<ConversationsCard>
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: hasJoined || isCreator
-                                                ? Colors.black
+                                                ? MangoPalette.black
                                                 : Colors.blue[700],
                                             borderRadius: BorderRadius.circular(
                                               8,
@@ -1905,8 +1911,8 @@ class _ConversationsCardState extends State<ConversationsCard>
                                             children: [
                                               Text(
                                                 buttonText,
-                                                style: GoogleFonts.montserrat(
-                                                  fontSize: 11,
+                                                style: TextStyle(fontFamily: 'Poppins', 
+                                                  fontSize: 12,
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -1928,8 +1934,8 @@ class _ConversationsCardState extends State<ConversationsCard>
                                           child: Text(
                                             '${participants.length} participants',
                                             style: TextStyle(
-                                              fontSize: 8,
-                                              color: Colors.black.withOpacity(
+                                              fontSize: 12,
+                                              color: MangoPalette.black.withOpacity(
                                                 0.5,
                                               ),
                                             ),
@@ -1945,7 +1951,7 @@ class _ConversationsCardState extends State<ConversationsCard>
                     ),
                     Expanded(
                       flex: 2,
-                      child: GestureDetector(
+                      child: MangoPressable(
                         onTap: () => _navigateToConversation(
                           conversationId,
                           createdBy,
@@ -1955,10 +1961,10 @@ class _ConversationsCardState extends State<ConversationsCard>
                           width: _isExpanded ? 140 : 90,
                           height: _isExpanded ? 160 : 120,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(MangoRadius.lg),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
+                                color: MangoPalette.black.withOpacity(0.1),
                                 blurRadius: 20,
                                 spreadRadius: 5,
                                 offset: const Offset(10, 10),
@@ -1966,7 +1972,7 @@ class _ConversationsCardState extends State<ConversationsCard>
                             ],
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(MangoRadius.sm),
                             child:
                                 data['image'] != null &&
                                     data['image'].isNotEmpty
@@ -1998,10 +2004,10 @@ class _ConversationsCardState extends State<ConversationsCard>
       height: 150,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -2017,7 +2023,7 @@ class _ConversationsCardState extends State<ConversationsCard>
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -2029,7 +2035,7 @@ class _ConversationsCardState extends State<ConversationsCard>
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -2037,10 +2043,10 @@ class _ConversationsCardState extends State<ConversationsCard>
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -2061,7 +2067,7 @@ class _ConversationsCardState extends State<ConversationsCard>
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -2079,7 +2085,7 @@ class _ConversationsCardState extends State<ConversationsCard>
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -2109,7 +2115,7 @@ class _ConversationsCardState extends State<ConversationsCard>
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),
@@ -2292,7 +2298,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                 width: double.infinity,
                 height: _isExpanded ? 200 : 150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   color: Colors.white.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.5),
@@ -2300,7 +2306,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: MangoPalette.black.withOpacity(0.1),
                       blurRadius: 20,
                       spreadRadius: 5,
                       offset: const Offset(0, 10),
@@ -2308,7 +2314,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(),
@@ -2333,14 +2339,14 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                             ),
                             margin: const EdgeInsets.only(bottom: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5),
+                              color: MangoPalette.black,
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: Text(
                               _getSessionTimeText(currentSession),
                               style: const TextStyle(
-                                fontSize: 7,
-                                color: Colors.grey,
+                                fontSize: 12,
+                                color: MangoPalette.grey500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -2359,8 +2365,8 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                               Text(
                                 "${currentSession['listeners'] ?? 0} listeners.",
                                 style: const TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.black,
+                                  fontSize: 12,
+                                  color: MangoPalette.black,
                                 ),
                               ),
                               const SizedBox(width: 5),
@@ -2371,13 +2377,13 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                                 ),
                                 decoration: BoxDecoration(
                                   color: _getStatusColor(currentSession),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                                 ),
                                 child: Text(
                                   _getStatusText(currentSession),
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 8,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -2388,7 +2394,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              GestureDetector(
+                              MangoPressable(
                                 onTap: () {
                                   setState(() {
                                     _isExpanded = !_isExpanded;
@@ -2400,15 +2406,15 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                                     Text(
                                       'tap for more',
                                       style: TextStyle(
-                                        fontSize: 8,
-                                        color: Colors.black.withOpacity(0.8),
+                                        fontSize: 12,
+                                        color: MangoPalette.black.withOpacity(0.8),
                                       ),
                                     ),
                                     Icon(
                                       _isExpanded
                                           ? Icons.keyboard_arrow_up
                                           : Icons.keyboard_arrow_down,
-                                      color: Colors.black.withOpacity(0.8),
+                                      color: MangoPalette.black.withOpacity(0.8),
                                       size: 10,
                                     ),
                                   ],
@@ -2426,22 +2432,22 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                                             'No description provided',
                                         maxLines: 2,
                                         style: TextStyle(
-                                          fontSize: 8,
-                                          color: Colors.black.withOpacity(0.6),
+                                          fontSize: 12,
+                                          color: MangoPalette.black.withOpacity(0.6),
                                         ),
                                       ),
                                       const SizedBox(height: 10),
                                       Row(
                                         children: [
-                                          GestureDetector(
+                                          MangoPressable(
                                             onTap: () => _navigateToLiveSession(
                                               currentSession,
                                             ),
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                color: Colors.black,
+                                                color: MangoPalette.black,
                                                 borderRadius:
-                                                    BorderRadius.circular(8),
+                                                    BorderRadius.circular(MangoRadius.sm),
                                               ),
                                               padding:
                                                   const EdgeInsets.symmetric(
@@ -2451,7 +2457,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                                               child: const Text(
                                                 "join now",
                                                 style: TextStyle(
-                                                  fontSize: 11,
+                                                  fontSize: 12,
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -2460,14 +2466,14 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                                           const SizedBox(width: 8),
                                           if (currentSession['isScheduled'] ==
                                               true)
-                                            GestureDetector(
+                                            MangoPressable(
                                               onTap: () =>
                                                   _setReminder(currentSession),
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                   color: Colors.blue,
                                                   borderRadius:
-                                                      BorderRadius.circular(8),
+                                                      BorderRadius.circular(MangoRadius.sm),
                                                 ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -2477,7 +2483,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                                                 child: const Text(
                                                   "set reminder",
                                                   style: TextStyle(
-                                                    fontSize: 11,
+                                                    fontSize: 12,
                                                     color: Colors.white,
                                                   ),
                                                 ),
@@ -2505,7 +2511,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
+                                  color: MangoPalette.black.withOpacity(0.1),
                                   blurRadius: 20,
                                   spreadRadius: 5,
                                   offset: const Offset(10, 10),
@@ -2513,7 +2519,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                               ],
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                               child: currentSession['image'] != null
                                   ? Image.network(
                                       currentSession['image'],
@@ -2565,8 +2571,8 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
 
   Color _getStatusColor(Map<String, dynamic> session) {
     if (session['isLive'] == true) return Colors.red;
-    if (session['isScheduled'] == true) return Colors.orange;
-    return Colors.grey;
+    if (session['isScheduled'] == true) return MangoPalette.green500;
+    return MangoPalette.grey500;
   }
 
   Widget _buildNoLiveSessionsCarousel() {
@@ -2575,10 +2581,10 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
       height: 150,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -2594,7 +2600,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -2606,7 +2612,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -2614,10 +2620,10 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -2630,7 +2636,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.red.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.red.withOpacity(0.5),
@@ -2654,7 +2660,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                     "LIVE",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -2677,7 +2683,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -2695,7 +2701,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -2725,7 +2731,7 @@ class _LiveSessionsCardState extends State<LiveSessionsCard>
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),
@@ -2817,7 +2823,7 @@ class DjBoothList extends StatelessWidget {
                                 child: Text(
                                   "New Event",
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     color: Theme.of(context).primaryColorLight,
                                   ),
                                 ),
@@ -2889,10 +2895,10 @@ class _DjBoothCarouselState extends State<_DjBoothCarousel> {
       height: 150,
       margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -2908,7 +2914,7 @@ class _DjBoothCarouselState extends State<_DjBoothCarousel> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -2920,7 +2926,7 @@ class _DjBoothCarouselState extends State<_DjBoothCarousel> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -2928,10 +2934,10 @@ class _DjBoothCarouselState extends State<_DjBoothCarousel> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -2943,11 +2949,11 @@ class _DjBoothCarouselState extends State<_DjBoothCarousel> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                color: MangoPalette.green500.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.orange.withOpacity(0.5),
+                    color: MangoPalette.green500.withOpacity(0.5),
                     blurRadius: 8,
                     spreadRadius: 2,
                   ),
@@ -2961,7 +2967,7 @@ class _DjBoothCarouselState extends State<_DjBoothCarousel> {
                     "DJ",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -2984,7 +2990,7 @@ class _DjBoothCarouselState extends State<_DjBoothCarousel> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -3002,7 +3008,7 @@ class _DjBoothCarouselState extends State<_DjBoothCarousel> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -3028,11 +3034,11 @@ class _DjBoothCarouselState extends State<_DjBoothCarousel> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _currentImageIndex == index
-                        ? Colors.orange
+                        ? MangoPalette.green500
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),

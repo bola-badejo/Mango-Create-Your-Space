@@ -5,6 +5,7 @@ import 'package:mango/Models/animation.dart';
 import 'package:mango/Utils/text_field.dart';
 import 'package:mango/constants.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class VerificationPage extends StatefulWidget {
   const VerificationPage({super.key});
@@ -90,6 +91,7 @@ class _VerificationPageState extends State<VerificationPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
+        tooltip: 'Back',
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Get.back(),
         ),
@@ -122,7 +124,7 @@ class _VerificationPageState extends State<VerificationPage> {
                       ? 'Enter the 6-digit code sent to your phone number'
                       : 'Enter the verification code sent to your email',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey[600],
+                    color: MangoPalette.grey600,
                   ),
                 ),
               ),
@@ -150,7 +152,7 @@ class _VerificationPageState extends State<VerificationPage> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 55),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                       backgroundColor: theme.primaryColor,
                     ),
@@ -158,7 +160,7 @@ class _VerificationPageState extends State<VerificationPage> {
                         ? const SizedBox(
                             height: 20,
                             width: 20,
-                            child: CircularProgressIndicator(
+                            child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Colors.white,

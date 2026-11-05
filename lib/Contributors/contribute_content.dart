@@ -13,6 +13,8 @@ import 'main_pages/movie_box.dart';
 import 'main_pages/music_box.dart';
 import 'main_pages/podcast_box.dart';
 import 'main_pages/product_box.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MagicBoxPage extends StatefulWidget {
   final MangoUser contentData;
@@ -236,7 +238,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
         SnackBar(
           content: Text(
             _getAccessDeniedMessage(title, userRole),
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.redAccent,
           duration: const Duration(seconds: 3),
@@ -401,11 +403,11 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
       case 'creator':
         return Colors.blue;
       case 'distributor':
-        return Colors.green;
+        return MangoPalette.green500;
       case 'vendor':
-        return Colors.orange;
+        return MangoPalette.green500;
       default:
-        return Colors.grey;
+        return MangoPalette.grey500;
     }
   }
 
@@ -415,7 +417,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
     
     if (_isLoading) {
       return Scaffold(
-        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -429,7 +431,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
               Text(
                 'Loading Magic Pod...',
                 style: TextStyle(
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                   fontSize: 14,
                 ),
               ),
@@ -442,21 +444,21 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
         iconTheme: IconThemeData(
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode ? Colors.white : MangoPalette.black,
         ),
         elevation: 0,
         title: Text(
           'Magic Pod',
           style: TextStyle(
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : MangoPalette.black,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: SafeArea(
@@ -472,7 +474,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
-                      color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                      color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -489,7 +491,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
                         color: Colors.blue.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                         border: Border.all(color: Colors.blue.withOpacity(0.3)),
                       ),
                       child: Column(
@@ -514,7 +516,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                             'As a distributor, you can distribute music, books, podcasts, and movies. '
                             'Product upload is exclusively for vendors.',
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: isDarkMode ? Colors.blue[200] : Colors.blue[800],
                             ),
                           ),
@@ -543,7 +545,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                               child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(MangoRadius.md),
                                   onTap: () => _handleItemTap(item['title']!, _userRole, context),
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -555,10 +557,10 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                       ),
-                                      borderRadius: BorderRadius.circular(16),
+                                      borderRadius: BorderRadius.circular(MangoRadius.md),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black.withOpacity(isDarkMode ? 0.4 : 0.2),
+                                          color: MangoPalette.black.withOpacity(isDarkMode ? 0.4 : 0.2),
                                           blurRadius: 12,
                                           offset: const Offset(0, 6),
                                         ),
@@ -623,7 +625,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                                                           item['description']!,
                                                           textAlign: TextAlign.center,
                                                           style: const TextStyle(
-                                                            fontSize: 10,
+                                                            fontSize: 12,
                                                             fontWeight: FontWeight.w500,
                                                             color: Colors.white70,
                                                           ),
@@ -635,13 +637,13 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                                                           Container(
                                                             padding: const EdgeInsets.all(4),
                                                             decoration: BoxDecoration(
-                                                              color: Colors.black.withOpacity(0.3),
-                                                              borderRadius: BorderRadius.circular(4),
+                                                              color: MangoPalette.black.withOpacity(0.3),
+                                                              borderRadius: BorderRadius.circular(MangoRadius.xs),
                                                             ),
                                                             child: Text(
                                                               _getAccessDeniedMessage(item['title']!, _userRole),
                                                               style: const TextStyle(
-                                                                fontSize: 8,
+                                                                fontSize: 12,
                                                                 color: Colors.white,
                                                                 fontWeight: FontWeight.bold,
                                                               ),
@@ -656,12 +658,12 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                                                             padding: const EdgeInsets.all(4),
                                                             decoration: BoxDecoration(
                                                               color: Colors.red.withOpacity(0.3),
-                                                              borderRadius: BorderRadius.circular(4),
+                                                              borderRadius: BorderRadius.circular(MangoRadius.xs),
                                                             ),
                                                             child: const Text(
                                                               'STRICTLY VENDORS ONLY',
                                                               style: TextStyle(
-                                                                fontSize: 8,
+                                                                fontSize: 12,
                                                                 color: Colors.white,
                                                                 fontWeight: FontWeight.bold,
                                                               ),
@@ -681,7 +683,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                                         Positioned(
                                           bottom: 8,
                                           right: 8,
-                                          child: GestureDetector(
+                                          child: MangoPressable(
                                             onTap: () => _toggleExpansion(item['title']!),
                                             child: Container(
                                               padding: const EdgeInsets.all(4),
@@ -718,8 +720,8 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: isDarkMode ? Colors.grey[800] : Colors.grey[100],
-                      borderRadius: BorderRadius.circular(12),
+                      color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -729,7 +731,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: isDarkMode ? Colors.white : Colors.black,
+                            color: isDarkMode ? Colors.white : MangoPalette.black,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -762,7 +764,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : MangoPalette.black,
           ),
         ),
         const SizedBox(height: 12),
@@ -782,14 +784,14 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                 title: 'Distributor',
                 isRegistered: _userData.isDistributor == true,
                 icon: FontAwesomeIcons.shareNodes,
-                color: Colors.green,
+                color: MangoPalette.green500,
                 context: context,
               ),
               _buildContributorCard(
                 title: 'Vendor',
                 isRegistered: _userData.isVendor == true,
                 icon: FontAwesomeIcons.store,
-                color: Colors.orange,
+                color: MangoPalette.green500,
                 context: context,
               ),
             ],
@@ -854,14 +856,14 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
     final String contributorId = getContributorId();
 
     return Expanded(
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: () {
           if (!isRegistered) {
             // Navigate to registration
             Get.snackbar(
               'Registration Required',
               'Please register as a $title to access this feature',
-              backgroundColor: Colors.orange,
+              backgroundColor: MangoPalette.green500,
               colorText: Colors.white,
             );
           } else {
@@ -873,9 +875,9 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
           margin: const EdgeInsets.symmetric(horizontal: 4),
           height: 110,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: Border.all(
-              color: isRegistered ? color : Colors.grey.withOpacity(0.3),
+              color: isRegistered ? color : MangoPalette.grey500.withOpacity(0.3),
               width: isRegistered ? 2 : 1,
             ),
             image: isRegistered && hasImage
@@ -883,14 +885,14 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                     image: NetworkImage(imageUrl),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.4),
+                      MangoPalette.black.withOpacity(0.4),
                       BlendMode.darken,
                     ),
                   )
                 : null,
             color: isRegistered
                 ? (hasImage ? Colors.transparent : color.withOpacity(0.1))
-                : (isDarkMode ? Colors.grey[800] : Colors.grey[200]),
+                : (isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200),
           ),
           child: Stack(
             children: [
@@ -918,14 +920,14 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                         style: TextStyle(
                           color: hasImage
                               ? Colors.white
-                              : (isDarkMode ? Colors.white : Colors.black),
-                          fontSize: 10,
+                              : (isDarkMode ? Colors.white : MangoPalette.black),
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                           shadows: hasImage
                               ? [
                                   Shadow(
                                     blurRadius: 4,
-                                    color: Colors.black.withOpacity(0.8),
+                                    color: MangoPalette.black.withOpacity(0.8),
                                   ),
                                 ]
                               : null,
@@ -946,13 +948,13 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                         color: hasImage
                             ? color.withOpacity(0.9)
                             : color.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                       ),
                       child: Text(
                         title,
                         style: TextStyle(
                           color: hasImage ? Colors.white : color,
-                          fontSize: 8,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -968,13 +970,13 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                         color: hasImage
                             ? Colors.white.withOpacity(0.9)
                             : Colors.white,
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(MangoRadius.xs),
                       ),
                       child: Text(
                         'Active',
                         style: TextStyle(
                           color: color,
-                          fontSize: 7,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -984,12 +986,12 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.1),
+                          color: MangoPalette.grey500.withOpacity(0.1),
                           shape: BoxShape.circle,
                         ),
                         child: FaIcon(
                           FontAwesomeIcons.circlePlus,
-                          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                           size: 18,
                         ),
                       ),
@@ -999,8 +1001,8 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                       child: Text(
                         title,
                         style: TextStyle(
-                          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-                          fontSize: 10,
+                          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -1010,8 +1012,8 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                       child: Text(
                         'Register',
                         style: TextStyle(
-                          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-                          fontSize: 8,
+                          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -1030,7 +1032,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
     
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDarkMode ? const Color(0xFF1C1C1E) : Colors.white,
+      backgroundColor: isDarkMode ? const Color(0xFF1B241E) : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -1047,7 +1049,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: color.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: FaIcon(
                       _getContributorIcon(title),
@@ -1073,12 +1075,12 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
                             color: color.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(MangoRadius.lg),
                           ),
                           child: Text(
                             title,
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: color,
                             ),
@@ -1095,8 +1097,8 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDarkMode ? Colors.black38 : Colors.grey[100],
-                  borderRadius: BorderRadius.circular(12),
+                  color: isDarkMode ? Colors.black38 : MangoPalette.grey100,
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
                 child: Row(
                   children: [
@@ -1107,7 +1109,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                           Text(
                             'Contributor ID',
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: 12,
                               color: isDarkMode ? Colors.white54 : Colors.black45,
                             ),
                           ),
@@ -1125,6 +1127,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                     ),
                     if (id.isNotEmpty)
                       IconButton(
+        tooltip: 'Copy',
                         onPressed: () {
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -1140,8 +1143,8 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                                 ],
                               ),
                               behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              backgroundColor: isDarkMode ? const Color(0xFF2C2C2E) : Colors.white,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)),
+                              backgroundColor: isDarkMode ? const Color(0xFF243028) : Colors.white,
                             ),
                           );
                         },
@@ -1177,7 +1180,7 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                   ),
                   child: const Text('Close'),
@@ -1214,16 +1217,16 @@ class _MagicBoxPageState extends State<MagicBoxPage> with SingleTickerProviderSt
             child: Text(
               capability,
               style: TextStyle(
-                fontSize: 10,
-                color: isDarkMode ? Colors.white : Colors.black,
+                fontSize: 12,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
               ),
             ),
           ),
           Text(
             allowedRoles.join(', '),
             style: TextStyle(
-              fontSize: 9,
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              fontSize: 12,
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
               fontWeight: FontWeight.bold,
             ),
           ),

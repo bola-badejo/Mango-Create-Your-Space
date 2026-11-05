@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class StepperHeader extends StatelessWidget {
   final int currentStep;
@@ -43,11 +44,11 @@ class StepperHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: isActive
-            ? Colors.orange.withOpacity(0.1)
+            ? MangoPalette.green500.withOpacity(0.1)
             : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: isActive
-            ? Border.all(color: Colors.orange.withOpacity(0.3))
+            ? Border.all(color: MangoPalette.green500.withOpacity(0.3))
             : null,
       ),
       child: Column(
@@ -57,10 +58,10 @@ class StepperHeader extends StatelessWidget {
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: isCompleted
-                  ? Colors.green
+                  ? MangoPalette.green500
                   : (isActive
-                        ? Colors.orange
-                        : Colors.grey.withOpacity(0.2)),
+                        ? MangoPalette.green500
+                        : MangoPalette.grey500.withOpacity(0.2)),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -73,7 +74,7 @@ class StepperHeader extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
               color: textColor,
             ),
@@ -87,7 +88,7 @@ class StepperHeader extends StatelessWidget {
     return Container(
       width: 16,
       height: 1,
-      color: isDark ? Colors.grey[700] : Colors.grey[300],
+      color: isDark ? MangoPalette.grey700 : MangoPalette.grey300,
     );
   }
 }

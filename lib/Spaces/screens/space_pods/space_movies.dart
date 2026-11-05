@@ -13,6 +13,9 @@ import 'package:mango/utils.dart';
 import '../../../Home/controllers/dashboard_controller.dart';
 import '../../../Home/pages/post_shimmer.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
+import 'package:mango/Media/video/mango_video_player.dart';
 
 class SpaceMovies extends StatelessWidget {
   SpaceMovies({super.key});
@@ -73,7 +76,7 @@ class SpaceMovies extends StatelessWidget {
   Widget _buildLoadingScaffold() {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(semanticsLabel: 'Loading'),
       ),
     );
   }
@@ -101,7 +104,8 @@ class SpaceMovies extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                GestureDetector(
+                MangoPressable(
+        semanticLabel: 'Next',
                   onTap: onSeeAll,
                   child: const Icon(Icons.arrow_forward_ios, size: 14),
                 ),
@@ -121,11 +125,11 @@ class SpaceMovies extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.movie_creation, size: 32, color: Colors.grey[400]),
+              Icon(Icons.movie_creation, size: 32, color: MangoPalette.grey400),
               SizedBox(height: 8),
               Text(
                 message,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -147,11 +151,11 @@ class SpaceMovies extends StatelessWidget {
                   width: 140,
                   height: 190,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5),
+                    color: MangoPalette.grey300,
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                   ),
                   child: Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2),
                   ),
                 ),
               ],
@@ -160,17 +164,21 @@ class SpaceMovies extends StatelessWidget {
             Container(
               width: 100,
               height: 12,
-              color: Colors.grey[300],
+              color: MangoPalette.grey300,
               margin: EdgeInsets.only(bottom: 4),
             ),
-            Container(width: 80, height: 10, color: Colors.grey[300]),
+            Container(width: 80, height: 10, color: MangoPalette.grey300),
           ],
         ),
       );
     }
 
     Widget _buildMovieCard(Map<String, dynamic> movieData, int index) {
-      return Container(
+      // Opens the Mango video player (resume, speed, up next).
+      return MangoPressable(
+        semanticLabel: 'Watch ${movieData['title'] ?? 'film'}',
+        onTap: movieData['id'] == null ? null : () => Get.to(() => MangoVideoPlayerScreen(type: 'movie', id: '${movieData['id']}')),
+        child: Container(
         width: 140,
         margin: EdgeInsets.only(right: 12),
         child: Column(
@@ -182,7 +190,7 @@ class SpaceMovies extends StatelessWidget {
                   width: 140,
                   height: 190,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                     image: DecorationImage(
                       image: NetworkImage(
                         movieData['posterUrl'] ?? movieData['thumbnail'] ?? '',
@@ -201,7 +209,7 @@ class SpaceMovies extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.black87,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Text(
                       '#${index + 1}',
@@ -220,7 +228,7 @@ class SpaceMovies extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.black54,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: Row(
                       children: [
@@ -230,7 +238,7 @@ class SpaceMovies extends StatelessWidget {
                           movieData['rating']?.toString() ?? '0.0',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: 12,
                           ),
                         ),
                       ],
@@ -248,13 +256,13 @@ class SpaceMovies extends StatelessWidget {
             ),
             Text(
               movieData['director'] ?? 'Unknown Director',
-              style: TextStyle(fontSize: 10, color: Colors.grey),
+              style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
-      );
+      ));
     }
 
     Widget _buildMovieCollectionSection() {
@@ -273,7 +281,7 @@ class SpaceMovies extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 240,
                 width: 160,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -321,23 +329,23 @@ class SpaceMovies extends StatelessWidget {
                                     width: 140,
                                     height: 190,
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(5),
+                                      color: MangoPalette.grey300,
+                                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                                     ),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.movie,
-                                          color: Colors.grey[600],
+                                          color: MangoPalette.grey600,
                                           size: 24,
                                         ),
                                         SizedBox(height: 4),
                                         Text(
                                           'Movie not found',
                                           style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey[600],
+                                            fontSize: 12,
+                                            color: MangoPalette.grey600,
                                           ),
                                         ),
                                       ],
@@ -349,7 +357,7 @@ class SpaceMovies extends StatelessWidget {
                               Text(
                                 'Movie not available',
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 maxLines: 1,
@@ -358,8 +366,8 @@ class SpaceMovies extends StatelessWidget {
                               Text(
                                 'Unknown',
                                 style: TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  color: MangoPalette.grey500,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -369,7 +377,7 @@ class SpaceMovies extends StatelessWidget {
                         );
                       }
 
-                      final movieData = movieSnapshot.data!.data() as Map<String, dynamic>;
+                      final movieData = {...movieSnapshot.data!.data() as Map<String, dynamic>, 'id': movieSnapshot.data!.id};
                       return _buildMovieCard(movieData, index);
                     },
                   );
@@ -397,7 +405,7 @@ class SpaceMovies extends StatelessWidget {
               return HorizontalShimmerList(
                 height: 240,
                 width: 160,
-                color: Colors.grey[300]!,
+                color: MangoPalette.grey300,
               );
             }
             
@@ -414,7 +422,7 @@ class SpaceMovies extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
-                  final movieData = movies[index].data() as Map<String, dynamic>;
+                  final movieData = {...movies[index].data() as Map<String, dynamic>, 'id': movies[index].id};
                   return _buildMovieCard(movieData, index);
                 },
               ),
@@ -601,14 +609,14 @@ class SpaceMoviesActions extends StatelessWidget {
     required VoidCallback onTap,
     bool isDisabled = false,
   }) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: onTap,
       child: Container(
         height: 100,
         width: 90,
         decoration: BoxDecoration(
-          color: isDisabled ? Colors.grey[700] : color,
-          borderRadius: BorderRadius.circular(20),
+          color: isDisabled ? MangoPalette.grey700 : color,
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
         ),
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -747,7 +755,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                 width: double.infinity,
                 height: _isExpanded ? 200 : 150,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   color: Colors.white.withOpacity(0.3),
                   border: Border.all(
                     color: Colors.white.withOpacity(0.5),
@@ -755,7 +763,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(),
@@ -780,14 +788,14 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                             ),
                             margin: const EdgeInsets.only(bottom: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(5),
+                              color: MangoPalette.black,
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: Text(
                               _getScreeningTimeText(currentSession),
                               style: const TextStyle(
-                                fontSize: 7,
-                                color: Colors.grey,
+                                fontSize: 12,
+                                color: MangoPalette.grey500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -806,8 +814,8 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                               Text(
                                 "${currentSession['attendees'] ?? 0} attendees.",
                                 style: const TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.black,
+                                  fontSize: 12,
+                                  color: MangoPalette.black,
                                 ),
                               ),
                               const SizedBox(width: 5),
@@ -818,13 +826,13 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: _getStatusColor(currentSession),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                                 ),
                                 child: Text(
                                   _getStatusText(currentSession),
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 8,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -843,7 +851,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: MangoPalette.black.withOpacity(0.1),
                               blurRadius: 20,
                               spreadRadius: 5,
                               offset: const Offset(10, 10),
@@ -851,7 +859,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           child: currentSession['image'] != null
                               ? Image.network(
                                   currentSession['image'],
@@ -901,7 +909,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
 
   Color _getStatusColor(Map<String, dynamic> session) {
     if (session['isLive'] == true) return Colors.red;
-    if (session['isScheduled'] == true) return Colors.orange;
+    if (session['isScheduled'] == true) return MangoPalette.green500;
     return Colors.blue;
   }
 
@@ -911,10 +919,10 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
       height: 150,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -930,7 +938,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -942,7 +950,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -950,10 +958,10 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -966,7 +974,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.red.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.red.withOpacity(0.5),
@@ -983,7 +991,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                     "SCREENINGS",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1006,7 +1014,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1024,7 +1032,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1054,7 +1062,7 @@ class _LiveScreeningsCardState extends State<LiveScreeningsCard> {
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),
@@ -1147,7 +1155,7 @@ class MovieTheaterList extends StatelessWidget {
                                 child: Text(
                                   data["genre"] ?? "Movie Event",
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: 12,
                                     color: Theme.of(context).primaryColorLight,
                                   ),
                                 ),
@@ -1219,10 +1227,10 @@ class _MovieTheaterCarouselState extends State<_MovieTheaterCarousel> {
       height: 150,
       margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 3,
             offset: const Offset(0, 5),
@@ -1238,7 +1246,7 @@ class _MovieTheaterCarouselState extends State<_MovieTheaterCarousel> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 image: DecorationImage(
                   image: NetworkImage(_carouselImages[_currentImageIndex]),
                   fit: BoxFit.cover,
@@ -1250,7 +1258,7 @@ class _MovieTheaterCarouselState extends State<_MovieTheaterCarousel> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -1258,10 +1266,10 @@ class _MovieTheaterCarouselState extends State<_MovieTheaterCarousel> {
                   Colors.transparent,
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.6),
-                  Colors.black.withOpacity(0.8),
-                  Colors.black,
+                  MangoPalette.black.withOpacity(0.3),
+                  MangoPalette.black.withOpacity(0.6),
+                  MangoPalette.black.withOpacity(0.8),
+                  MangoPalette.black,
                 ],
                 stops: const [0.0, 0.3, 0.5, 0.65, 0.8, 0.9, 1.0],
               ),
@@ -1274,7 +1282,7 @@ class _MovieTheaterCarouselState extends State<_MovieTheaterCarousel> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.blue.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.blue.withOpacity(0.5),
@@ -1291,7 +1299,7 @@ class _MovieTheaterCarouselState extends State<_MovieTheaterCarousel> {
                     "THEATER",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 8,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1314,7 +1322,7 @@ class _MovieTheaterCarouselState extends State<_MovieTheaterCarousel> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: MangoPalette.black.withOpacity(0.8),
                         blurRadius: 10,
                         offset: const Offset(2, 2),
                       ),
@@ -1332,7 +1340,7 @@ class _MovieTheaterCarouselState extends State<_MovieTheaterCarousel> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: MangoPalette.black.withOpacity(0.6),
                         blurRadius: 8,
                         offset: const Offset(1, 1),
                       ),
@@ -1362,7 +1370,7 @@ class _MovieTheaterCarouselState extends State<_MovieTheaterCarousel> {
                         : Colors.white.withOpacity(0.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: MangoPalette.black.withOpacity(0.3),
                         blurRadius: 3,
                         offset: const Offset(1, 1),
                       ),

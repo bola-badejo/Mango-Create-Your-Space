@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class ProductItem {
   String id;
@@ -366,7 +367,7 @@ class UploadProductCollectionController extends GetxController {
             'Cover Added',
             'Collection cover image selected',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -383,7 +384,7 @@ class UploadProductCollectionController extends GetxController {
             'Cover Added',
             'Collection cover image selected',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -478,7 +479,7 @@ class UploadProductCollectionController extends GetxController {
       'Product Added',
       '${p.titleController.text} has been added',
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white,
       context: context,
     );
@@ -591,7 +592,7 @@ class UploadProductCollectionController extends GetxController {
         'Vendor Required',
         'Please register as a vendor/creator first to upload product collections.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -603,7 +604,7 @@ class UploadProductCollectionController extends GetxController {
         'Upload in Progress',
         'Please wait for current upload to complete',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -723,7 +724,7 @@ class UploadProductCollectionController extends GetxController {
         '🎉 Success!',
         'Collection "${collectionTitle.value}" uploaded',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
         context: context,
@@ -827,7 +828,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final textColor = isDark ? Colors.white : MangoPalette.black;
 
     return WillPopScope(
       onWillPop: () async => await _showExitDialog(context),
@@ -962,11 +963,11 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                     if (index != -1) ctrl.removeCollectionTag(index);
                   }
                 },
-                backgroundColor: Colors.grey[200],
-                selectedColor: Colors.orange.withOpacity(0.2),
-                checkmarkColor: Colors.orange,
+                backgroundColor: MangoPalette.grey200,
+                selectedColor: MangoPalette.green500.withOpacity(0.2),
+                checkmarkColor: MangoPalette.green500,
                 labelStyle: TextStyle(
-                  color: isSelected ? Colors.orange : null,
+                  color: isSelected ? MangoPalette.green500 : null,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
               );
@@ -1063,7 +1064,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
               return Column(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                     child: kIsWeb && ctrl.webCoverBytes != null
                         ? Image.memory(ctrl.webCoverBytes!, height: 150, fit: BoxFit.cover)
                         : Image.file(File(ctrl.coverImage.value!.path), height: 150, fit: BoxFit.cover),
@@ -1079,8 +1080,8 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
             return Container(
               height: 150,
               decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(12),
+                color: MangoPalette.grey200,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               child: const Center(child: Text('No cover selected')),
             );
@@ -1106,8 +1107,8 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(12),
+              color: MangoPalette.grey100,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Column(
               children: [
@@ -1162,11 +1163,11 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                           if (index != -1) ctrl.removeProductTag(index);
                         }
                       },
-                      backgroundColor: Colors.grey[200],
-                      selectedColor: Colors.orange.withOpacity(0.2),
-                      checkmarkColor: Colors.orange,
+                      backgroundColor: MangoPalette.grey200,
+                      selectedColor: MangoPalette.green500.withOpacity(0.2),
+                      checkmarkColor: MangoPalette.green500,
                       labelStyle: TextStyle(
-                        color: isSelected ? Colors.orange : null,
+                        color: isSelected ? MangoPalette.green500 : null,
                         fontSize: 12,
                       ),
                     );
@@ -1202,7 +1203,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                             return Chip(
                               label: Text(ctrl.newProductTags[i]),
                               onDeleted: () => ctrl.removeProductTag(i),
-                              backgroundColor: Colors.orange.withOpacity(0.1),
+                              backgroundColor: MangoPalette.green500.withOpacity(0.1),
                               deleteIcon: const Icon(Icons.close, size: 14),
                             );
                           }),
@@ -1213,7 +1214,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                 ElevatedButton(
                   onPressed: () => ctrl.addProduct(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: MangoPalette.green500,
                     minimumSize: const Size(double.infinity, 40),
                   ),
                   child: const Text('Add Product'),
@@ -1250,7 +1251,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                                 Container(
                                   width: 4,
                                   height: 40,
-                                  color: Colors.orange,
+                                  color: MangoPalette.green500,
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(
@@ -1302,7 +1303,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                                           child: Wrap(
                                             spacing: 4,
                                             children: p.tags.map((tag) => Chip(
-                                              label: Text(tag, style: const TextStyle(fontSize: 10)),
+                                              label: Text(tag, style: const TextStyle(fontSize: 12)),
                                               padding: EdgeInsets.zero,
                                               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                             )).toList(),
@@ -1312,10 +1313,11 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                                   ),
                                 ),
                                 IconButton(
+        tooltip: 'Delete',
                                   icon: const Icon(Icons.delete, color: Colors.red),
                                   onPressed: () => ctrl.removeProduct(index),
                                 ),
-                                const Icon(Icons.drag_handle, color: Colors.grey),
+                                const Icon(Icons.drag_handle, color: MangoPalette.grey500),
                               ],
                             ),
                           ],
@@ -1363,7 +1365,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                     if (p.tags.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(left: 16),
-                        child: Text('Tags: ${p.tags.join(", ")}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                        child: Text('Tags: ${p.tags.join(", ")}', style: const TextStyle(fontSize: 12, color: MangoPalette.grey500)),
                       ),
                   ],
                 ),
@@ -1375,7 +1377,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
             if (ctrl.isUploading.value) {
               return Column(
                 children: [
-                  LinearProgressIndicator(value: ctrl.uploadProgress.value),
+                  LinearProgressIndicator(semanticsLabel: 'Loading', value: ctrl.uploadProgress.value),
                   const SizedBox(height: 8),
                   Text(
                     ctrl.uploadStatus.value,
@@ -1392,7 +1394,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
             return ElevatedButton(
               onPressed: () => ctrl.uploadCollection(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: MangoPalette.green500,
                 minimumSize: const Size(double.infinity, 50),
               ),
               child: const Text('Upload Collection 🚀'),
@@ -1423,7 +1425,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
 
     return await showDialog<bool>(
           context: context,
-          barrierColor: Colors.black.withOpacity(0.4),
+          barrierColor: MangoPalette.black.withOpacity(0.4),
           builder: (context) => Dialog(
             backgroundColor: Colors.transparent,
             insetPadding: const EdgeInsets.all(24),
@@ -1432,10 +1434,10 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: MangoPalette.black.withOpacity(0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -1485,10 +1487,10 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             side: BorderSide(
-                              color: Colors.grey.withOpacity(0.3),
+                              color: MangoPalette.grey500.withOpacity(0.3),
                             ),
                           ),
                           icon: const Icon(Icons.arrow_back, size: 14),
@@ -1513,7 +1515,7 @@ class _UploadProductCollectionPageState extends State<UploadProductCollectionPag
                             backgroundColor: Colors.red,
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             elevation: 0,
                           ),

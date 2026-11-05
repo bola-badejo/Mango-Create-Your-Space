@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class ContributorProfile {
   final String contributorId; 
@@ -250,11 +251,11 @@ class ContributorProfile {
       case 'creator':
         return Colors.blue;
       case 'distributor':
-        return Colors.green;
+        return MangoPalette.green500;
       case 'vendor':
-        return Colors.orange;
+        return MangoPalette.green500;
       default:
-        return Colors.grey;
+        return MangoPalette.grey500;
     }
   }
 

@@ -1,0 +1,391 @@
+{
+  "version": 1,
+  "currency": "MNG",
+  "items": [
+    {
+      "id": "skin.meadow",
+      "kind": "skin",
+      "name": "Meadow",
+      "price": "0",
+      "rarity": "common",
+      "render": {
+        "colors": [
+          "#E4F1E8",
+          "#C6E3D0"
+        ],
+        "pattern": "dots",
+        "dark": false
+      }
+    },
+    {
+      "id": "skin.midnight",
+      "kind": "skin",
+      "name": "Midnight",
+      "price": "0",
+      "rarity": "common",
+      "render": {
+        "colors": [
+          "#0B0F0C",
+          "#1B241E"
+        ],
+        "pattern": "grid",
+        "dark": true
+      }
+    },
+    {
+      "id": "skin.sunset",
+      "kind": "skin",
+      "name": "Sunset",
+      "price": "15",
+      "rarity": "rare",
+      "render": {
+        "colors": [
+          "#FFD3A5",
+          "#FD6585"
+        ],
+        "pattern": "waves",
+        "dark": false
+      }
+    },
+    {
+      "id": "skin.ocean",
+      "kind": "skin",
+      "name": "Ocean",
+      "price": "15",
+      "rarity": "rare",
+      "render": {
+        "colors": [
+          "#2193B0",
+          "#6DD5ED"
+        ],
+        "pattern": "waves",
+        "dark": true
+      }
+    },
+    {
+      "id": "skin.forest",
+      "kind": "skin",
+      "name": "Forest",
+      "price": "20",
+      "rarity": "rare",
+      "render": {
+        "colors": [
+          "#134E5E",
+          "#71B280"
+        ],
+        "pattern": "dots",
+        "dark": true
+      }
+    },
+    {
+      "id": "skin.aurora",
+      "kind": "skin",
+      "name": "Aurora",
+      "price": "25",
+      "rarity": "epic",
+      "render": {
+        "colors": [
+          "#0F2027",
+          "#2C5364"
+        ],
+        "pattern": "aurora",
+        "dark": true
+      }
+    },
+    {
+      "id": "skin.neon",
+      "kind": "skin",
+      "name": "Neon City",
+      "price": "40",
+      "rarity": "epic",
+      "render": {
+        "colors": [
+          "#1A002E",
+          "#3A0CA3"
+        ],
+        "pattern": "grid",
+        "dark": true
+      }
+    },
+    {
+      "id": "skin.gold",
+      "kind": "skin",
+      "name": "Golden Hour",
+      "price": "100",
+      "rarity": "legendary",
+      "render": {
+        "colors": [
+          "#F7E8B5",
+          "#C9A227"
+        ],
+        "pattern": "rays",
+        "dark": false
+      }
+    },
+    {
+      "id": "icon.mango",
+      "kind": "icon",
+      "name": "Mango",
+      "price": "0",
+      "rarity": "common",
+      "render": {
+        "glyph": "🥭"
+      }
+    },
+    {
+      "id": "icon.star",
+      "kind": "icon",
+      "name": "Star",
+      "price": "0",
+      "rarity": "common",
+      "render": {
+        "glyph": "⭐"
+      }
+    },
+    {
+      "id": "icon.music",
+      "kind": "icon",
+      "name": "Music",
+      "price": "5",
+      "rarity": "common",
+      "render": {
+        "glyph": "🎵"
+      }
+    },
+    {
+      "id": "icon.book",
+      "kind": "icon",
+      "name": "Book",
+      "price": "5",
+      "rarity": "common",
+      "render": {
+        "glyph": "📚"
+      }
+    },
+    {
+      "id": "icon.rocket",
+      "kind": "icon",
+      "name": "Rocket",
+      "price": "5",
+      "rarity": "common",
+      "render": {
+        "glyph": "🚀"
+      }
+    },
+    {
+      "id": "icon.camera",
+      "kind": "icon",
+      "name": "Camera",
+      "price": "5",
+      "rarity": "common",
+      "render": {
+        "glyph": "📷"
+      }
+    },
+    {
+      "id": "icon.fire",
+      "kind": "icon",
+      "name": "Fire",
+      "price": "8",
+      "rarity": "rare",
+      "render": {
+        "glyph": "🔥"
+      }
+    },
+    {
+      "id": "icon.palette",
+      "kind": "icon",
+      "name": "Palette",
+      "price": "8",
+      "rarity": "rare",
+      "render": {
+        "glyph": "🎨"
+      }
+    },
+    {
+      "id": "icon.crown",
+      "kind": "icon",
+      "name": "Crown",
+      "price": "10",
+      "rarity": "rare",
+      "render": {
+        "glyph": "👑"
+      }
+    },
+    {
+      "id": "icon.gem",
+      "kind": "icon",
+      "name": "Gem",
+      "price": "25",
+      "rarity": "epic",
+      "render": {
+        "glyph": "💎"
+      }
+    },
+    {
+      "id": "obj.plant",
+      "kind": "object",
+      "name": "Plant",
+      "price": "0",
+      "rarity": "common",
+      "render": {
+        "glyph": "🪴",
+        "size": 1.0
+      }
+    },
+    {
+      "id": "obj.lamp",
+      "kind": "object",
+      "name": "Lamp",
+      "price": "0",
+      "rarity": "common",
+      "render": {
+        "glyph": "💡",
+        "size": 0.9
+      }
+    },
+    {
+      "id": "obj.welcome",
+      "kind": "object",
+      "name": "Welcome sign",
+      "price": "0",
+      "rarity": "common",
+      "render": {
+        "glyph": "🪧",
+        "size": 1.1
+      }
+    },
+    {
+      "id": "obj.tree",
+      "kind": "object",
+      "name": "Tree",
+      "price": "6",
+      "rarity": "common",
+      "render": {
+        "glyph": "🌳",
+        "size": 1.6
+      }
+    },
+    {
+      "id": "obj.speaker",
+      "kind": "object",
+      "name": "Speaker",
+      "price": "8",
+      "rarity": "common",
+      "render": {
+        "glyph": "🔊",
+        "size": 1.0
+      }
+    },
+    {
+      "id": "obj.sofa",
+      "kind": "object",
+      "name": "Sofa",
+      "price": "10",
+      "rarity": "common",
+      "render": {
+        "glyph": "🛋️",
+        "size": 1.4
+      }
+    },
+    {
+      "id": "obj.bookshelf",
+      "kind": "object",
+      "name": "Bookshelf",
+      "price": "10",
+      "rarity": "common",
+      "render": {
+        "glyph": "📚",
+        "size": 1.3
+      }
+    },
+    {
+      "id": "obj.neon",
+      "kind": "object",
+      "name": "Neon sign",
+      "price": "12",
+      "rarity": "rare",
+      "render": {
+        "glyph": "✨",
+        "size": 1.0
+      }
+    },
+    {
+      "id": "obj.trophy",
+      "kind": "object",
+      "name": "Trophy",
+      "price": "15",
+      "rarity": "rare",
+      "render": {
+        "glyph": "🏆",
+        "size": 1.0
+      }
+    },
+    {
+      "id": "obj.arcade",
+      "kind": "object",
+      "name": "Arcade machine",
+      "price": "20",
+      "rarity": "rare",
+      "render": {
+        "glyph": "🕹️",
+        "size": 1.2
+      }
+    },
+    {
+      "id": "obj.disco",
+      "kind": "object",
+      "name": "Disco ball",
+      "price": "20",
+      "rarity": "rare",
+      "render": {
+        "glyph": "🪩",
+        "size": 1.1
+      }
+    },
+    {
+      "id": "obj.fountain",
+      "kind": "object",
+      "name": "Fountain",
+      "price": "25",
+      "rarity": "epic",
+      "render": {
+        "glyph": "⛲",
+        "size": 1.5
+      }
+    },
+    {
+      "id": "obj.stage",
+      "kind": "object",
+      "name": "Live stage",
+      "price": "30",
+      "rarity": "epic",
+      "render": {
+        "glyph": "🎤",
+        "size": 1.6
+      }
+    },
+    {
+      "id": "obj.piano",
+      "kind": "object",
+      "name": "Piano",
+      "price": "30",
+      "rarity": "epic",
+      "render": {
+        "glyph": "🎹",
+        "size": 1.4
+      }
+    },
+    {
+      "id": "obj.castle",
+      "kind": "object",
+      "name": "Castle",
+      "price": "120",
+      "rarity": "legendary",
+      "render": {
+        "glyph": "🏰",
+        "size": 2.0
+      }
+    }
+  ]
+}

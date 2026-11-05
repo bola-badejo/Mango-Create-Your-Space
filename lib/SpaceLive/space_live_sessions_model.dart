@@ -1,4 +1,4 @@
-import 'package:mango/models/customModel/user.dart';
+import 'package:mango/Models/customModel/user.dart';
 
 enum SessionStatus { scheduled, live, ended }
 enum UserRole { host, speaker, listener }

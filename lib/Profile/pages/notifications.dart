@@ -1,12 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+// Notification centre.
+//
+//   Today / This week / Earlier, unread first in each, All or Unread.
+//   Tap to open what it's about; swipe to delete; mark all read.
+//   Settings: choose what you hear about, turn pushes off, mute for 8 hours,
+//   and send yourself a test.
+// Notifications are created by the server (functions/notify); older entries
+// written by previous versions still display.
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
-import 'package:mango/Notifications/notifications_controller.dart';
-import 'package:mango/Utils/theme.dart';
-import 'package:mango/Utils/optimized_lists.dart';
+import 'package:flutter/material.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
+import 'package:mango/Notifications/notification_router.dart';
+import 'package:mango/Wallet/ledger/mango_ledger_client.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({Key? key}) : super(key: key);
@@ -15,986 +21,270 @@ class NotificationsPage extends StatefulWidget {
   State<NotificationsPage> createState() => _NotificationsPageState();
 }
 
-class _NotificationsPageState extends State<NotificationsPage>
-    with SingleTickerProviderStateMixin {
-  final NotificationController _notificationController =
-      Get.find<NotificationController>();
-  final ThemeController _themeController = Get.find<ThemeController>();
-  late TabController _tabController;
+class _Item {
+  _Item(this.id, this.d);
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+  final String id;
+  final Map<String, dynamic> d;
+
+  String get type => '${d['type'] ?? ''}';
+  String get title => '${d['title'] ?? d['message'] ?? ''}';
+  String get body => '${d['body'] ?? (d['title'] != null ? d['message'] ?? '' : '')}';
+  bool get read => d['isRead'] == true;
+  String? get image => (d['imageUrl'] ?? '').toString().isEmpty ? null : '${d['imageUrl']}';
+  Map<String, dynamic>? get target => d['target'] is Map ? Map<String, dynamic>.from(d['target'] as Map) : null;
+  DateTime get at {
+    final t = d['timestamp'] ?? d['time'];
+    if (t is Timestamp) return t.toDate();
+    if (t is int) return DateTime.fromMillisecondsSinceEpoch(t);
+    final ms = d['updatedMs'];
+    return ms is int ? DateTime.fromMillisecondsSinceEpoch(ms) : DateTime.fromMillisecondsSinceEpoch(0);
+  }
+}
+
+class _NotificationsPageState extends State<NotificationsPage> {
+  bool _unreadOnly = false;
+
+  CollectionReference<Map<String, dynamic>>? get _col {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    return uid == null ? null : FirebaseFirestore.instance.collection('users').doc(uid).collection('notifications');
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+  Future<void> _markAllRead() async {
+    final col = _col;
+    if (col == null) return;
+    final unread = await col.where('isRead', isEqualTo: false).limit(400).get();
+    final batch = FirebaseFirestore.instance.batch();
+    for (final d in unread.docs) {
+      batch.update(d.reference, {'isRead': true});
+    }
+    await batch.commit();
+    if (mounted) MangoAnnounce.polite(context, 'All marked as read');
+  }
+
+  Future<void> _open(_Item n) async {
+    if (!n.read) await _col?.doc(n.id).update({'isRead': true}).catchError((_) {});
+    final t = n.target;
+    if (t != null) {
+      await NotificationRouter.open('${t['kind'] ?? ''}', '${t['id'] ?? ''}');
+    } else {
+      // Older notifications.
+      await NotificationRouter.openFromPush({...n.d, 'type': n.type, 'id': n.d['pageId'] ?? n.d['${n.type}Id'] ?? ''});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = _themeController.isDarkMode.value;
-    final primaryColor = _themeController.primaryColorValue;
-
+    final col = _col;
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Colors.grey[50],
-      appBar: _buildAppBar(isDarkMode, primaryColor),
-      body: Column(
-        children: [
-          _buildTabBar(isDarkMode, primaryColor),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildNotificationsList(isDarkMode, primaryColor),
-                _buildSettingsSection(isDarkMode, primaryColor),
-              ],
-            ),
-          ),
+      appBar: AppBar(
+        title: const Text('Notifications'),
+        actions: [
+          MangoIconButton(icon: Icons.done_all_rounded, semanticLabel: 'Mark all as read', onPressed: _markAllRead),
+          MangoIconButton(icon: Icons.tune_rounded, semanticLabel: 'Notification settings', onPressed: () => _settings(context)),
         ],
       ),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(bool isDarkMode, Color primaryColor) {
-    return AppBar(
-      title: Text(
-        'Notifications',
-        style: TextStyle(
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-          color: isDarkMode ? Colors.white : Colors.black,
-        ),
-      ),
-      backgroundColor: isDarkMode ? Colors.black : Colors.white,
-      elevation: 0,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
-      ),
-      actions: [
-        IconButton(
-          icon: Icon(
-            Icons.done_all_rounded,
-            color: primaryColor,
-          ),
-          onPressed: () => _markAllAsRead(),
-          tooltip: 'Mark all as read',
-        ),
-        PopupMenuButton<String>(
-          icon: Icon(
-            Icons.more_vert,
-            color: isDarkMode ? Colors.white : Colors.black,
-          ),
-          onSelected: (value) {
-            if (value == 'clear_all') {
-              _clearAllNotifications();
-            }
-          },
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: 'clear_all',
-              child: Row(
-                children: [
-                  Icon(Icons.delete_outline, color: Colors.red),
-                  const SizedBox(width: 12),
-                  Text('Clear all notifications'),
-                ],
+      body: col == null
+          ? const MangoStateView(kind: MangoStateKind.permissionDenied, title: 'Sign in to see notifications', message: '')
+          : Column(children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: MangoSpace.s4, vertical: MangoSpace.s2),
+                child: Row(children: [
+                  ChoiceChip(label: const Text('All'), selected: !_unreadOnly, onSelected: (_) => setState(() => _unreadOnly = false)),
+                  const SizedBox(width: MangoSpace.s2),
+                  ChoiceChip(label: const Text('Unread'), selected: _unreadOnly, onSelected: (_) => setState(() => _unreadOnly = true)),
+                ]),
               ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTabBar(bool isDarkMode, Color primaryColor) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.grey[100],
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: TabBar(
-        controller: _tabController,
-        indicator: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: primaryColor,
-        ),
-        labelColor: Colors.white,
-        unselectedLabelColor: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-        labelStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-        tabs: const [
-          Tab(text: 'All'),
-          Tab(text: 'Settings'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNotificationsList(bool isDarkMode, Color primaryColor) {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser == null) {
-      return _buildEmptyState(isDarkMode);
-    }
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUser.uid)
-          .collection('notifications')
-          .orderBy('timestamp', descending: true)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildLoadingState(isDarkMode);
-        }
-
-        if (snapshot.hasError) {
-          return _buildErrorState(isDarkMode);
-        }
-
-        final notifications = snapshot.data?.docs ?? [];
-        if (notifications.isEmpty) {
-          return _buildEmptyState(isDarkMode);
-        }
-
-        return OptimizedListView(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          itemCount: notifications.length,
-          itemBuilder: (context, index) {
-            final doc = notifications[index];
-            final data = doc.data() as Map<String, dynamic>;
-            return _buildNotificationCard(
-              data,
-              doc.id,
-              isDarkMode,
-              primaryColor,
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildNotificationCard(
-    Map<String, dynamic> data,
-    String docId,
-    bool isDarkMode,
-    Color primaryColor,
-  ) {
-    final isRead = data['isRead'] ?? false;
-    final type = data['type'] ?? 'general';
-    final title = data['title'] ?? 'Notification';
-    final body = data['body'] ?? '';
-    final timestamp = (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now();
-    final imageUrl = data['imageUrl'];
-
-    return Dismissible(
-      key: Key(docId),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 20),
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: const Icon(Icons.delete, color: Colors.white),
-      ),
-      onDismissed: (direction) {
-        _deleteNotification(docId);
-      },
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _handleNotificationTap(data),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            decoration: BoxDecoration(
-              color: isRead
-                  ? (isDarkMode ? Colors.grey[900] : Colors.white)
-                  : (isDarkMode ? Colors.grey[850] : primaryColor.withOpacity(0.05)),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: isRead
-                    ? (isDarkMode ? Colors.grey[800]! : Colors.grey[200]!)
-                    : primaryColor.withOpacity(0.3),
-                width: 1,
+              Expanded(
+                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: col.orderBy('timestamp', descending: true).limit(200).snapshots(),
+                  builder: (context, snap) {
+                    if (snap.hasError) return const MangoStateView(kind: MangoStateKind.error, title: "Couldn't load notifications", message: 'Check your connection and try again.');
+                    if (!snap.hasData) {
+                      return MangoLoadingRegion(label: 'Loading notifications', child: ListView(children: List.generate(6, (_) => const ListTile(leading: MangoSkeleton(width: 44, height: 44, circle: true), title: MangoSkeleton(width: 180, height: 14)))));
+                    }
+                    var items = snap.data!.docs.map((d) => _Item(d.id, d.data())).toList();
+                    if (_unreadOnly) items = items.where((n) => !n.read).toList();
+                    if (items.isEmpty) {
+                      return MangoStateView(kind: MangoStateKind.empty, title: _unreadOnly ? "You're all caught up" : 'No notifications yet', message: 'Likes, replies, follows and updates on what you share appear here.');
+                    }
+                    final now = DateTime.now();
+                    String section(DateTime t) {
+                      final d = now.difference(t);
+                      if (d.inHours < 24 && t.day == now.day) return 'Today';
+                      if (d.inDays < 7) return 'This week';
+                      return 'Earlier';
+                    }
+                    final rows = <Widget>[];
+                    String? current;
+                    for (var i = 0; i < items.length; i++) {
+                      final s = section(items[i].at);
+                      if (s != current) {
+                        current = s;
+                        rows.add(Padding(
+                          padding: const EdgeInsets.fromLTRB(MangoSpace.s4, MangoSpace.s4, MangoSpace.s4, MangoSpace.s1),
+                          child: Semantics(header: true, child: Text(s, style: context.type.titleSmall?.copyWith(color: context.colors.textSecondary))),
+                        ));
+                      }
+                      rows.add(_Row(item: items[i], index: i, onOpen: _open, onDelete: (n) => col.doc(n.id).delete()));
+                    }
+                    return ListView(padding: const EdgeInsets.only(bottom: MangoSpace.s8), children: rows);
+                  },
+                ),
               ),
+            ]),
+    );
+  }
+
+  Future<void> _settings(BuildContext context) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    final ref = FirebaseFirestore.instance.collection('users').doc(uid);
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheet) => StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: ref.snapshots(),
+        builder: (sheet, snap) {
+          final d = snap.data?.data() ?? const <String, dynamic>{};
+          final prefs = Map<String, dynamic>.from((d['notificationPrefs'] as Map?) ?? const {});
+          final pushOn = d['notificationsEnabled'] != false;
+          final muteUntil = d['muteUntil'];
+          final muted = muteUntil is Timestamp && muteUntil.toDate().isAfter(DateTime.now());
+          Widget toggle(String key, String title, String sub) => SwitchListTile(
+                title: Text(title),
+                subtitle: Text(sub),
+                value: prefs[key] != false,
+                onChanged: (v) => ref.set({'notificationPrefs': {key: v}}, SetOptions(merge: true)),
+              );
+          return SafeArea(
+            child: SizedBox(
+              height: MediaQuery.sizeOf(sheet).height * 0.85,
+              child: ListView(children: [
+                Padding(padding: const EdgeInsets.all(MangoSpace.s4), child: Text('Notification settings', style: sheet.type.titleLarge)),
+                SwitchListTile(
+                  title: const Text('Push notifications'),
+                  subtitle: const Text('Alerts on this device. The notification centre always fills.'),
+                  value: pushOn,
+                  onChanged: (v) => ref.set({'notificationsEnabled': v}, SetOptions(merge: true)),
+                ),
+                SwitchListTile(
+                  title: const Text('Mute for 8 hours'),
+                  subtitle: Text(muted ? 'Muted until ${TimeOfDay.fromDateTime((muteUntil as Timestamp).toDate()).format(sheet)}' : 'Pause pushes for a while'),
+                  value: muted,
+                  onChanged: (v) => ref.set({'muteUntil': v ? Timestamp.fromDate(DateTime.now().add(const Duration(hours: 8))) : null}, SetOptions(merge: true)),
+                ),
+                const Divider(),
+                toggle('likes', 'Likes', 'When people like your posts'),
+                toggle('comments', 'Replies and mentions', 'When people reply to or mention you'),
+                toggle('follows', 'New followers', 'When someone follows you'),
+                toggle('spaces', 'Spaces', 'Messages in your Spaces and live events in Spaces you joined'),
+                toggle('content', 'Your content', 'Milestones when people play, watch and read what you share'),
+                toggle('reading', 'Pick up where you left off', 'Reminders for books, episodes and films you started'),
+                toggle('account', 'Account and tips', 'Welcome, profile and important account updates'),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.notifications_active_outlined),
+                  title: const Text('Send a test notification'),
+                  onTap: () async {
+                    try {
+                      await MangoLedgerClient.instance.call('notifyTest');
+                      if (sheet.mounted) MangoToast.show(sheet, message: 'Test sent', kind: MangoToastKind.success);
+                    } catch (e) {
+                      if (sheet.mounted) MangoToast.show(sheet, message: e.toString(), kind: MangoToastKind.error);
+                    }
+                  },
+                ),
+              ]),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildIcon(type, isDarkMode, primaryColor),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: isDarkMode ? Colors.white : Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          body,
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          _formatTime(timestamp),
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (!isRead)
-                    Container(
-                      width: 8,
-                      height: 8,
-                      margin: const EdgeInsets.only(top: 8),
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        shape: BoxShape.circle,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _Row extends StatelessWidget {
+  const _Row({required this.item, required this.index, required this.onOpen, required this.onDelete});
+
+  final _Item item;
+  final int index;
+  final Future<void> Function(_Item) onOpen;
+  final Future<void> Function(_Item) onDelete;
+
+  static (IconData, Color) _visual(String type, BuildContext context) {
+    final c = context.colors;
+    return switch (type) {
+      'like' => (Icons.favorite_rounded, const Color(0xFFE5484D)),
+      'reply' || 'mention' || 'post' => (Icons.chat_bubble_rounded, c.textBrand),
+      'follow' || 'profile' => (Icons.person_add_alt_1_rounded, const Color(0xFF0EADFF)),
+      'space_message' || 'space_live' => (Icons.meeting_room_rounded, const Color(0xFF9B55A0)),
+      'content_milestone' => (Icons.emoji_events_rounded, const Color(0xFFF5A524)),
+      'reading_reminder' || 'book' => (Icons.menu_book_rounded, c.textBrand),
+      'song' => (Icons.music_note_rounded, c.textBrand),
+      'chat' => (Icons.chat_rounded, const Color(0xFF0EADFF)),
+      'welcome' => (Icons.waving_hand_rounded, const Color(0xFFF5A524)),
+      'complete_profile' => (Icons.badge_rounded, c.actionPrimary),
+      _ => (Icons.notifications_rounded, c.textSecondary),
+    };
+  }
+
+  static String _ago(DateTime t) {
+    final d = DateTime.now().difference(t);
+    if (d.inMinutes < 1) return 'now';
+    if (d.inHours < 1) return '${d.inMinutes}m';
+    if (d.inDays < 1) return '${d.inHours}h';
+    if (d.inDays < 7) return '${d.inDays}d';
+    return '${t.day}/${t.month}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final (icon, color) = _visual(item.type, context);
+    return MangoAppear.staggered(
+      index: index,
+      child: Dismissible(
+        key: ValueKey(item.id),
+        direction: DismissDirection.endToStart,
+        background: Container(color: c.errorContainer, alignment: Alignment.centerRight, padding: const EdgeInsets.only(right: MangoSpace.s6), child: Icon(Icons.delete_outline_rounded, color: c.error)),
+        onDismissed: (_) => onDelete(item),
+        child: Semantics(
+          label: '${item.read ? '' : 'Unread. '}${item.title}. ${item.body}. ${_ago(item.at)} ago',
+          button: true,
+          child: ExcludeSemantics(
+            child: Material(
+              color: item.read ? Colors.transparent : c.surfaceSelected.withValues(alpha: 0.5),
+              child: InkWell(
+                onTap: () => onOpen(item),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: MangoSpace.s4, vertical: MangoSpace.s3),
+                  child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Stack(clipBehavior: Clip.none, children: [
+                      CircleAvatar(
+                        radius: 22,
+                        backgroundColor: color.withValues(alpha: 0.15),
+                        backgroundImage: item.image == null ? null : CachedNetworkImageProvider(item.image!),
+                        child: item.image == null ? Icon(icon, color: color, size: 22) : null,
                       ),
+                      if (item.image != null)
+                        Positioned(right: -2, bottom: -2, child: CircleAvatar(radius: 10, backgroundColor: c.bgPrimary, child: Icon(icon, size: 12, color: color))),
+                    ]),
+                    const SizedBox(width: MangoSpace.s3),
+                    Expanded(
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        Text(item.title, style: context.type.bodyLarge?.copyWith(fontWeight: item.read ? FontWeight.w400 : FontWeight.w700)),
+                        if (item.body.isNotEmpty)
+                          Padding(padding: const EdgeInsets.only(top: 2), child: Text(item.body, maxLines: 2, overflow: TextOverflow.ellipsis, style: context.type.bodyMedium?.copyWith(color: c.textSecondary))),
+                        Padding(padding: const EdgeInsets.only(top: 4), child: Text(_ago(item.at), style: context.type.labelSmall?.copyWith(color: c.textTertiary))),
+                      ]),
                     ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIcon(String type, bool isDarkMode, Color primaryColor) {
-    IconData iconData;
-    Color iconColor;
-
-    switch (type) {
-      case 'chat':
-        iconData = Icons.chat_bubble_outline;
-        iconColor = Colors.blue;
-        break;
-      case 'post':
-        iconData = Icons.article_outlined;
-        iconColor = Colors.green;
-        break;
-      case 'song':
-        iconData = Icons.music_note;
-        iconColor = Colors.orange;
-        break;
-      case 'profile':
-        iconData = Icons.person_outline;
-        iconColor = Colors.purple;
-        break;
-      case 'book':
-        iconData = Icons.book_outlined;
-        iconColor = Colors.brown;
-        break;
-      default:
-        iconData = Icons.notifications_outlined;
-        iconColor = primaryColor;
-    }
-
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: iconColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Icon(
-        iconData,
-        color: iconColor,
-        size: 24,
-      ),
-    );
-  }
-
-  Widget _buildSettingsSection(bool isDarkMode, Color primaryColor) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSettingsCard(
-            'Notification Preferences',
-            Icons.notifications_active_outlined,
-            isDarkMode,
-            [
-              _buildSwitchTile(
-                'Push Notifications',
-                'Receive notifications on your device',
-                _notificationController.notificationsEnabled.value,
-                (value) => _notificationController.setNotificationsEnabled(value),
-                isDarkMode,
-                primaryColor,
-              ),
-              const SizedBox(height: 16),
-              _buildMuteSection(isDarkMode, primaryColor),
-            ],
-          ),
-          const SizedBox(height: 20),
-          _buildSettingsCard(
-            'Notification Types',
-            Icons.category_outlined,
-            isDarkMode,
-            [
-              _buildNotificationTypeTile(
-                'Messages',
-                'Get notified when you receive a message',
-                true,
-                isDarkMode,
-                primaryColor,
-              ),
-              _buildNotificationTypeTile(
-                'Posts',
-                'Get notified about new posts from friends',
-                true,
-                isDarkMode,
-                primaryColor,
-              ),
-              _buildNotificationTypeTile(
-                'Likes & Reactions',
-                'Get notified when someone likes your content',
-                true,
-                isDarkMode,
-                primaryColor,
-              ),
-              _buildNotificationTypeTile(
-                'Song Plays',
-                'Get notified when someone plays your songs',
-                true,
-                isDarkMode,
-                primaryColor,
-              ),
-              _buildNotificationTypeTile(
-                'Profile Views',
-                'Get notified when someone views your profile',
-                true,
-                isDarkMode,
-                primaryColor,
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          _buildSettingsCard(
-            'Delivery Options',
-            Icons.delivery_dining_outlined,
-            isDarkMode,
-            [
-              _buildRadioTile(
-                'Sound',
-                'Play sound for notifications',
-                true,
-                isDarkMode,
-                primaryColor,
-              ),
-              _buildRadioTile(
-                'Vibration',
-                'Vibrate device for notifications',
-                true,
-                isDarkMode,
-                primaryColor,
-              ),
-              _buildRadioTile(
-                'Preview',
-                'Show message preview in notifications',
-                true,
-                isDarkMode,
-                primaryColor,
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          _buildSettingsCard(
-            'Quiet Hours',
-            Icons.nightlight_round_outlined,
-            isDarkMode,
-            [
-              _buildQuietHoursTile(isDarkMode, primaryColor),
-            ],
-          ),
-          const SizedBox(height: 30),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSettingsCard(
-    String title,
-    IconData icon,
-    bool isDarkMode,
-    List<Widget> children,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[900] : Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Icon(icon, size: 22, color: isDarkMode ? Colors.white : Colors.black),
-                const SizedBox(width: 12),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(height: 1, color: isDarkMode ? Colors.grey[800] : Colors.grey[200]),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: children,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSwitchTile(
-    String title,
-    String subtitle,
-    bool value,
-    Function(bool) onChanged,
-    bool isDarkMode,
-    Color primaryColor,
-  ) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                    if (!item.read) Padding(padding: const EdgeInsets.only(top: 6, left: MangoSpace.s2), child: Icon(Icons.circle, size: 10, color: c.actionPrimary)),
+                  ]),
                 ),
               ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: isDarkMode ? Colors.grey[500] : Colors.grey[600],
-                ),
-              ),
-            ],
-          ),
-        ),
-        Switch(
-          value: value,
-          onChanged: onChanged,
-          activeColor: primaryColor,
-          activeTrackColor: primaryColor.withOpacity(0.5),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMuteSection(bool isDarkMode, Color primaryColor) {
-    return Column(
-      children: [
-        _buildSwitchTile(
-          'Mute All',
-          'Temporarily silence all notifications',
-          false,
-          (value) {
-            if (value) {
-              _showMuteOptions();
-            }
-          },
-          isDarkMode,
-          primaryColor,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNotificationTypeTile(
-    String title,
-    String subtitle,
-    bool enabled,
-    bool isDarkMode,
-    Color primaryColor,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isDarkMode ? Colors.grey[500] : Colors.grey[600],
-                  ),
-                ),
-              ],
             ),
           ),
-          Switch(
-            value: enabled,
-            onChanged: (value) {},
-            activeColor: primaryColor,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRadioTile(
-    String title,
-    String subtitle,
-    bool selected,
-    bool isDarkMode,
-    Color primaryColor,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isDarkMode ? Colors.grey[500] : Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Radio<bool>(
-            value: true,
-            groupValue: selected,
-            onChanged: (value) {},
-            activeColor: primaryColor,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuietHoursTile(bool isDarkMode, Color primaryColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Quiet Hours',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: isDarkMode ? Colors.white : Colors.black,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                'Set schedule to mute notifications',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: isDarkMode ? Colors.grey[500] : Colors.grey[600],
-                ),
-              ),
-            ],
-          ),
-        ),
-        TextButton(
-          onPressed: () => _showQuietHoursDialog(),
-          child: Text(
-            'Set Schedule',
-            style: TextStyle(
-              color: primaryColor,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLoadingState(bool isDarkMode) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator(),
-          const SizedBox(height: 16),
-          Text(
-            'Loading notifications...',
-            style: TextStyle(
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildErrorState(bool isDarkMode) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.error_outline,
-            size: 48,
-            color: Colors.red,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Failed to load notifications',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: isDarkMode ? Colors.white : Colors.black,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Pull down to refresh',
-            style: TextStyle(
-              fontSize: 14,
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEmptyState(bool isDarkMode) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.notifications_off_outlined,
-            size: 80,
-            color: isDarkMode ? Colors.grey[700] : Colors.grey[400],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'No notifications yet',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: isDarkMode ? Colors.white : Colors.black,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'When you get notifications, they\'ll appear here',
-            style: TextStyle(
-              fontSize: 14,
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _formatTime(DateTime time) {
-    final now = DateTime.now();
-    final difference = now.difference(time);
-
-    if (difference.inDays > 7) {
-      return DateFormat('MMM d, yyyy').format(time);
-    } else if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
-    } else {
-      return 'Just now';
-    }
-  }
-
-  void _handleNotificationTap(Map<String, dynamic> data) {
-    _markAsRead(data['id'] as String);
-    final type = data['type'];
-    final id = data['id'] ?? data['${type}Id'];
-
-    switch (type) {
-      case 'chat':
-        Get.toNamed('/chat/$id');
-        break;
-      case 'post':
-        Get.toNamed('/post/$id');
-        break;
-      case 'song':
-        Get.toNamed('/song/$id');
-        break;
-      case 'profile':
-        Get.toNamed('/profile/$id');
-        break;
-      case 'book':
-        Get.toNamed('/book/$id');
-        break;
-    }
-  }
-
-  Future<void> _markAsRead(String notificationId) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('notifications')
-          .doc(notificationId)
-          .update({'isRead': true});
-    }
-  }
-
-  Future<void> _markAllAsRead() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final batch = FirebaseFirestore.instance.batch();
-      final notifications = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('notifications')
-          .where('isRead', isEqualTo: false)
-          .get();
-
-      for (var doc in notifications.docs) {
-        batch.update(doc.reference, {'isRead': true});
-      }
-      await batch.commit();
-    }
-  }
-
-  Future<void> _deleteNotification(String notificationId) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('notifications')
-          .doc(notificationId)
-          .delete();
-    }
-  }
-
-  Future<void> _clearAllNotifications() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final notifications = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('notifications')
-          .get();
-
-      final batch = FirebaseFirestore.instance.batch();
-      for (var doc in notifications.docs) {
-        batch.delete(doc.reference);
-      }
-      await batch.commit();
-    }
-  }
-
-  void _showMuteOptions() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Mute Notifications',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              _buildMuteOption('For 1 hour', Duration(hours: 1)),
-              _buildMuteOption('For 8 hours', Duration(hours: 8)),
-              _buildMuteOption('For 24 hours', Duration(days: 1)),
-              _buildMuteOption('Until tomorrow morning', Duration(days: 1)),
-              const Divider(),
-              TextButton(
-                onPressed: () {
-                  _notificationController.unmute();
-                  Navigator.pop(context);
-                },
-                child: const Text('Unmute', style: TextStyle(color: Colors.red)),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildMuteOption(String label, Duration duration) {
-    return ListTile(
-      title: Text(label),
-      onTap: () {
-        _notificationController.muteFor(duration);
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Notifications muted for $label'),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      },
-    );
-  }
-
-  void _showQuietHoursDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Quiet Hours'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Set time range to automatically mute notifications'),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(child: _buildTimePicker('From', TimeOfDay.now())),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildTimePicker('To', TimeOfDay.now())),
-                ],
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Quiet hours set'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildTimePicker(String label, TimeOfDay initialTime) {
-    return InkWell(
-      onTap: () async {
-        final time = await showTimePicker(
-          context: context,
-          initialTime: initialTime,
-        );
-        if (time != null) {
-          // Handle time selection
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[300]!),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Text(label, style: const TextStyle(fontSize: 12)),
-            const SizedBox(height: 4),
-            Text(
-              initialTime.format(context),
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ],
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mango/Home/controllers/dashboard_controller.dart';
 import 'package:mango/MusicPlayer/music.dart';
 import 'package:mango/MusicPlayer/music_player.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class GenreDetailPage extends StatelessWidget {
   final String genreName;
@@ -23,7 +24,7 @@ class GenreDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: MangoPalette.black,
       body: CustomScrollView(
         slivers: [
           
@@ -38,7 +39,7 @@ class GenreDetailPage extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       genreColor.withOpacity(0.8),
-                      Colors.black,
+                      MangoPalette.black,
                     ],
                   ),
                 ),
@@ -90,7 +91,7 @@ class GenreDetailPage extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: genreColor,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(MangoRadius.lg),
                           ),
                         ),
                         icon: Icon(Icons.play_arrow, color: Colors.white),
@@ -109,6 +110,7 @@ class GenreDetailPage extends StatelessWidget {
             ),
             pinned: true,
             leading: IconButton(
+        tooltip: 'Back',
               icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () => Get.back(),
             ),
@@ -135,7 +137,7 @@ class GenreDetailPage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: CircularProgressIndicator(semanticsLabel: 'Loading')),
                 );
               }
               
@@ -156,7 +158,7 @@ class GenreDetailPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.music_off, size: 60, color: Colors.grey),
+                        Icon(Icons.music_off, size: 60, color: MangoPalette.grey500),
                         SizedBox(height: 16),
                         Text(
                           'No songs found for $genreName',
@@ -189,14 +191,14 @@ class GenreDetailPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12),
+        color: MangoPalette.grey900,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: ListTile(
         leading: Stack(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               child: Image.network(
                 music.artworkUrl,
                 width: 50,
@@ -227,7 +229,7 @@ class GenreDetailPage extends StatelessWidget {
                     child: Text(
                       '$rank',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -256,13 +258,13 @@ class GenreDetailPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                 decoration: BoxDecoration(
                   color: Colors.red,
-                  borderRadius: BorderRadius.circular(3),
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                 ),
                 child: Text(
                   'E',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 8,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -274,31 +276,32 @@ class GenreDetailPage extends StatelessWidget {
           children: [
             Text(
               music.artistName,
-              style: TextStyle(color: Colors.grey[400]),
+              style: TextStyle(color: MangoPalette.grey400),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 2),
             Row(
               children: [
-                Icon(Icons.play_arrow, size: 12, color: Colors.grey),
+                Icon(Icons.play_arrow, size: 12, color: MangoPalette.grey500),
                 SizedBox(width: 4),
                 Text(
                   '${music.plays} plays',
-                  style: TextStyle(color: Colors.grey[500], fontSize: 11),
+                  style: TextStyle(color: MangoPalette.grey500, fontSize: 12),
                 ),
                 SizedBox(width: 8),
-                Icon(Icons.schedule, size: 12, color: Colors.grey),
+                Icon(Icons.schedule, size: 12, color: MangoPalette.grey500),
                 SizedBox(width: 4),
                 Text(
                   music.formattedDuration,
-                  style: TextStyle(color: Colors.grey[500], fontSize: 11),
+                  style: TextStyle(color: MangoPalette.grey500, fontSize: 12),
                 ),
               ],
             ),
           ],
         ),
         trailing: IconButton(
+        tooltip: 'Play',
           icon: Icon(Icons.play_arrow, color: genreColor),
           onPressed: () {
             Get.to(() => MusicPlayer(musicId: music.id));

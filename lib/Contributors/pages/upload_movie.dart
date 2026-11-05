@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mango/Contributors/controllers/movies_upload_controller.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class UploadMoviePage extends StatefulWidget {
   final String? contributorId;
@@ -49,9 +51,9 @@ class _UploadMoviePageState extends State<UploadMoviePage>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
-    final cardColor = isDark ? Colors.grey[800]! : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final backgroundColor = isDark ? MangoPalette.grey900 : MangoPalette.grey50;
+    final cardColor = isDark ? MangoPalette.grey800 : Colors.white;
+    final textColor = isDark ? Colors.white : MangoPalette.black;
 
     return WillPopScope(
       onWillPop: () async {
@@ -138,7 +140,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
       final isCompleted = _controller.currentStep.value > stepNumber;
       final isAccessible = _controller.currentStep.value >= stepNumber;
 
-      return GestureDetector(
+      return MangoPressable(
         onTap: isAccessible
             ? () => _controller.currentStep.value = stepNumber
             : null,
@@ -147,11 +149,11 @@ class _UploadMoviePageState extends State<UploadMoviePage>
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: isActive
-                ? Colors.orange.withOpacity(0.1)
+                ? MangoPalette.green500.withOpacity(0.1)
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: isActive
-                ? Border.all(color: Colors.orange.withOpacity(0.3))
+                ? Border.all(color: MangoPalette.green500.withOpacity(0.3))
                 : null,
           ),
           child: Column(
@@ -161,10 +163,10 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: isCompleted
-                      ? Colors.green
+                      ? MangoPalette.green500
                       : (isActive
-                            ? Colors.orange
-                            : Colors.grey.withOpacity(0.2)),
+                            ? MangoPalette.green500
+                            : MangoPalette.grey500.withOpacity(0.2)),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -177,9 +179,9 @@ class _UploadMoviePageState extends State<UploadMoviePage>
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                  color: isDark ? Colors.white : Colors.black,
+                  color: isDark ? Colors.white : MangoPalette.black,
                 ),
               ),
             ],
@@ -193,7 +195,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
     return Container(
       width: 16,
       height: 1,
-      color: isDark ? Colors.grey[700] : Colors.grey[300],
+      color: isDark ? MangoPalette.grey700 : MangoPalette.grey300,
     );
   }
 
@@ -223,10 +225,10 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -235,7 +237,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             child: Column(
               children: [
                 Obx(
-                  () => GestureDetector(
+                  () => MangoPressable(
                     onTap: _showPosterPicker,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 400),
@@ -244,12 +246,12 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                       decoration: BoxDecoration(
                         color: _controller.isPosterSelected.value
                             ? Colors.transparent
-                            : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(16),
+                            : MangoPalette.grey200,
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                         border: Border.all(
                           color: _controller.isPosterSelected.value
-                              ? Colors.orange
-                              : Colors.grey[300]!,
+                              ? MangoPalette.green500
+                              : MangoPalette.grey300,
                           width: 2,
                         ),
                         image: _controller.selectedPoster.value != null
@@ -268,13 +270,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                                 Icon(
                                   Icons.movie_filter,
                                   size: 48,
-                                  color: Colors.grey[400],
+                                  color: MangoPalette.grey400,
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
                                   'Add Movie Poster',
                                   style: TextStyle(
-                                    color: Colors.grey[600],
+                                    color: MangoPalette.grey600,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -289,6 +291,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                                     radius: 14,
                                     backgroundColor: Colors.black54,
                                     child: IconButton(
+        tooltip: 'Close',
                                       icon: const Icon(Icons.close, size: 14, color: Colors.white),
                                       onPressed: _controller.removePoster,
                                       padding: EdgeInsets.zero,
@@ -306,7 +309,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black,
+                    color: isDark ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -314,7 +317,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                   'Choose a high-quality poster image for best results',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -337,11 +340,11 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : MangoPalette.black,
             ),
           ),
           const SizedBox(height: 16),
-          GestureDetector(
+          MangoPressable(
             onTap: () => _controller.pickBackdrop(context),
             child: Container(
               width: double.infinity,
@@ -349,12 +352,12 @@ class _UploadMoviePageState extends State<UploadMoviePage>
               decoration: BoxDecoration(
                 color: _controller.selectedBackdrop.value != null
                     ? Colors.transparent
-                    : Colors.grey[100],
-                borderRadius: BorderRadius.circular(12),
+                    : MangoPalette.grey100,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 border: Border.all(
                   color: _controller.selectedBackdrop.value != null
-                      ? Colors.green
-                      : Colors.grey[300]!,
+                      ? MangoPalette.green500
+                      : MangoPalette.grey300,
                   width: 2,
                 ),
                 image: _controller.selectedBackdrop.value != null
@@ -373,13 +376,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                         Icon(
                           Icons.photo_library,
                           size: 32,
-                          color: Colors.grey[400],
+                          color: MangoPalette.grey400,
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Add Backdrop (16:9)',
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: MangoPalette.grey600,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -394,6 +397,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                             radius: 14,
                             backgroundColor: Colors.black54,
                             child: IconButton(
+        tooltip: 'Close',
                               icon: const Icon(Icons.close, size: 14, color: Colors.white),
                               onPressed: _controller.removeBackdrop,
                               padding: EdgeInsets.zero,
@@ -418,10 +422,10 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -435,13 +439,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: _controller.isVideoSelected.value
-                          ? Colors.green.withOpacity(0.1)
-                          : Colors.orange.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(16),
+                          ? MangoPalette.green500.withOpacity(0.1)
+                          : MangoPalette.green500.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                       border: Border.all(
                         color: _controller.isVideoSelected.value
-                            ? Colors.green
-                            : Colors.orange,
+                            ? MangoPalette.green500
+                            : MangoPalette.green500,
                         width: 2,
                       ),
                     ),
@@ -453,8 +457,8 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                               : Icons.videocam,
                           size: 48,
                           color: _controller.isVideoSelected.value
-                              ? Colors.green
-                              : Colors.orange,
+                              ? MangoPalette.green500
+                              : MangoPalette.green500,
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -474,15 +478,15 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                               : 'Choose your video file to continue',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
+                            color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                           ),
                         ),
                         if (_controller.uploadProgress.value > 0 && _controller.uploadProgress.value < 1) ...[
                           const SizedBox(height: 16),
-                          LinearProgressIndicator(
+                          LinearProgressIndicator(semanticsLabel: 'Loading', 
                             value: _controller.uploadProgress.value,
-                            backgroundColor: Colors.grey[300],
-                            color: Colors.orange,
+                            backgroundColor: MangoPalette.grey300,
+                            color: MangoPalette.green500,
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -490,7 +494,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: Colors.orange,
+                              color: MangoPalette.green500,
                             ),
                           ),
                         ],
@@ -499,14 +503,14 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Colors.green.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
+                              color: MangoPalette.green500.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(MangoRadius.sm),
                             ),
                             child: const Text(
                               'Upload Complete ✓',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.green,
+                                color: MangoPalette.green500,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -522,13 +526,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                       ? null
                       : () => _controller.pickAndUploadVideo(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: MangoPalette.green500,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                   ),
                   icon: const Icon(Icons.upload_file, color: Colors.white),
@@ -548,7 +552,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                 Text(
                   'Supported: MP4, MOV, MKV, AVI (Max: 5GB)',
                   style: TextStyle(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                     fontSize: 12,
                   ),
                 ),
@@ -572,11 +576,11 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : MangoPalette.black,
             ),
           ),
           const SizedBox(height: 16),
-          GestureDetector(
+          MangoPressable(
             onTap: () => _controller.pickTrailer(context),
             child: Container(
               width: double.infinity,
@@ -584,13 +588,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: _controller.selectedTrailer.value != null
-                    ? Colors.green.withOpacity(0.1)
-                    : Colors.grey[100],
-                borderRadius: BorderRadius.circular(12),
+                    ? MangoPalette.green500.withOpacity(0.1)
+                    : MangoPalette.grey100,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 border: Border.all(
                   color: _controller.selectedTrailer.value != null
-                      ? Colors.green
-                      : Colors.grey[300]!,
+                      ? MangoPalette.green500
+                      : MangoPalette.grey300,
                   width: 2,
                 ),
               ),
@@ -600,8 +604,8 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                     Icons.play_circle_fill,
                     size: 32,
                     color: _controller.selectedTrailer.value != null
-                        ? Colors.green
-                        : Colors.grey[400],
+                        ? MangoPalette.green500
+                        : MangoPalette.grey400,
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -615,7 +619,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                               : 'Add Trailer Video',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: isDark ? Colors.white : Colors.black,
+                            color: isDark ? Colors.white : MangoPalette.black,
                           ),
                         ),
                         Text(
@@ -624,7 +628,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                               : 'Optional promotional video',
                           style: TextStyle(
                             fontSize: 12,
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
+                            color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                           ),
                         ),
                       ],
@@ -632,6 +636,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                   ),
                   if (_controller.selectedTrailer.value != null)
                     IconButton(
+        tooltip: 'Close',
                       icon: const Icon(Icons.close, color: Colors.red, size: 20),
                       onPressed: _controller.removeTrailer,
                     ),
@@ -653,10 +658,10 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -736,7 +741,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                 Text(
                   '* Required fields',
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: MangoPalette.grey600,
                     fontSize: 12,
                     fontStyle: FontStyle.italic,
                   ),
@@ -865,7 +870,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                   }
                 },
                 checkmarkColor: Colors.white,
-                selectedColor: Colors.orange,
+                selectedColor: MangoPalette.green500,
                 labelStyle: TextStyle(
                   color: isSelected ? Colors.white : textColor,
                 ),
@@ -876,7 +881,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             const SizedBox(height: 12),
             Text(
               'Selected: ${_controller.subtitles.join(', ')}',
-              style: TextStyle(fontSize: 12, color: Colors.green),
+              style: TextStyle(fontSize: 12, color: MangoPalette.green500),
             ),
           ],
         ],
@@ -896,7 +901,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             child: Text(
               value,
               style: TextStyle(
-                color: isDark ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : MangoPalette.black,
                 fontSize: 14,
               ),
             ),
@@ -909,19 +914,19 @@ class _UploadMoviePageState extends State<UploadMoviePage>
         decoration: InputDecoration(
           labelText: 'Rating',
           labelStyle: TextStyle(
-            color: isDark ? Colors.grey[400] : Colors.grey[600],
+            color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
           ),
-          prefixIcon: const Icon(Icons.star, color: Colors.orange),
+          prefixIcon: const Icon(Icons.star, color: MangoPalette.green500),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey[400]!),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: BorderSide(color: MangoPalette.grey400),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.orange),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: const BorderSide(color: MangoPalette.green500),
           ),
           filled: true,
-          fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+          fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
         ),
       ),
     );
@@ -941,25 +946,25 @@ class _UploadMoviePageState extends State<UploadMoviePage>
       keyboardType: keyboardType,
       onChanged: (_) => _controller.validateDetails(),
       style: TextStyle(
-        color: isDark ? Colors.white : Colors.black,
+        color: isDark ? Colors.white : MangoPalette.black,
         fontSize: 14,
       ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          color: isDark ? Colors.grey[400] : Colors.grey[600],
+          color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
         ),
-        prefixIcon: Icon(icon, color: Colors.orange),
+        prefixIcon: Icon(icon, color: MangoPalette.green500),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[400]!),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: BorderSide(color: MangoPalette.grey400),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.orange),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: const BorderSide(color: MangoPalette.green500),
         ),
         filled: true,
-        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+        fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
       ),
     );
   }
@@ -979,7 +984,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
           child: Text(
             value,
             style: TextStyle(
-              color: isDark ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : MangoPalette.black,
               fontSize: 14,
             ),
           ),
@@ -992,19 +997,19 @@ class _UploadMoviePageState extends State<UploadMoviePage>
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          color: isDark ? Colors.grey[400] : Colors.grey[600],
+          color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
         ),
-        prefixIcon: Icon(icon, color: Colors.orange),
+        prefixIcon: Icon(icon, color: MangoPalette.green500),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[400]!),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: BorderSide(color: MangoPalette.grey400),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.orange),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: const BorderSide(color: MangoPalette.green500),
         ),
         filled: true,
-        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+        fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
       ),
     );
   }
@@ -1019,19 +1024,19 @@ class _UploadMoviePageState extends State<UploadMoviePage>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[400]!),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.grey400),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.orange),
+          Icon(icon, color: MangoPalette.green500),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               title,
               style: TextStyle(
-                color: isDark ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : MangoPalette.black,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -1039,7 +1044,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: Colors.orange,
+            activeColor: MangoPalette.green500,
           ),
         ],
       ),
@@ -1068,7 +1073,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                 Text(
                   'Add actors, producers,\nand crew members',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 12,
                     color: textColor.withOpacity(0.6),
                   ),
                 ),
@@ -1077,7 +1082,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             ElevatedButton.icon(
               onPressed: _showAddCreditModal,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
+                backgroundColor: MangoPalette.green500,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 8,
@@ -1103,13 +1108,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
       width: double.infinity,
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.grey500.withOpacity(0.2)),
       ),
       child: Column(
         children: [
-          Icon(Icons.people, size: 48, color: Colors.grey.withOpacity(0.4)),
+          Icon(Icons.people, size: 48, color: MangoPalette.grey500.withOpacity(0.4)),
           const SizedBox(height: 16),
           Text(
             'No cast & crew added yet',
@@ -1141,7 +1146,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             background: Container(
               decoration: BoxDecoration(
                 color: Colors.red.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 20),
@@ -1153,8 +1158,8 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark ? Colors.grey[800] : Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                color: isDark ? MangoPalette.grey800 : Colors.white,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 border: Border.all(color: Colors.blue.withOpacity(0.1)),
               ),
               child: Row(
@@ -1196,10 +1201,11 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                     ),
                   ),
                   IconButton(
+        tooltip: 'Edit',
                     icon: Icon(
                       Icons.edit,
                       size: 16,
-                      color: Colors.grey.withOpacity(0.6),
+                      color: MangoPalette.grey500.withOpacity(0.6),
                     ),
                     onPressed: () => _editCredit(entry.key),
                   ),
@@ -1242,8 +1248,8 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(2),
+                  color: MangoPalette.grey500.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                 ),
               ),
               const SizedBox(height: 16),
@@ -1291,7 +1297,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: MangoPalette.green500,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                   child: const Text('Add Member'),
@@ -1336,8 +1342,8 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(2),
+                  color: MangoPalette.grey500.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                 ),
               ),
               const SizedBox(height: 16),
@@ -1383,7 +1389,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: MangoPalette.green500,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                   child: const Text('Update Member'),
@@ -1447,10 +1453,10 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -1459,7 +1465,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             child: Obx(
               () => Column(
                 children: [
-                  const Icon(Icons.task_alt, size: 64, color: Colors.green),
+                  const Icon(Icons.task_alt, size: 64, color: MangoPalette.green500),
                   const SizedBox(height: 16),
                   Text(
                     'Ready to Upload!',
@@ -1474,7 +1480,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                     'Review your movie details before uploading',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -1548,7 +1554,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                   if (_controller.isUploading.value)
                     Column(
                       children: [
-                        LinearProgressIndicator(value: _controller.uploadProgress.value),
+                        LinearProgressIndicator(semanticsLabel: 'Loading', value: _controller.uploadProgress.value),
                         const SizedBox(height: 8),
                         Text(
                           'Uploading... ${(_controller.uploadProgress.value * 100).toStringAsFixed(0)}%',
@@ -1570,12 +1576,12 @@ class _UploadMoviePageState extends State<UploadMoviePage>
       () => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
             color: _controller.selectedPoster.value != null
-                ? Colors.green.withOpacity(0.3)
-                : Colors.grey.withOpacity(0.2),
+                ? MangoPalette.green500.withOpacity(0.3)
+                : MangoPalette.grey500.withOpacity(0.2),
           ),
         ),
         child: Column(
@@ -1586,8 +1592,8 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                 Icon(
                   Icons.movie_filter,
                   color: _controller.selectedPoster.value != null
-                      ? Colors.green
-                      : Colors.grey,
+                      ? MangoPalette.green500
+                      : MangoPalette.grey500,
                   size: 16,
                 ),
                 const SizedBox(width: 8),
@@ -1607,18 +1613,18 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      color: MangoPalette.green500.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.check, color: Colors.green, size: 10),
+                        Icon(Icons.check, color: MangoPalette.green500, size: 10),
                         SizedBox(width: 4),
                         Text(
                           'Ready',
                           style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.green,
+                            fontSize: 12,
+                            color: MangoPalette.green500,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -1645,7 +1651,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
           width: 60,
           height: 84,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             image: DecorationImage(
               image: FileImage(File(_controller.selectedPoster.value!.path)),
               fit: BoxFit.cover,
@@ -1669,12 +1675,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
               const SizedBox(height: 4),
               Text(
                 'Poster selected',
-                style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
               ),
             ],
           ),
         ),
         IconButton(
+        tooltip: 'Delete',
           icon: const Icon(Icons.delete, color: Colors.red, size: 16),
           onPressed: _controller.removePoster,
         ),
@@ -1689,13 +1696,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
           width: 80,
           height: 112,
           decoration: BoxDecoration(
-            color: isDark ? Colors.grey[700] : Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey.withOpacity(0.3)),
+            color: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
+            border: Border.all(color: MangoPalette.grey500.withOpacity(0.3)),
           ),
           child: Icon(
             Icons.movie_filter,
-            color: Colors.grey.withOpacity(0.5),
+            color: MangoPalette.grey500.withOpacity(0.5),
             size: 24,
           ),
         ),
@@ -1713,12 +1720,12 @@ class _UploadMoviePageState extends State<UploadMoviePage>
       () => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
             color: _controller.selectedVideoFilePath.value.isNotEmpty || _controller.downloadUrl.value.isNotEmpty
-                ? Colors.green.withOpacity(0.3)
-                : Colors.grey.withOpacity(0.2),
+                ? MangoPalette.green500.withOpacity(0.3)
+                : MangoPalette.grey500.withOpacity(0.2),
           ),
         ),
         child: Column(
@@ -1729,8 +1736,8 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                 Icon(
                   Icons.videocam,
                   color: _controller.selectedVideoFilePath.value.isNotEmpty || _controller.downloadUrl.value.isNotEmpty
-                      ? Colors.green
-                      : Colors.grey,
+                      ? MangoPalette.green500
+                      : MangoPalette.grey500,
                   size: 16,
                 ),
                 const SizedBox(width: 8),
@@ -1750,18 +1757,18 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      color: MangoPalette.green500.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.check, color: Colors.green, size: 10),
+                        Icon(Icons.check, color: MangoPalette.green500, size: 10),
                         SizedBox(width: 4),
                         Text(
                           'Ready',
                           style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.green,
+                            fontSize: 12,
+                            color: MangoPalette.green500,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -1792,10 +1799,10 @@ class _UploadMoviePageState extends State<UploadMoviePage>
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-            color: Colors.orange.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            color: MangoPalette.green500.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
           ),
-          child: const Icon(Icons.videocam, color: Colors.orange, size: 24),
+          child: const Icon(Icons.videocam, color: MangoPalette.green500, size: 24),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -1814,12 +1821,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
               const SizedBox(height: 4),
               Text(
                 'Video file selected',
-                style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
               ),
             ],
           ),
         ),
         IconButton(
+        tooltip: 'Delete',
           icon: const Icon(Icons.delete, color: Colors.red, size: 16),
           onPressed: () {
             _controller.selectedVideoFilePath.value = '';
@@ -1838,13 +1846,13 @@ class _UploadMoviePageState extends State<UploadMoviePage>
           width: 80,
           height: 80,
           decoration: BoxDecoration(
-            color: isDark ? Colors.grey[700] : Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey.withOpacity(0.3)),
+            color: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
+            border: Border.all(color: MangoPalette.grey500.withOpacity(0.3)),
           ),
           child: Icon(
             Icons.videocam,
-            color: Colors.grey.withOpacity(0.5),
+            color: MangoPalette.grey500.withOpacity(0.5),
             size: 24,
           ),
         ),
@@ -1864,12 +1872,12 @@ class _UploadMoviePageState extends State<UploadMoviePage>
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
+        color: MangoPalette.grey100,
+        borderRadius: BorderRadius.circular(MangoRadius.sm),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.orange, size: 20),
+          Icon(icon, color: MangoPalette.green500, size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -1877,7 +1885,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
               children: [
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  style: const TextStyle(fontSize: 12, color: MangoPalette.grey500),
                 ),
                 Text(
                   value,
@@ -1900,19 +1908,19 @@ class _UploadMoviePageState extends State<UploadMoviePage>
             ElevatedButton(
               onPressed: _controller.goToPreviousStep,
               style: ElevatedButton.styleFrom(
-                backgroundColor: isDark ? Colors.grey[700] : Colors.grey[200],
+                backgroundColor: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,
                   vertical: 12,
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
               child: Text(
                 'Back',
                 style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
+                  color: isDark ? Colors.white : MangoPalette.black,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -1925,11 +1933,11 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                 : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: _controller.isStepValid.value && !_controller.isUploading.value
-                  ? Colors.orange
-                  : Colors.grey,
+                  ? MangoPalette.green500
+                  : MangoPalette.grey500,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
             ),
             child: Text(
@@ -1961,7 +1969,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.photo_library, color: Colors.orange),
+              leading: const Icon(Icons.photo_library, color: MangoPalette.green500),
               title: const Text('Choose from Gallery'),
               onTap: () {
                 _controller.pickPoster(context);
@@ -1969,7 +1977,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
               },
             ),
             ListTile(
-              leading: const Icon(Icons.camera_alt, color: Colors.orange),
+              leading: const Icon(Icons.camera_alt, color: MangoPalette.green500),
               title: const Text('Take a Photo'),
               onTap: () async {
                 try {
@@ -2004,7 +2012,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
 
     return await showDialog<bool>(
           context: context,
-          barrierColor: Colors.black.withOpacity(0.4),
+          barrierColor: MangoPalette.black.withOpacity(0.4),
           builder: (context) => Dialog(
             backgroundColor: Colors.transparent,
             insetPadding: const EdgeInsets.all(24),
@@ -2013,10 +2021,10 @@ class _UploadMoviePageState extends State<UploadMoviePage>
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: MangoPalette.black.withOpacity(0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -2066,10 +2074,10 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             side: BorderSide(
-                              color: Colors.grey.withOpacity(0.3),
+                              color: MangoPalette.grey500.withOpacity(0.3),
                             ),
                           ),
                           icon: const Icon(Icons.arrow_back, size: 14),
@@ -2093,7 +2101,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
                             backgroundColor: Colors.red,
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             elevation: 0,
                           ),

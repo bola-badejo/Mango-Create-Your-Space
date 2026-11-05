@@ -18,6 +18,8 @@ import 'package:mango/Home/pages/open_pages/genre_details_page.dart';
 import 'package:mango/Home/pages/open_pages/marketplace.dart';
 
 import 'package:mango/Onboarding/explainer.dart';
+import 'package:mango/Onboarding/mango_explainer.dart';
+import 'package:mango/AccountSetup/quick_start.dart';
 import 'package:mango/Onboarding/onboarding.dart';
 
 import 'package:mango/Home/home.dart';
@@ -27,6 +29,7 @@ import 'package:mango/Home/pages/open_pages/music_home.dart';
 import 'package:mango/Books/screens/home_screen.dart';
 
 import 'package:mango/Spaces/screens/new_space.dart';
+import 'package:mango/Spaces/world/space_create_wizard.dart';
 import 'package:mango/Spaces/screens/space_home.dart';
 import 'package:mango/Spaces/screens/space_pods/space_library.dart';
 import 'package:mango/Spaces/screens/space_pods/space_louge.dart';
@@ -35,13 +38,13 @@ import 'package:mango/Spaces/screens/space_pods/space_podcasts.dart';
 import 'package:mango/Spaces/screens/space_pods/space_vines.dart';
 import 'package:mango/Spaces/screens/space_pods/space_shop.dart';
 
-import 'package:mango/Splash/settings.dart';
+import 'package:mango/splash/settings.dart';
 import 'package:mango/Store/controller/store_controller.dart';
 import 'package:mango/Store/screens/cart_screen.dart';
 
 import 'package:mango/Store/screens/general_store.dart';
 
-import 'package:mango/Splash/splash_screen.dart';
+import 'package:mango/splash/splash_screen.dart';
 import 'package:mango/Store/screens/order_confirmation_screen.dart';
 import 'package:mango/Store/screens/product_detail_screen.dart';
 import 'package:mango/Store/storefront.dart';
@@ -64,8 +67,9 @@ class AppPages {
     GetPage(name: AppRoutes.verification, page: () => VerificationScreen()),
     GetPage(name: AppRoutes.makeFriends, page: () => const MakeFriends()),
     GetPage(name: AppRoutes.interests, page: () => const Interests()),
-    GetPage(name: AppRoutes.explainer, page: () => const Explainer()),
-    GetPage(name: AppRoutes.addDetails, page: () => const AddDetails()),
+    GetPage(name: AppRoutes.explainer, page: () => const MangoExplainer()),
+    // The one-minute quick start replaces the old multi-step setup.
+    GetPage(name: AppRoutes.addDetails, page: () => const QuickStartScreen()),
     GetPage(name: AppRoutes.bioData, page: () => const BioDataPage()),
     GetPage(name: AppRoutes.home, page: () => MangoHome()),
     GetPage(name: AppRoutes.bookStore, page: () => BookStore()),
@@ -106,7 +110,8 @@ class AppPages {
     GetPage(name: AppRoutes.spacePodcasts, page: () => SpacePodcasts()),
     GetPage(name: AppRoutes.spaceShop, page: () => SpaceShop()),
     GetPage(name: AppRoutes.spaceLounge, page: () => SpaceLounge()),
-    GetPage(name: AppRoutes.newSpace, page: () => NewSpaceScreen()),
+    // Guided creation; the previous form stays reachable as NewSpaceScreen.
+    GetPage(name: AppRoutes.newSpace, page: () => const SpaceCreateWizard()),
     GetPage(name: AppRoutes.musicHome, page: () => MusicHomePage()),
     GetPage(name: AppRoutes.libraryHome, page: () => BookHomePage()),
     GetPage(name: AppRoutes.marketplace, page: () => MarketPlace()),

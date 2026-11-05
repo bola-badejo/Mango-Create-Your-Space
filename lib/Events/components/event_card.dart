@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mango/Models/customModel/user.dart';
 import '../../Spaces/controllers/space_model.dart';
 import '../../Spaces/screens/space_detail.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpacesPortrait extends StatelessWidget {
   final SpaceModel space;
@@ -19,7 +21,7 @@ class SpacesPortrait extends StatelessWidget {
         .where(FieldPath.documentId, whereIn: allCollaboratorIds.isNotEmpty ? allCollaboratorIds : [''])
         .snapshots();
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Get.to(() => SpaceDetailScreen(space), arguments: {'id': space.id});
       },
@@ -30,12 +32,12 @@ class SpacesPortrait extends StatelessWidget {
           height: 400,
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               image: DecorationImage(
                 image: _getBackgroundImage(),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.4),
+                  MangoPalette.black.withOpacity(0.4),
                   BlendMode.darken,
                 ),
               ),
@@ -55,7 +57,7 @@ class SpacesPortrait extends StatelessWidget {
                       border: Border.all(color: Colors.white, width: 2),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: MangoPalette.black.withOpacity(0.2),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -73,11 +75,11 @@ class SpacesPortrait extends StatelessWidget {
                   top: 16,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: space.isPrivate ? Colors.orange : Colors.green,
-                      borderRadius: BorderRadius.circular(8),
+                      color: space.isPrivate ? MangoPalette.green500 : MangoPalette.green500,
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: MangoPalette.black.withOpacity(0.2),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -90,7 +92,7 @@ class SpacesPortrait extends StatelessWidget {
                     child: Text(
                       space.isPrivate ? "Paid" : "Free",
                       style: const TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -114,7 +116,7 @@ class SpacesPortrait extends StatelessWidget {
                             return const SizedBox(
                               height: 30,
                               child: Center(
-                                child: CircularProgressIndicator(
+                                child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                   strokeWidth: 2,
                                   color: Colors.white,
                                 ),
@@ -151,7 +153,7 @@ class SpacesPortrait extends StatelessWidget {
                                       border: Border.all(color: Colors.white, width: 2),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
+                                          color: MangoPalette.black.withOpacity(0.2),
                                           blurRadius: 4,
                                         ),
                                       ],
@@ -163,9 +165,9 @@ class SpacesPortrait extends StatelessWidget {
                                         loadingBuilder: (context, child, loadingProgress) {
                                           if (loadingProgress == null) return child;
                                           return Container(
-                                            color: Colors.grey[800],
+                                            color: MangoPalette.grey800,
                                             child: const Center(
-                                              child: CircularProgressIndicator(
+                                              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                                 strokeWidth: 2,
                                                 color: Colors.white,
                                               ),
@@ -174,7 +176,7 @@ class SpacesPortrait extends StatelessWidget {
                                         },
                                         errorBuilder: (context, error, stackTrace) {
                                           return Container(
-                                            color: Colors.grey[700],
+                                            color: MangoPalette.grey700,
                                             child: const Icon(
                                               Icons.person,
                                               color: Colors.white,
@@ -243,7 +245,7 @@ class SpacesPortrait extends StatelessWidget {
                           Text(
                             '${space.members} members',
                             style: const TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: Colors.white70,
                             ),
                           ),
@@ -253,7 +255,7 @@ class SpacesPortrait extends StatelessWidget {
                           Text(
                             space.category,
                             style: const TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: Colors.white70,
                             ),
                             maxLines: 1,
@@ -287,9 +289,9 @@ class SpacesPortrait extends StatelessWidget {
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return Container(
-            color: Colors.grey[800],
+            color: MangoPalette.grey800,
             child: const Center(
-              child: CircularProgressIndicator(
+              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                 strokeWidth: 2,
                 color: Colors.white,
               ),
@@ -298,7 +300,7 @@ class SpacesPortrait extends StatelessWidget {
         },
         errorBuilder: (context, error, stackTrace) {
           return Container(
-            color: Colors.grey[700],
+            color: MangoPalette.grey700,
             child: const Icon(
               Icons.space_dashboard,
               color: Colors.white,
@@ -309,7 +311,7 @@ class SpacesPortrait extends StatelessWidget {
       );
     }
     return Container(
-      color: Colors.grey[700],
+      color: MangoPalette.grey700,
       child: const Icon(
         Icons.space_dashboard,
         color: Colors.white,

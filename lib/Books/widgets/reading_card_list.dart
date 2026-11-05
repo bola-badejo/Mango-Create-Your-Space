@@ -100,14 +100,14 @@ class ReadingListCard extends StatelessWidget {
                           TextSpan(
                             text: "${book.title}\n",
                             style: const TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextSpan(
                             text: "${book.author}\n",
                             style: TextStyle(
-                              fontSize: 9,
+                              fontSize: 12,
                               color: Theme.of(context).primaryColorLight,
                             ),
                           ),
@@ -130,7 +130,7 @@ class ReadingListCard extends StatelessWidget {
                   children: [
                     const TextSpan(
                       text: "price\n",
-                      style: TextStyle(fontSize: 8),
+                      style: TextStyle(fontSize: 12),
                     ),
                     TextSpan(
                       text: "N0.00",

@@ -4,6 +4,7 @@ import '../widgets/book_rating.dart';
 import '../widgets/reading_card_list.dart';
 import '../widgets/two_side_rounded_button.dart';
 import 'details_screen.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class BookStore extends StatelessWidget {
   @override
@@ -166,7 +167,7 @@ class BookStore extends StatelessWidget {
                                                 child: Text(
                                                   "Chapter 7 of 10",
                                                   style: TextStyle(
-                                                    fontSize: 10,
+                                                    fontSize: 12,
                                                     color: Theme.of(context)
                                                         .primaryColorLight,
                                                   ),
@@ -189,7 +190,7 @@ class BookStore extends StatelessWidget {
                                   width: size.width * .65,
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).primaryColorLight,
-                                    borderRadius: BorderRadius.circular(7),
+                                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                                   ),
                                 ),
                               ],
@@ -240,7 +241,7 @@ class BookStore extends StatelessWidget {
                     child: Text(
                       "Mango Best Seller For 16th March 2024",
                       style: TextStyle(
-                        fontSize: 9,
+                        fontSize: 12,
                         color: Theme.of(context).primaryColorLight,
                       ),
                     ),
@@ -268,7 +269,7 @@ class BookStore extends StatelessWidget {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               color: Theme.of(context).primaryColorLight,
                             ),
                           ),

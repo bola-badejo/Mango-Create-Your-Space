@@ -16,37 +16,40 @@ import '../controllers/space_model.dart';
 import '../controllers/space_controller.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
+import 'package:mango/Spaces/world/space_world_screen.dart';
 
 class AppColors {
   static const Color lightPrimary = Color.fromARGB(255, 230, 145, 97);
   static const Color lightPrimaryVariant = Color.fromARGB(255, 233, 92, 32);
-  static const Color lightSecondary = Color(0xFF4CAF50);
-  static const Color lightBackground = Color(0xFFF8F9FA);
+  static const Color lightSecondary = Color(0xFF369365);
+  static const Color lightBackground = Color(0xFFF5F6F3);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightError = Color(0xFFE53935);
   static const Color lightOnPrimary = Color(0xFFFFFFFF);
   static const Color lightOnSecondary = Color(0xFFFFFFFF);
-  static const Color lightOnBackground = Color(0xFF212121);
-  static const Color lightOnSurface = Color(0xFF212121);
+  static const Color lightOnBackground = Color(0xFF1E221F);
+  static const Color lightOnSurface = Color(0xFF1E221F);
   static const Color lightOnError = Color(0xFFFFFFFF);
   static const Color lightCard = Color(0xFFFFFFFF);
-  static const Color lightDivider = Color(0xFFE0E0E0);
+  static const Color lightDivider = Color(0xFFDEE1DC);
   static const Color lightIcon = Color(0xFF757575);
 
   static const Color darkPrimary = Color.fromARGB(255, 9, 169, 55);
   static const Color darkPrimaryVariant = Color.fromARGB(255, 65, 211, 65);
   static const Color darkSecondary = Color(0xFF66BB6A);
   static const Color darkBackground = Color(0xFF121212);
-  static const Color darkSurface = Color(0xFF1E1E1E);
+  static const Color darkSurface = Color(0xFF1B241E);
   static const Color darkError = Color(0xFFCF6679);
   static const Color darkOnPrimary = Color(0xFFFFFFFF);
   static const Color darkOnSecondary = Color(0xFFFFFFFF);
   static const Color darkOnBackground = Color(0xFFFFFFFF);
   static const Color darkOnSurface = Color(0xFFFFFFFF);
-  static const Color darkOnError = Color(0xFF000000);
-  static const Color darkCard = Color(0xFF2D2D2D);
+  static const Color darkOnError = Color(0xFF0B0F0C);
+  static const Color darkCard = Color(0xFF243028);
   static const Color darkDivider = Color(0xFF424242);
-  static const Color darkIcon = Color(0xFFB0B0B0);
+  static const Color darkIcon = Color(0xFFAEB1AC);
 }
 
 class SpaceDetailScreen extends StatefulWidget {
@@ -87,6 +90,13 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
     final isOwner = widget.space.postCreator == currentUserId;
 
     return Scaffold(
+      // Step inside the virtual Space: presence, wall, live events.
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'enter-space',
+        onPressed: () => Get.to(() => SpaceWorldScreen(spaceId: widget.space.id)),
+        icon: const Icon(Icons.meeting_room_rounded),
+        label: const Text('Enter Space'),
+      ),
       extendBodyBehindAppBar: true,
       body: NotificationListener<ScrollNotification>(
         onNotification: (scrollInfo) {
@@ -147,9 +157,9 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
           height: double.infinity,
           fit: BoxFit.cover,
           placeholder: (context, url) => Container(
-            color: Colors.grey[900],
+            color: MangoPalette.grey900,
             child: Center(
-              child: CircularProgressIndicator(
+              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                 strokeWidth: 2,
                 color: Colors.white.withOpacity(0.5),
               ),
@@ -180,10 +190,10 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.black.withOpacity(0.2),
-            Colors.black.withOpacity(0.4),
-            Colors.black.withOpacity(0.6),
-            Colors.black.withOpacity(0.85),
+            MangoPalette.black.withOpacity(0.2),
+            MangoPalette.black.withOpacity(0.4),
+            MangoPalette.black.withOpacity(0.6),
+            MangoPalette.black.withOpacity(0.85),
           ],
           stops: const [0.0, 0.25, 0.5, 0.85],
         ),
@@ -221,7 +231,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.25),
+            color: MangoPalette.black.withOpacity(0.25),
             blurRadius: 30,
             spreadRadius: -5,
             offset: const Offset(0, -8),
@@ -276,7 +286,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
                         ? AppColors.darkPrimary
                         : AppColors.lightPrimary)
                     .withOpacity(0.1),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(MangoRadius.lg),
           ),
           child: Text(
             widget.space.category,
@@ -285,7 +295,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
                   ? AppColors.darkPrimary
                   : AppColors.lightPrimary,
               fontWeight: FontWeight.w600,
-              fontSize: 11,
+              fontSize: 12,
             ),
           ),
         ),
@@ -367,7 +377,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
         Text(
           label,
           style: TextStyle(
-            fontSize: 10,
+            fontSize: 12,
             color: _getTextColor(context).withOpacity(0.5),
           ),
         ),
@@ -387,7 +397,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: CircularProgressIndicator(
+              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                 strokeWidth: 2,
                 color: Theme.of(context).brightness == Brightness.dark
                     ? AppColors.darkPrimary
@@ -414,7 +424,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
+                    color: MangoPalette.black.withOpacity(0.15),
                     blurRadius: 8,
                     offset: const Offset(0, 3),
                   ),
@@ -454,7 +464,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
                               "@${user.username}",
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 11,
+                                fontSize: 12,
                                 color: _getTextColor(context).withOpacity(0.6),
                               ),
                             ),
@@ -515,7 +525,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
       stream: spaceController.isSubscribed(space.id),
       builder: (context, snap) {
         final subscribed = snap.data ?? false;
-        return GestureDetector(
+        return MangoPressable(
           onTap: () {
             spaceController.toggleSubscription(space.id, subscribed);
           },
@@ -525,7 +535,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
               borderRadius: BorderRadius.circular(30),
               gradient: subscribed
                   ? LinearGradient(
-                      colors: [Colors.grey.shade400, Colors.grey.shade500],
+                      colors: [MangoPalette.grey400, MangoPalette.grey500],
                     )
                   : LinearGradient(
                       colors: Theme.of(context).brightness == Brightness.dark
@@ -568,7 +578,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
 
   Widget _buildGoInButton(BuildContext context, SpaceModel space) {
     return Expanded(
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: () {
           _navigateToSpaceLanding(space);
         },
@@ -682,7 +692,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: MangoPalette.black.withOpacity(0.3),
               blurRadius: 20,
               spreadRadius: 2,
               offset: const Offset(0, 8),
@@ -700,11 +710,11 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
               height: 90,
               width: 90,
               decoration: BoxDecoration(
-                color: Colors.grey[800],
+                color: MangoPalette.grey800,
                 shape: BoxShape.circle,
               ),
               child: Center(
-                child: CircularProgressIndicator(
+                child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                   strokeWidth: 2,
                   color: Colors.white.withOpacity(0.5),
                 ),
@@ -760,7 +770,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
           // Back Button
           Container(
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.4),
+              color: MangoPalette.black.withOpacity(0.4),
               shape: BoxShape.circle,
               border: Border.all(
                 color: Colors.white.withOpacity(0.1),
@@ -768,6 +778,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
               ),
             ),
             child: IconButton(
+        tooltip: 'Back',
               onPressed: () => Get.back(),
               icon: const Icon(
                 Icons.arrow_back_ios_new_rounded,
@@ -781,7 +792,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.4),
+              color: MangoPalette.black.withOpacity(0.4),
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
                 color: Colors.white.withOpacity(0.1),
@@ -793,7 +804,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
               children: [
                 Icon(
                   Icons.rocket_launch_rounded,
-                  color: Colors.orange[300],
+                  color: MangoPalette.green300,
                   size: 16,
                 ),
                 const SizedBox(width: 6),
@@ -815,7 +826,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
           // Menu Button
           Container(
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.4),
+              color: MangoPalette.black.withOpacity(0.4),
               shape: BoxShape.circle,
               border: Border.all(
                 color: Colors.white.withOpacity(0.1),
@@ -835,6 +846,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
     BuildContext context,
   ) {
     return IconButton(
+        tooltip: 'More options',
       icon: const Icon(Icons.more_horiz_rounded, color: Colors.white, size: 20),
       onPressed: () => _showModalSheet(context, space, isOwner),
     );
@@ -852,7 +864,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
           borderRadius: BorderRadius.circular(28),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: MangoPalette.black.withOpacity(0.3),
               blurRadius: 30,
               offset: const Offset(0, 10),
             ),
@@ -867,8 +879,8 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey[600],
-                borderRadius: BorderRadius.circular(2),
+                color: MangoPalette.grey600,
+                borderRadius: BorderRadius.circular(MangoRadius.xs),
               ),
             ),
 
@@ -900,7 +912,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
                                 AppColors.lightPrimaryVariant,
                               ],
                       ),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     child: Text(
                       space.title[0].toUpperCase(),
@@ -1009,7 +1021,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
                   foregroundColor: _getTextColor(context),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                     side: BorderSide(
                       color: Theme.of(context).brightness == Brightness.dark
                           ? AppColors.darkDivider
@@ -1057,7 +1069,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
           height: 44,
           decoration: BoxDecoration(
             color: iconColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
           child: Icon(icon, color: iconColor, size: 22),
         ),
@@ -1071,7 +1083,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(color: textColor.withOpacity(0.5), fontSize: 11),
+          style: TextStyle(color: textColor.withOpacity(0.5), fontSize: 12),
         ),
         trailing: Icon(
           Icons.arrow_forward_ios_rounded,
@@ -1101,7 +1113,7 @@ class _SpaceDetailScreenState extends State<SpaceDetailScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.lightError,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
         ),
         onPressed: () {

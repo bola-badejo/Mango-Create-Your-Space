@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mango/Models/cloud/user_services.dart';
+import 'package:mango/Media/compose/mango_composer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -16,6 +18,7 @@ import 'package:mango/Models/customModel/user.dart';
 import 'package:mango/MusicPlayer/music.dart';
 import 'package:mango/Spaces/controllers/space_model.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class ProfileController extends GetxController {
   static ProfileController get instance => Get.find();
@@ -537,7 +540,7 @@ class ProfileController extends GetxController {
       _utilsService.showSnackbar(
         'Success',
         '$field updated successfully',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -587,7 +590,7 @@ class ProfileController extends GetxController {
       _utilsService.showSnackbar(
         'Success',
         'Verification email sent to $newEmail. Please verify your new email address.',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 5),
         context: context,
@@ -624,7 +627,7 @@ class ProfileController extends GetxController {
       _utilsService.showSnackbar(
         'Success',
         'Password updated successfully',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -636,123 +639,59 @@ class ProfileController extends GetxController {
     }
   }
 
+  /// Saves a picture chosen with [pickImage] (Mango composer bytes) or an
+  /// XFile, through the shared upload path in UserService.
   Future<void> updateProfileImage(dynamic imageData, BuildContext context) async {
     try {
       isUpdating.value = true;
       final userId = _auth.currentUser!.uid;
-
-      String? downloadUrl;
-
-      if (kIsWeb && imageData is Map && imageData['bytes'] is Uint8List) {
-        final bytes = imageData['bytes'] as Uint8List;
-        final fileName = imageData['name'] as String? ?? 'profile.jpg';
-
-        final compressedBytes = await _utilsService.compressImageForWeb(
-          bytes,
-          maxWidth: 800,
-          quality: 80,
-        );
-
-        downloadUrl = await _uploadImageForWeb(
-          compressedBytes,
-          'profile_images/$userId/${DateTime.now().millisecondsSinceEpoch}.jpg',
-          fileName,
-        );
-
-        webProfileImageBytes = compressedBytes;
-        webProfileImageName = fileName;
-      } else if (!kIsWeb && imageData is XFile) {
-        downloadUrl = await uploadImage(
-          imageData,
-          'profile_images/$userId/${DateTime.now().millisecondsSinceEpoch}.jpg',
-        );
-      } else {
-        throw Exception('Invalid image data for platform');
-      }
-
-      await _firestore.collection('users').doc(userId).update({
-        'profileImage': downloadUrl,
-      });
-
+      final data = imageData is Map ? imageData['bytes'] : imageData;
+      await UserService().updateProfileImage(data);
       await _loadUserProfile(userId);
-
       _utilsService.showSnackbar(
         'Success',
         'Profile picture updated',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
     } catch (e) {
       _utilsService.showSnackbar(
         'Error',
-        'Failed to update profile picture: ${e.toString()}',
+        "Couldn't update your profile picture. Try again.",
         backgroundColor: Colors.red,
         colorText: Colors.white,
         context: context,
       );
-      rethrow;
     } finally {
       isUpdating.value = false;
     }
   }
 
+  /// Saves a picture chosen with [pickImage] (Mango composer bytes) or an
+  /// XFile, through the shared upload path in UserService.
   Future<void> updateBannerImage(dynamic imageData, BuildContext context) async {
     try {
       isUpdating.value = true;
       final userId = _auth.currentUser!.uid;
-
-      String? downloadUrl;
-
-      if (kIsWeb && imageData is Map && imageData['bytes'] is Uint8List) {
-        final bytes = imageData['bytes'] as Uint8List;
-        final fileName = imageData['name'] as String? ?? 'banner.jpg';
-
-        final compressedBytes = await _utilsService.compressImageForWeb(
-          bytes,
-          maxWidth: 1920,
-          quality: 85,
-        );
-
-        downloadUrl = await _uploadImageForWeb(
-          compressedBytes,
-          'banner_images/$userId/${DateTime.now().millisecondsSinceEpoch}.jpg',
-          fileName,
-        );
-
-        webBannerImageBytes = compressedBytes;
-        webBannerImageName = fileName;
-      } else if (!kIsWeb && imageData is XFile) {
-        downloadUrl = await uploadImage(
-          imageData,
-          'banner_images/$userId/${DateTime.now().millisecondsSinceEpoch}.jpg',
-        );
-      } else {
-        throw Exception('Invalid image data for platform');
-      }
-
-      await _firestore.collection('users').doc(userId).update({
-        'bannerImageUrl': downloadUrl,
-      });
-
+      final data = imageData is Map ? imageData['bytes'] : imageData;
+      await UserService().updateBannerImage(data);
       await _loadUserProfile(userId);
-
       _utilsService.showSnackbar(
         'Success',
-        'Banner image updated',
-        backgroundColor: Colors.green,
+        'Banner updated',
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
     } catch (e) {
       _utilsService.showSnackbar(
         'Error',
-        'Failed to update banner image: ${e.toString()}',
+        "Couldn't update your banner. Try again.",
         backgroundColor: Colors.red,
         colorText: Colors.white,
         context: context,
       );
-      rethrow;
     } finally {
       isUpdating.value = false;
     }
@@ -798,45 +737,12 @@ class ProfileController extends GetxController {
     }
   }
 
+  /// Picks a picture through the Mango composer (preview, crop, filters).
+  /// Returns {'bytes', 'name', 'size'} on every platform, or null.
   Future<dynamic> pickImage(BuildContext context) async {
-    try {
-      if (kIsWeb) {
-        final FilePickerResult? result = await FilePicker.platform.pickFiles(
-          type: FileType.image,
-          allowMultiple: false,
-          withData: true,
-        );
-
-        if (result != null && result.files.isNotEmpty) {
-          final file = result.files.first;
-          return {
-            'bytes': file.bytes,
-            'name': file.name,
-            'size': file.size,
-            'platformFile': file,
-          };
-        }
-        return null;
-      } else {
-        final XFile? image = await _imagePicker.pickImage(
-          source: ImageSource.gallery,
-          maxWidth: 2000,
-          maxHeight: 2000,
-          imageQuality: 85,
-        );
-        return image;
-      }
-    } catch (e) {
-      print('Error picking image: $e');
-      _utilsService.showSnackbar(
-        'Error',
-        'Failed to pick image',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        context: context,
-      );
-      return null;
-    }
+    final media = await MangoComposer.pick(context, allowCaption: false, actionLabel: 'Use');
+    if (media == null) return null;
+    return {'bytes': media.bytes, 'name': media.name, 'size': media.size};
   }
 
   Future<void> updateProfileType(String type, BuildContext context) async {
@@ -866,7 +772,7 @@ class ProfileController extends GetxController {
       _utilsService.showSnackbar(
         'Success',
         'Profile type updated to $type',
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );

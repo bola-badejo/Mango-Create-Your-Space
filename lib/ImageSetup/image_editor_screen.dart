@@ -7,6 +7,8 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:mango/Models/cloud/new_post_service.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class ImageEditorScreen extends StatefulWidget {
   
@@ -78,13 +80,13 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
 
   final List<Color> _textColors = const [
     Colors.white,
-    Colors.black,
+    MangoPalette.black,
     Colors.red,
-    Colors.green,
+    MangoPalette.green500,
     Colors.blue,
     Colors.yellow,
     Colors.purple,
-    Colors.orange,
+    MangoPalette.green500,
     Colors.cyan,
   ];
 
@@ -137,7 +139,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: MangoPalette.black,
       body: Stack(
         children: [
           
@@ -238,14 +240,14 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
               colorFilter: _getFilterColorFilter(_currentEdit.filter),
               child: Image.memory(_webImageBytes!, fit: BoxFit.contain),
             )
-          : const Center(child: CircularProgressIndicator());
+          : const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
     } else {
       return _mobileImageFile != null
           ? ColorFiltered(
               colorFilter: _getFilterColorFilter(_currentEdit.filter),
               child: Image.file(_mobileImageFile!, fit: BoxFit.contain),
             )
-          : const Center(child: CircularProgressIndicator());
+          : const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
     }
   }
 
@@ -255,10 +257,11 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
   Widget _buildAppBar() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: Colors.black.withOpacity(0.7),
+      color: MangoPalette.black.withOpacity(0.7),
       child: Row(
         children: [
           IconButton(
+        tooltip: 'Close',
             icon: const Icon(Icons.close, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
@@ -273,6 +276,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
           ),
           const Spacer(),
           IconButton(
+        tooltip: 'Done',
             icon: const Icon(Icons.check, color: Colors.white),
             onPressed: _saveAndReturn,
           ),
@@ -284,7 +288,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
   Widget _buildBottomTools() {
     return Container(
       height: 80,
-      color: Colors.black.withOpacity(0.8),
+      color: MangoPalette.black.withOpacity(0.8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -299,7 +303,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
 
   Widget _buildToolButton(String tool, IconData icon, String label) {
     final isSelected = _currentTool == tool;
-    return GestureDetector(
+    return MangoPressable(
       onTap: () => setState(() => _currentTool = tool),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -333,8 +337,8 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
     return Container(
       width: 70,
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.7),
-        borderRadius: BorderRadius.circular(20),
+        color: MangoPalette.black.withOpacity(0.7),
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
       ),
       child: OptimizedListView(
         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -342,7 +346,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
         itemBuilder: (context, index) {
           final filter = _filters[index];
           final isSelected = _currentEdit.filter == filter;
-          return GestureDetector(
+          return MangoPressable(
             onTap: () => setState(() {
               _currentEdit = _currentEdit.copyWith(filter: filter);
             }),
@@ -351,7 +355,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
               height: 60,
               margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
                 border: Border.all(
                   color: isSelected ? Colors.blue : Colors.transparent,
                   width: 2,
@@ -386,7 +390,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.8),
+        color: MangoPalette.black.withOpacity(0.8),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
@@ -449,7 +453,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
             max: max,
             onChanged: onChanged,
             activeColor: Colors.blue,
-            inactiveColor: Colors.grey[800],
+            inactiveColor: MangoPalette.grey800,
           ),
         ),
         SizedBox(
@@ -504,7 +508,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
               border: isSelected
                   ? Border.all(color: Colors.blue, width: 2)
                   : null,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
             ),
             child: Text(
               overlay.text,
@@ -555,8 +559,8 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(16),
+        color: MangoPalette.black.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -566,9 +570,9 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
             decoration: InputDecoration(
               hintText: 'Enter text',
               filled: true,
-              fillColor: Colors.grey[800],
+              fillColor: MangoPalette.grey800,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
               ),
             ),
             style: const TextStyle(color: Colors.white),
@@ -602,7 +606,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
           ),
           DropdownButton<String>(
             value: overlay.fontFamily,
-            dropdownColor: Colors.grey[900],
+            dropdownColor: MangoPalette.grey900,
             items: const [
               DropdownMenuItem(
                 value: 'Arial',
@@ -648,7 +652,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen>
             spacing: 8,
             children: _textColors.map((color) {
               final isSelected = _colorToHex(color) == overlay.color;
-              return GestureDetector(
+              return MangoPressable(
                 onTap: () {
                   setState(() {
                     _textOverlays[index] = overlay.copyWith(

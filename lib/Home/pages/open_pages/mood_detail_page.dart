@@ -5,6 +5,7 @@ import 'package:mango/Home/dashboard.dart';
 import 'package:mango/Models/customModel/mango_genres.dart';
 import 'package:mango/Models/customModel/playlist.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class MoodDetailPage extends StatelessWidget {
   final MangoGenre mood;
@@ -16,7 +17,7 @@ class MoodDetailPage extends StatelessWidget {
     final MangoDashboard controller = Get.find();
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: MangoPalette.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -38,7 +39,7 @@ class MoodDetailPage extends StatelessWidget {
                 Text(
                   'Mood',
                   style: TextStyle(
-                    color: Colors.grey[400],
+                    color: MangoPalette.grey400,
                     fontSize: 12,
                   ),
                 ),
@@ -47,6 +48,7 @@ class MoodDetailPage extends StatelessWidget {
           ],
         ),
         leading: IconButton(
+        tooltip: 'Back',
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
@@ -63,7 +65,7 @@ class MoodDetailPage extends StatelessWidget {
                 Text(
                   mood.description,
                   style: TextStyle(
-                    color: Colors.grey[300],
+                    color: MangoPalette.grey300,
                     fontSize: 14,
                   ),
                 ),
@@ -93,7 +95,7 @@ class MoodDetailPage extends StatelessWidget {
               stream: controller.getSongsForMood(mood.genres),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
                 }
                 
                 if (snapshot.hasError) {
@@ -107,11 +109,11 @@ class MoodDetailPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.music_off, size: 50, color: Colors.grey),
+                        Icon(Icons.music_off, size: 50, color: MangoPalette.grey500),
                         SizedBox(height: 16),
                         Text(
                           'No songs found for this mood',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: MangoPalette.grey500),
                         ),
                       ],
                     ),
@@ -139,12 +141,12 @@ class MoodDetailPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12),
+        color: MangoPalette.grey900,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: ListTile(
         leading: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(MangoRadius.sm),
           child: Image.network(
             song.image,
             width: 50,
@@ -169,7 +171,7 @@ class MoodDetailPage extends StatelessWidget {
         ),
         subtitle: Text(
           '${song.artiste} • ${song.plays} plays • ${song.genre}',
-          style: TextStyle(color: Colors.grey[400]),
+          style: TextStyle(color: MangoPalette.grey400),
         ),
         trailing: Icon(Icons.play_arrow, color: moodColor),
         onTap: () {

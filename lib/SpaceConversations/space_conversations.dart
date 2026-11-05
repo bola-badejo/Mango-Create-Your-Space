@@ -21,6 +21,8 @@ import 'package:mango/SpaceConversations/space_conversations_controller.dart';
 import 'package:mango/SpaceConversations/space_conversations_model.dart';
 import 'package:mango/constants.dart';
 import 'package:path/path.dart' as path;
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SpaceConversationChatPage extends StatefulWidget {
   final String spaceId;
@@ -76,7 +78,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: MangoPalette.grey50,
       body: Column(
         children: [
           _buildConversationHeader(),
@@ -202,7 +204,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Voice note sent!'),
-          backgroundColor: Colors.green,
+          backgroundColor: MangoPalette.green500,
         ),
       );
     } catch (e) {
@@ -255,7 +257,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${_capitalizeFirst(type)} sent!'),
-          backgroundColor: Colors.green,
+          backgroundColor: MangoPalette.green500,
         ),
       );
     } catch (e) {
@@ -439,7 +441,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                   radius: 16,
                 ),
               if (!isSender && user == null)
-                CircleAvatar(radius: 16, backgroundColor: Colors.grey),
+                CircleAvatar(radius: 16, backgroundColor: MangoPalette.grey500),
               SizedBox(width: 8),
               Expanded(
                 child: Column(
@@ -455,14 +457,14 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey[700],
+                            color: MangoPalette.grey700,
                           ),
                         ),
                       ),
                     Container(
                       padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: isSender ? Colors.grey[300] : Colors.orange[300],
+                        color: isSender ? MangoPalette.grey300 : MangoPalette.green300,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(16),
                           topRight: Radius.circular(16),
@@ -495,14 +497,14 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                GestureDetector(
+                                MangoPressable(
                                   onTap: () => _viewMedia(
                                     message.image!,
                                     'image',
                                     message.caption,
                                   ),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                                     child: Image.network(
                                       message.image!,
                                       width: 200,
@@ -514,9 +516,9 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                                         return Container(
                                           width: 200,
                                           height: 150,
-                                          color: Colors.grey[300],
+                                          color: MangoPalette.grey300,
                                           child: Center(
-                                            child: CircularProgressIndicator(
+                                            child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                               value:
                                                   loadingProgress
                                                           .expectedTotalBytes !=
@@ -535,7 +537,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                                             return Container(
                                               width: 200,
                                               height: 150,
-                                              color: Colors.grey[300],
+                                              color: MangoPalette.grey300,
                                               child: Icon(
                                                 Icons.error,
                                                 color: Colors.red,
@@ -554,7 +556,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                GestureDetector(
+                                MangoPressable(
                                   onTap: () => _viewMedia(
                                     message.video!,
                                     'video',
@@ -564,7 +566,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                                     width: 200,
                                     height: 150,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                                       color: Colors.black12,
                                     ),
                                     child: Stack(
@@ -588,13 +590,13 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                                             decoration: BoxDecoration(
                                               color: Colors.black54,
                                               borderRadius:
-                                                  BorderRadius.circular(4),
+                                                  BorderRadius.circular(MangoRadius.xs),
                                             ),
                                             child: Text(
                                               'VIDEO',
                                               style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 10,
+                                                fontSize: 12,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -616,7 +618,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                             Text(
                               message.text,
                               style: TextStyle(
-                                color: isSender ? Colors.black : Colors.black87,
+                                color: isSender ? MangoPalette.black : Colors.black87,
                               ),
                             ),
 
@@ -632,7 +634,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                                 message.caption!,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color:Colors.black,
+                                  color:MangoPalette.black,
                                   fontStyle: FontStyle.italic,
                                 ),
                               ),
@@ -643,8 +645,8 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                           Text(
                             '${message.timeStamp.toDate().hour}:${message.timeStamp.toDate().minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
-                              fontSize: 10,
-                              color:Colors.grey[800],
+                              fontSize: 12,
+                              color:MangoPalette.grey800,
                             ),
                           ),
                         ],
@@ -667,19 +669,20 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 22, vertical: 16),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Colors.transparent,),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(MangoRadius.sm), color: Colors.transparent,),
       child: Row(
         children: [
           
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: MangoPalette.grey100,
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Row(
                 children: [
                   IconButton(
+        tooltip: 'Emoji',
                     icon: Icon(Icons.emoji_emotions_outlined),
                     onPressed: () {},
                   ),
@@ -740,7 +743,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
 
                             
                             IconButton(
-                              icon: Icon(Icons.mic, color: Colors.orange),
+                              icon: Icon(Icons.mic, color: MangoPalette.green500),
                               onPressed: _startRecording,
                             ),
                           ],
@@ -757,9 +760,10 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
           SizedBox(width: 8),
           CircleAvatar(
             backgroundColor: _messageController.text.trim().isEmpty
-                ? Colors.grey
+                ? MangoPalette.grey500
                 : Colors.blue[600],
             child: IconButton(
+        tooltip: 'Send',
               icon: Icon(Icons.send, color: Colors.white),
               onPressed: _messageController.text.trim().isEmpty
                   ? null
@@ -798,7 +802,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: MangoPalette.black.withOpacity(0.1),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -812,7 +816,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: Colors.red.shade100,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -928,7 +932,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     side: BorderSide(color: Colors.red.shade400),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                   ),
                 ),
@@ -947,7 +951,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                     elevation: 4,
                     shadowColor: Colors.red.withOpacity(0.3),
@@ -963,7 +967,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
           Text(
             'Recording will automatically stop after 5 minutes',
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               color: Colors.red.shade600,
               fontStyle: FontStyle.italic,
             ),
@@ -991,6 +995,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
               Row(
                 children: [
                   IconButton(
+        tooltip: 'Back',
                     icon: Icon(Icons.arrow_back),
                     onPressed: () => Get.back(),
                   ),
@@ -1028,12 +1033,13 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                         ),
                         Text(
                           '${widget.conversation.participantCount} participants',
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                          style: TextStyle(color: MangoPalette.grey500, fontSize: 12),
                         ),
                       ],
                     ),
                   ),
                   IconButton(
+        tooltip: 'People',
                     icon: Icon(Icons.people),
                     onPressed: _showParticipants,
                   ),
@@ -1046,19 +1052,19 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                   children: [
                     Text(
                       widget.conversation.description,
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                      style: TextStyle(color: MangoPalette.grey600, fontSize: 12),
                     ),
                     SizedBox(height: 4),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
                         color: Colors.blue[50],
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                       ),
                       child: Text(
                         widget.conversation.category,
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: Colors.blue[700],
                           fontWeight: FontWeight.bold,
                         ),
@@ -1082,7 +1088,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -1109,16 +1115,16 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey[400]),
+          Icon(Icons.chat_bubble_outline, size: 80, color: MangoPalette.grey400),
           SizedBox(height: 16),
           Text(
             'No messages yet',
-            style: TextStyle(fontSize: 18, color: Colors.grey),
+            style: TextStyle(fontSize: 18, color: MangoPalette.grey500),
           ),
           SizedBox(height: 8),
           Text(
             'Start the conversation in ${widget.conversation.title}!',
-            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+            style: TextStyle(fontSize: 14, color: MangoPalette.grey600),
           ),
         ],
       ),
@@ -1153,7 +1159,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                 ),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
                   }
 
                   final participants = snapshot.data!;
@@ -1181,7 +1187,7 @@ class _SpaceConversationChatPageState extends State<SpaceConversationChatPage> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.blue[100],
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(MangoRadius.md),
                                 ),
                                 child: Text(
                                   'Admin',

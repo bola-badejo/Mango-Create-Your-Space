@@ -13,6 +13,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class PodcastEpisode {
   String id;
@@ -306,7 +308,7 @@ class UploadPodcastSeriesController extends GetxController {
             'Cover Added',
             'Podcast series cover art selected',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -323,7 +325,7 @@ class UploadPodcastSeriesController extends GetxController {
             'Cover Added',
             'Podcast series cover art selected',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             context: context,
           );
@@ -394,7 +396,7 @@ class UploadPodcastSeriesController extends GetxController {
       'Episode Added',
       '${ep.titleController.text} has been added',
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
+      backgroundColor: MangoPalette.green500,
       colorText: Colors.white,
       context: context,
     );
@@ -524,7 +526,7 @@ class UploadPodcastSeriesController extends GetxController {
         'Creator Required',
         'Please register as a creator first to upload podcast series.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -537,7 +539,7 @@ class UploadPodcastSeriesController extends GetxController {
         'Upload in Progress',
         'Please wait for current upload to complete',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -665,7 +667,7 @@ class UploadPodcastSeriesController extends GetxController {
         '🎉 Success!',
         'Podcast series "${seriesTitle.value}" uploaded',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
         context: context,
@@ -778,7 +780,7 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
 
     return await showDialog<bool>(
           context: context,
-          barrierColor: Colors.black.withOpacity(0.4),
+          barrierColor: MangoPalette.black.withOpacity(0.4),
           builder: (context) => Dialog(
             backgroundColor: Colors.transparent,
             insetPadding: const EdgeInsets.all(24),
@@ -787,10 +789,10 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: MangoPalette.black.withOpacity(0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -840,10 +842,10 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             side: BorderSide(
-                              color: Colors.grey.withOpacity(0.3),
+                              color: MangoPalette.grey500.withOpacity(0.3),
                             ),
                           ),
                           icon: const Icon(Icons.arrow_back, size: 14),
@@ -868,7 +870,7 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
                             backgroundColor: Colors.red,
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             elevation: 0,
                           ),
@@ -914,9 +916,10 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
           title: const Text('Upload Podcast Series', style: TextStyle(fontSize: 16)),
           backgroundColor: theme.scaffoldBackgroundColor,
           elevation: 0,
-          iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
+          iconTheme: IconThemeData(color: isDark ? Colors.white : MangoPalette.black),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black),
+        tooltip: 'Back',
+            icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : MangoPalette.black),
             onPressed: () async {
               await controller._saveDraft();
               final discard = await _showDiscardDialog(context);
@@ -942,10 +945,10 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
                         ? details.onStepContinue
                         : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isLast ? Colors.green : Colors.orange,
+                      backgroundColor: isLast ? MangoPalette.green500 : MangoPalette.green500,
                     ),
                     child: Obx(() => controller.isUploading.value
-                        ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                        ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2, color: Colors.white))
                         : Text(isLast ? 'Upload Series' : 'Next')),
                   ),
                   const SizedBox(width: 8),
@@ -997,19 +1000,19 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Obx(
-          () => GestureDetector(
+          () => MangoPressable(
             onTap: () => controller.pickCoverArt(context),
             child: Container(
               width: 200,
               height: 200,
               decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(8),
+                color: MangoPalette.grey200,
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
                 image: controller.coverArt.value != null
                     ? DecorationImage(image: FileImage(File(controller.coverArt.value!.path)), fit: BoxFit.cover)
                     : null,
                 border: Border.all(
-                  color: controller.isCoverSelected.value ? Colors.green : Colors.grey,
+                  color: controller.isCoverSelected.value ? MangoPalette.green500 : MangoPalette.grey500,
                   width: 2,
                 ),
               ),
@@ -1017,7 +1020,7 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.add_photo_alternate, size: 36, color: Colors.grey),
+                        Icon(Icons.add_photo_alternate, size: 36, color: MangoPalette.grey500),
                         const SizedBox(height: 8),
                         const Text('Tap to add cover', style: TextStyle(fontSize: 12)),
                       ],
@@ -1027,7 +1030,7 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
                         Positioned(
                           top: 8,
                           right: 8,
-                          child: GestureDetector(
+                          child: MangoPressable(
                             onTap: () => controller.removeCoverArt(),
                             child: Container(
                               padding: const EdgeInsets.all(4),
@@ -1062,7 +1065,7 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
               onPressed: () => controller.pickEpisodeFile(context),
               icon: const Icon(Icons.audiotrack),
               label: const Text('Pick Audio'),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+              style: ElevatedButton.styleFrom(backgroundColor: MangoPalette.green500),
             ),
             const SizedBox(width: 8),
             ElevatedButton.icon(
@@ -1103,7 +1106,8 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
                     const SizedBox(height: 8),
                     Row(children: [
                       Expanded(child: Text(ep.filePath.isEmpty ? 'No audio selected' : ep.filePath.split('/').last, style: const TextStyle(fontSize: 12))),
-                      IconButton(icon: const Icon(Icons.delete, color: Colors.red), onPressed: () {
+                      IconButton(
+        tooltip: 'Delete',icon: const Icon(Icons.delete, color: Colors.red), onPressed: () {
                         ep.filePath = '';
                         controller._saveDraft();
                       }),
@@ -1122,7 +1126,8 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
                                     contentPadding: EdgeInsets.zero,
                                     title: Text(entry.value['role'] ?? '', style: const TextStyle(fontSize: 12)),
                                     subtitle: Text(entry.value['name'] ?? '', style: const TextStyle(fontSize: 12)),
-                                    trailing: IconButton(icon: const Icon(Icons.delete, color: Colors.red), onPressed: () => controller.removeEpisodeCredit(index, entry.key)),
+                                    trailing: IconButton(
+        tooltip: 'Delete',icon: const Icon(Icons.delete, color: Colors.red), onPressed: () => controller.removeEpisodeCredit(index, entry.key)),
                                   ))
                               .toList(),
                         )),
@@ -1197,7 +1202,8 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(children: [
         Expanded(child: _buildTextField('Add Contributor', controller.newSeriesContributor, onChanged: (v) => controller.newSeriesContributor.value = v)),
-        IconButton(icon: const Icon(Icons.add), onPressed: controller.addSeriesContributor),
+        IconButton(
+        tooltip: 'Add',icon: const Icon(Icons.add), onPressed: controller.addSeriesContributor),
       ]),
       const SizedBox(height: 8),
       Obx(() => Wrap(spacing: 8, children: controller.seriesContributors.map((c) => Chip(label: Text(c), onDeleted: () { final idx = controller.seriesContributors.indexOf(c); if (idx>=0) controller.removeSeriesContributorAt(idx); })).toList())),
@@ -1226,7 +1232,7 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
         Obx(() => controller.isUploading.value
             ? Column(
                 children: [
-                  LinearProgressIndicator(value: controller.uploadProgress.value),
+                  LinearProgressIndicator(semanticsLabel: 'Loading', value: controller.uploadProgress.value),
                   const SizedBox(height: 8),
                   Text(controller.uploadStatus.value),
                   Text('${(controller.uploadProgress.value * 100).toStringAsFixed(0)}%'),
@@ -1248,7 +1254,7 @@ class _UploadPodcastSeriesPageState extends State<UploadPodcastSeriesPage> {
   Widget _buildTextField(String label, RxString value, {required Function(String) onChanged}) {
     return TextField(
       controller: TextEditingController(text: value.value)..selection = TextSelection.collapsed(offset: value.value.length),
-      decoration: InputDecoration(labelText: label, labelStyle: const TextStyle(fontSize: 12), border: OutlineInputBorder(borderRadius: BorderRadius.circular(6)), isDense: true, filled: true, fillColor: Colors.grey[100]),
+      decoration: InputDecoration(labelText: label, labelStyle: const TextStyle(fontSize: 12), border: OutlineInputBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)), isDense: true, filled: true, fillColor: MangoPalette.grey100),
       onChanged: (v) {
         onChanged(v);
       },

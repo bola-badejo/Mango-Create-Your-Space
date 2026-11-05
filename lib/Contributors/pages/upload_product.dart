@@ -7,6 +7,8 @@ import 'package:mango/Utils/optimized_lists.dart';
 import 'package:mango/Contributors/controllers/upload_product_controller.dart';
 import 'package:mango/Models/customModel/MangoProduct.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class UploadProductPage extends StatefulWidget {
   final String? contributorId;
@@ -85,9 +87,9 @@ class _UploadProductPageState extends State<UploadProductPage>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
-    final cardColor = isDark ? Colors.grey[800]! : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final backgroundColor = isDark ? MangoPalette.grey900 : MangoPalette.grey50;
+    final cardColor = isDark ? MangoPalette.grey800 : Colors.white;
+    final textColor = isDark ? Colors.white : MangoPalette.black;
 
     return WillPopScope(
       onWillPop: () async => await _showExitDialog(context),
@@ -188,7 +190,7 @@ class _UploadProductPageState extends State<UploadProductPage>
           break;
       }
 
-      return GestureDetector(
+      return MangoPressable(
         onTap: isAccessible
             ? () {
                 _controller.currentStep.value = stepNumber;
@@ -200,11 +202,11 @@ class _UploadProductPageState extends State<UploadProductPage>
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: isActive
-                ? Colors.orange.withOpacity(0.1)
+                ? MangoPalette.green500.withOpacity(0.1)
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: isActive
-                ? Border.all(color: Colors.orange.withOpacity(0.3))
+                ? Border.all(color: MangoPalette.green500.withOpacity(0.3))
                 : null,
           ),
           child: Column(
@@ -214,13 +216,13 @@ class _UploadProductPageState extends State<UploadProductPage>
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: isCompleted
-                      ? Colors.green
+                      ? MangoPalette.green500
                       : (isActive
-                            ? Colors.orange
+                            ? MangoPalette.green500
                             : (isStepValid &&
                                       stepNumber < _controller.currentStep.value
-                                  ? Colors.green.withOpacity(0.5)
-                                  : Colors.grey.withOpacity(0.2))),
+                                  ? MangoPalette.green500.withOpacity(0.5)
+                                  : MangoPalette.grey500.withOpacity(0.2))),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -233,9 +235,9 @@ class _UploadProductPageState extends State<UploadProductPage>
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                  color: isDark ? Colors.white : Colors.black,
+                  color: isDark ? Colors.white : MangoPalette.black,
                 ),
               ),
             ],
@@ -249,7 +251,7 @@ class _UploadProductPageState extends State<UploadProductPage>
     return Container(
       width: 12,
       height: 1,
-      color: isDark ? Colors.grey[700] : Colors.grey[300],
+      color: isDark ? MangoPalette.grey700 : MangoPalette.grey300,
     );
   }
 
@@ -279,10 +281,10 @@ class _UploadProductPageState extends State<UploadProductPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -296,13 +298,13 @@ class _UploadProductPageState extends State<UploadProductPage>
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: _controller.areImagesSelected.value
-                          ? Colors.green.withOpacity(0.1)
-                          : Colors.orange.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(16),
+                          ? MangoPalette.green500.withOpacity(0.1)
+                          : MangoPalette.green500.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                       border: Border.all(
                         color: _controller.areImagesSelected.value
-                            ? Colors.green
-                            : Colors.orange,
+                            ? MangoPalette.green500
+                            : MangoPalette.green500,
                         width: 2,
                       ),
                     ),
@@ -314,8 +316,8 @@ class _UploadProductPageState extends State<UploadProductPage>
                               : Icons.photo_library,
                           size: 48,
                           color: _controller.areImagesSelected.value
-                              ? Colors.green
-                              : Colors.orange,
+                              ? MangoPalette.green500
+                              : MangoPalette.green500,
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -325,7 +327,7 @@ class _UploadProductPageState extends State<UploadProductPage>
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black,
+                            color: isDark ? Colors.white : MangoPalette.black,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -335,7 +337,7 @@ class _UploadProductPageState extends State<UploadProductPage>
                               : 'Choose multiple images to showcase your product from different angles',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
+                            color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                           ),
                         ),
                       ],
@@ -346,13 +348,13 @@ class _UploadProductPageState extends State<UploadProductPage>
                 ElevatedButton.icon(
                   onPressed: () => _controller.pickImages(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: MangoPalette.green500,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                   ),
                   icon: const Icon(
@@ -391,7 +393,7 @@ class _UploadProductPageState extends State<UploadProductPage>
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black,
+            color: isDark ? Colors.white : MangoPalette.black,
           ),
         ),
         const SizedBox(height: 12),
@@ -422,11 +424,11 @@ class _UploadProductPageState extends State<UploadProductPage>
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: isDark ? Colors.grey[700] : Colors.grey[200],
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            color: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             child: Image.file(
               File(image.path),
               fit: BoxFit.cover,
@@ -438,7 +440,7 @@ class _UploadProductPageState extends State<UploadProductPage>
         Positioned(
           top: 4,
           right: 4,
-          child: GestureDetector(
+          child: MangoPressable(
             onTap: () => _controller.removeImage(index),
             child: Container(
               padding: const EdgeInsets.all(4),
@@ -456,14 +458,14 @@ class _UploadProductPageState extends State<UploadProductPage>
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.6),
-              borderRadius: BorderRadius.circular(8),
+              color: MangoPalette.black.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
             ),
             child: Text(
               '${index + 1}',
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -482,10 +484,10 @@ class _UploadProductPageState extends State<UploadProductPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -609,7 +611,7 @@ class _UploadProductPageState extends State<UploadProductPage>
         const Divider(height: 32),
         Row(
           children: [
-            Icon(Icons.local_offer, color: Colors.orange, size: 20),
+            Icon(Icons.local_offer, color: MangoPalette.green500, size: 20),
             const SizedBox(width: 8),
             Text(
               'Product Tags',
@@ -626,7 +628,7 @@ class _UploadProductPageState extends State<UploadProductPage>
           'Select tags to help customers find your product',
           style: TextStyle(
             fontSize: 12,
-            color: isDark ? Colors.grey[400] : Colors.grey[600],
+            color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
           ),
         ),
         const SizedBox(height: 16),
@@ -640,13 +642,13 @@ class _UploadProductPageState extends State<UploadProductPage>
                 label: Text(tag),
                 selected: isSelected,
                 onSelected: (selected) => _controller.toggleTag(tag),
-                backgroundColor: isDark ? Colors.grey[700] : Colors.grey[200],
-                selectedColor: Colors.orange.withOpacity(0.2),
-                checkmarkColor: Colors.orange,
+                backgroundColor: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
+                selectedColor: MangoPalette.green500.withOpacity(0.2),
+                checkmarkColor: MangoPalette.green500,
                 labelStyle: TextStyle(
                   color: isSelected
-                      ? Colors.orange
-                      : (isDark ? Colors.white : Colors.black),
+                      ? MangoPalette.green500
+                      : (isDark ? Colors.white : MangoPalette.black),
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   fontSize: 12,
                 ),
@@ -662,8 +664,8 @@ class _UploadProductPageState extends State<UploadProductPage>
                   child: Text(
                     'Selected: ${_controller.tags.join(", ")}',
                     style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.orange,
+                      fontSize: 12,
+                      color: MangoPalette.green500,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -683,10 +685,10 @@ class _UploadProductPageState extends State<UploadProductPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -707,7 +709,7 @@ class _UploadProductPageState extends State<UploadProductPage>
                 Text(
                   'Add colors and sizes to create product variants',
                   style: TextStyle(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -758,14 +760,14 @@ class _UploadProductPageState extends State<UploadProductPage>
       children: [
         Row(
           children: [
-            Icon(icon, size: 20, color: Colors.orange),
+            Icon(icon, size: 20, color: MangoPalette.green500),
             const SizedBox(width: 8),
             Text(
               title,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : MangoPalette.black,
               ),
             ),
           ],
@@ -780,13 +782,13 @@ class _UploadProductPageState extends State<UploadProductPage>
               label: Text(option),
               selected: isSelected,
               onSelected: (selected) => onToggle(option),
-              backgroundColor: isDark ? Colors.grey[700] : Colors.grey[200],
-              selectedColor: Colors.orange.withOpacity(0.2),
-              checkmarkColor: Colors.orange,
+              backgroundColor: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
+              selectedColor: MangoPalette.green500.withOpacity(0.2),
+              checkmarkColor: MangoPalette.green500,
               labelStyle: TextStyle(
                 color: isSelected
-                    ? Colors.orange
-                    : (isDark ? Colors.white : Colors.black),
+                    ? MangoPalette.green500
+                    : (isDark ? Colors.white : MangoPalette.black),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             );
@@ -823,7 +825,7 @@ class _UploadProductPageState extends State<UploadProductPage>
   ) {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      color: isDark ? Colors.grey[700] : Colors.white,
+      color: isDark ? MangoPalette.grey700 : Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -848,15 +850,15 @@ class _UploadProductPageState extends State<UploadProductPage>
                   ),
                   decoration: BoxDecoration(
                     color: variant.inStock
-                        ? Colors.green.withOpacity(0.1)
+                        ? MangoPalette.green500.withOpacity(0.1)
                         : Colors.red.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                   ),
                   child: Text(
                     variant.inStock ? 'In Stock' : 'Out of Stock',
                     style: TextStyle(
-                      color: variant.inStock ? Colors.green : Colors.red,
-                      fontSize: 10,
+                      color: variant.inStock ? MangoPalette.green500 : Colors.red,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -867,7 +869,7 @@ class _UploadProductPageState extends State<UploadProductPage>
             Text(
               'SKU: ${variant.sku}',
               style: TextStyle(
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
+                color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                 fontSize: 12,
               ),
             ),
@@ -884,7 +886,7 @@ class _UploadProductPageState extends State<UploadProductPage>
                       labelText: 'Stock',
                       isDense: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                       ),
                     ),
                     onChanged: (value) {
@@ -906,7 +908,7 @@ class _UploadProductPageState extends State<UploadProductPage>
                       labelText: 'Price',
                       isDense: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                       ),
                     ),
                     onChanged: (value) {
@@ -928,7 +930,7 @@ class _UploadProductPageState extends State<UploadProductPage>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.blue.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: Border.all(color: Colors.blue.withOpacity(0.3)),
       ),
       child: Row(
@@ -956,10 +958,10 @@ class _UploadProductPageState extends State<UploadProductPage>
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: MangoPalette.black.withOpacity(0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -968,7 +970,7 @@ class _UploadProductPageState extends State<UploadProductPage>
             child: Obx(
               () => Column(
                 children: [
-                  Icon(Icons.task_alt, size: 64, color: Colors.green),
+                  Icon(Icons.task_alt, size: 64, color: MangoPalette.green500),
                   const SizedBox(height: 16),
                   Text(
                     'Ready to Upload!',
@@ -984,8 +986,8 @@ class _UploadProductPageState extends State<UploadProductPage>
                       'Review your Mango product details before uploading',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
-                        fontSize: 11,
+                        color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
+                        fontSize: 12,
                         height: 1.2,
                       ),
                     ),
@@ -1055,7 +1057,7 @@ class _UploadProductPageState extends State<UploadProductPage>
                   if (_controller.isUploading.value)
                     Column(
                       children: [
-                        LinearProgressIndicator(
+                        LinearProgressIndicator(semanticsLabel: 'Loading', 
                           value: _controller.uploadProgress.value,
                         ),
                         const SizedBox(height: 8),
@@ -1078,8 +1080,8 @@ class _UploadProductPageState extends State<UploadProductPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[700] : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        color: isDark ? MangoPalette.grey700 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1096,7 +1098,7 @@ class _UploadProductPageState extends State<UploadProductPage>
           Text(
             '${_controller.variants.length} variants generated',
             style: TextStyle(
-              color: isDark ? Colors.grey[400] : Colors.grey[600],
+              color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -1107,9 +1109,9 @@ class _UploadProductPageState extends State<UploadProductPage>
               return Chip(
                 label: Text(
                   variant.attributes.entries.map((e) => e.value).join(' / '),
-                  style: const TextStyle(fontSize: 10),
+                  style: const TextStyle(fontSize: 12),
                 ),
-                backgroundColor: Colors.orange.withOpacity(0.1),
+                backgroundColor: MangoPalette.green500.withOpacity(0.1),
               );
             }).toList(),
           ),
@@ -1117,8 +1119,8 @@ class _UploadProductPageState extends State<UploadProductPage>
             Text(
               '+ ${_controller.variants.length - 5} more variants...',
               style: TextStyle(
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
-                fontSize: 10,
+                color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
+                fontSize: 12,
               ),
             ),
         ],
@@ -1131,12 +1133,12 @@ class _UploadProductPageState extends State<UploadProductPage>
       () => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[800] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          color: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
             color: _controller.selectedImages.isNotEmpty
-                ? Colors.green.withOpacity(0.3)
-                : Colors.grey.withOpacity(0.2),
+                ? MangoPalette.green500.withOpacity(0.3)
+                : MangoPalette.grey500.withOpacity(0.2),
           ),
         ),
         child: Column(
@@ -1147,8 +1149,8 @@ class _UploadProductPageState extends State<UploadProductPage>
                 Icon(
                   Icons.photo_library,
                   color: _controller.selectedImages.isNotEmpty
-                      ? Colors.green
-                      : Colors.grey,
+                      ? MangoPalette.green500
+                      : MangoPalette.grey500,
                   size: 16,
                 ),
                 const SizedBox(width: 8),
@@ -1168,18 +1170,18 @@ class _UploadProductPageState extends State<UploadProductPage>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      color: MangoPalette.green500.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.check, color: Colors.green, size: 10),
+                        Icon(Icons.check, color: MangoPalette.green500, size: 10),
                         const SizedBox(width: 4),
                         Text(
                           '${_controller.selectedImages.length} images',
                           style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.green,
+                            fontSize: 12,
+                            color: MangoPalette.green500,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -1213,7 +1215,7 @@ class _UploadProductPageState extends State<UploadProductPage>
       itemBuilder: (context, index) {
         return Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             image: DecorationImage(
               image: FileImage(File(_controller.selectedImages[index].path)),
               fit: BoxFit.cover,
@@ -1231,16 +1233,16 @@ class _UploadProductPageState extends State<UploadProductPage>
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-            color: isDark ? Colors.grey[700] : Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
+            color: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
             border: Border.all(
-              color: Colors.grey.withOpacity(0.3),
+              color: MangoPalette.grey500.withOpacity(0.3),
               style: BorderStyle.solid,
             ),
           ),
           child: Icon(
             Icons.photo_library,
-            color: Colors.grey.withOpacity(0.5),
+            color: MangoPalette.grey500.withOpacity(0.5),
             size: 24,
           ),
         ),
@@ -1262,19 +1264,19 @@ class _UploadProductPageState extends State<UploadProductPage>
             ElevatedButton(
               onPressed: _goToPreviousStep,
               style: ElevatedButton.styleFrom(
-                backgroundColor: isDark ? Colors.grey[700] : Colors.grey[200],
+                backgroundColor: isDark ? MangoPalette.grey700 : MangoPalette.grey200,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,
                   vertical: 12,
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
               child: Text(
                 'Back',
                 style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
+                  color: isDark ? Colors.white : MangoPalette.black,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -1291,11 +1293,11 @@ class _UploadProductPageState extends State<UploadProductPage>
               backgroundColor:
                   _controller.isStepValid.value &&
                       !_controller.isUploading.value
-                  ? Colors.orange
-                  : Colors.grey,
+                  ? MangoPalette.green500
+                  : MangoPalette.grey500,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
             ),
             child: Text(
@@ -1331,25 +1333,25 @@ class _UploadProductPageState extends State<UploadProductPage>
       maxLines: maxLines,
       keyboardType: keyboardType,
       style: TextStyle(
-        color: isDark ? Colors.white : Colors.black,
+        color: isDark ? Colors.white : MangoPalette.black,
         fontSize: 14,
       ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          color: isDark ? Colors.grey[400] : Colors.grey[600],
+          color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
         ),
-        prefixIcon: Icon(icon, color: Colors.orange),
+        prefixIcon: Icon(icon, color: MangoPalette.green500),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[400]!),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: BorderSide(color: MangoPalette.grey400),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.orange),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: const BorderSide(color: MangoPalette.green500),
         ),
         filled: true,
-        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+        fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
       ),
     );
   }
@@ -1370,7 +1372,7 @@ class _UploadProductPageState extends State<UploadProductPage>
             child: Text(
               value,
               style: TextStyle(
-                color: isDark ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : MangoPalette.black,
                 fontSize: 14,
               ),
             ),
@@ -1384,19 +1386,19 @@ class _UploadProductPageState extends State<UploadProductPage>
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(
-            color: isDark ? Colors.grey[400] : Colors.grey[600],
+            color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
           ),
-          prefixIcon: Icon(icon, color: Colors.orange),
+          prefixIcon: Icon(icon, color: MangoPalette.green500),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey[400]!),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: BorderSide(color: MangoPalette.grey400),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.orange),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
+            borderSide: const BorderSide(color: MangoPalette.green500),
           ),
           filled: true,
-          fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
+          fillColor: isDark ? MangoPalette.grey800 : MangoPalette.grey50,
         ),
       ),
     );
@@ -1409,12 +1411,12 @@ class _UploadProductPageState extends State<UploadProductPage>
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
+        color: MangoPalette.grey100,
+        borderRadius: BorderRadius.circular(MangoRadius.sm),
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.orange, size: 20),
+          Icon(icon, color: MangoPalette.green500, size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -1422,7 +1424,7 @@ class _UploadProductPageState extends State<UploadProductPage>
               children: [
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  style: const TextStyle(fontSize: 12, color: MangoPalette.grey500),
                 ),
                 Text(
                   value,
@@ -1439,7 +1441,7 @@ class _UploadProductPageState extends State<UploadProductPage>
   Future<bool> _showExitDialog(BuildContext context) async {
     return await showDialog<bool>(
           context: context,
-          barrierColor: Colors.black.withOpacity(0.4),
+          barrierColor: MangoPalette.black.withOpacity(0.4),
           builder: (context) => Dialog(
             backgroundColor: Colors.transparent,
             insetPadding: const EdgeInsets.all(24),
@@ -1448,10 +1450,10 @@ class _UploadProductPageState extends State<UploadProductPage>
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: MangoPalette.black.withOpacity(0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -1503,10 +1505,10 @@ class _UploadProductPageState extends State<UploadProductPage>
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             side: BorderSide(
-                              color: Colors.grey.withOpacity(0.3),
+                              color: MangoPalette.grey500.withOpacity(0.3),
                             ),
                           ),
                           icon: const Icon(Icons.arrow_back, size: 14),
@@ -1532,7 +1534,7 @@ class _UploadProductPageState extends State<UploadProductPage>
                             backgroundColor: Colors.red,
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(MangoRadius.md),
                             ),
                             elevation: 0,
                           ),

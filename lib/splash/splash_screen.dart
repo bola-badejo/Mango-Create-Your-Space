@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mango/AccountSetup/onboarding_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mango/App/router/app_routes.dart';
 import 'package:mango/utils.dart';
@@ -35,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _initializeApp() async {
     try {
-      await Future.delayed(const Duration(seconds: 2)); 
+      await Future.delayed(const Duration(milliseconds: 600));
       await _checkFirstTimeAndNavigate();
     } catch (e) {
       if (mounted) {
@@ -53,11 +54,13 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (!mounted) return;
 
-    if (isFirstTime) {
+    if (user != null && user.uid.isNotEmpty) {
+      // Signed in: Home, or the one-minute quick start if not finished.
+      await prefs.setBool('isFirstTime', false);
+      await OnboardingService.instance.continueAfterSignIn();
+    } else if (isFirstTime) {
       await prefs.setBool('isFirstTime', false);
       Get.offAllNamed(AppRoutes.onboarding);
-    } else if (user != null && user.uid.isNotEmpty) {
-      Get.offAllNamed(AppRoutes.home);
     } else {
       Get.offAllNamed(AppRoutes.welcome);
     }
@@ -93,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen>
               child: Text(
                 'Create your Space..',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),

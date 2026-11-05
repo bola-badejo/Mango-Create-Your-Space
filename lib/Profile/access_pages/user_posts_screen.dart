@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/Profile/profile_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class PostsScreen extends StatelessWidget {
   final ProfileController profileController = Get.find<ProfileController>();
@@ -18,7 +19,7 @@ class PostsScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (profileController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
         }
 
         final posts = profileController.userPosts;
@@ -27,7 +28,7 @@ class PostsScreen extends StatelessWidget {
           return const Center(
             child: Text(
               'No posts yet',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(fontSize: 16, color: MangoPalette.grey500),
             ),
           );
         }

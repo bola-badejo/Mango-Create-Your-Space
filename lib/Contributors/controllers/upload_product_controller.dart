@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mango/Models/customModel/MangoProduct.dart';
 import 'package:mango/utils.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class UploadProductController extends GetxController {
   final RxDouble uploadProgress = 0.0.obs;
@@ -336,7 +337,7 @@ class UploadProductController extends GetxController {
             'Images Added',
             '${result.files.length} images selected',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             duration: const Duration(seconds: 2),
             context: context,
@@ -360,7 +361,7 @@ class UploadProductController extends GetxController {
             'Images Added',
             '${images.length} images selected',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
             colorText: Colors.white,
             duration: const Duration(seconds: 2),
             context: context,
@@ -463,7 +464,7 @@ class UploadProductController extends GetxController {
         'Vendor Required',
         'Please register as a vendor first to upload products.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -475,7 +476,7 @@ class UploadProductController extends GetxController {
         'Upload in Progress',
         'Please wait for current upload to complete',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -489,7 +490,7 @@ class UploadProductController extends GetxController {
         'Missing Info',
         'Please complete all required fields and variants',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         context: context,
       );
@@ -571,7 +572,7 @@ class UploadProductController extends GetxController {
         '🎉 Success!',
         'Your product "${product.title}" has been uploaded',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
         context: context,

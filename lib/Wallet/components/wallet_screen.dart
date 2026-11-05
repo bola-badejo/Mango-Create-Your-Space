@@ -7,6 +7,8 @@ import 'package:mango/Utils/optimized_lists.dart';
 import 'package:mango/Wallet/components/animated_card.dart';
 import 'package:mango/Wallet/data/decimal.dart';
 import 'package:mango/Wallet/services/wallet_services.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class WalletScreen extends StatefulWidget {
   @override
@@ -73,8 +75,8 @@ class _WalletScreenState extends State<WalletScreen> {
         ),
         centerTitle: true,
         backgroundColor: isDarkMode
-            ? Colors.deepOrange.shade800
-            : Colors.orange.shade600,
+            ? MangoPalette.green800
+            : MangoPalette.green600,
         foregroundColor: Colors.white,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -97,8 +99,8 @@ class _WalletScreenState extends State<WalletScreen> {
 
     return RefreshIndicator.adaptive(
       onRefresh: _loadWalletData,
-      color: Colors.orange.shade600,
-      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
+      color: MangoPalette.green600,
+      backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
       child: CustomScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         slivers: [
@@ -129,10 +131,10 @@ class _WalletScreenState extends State<WalletScreen> {
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade900 : Colors.green.shade50,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : MangoPalette.green50,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         border: Border.all(
-          color: isDarkMode ? Colors.grey.shade800 : Colors.green.shade200,
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.green200,
         ),
       ),
       child: Column(
@@ -140,14 +142,14 @@ class _WalletScreenState extends State<WalletScreen> {
         children: [
           Row(
             children: [
-              Icon(Icons.bolt_rounded, color: Colors.green.shade600, size: 20),
+              Icon(Icons.bolt_rounded, color: MangoPalette.green600, size: 20),
               SizedBox(width: 8),
               Text(
                 'Token Utility',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
-                  color: isDarkMode ? Colors.white : Colors.green.shade800,
+                  color: isDarkMode ? Colors.white : MangoPalette.green800,
                 ),
               ),
             ],
@@ -173,7 +175,7 @@ class _WalletScreenState extends State<WalletScreen> {
           Icon(
             Icons.check_circle_rounded,
             size: 18,
-            color: Colors.green.shade500,
+            color: MangoPalette.green500,
           ),
           SizedBox(width: 12),
           Expanded(
@@ -181,7 +183,7 @@ class _WalletScreenState extends State<WalletScreen> {
               utility,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey.shade700,
+                color: MangoPalette.grey700,
                 height: 1.4,
               ),
             ),
@@ -196,10 +198,10 @@ class _WalletScreenState extends State<WalletScreen> {
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade900 : Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         border: Border.all(
-          color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
         ),
       ),
       child: Row(
@@ -209,14 +211,14 @@ class _WalletScreenState extends State<WalletScreen> {
             icon: Icons.send_rounded,
             label: 'Send',
             onTap: _showTransferSheet,
-            color: Colors.orange.shade600,
+            color: MangoPalette.green600,
             isDarkMode: isDarkMode,
           ),
           _buildActionButton(
             icon: Icons.qr_code_2_rounded,
             label: 'Receive',
             onTap: _showReceiveSheet,
-            color: Colors.green.shade600,
+            color: MangoPalette.green600,
             isDarkMode: isDarkMode,
           ),
           _buildActionButton(
@@ -253,7 +255,7 @@ class _WalletScreenState extends State<WalletScreen> {
     return Semantics(
       button: true,
       label: '$label Mango tokens',
-      child: GestureDetector(
+      child: MangoPressable(
         onTap: onTap,
         child: Column(
           children: [
@@ -272,7 +274,7 @@ class _WalletScreenState extends State<WalletScreen> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isDarkMode ? Colors.grey.shade300 : Colors.grey.shade700,
+                color: isDarkMode ? MangoPalette.grey300 : MangoPalette.grey700,
                 letterSpacing: -0.2,
               ),
             ),
@@ -295,7 +297,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
-                  color: isDarkMode ? Colors.white : Colors.grey.shade900,
+                  color: isDarkMode ? Colors.white : MangoPalette.grey900,
                 ),
               ),
               Spacer(),
@@ -306,13 +308,13 @@ class _WalletScreenState extends State<WalletScreen> {
                   child: TextButton(
                     onPressed: _showFullTransactionHistory,
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.orange.shade600,
+                      foregroundColor: MangoPalette.green600,
                     ),
                     child: Text(
                       'View All',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 10,
+                        fontSize: 12,
                       ),
                     ),
                   ),
@@ -335,10 +337,10 @@ class _WalletScreenState extends State<WalletScreen> {
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade900 : Colors.orange.shade50,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : MangoPalette.green50,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
         border: Border.all(
-          color: isDarkMode ? Colors.grey.shade800 : Colors.black87,
+          color: isDarkMode ? MangoPalette.grey800 : Colors.black87,
         ),
       ),
       child: Column(
@@ -348,7 +350,7 @@ class _WalletScreenState extends State<WalletScreen> {
             children: [
               Icon(
                 Icons.emoji_events_rounded,
-                color: Colors.orange.shade600,
+                color: MangoPalette.green600,
                 size: 20,
               ),
               SizedBox(width: 8),
@@ -367,7 +369,7 @@ class _WalletScreenState extends State<WalletScreen> {
             'Complete activities to earn Mango tokens',
             style: TextStyle(
               fontSize: 14,
-              color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
           ),
           SizedBox(height: 16),
@@ -433,14 +435,14 @@ class _WalletScreenState extends State<WalletScreen> {
 
     return Semantics(
       button: true,
-      label: '$label - Earn ${rewardAmount.toFixed(6)} MNG',
-      child: GestureDetector(
+      label: '$label - Earn up to ${rewardAmount.toFixed(6)} MNG',
+      child: MangoPressable(
         onTap: () => _claimReward(activity),
         child: Container(
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: isDarkMode ? Colors.purple.shade800 : Colors.purple.shade100,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             border: Border.all(color: Colors.purple.shade300.withOpacity(0.5)),
           ),
           child: Column(
@@ -451,7 +453,7 @@ class _WalletScreenState extends State<WalletScreen> {
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: isDarkMode ? Colors.white : Colors.purple.shade800,
                 ),
@@ -459,10 +461,10 @@ class _WalletScreenState extends State<WalletScreen> {
               ),
               SizedBox(height: 2),
               Text(
-                '${rewardAmount.toFixed(3)} MNG',
+                'up to ${rewardAmount.toFixed(3)} MNG',
                 style: TextStyle(
-                  fontSize: 9,
-                  color: Colors.green.shade600,
+                  fontSize: 12,
+                  color: MangoPalette.green600,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -481,15 +483,15 @@ class _WalletScreenState extends State<WalletScreen> {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.orange.shade900 : Colors.orange.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.orange.shade300.withOpacity(0.3)),
+        color: isDarkMode ? MangoPalette.green900 : MangoPalette.green50,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
+        border: Border.all(color: MangoPalette.green300.withOpacity(0.3)),
       ),
       child: Row(
         children: [
           Icon(
             Icons.local_fire_department_rounded,
-            color: Colors.orange.shade600,
+            color: MangoPalette.green600,
             size: 20,
           ),
           SizedBox(width: 8),
@@ -502,16 +504,16 @@ class _WalletScreenState extends State<WalletScreen> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: isDarkMode ? Colors.white : Colors.orange.shade800,
+                    color: isDarkMode ? Colors.white : MangoPalette.green800,
                   ),
                 ),
                 Text(
                   '$streak days • +${(streak * 10).toString()}% bonus',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 12,
                     color: isDarkMode
-                        ? Colors.orange.shade300
-                        : Colors.orange.shade600,
+                        ? MangoPalette.green300
+                        : MangoPalette.green600,
                   ),
                 ),
               ],
@@ -521,13 +523,13 @@ class _WalletScreenState extends State<WalletScreen> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.orange.shade600,
-                borderRadius: BorderRadius.circular(8),
+                color: MangoPalette.green600,
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
               ),
               child: Text(
                 '$streak🔥',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
                 ),
@@ -550,14 +552,14 @@ class _WalletScreenState extends State<WalletScreen> {
               SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  '🎉 +${result.amount.toFixed(6)} MNG earned!',
+                  result.message ?? '🎉 Reward recorded',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
             ],
           ),
           behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.green.shade600,
+          backgroundColor: MangoPalette.green600,
           duration: Duration(seconds: 3),
         ),
       );
@@ -578,10 +580,10 @@ class _WalletScreenState extends State<WalletScreen> {
   Widget _buildTransactionList(bool isDarkMode) {
     return Container(
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade900 : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: Border.all(
-          color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,
+          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
         ),
       ),
       child: Column(
@@ -600,7 +602,7 @@ class _WalletScreenState extends State<WalletScreen> {
     final icon = isCredit
         ? Icons.arrow_downward_rounded
         : Icons.arrow_upward_rounded;
-    final color = isCredit ? Colors.green.shade500 : Colors.red.shade500;
+    final color = isCredit ? MangoPalette.green500 : Colors.red.shade500;
     final typeLabel = isCredit ? 'Received' : 'Sent';
 
     return Semantics(
@@ -611,15 +613,15 @@ class _WalletScreenState extends State<WalletScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () => _showTransactionDetails(transaction),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           child: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   color: isDarkMode
-                      ? Colors.grey.shade800
-                      : Colors.grey.shade100,
+                      ? MangoPalette.grey800
+                      : MangoPalette.grey100,
                 ),
               ),
             ),
@@ -629,7 +631,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: color.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   child: Icon(icon, color: color, size: 14),
                 ),
@@ -645,7 +647,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           fontWeight: FontWeight.w600,
                           color: isDarkMode
                               ? Colors.white
-                              : Colors.grey.shade900,
+                              : MangoPalette.grey900,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -656,10 +658,10 @@ class _WalletScreenState extends State<WalletScreen> {
                           'MMM dd, yyyy - HH:mm',
                         ).format(transaction.timestamp),
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: isDarkMode
-                              ? Colors.grey.shade400
-                              : Colors.grey.shade600,
+                              ? MangoPalette.grey400
+                              : MangoPalette.grey600,
                         ),
                       ),
                     ],
@@ -680,10 +682,10 @@ class _WalletScreenState extends State<WalletScreen> {
                     Text(
                       typeLabel,
                       style: TextStyle(
-                        fontSize: 9,
+                        fontSize: 12,
                         color: isDarkMode
-                            ? Colors.grey.shade400
-                            : Colors.grey.shade500,
+                            ? MangoPalette.grey400
+                            : MangoPalette.grey500,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -701,8 +703,8 @@ class _WalletScreenState extends State<WalletScreen> {
     return Container(
       padding: EdgeInsets.all(40),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade900 : Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey50,
+        borderRadius: BorderRadius.circular(MangoRadius.lg),
       ),
       child: Column(
         children: [
@@ -711,7 +713,7 @@ class _WalletScreenState extends State<WalletScreen> {
             child: Icon(
               Icons.celebration_rounded,
               size: 80,
-              color: isDarkMode ? Colors.grey.shade600 : Colors.grey.shade300,
+              color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey300,
             ),
           ),
           SizedBox(height: 20),
@@ -720,7 +722,7 @@ class _WalletScreenState extends State<WalletScreen> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: isDarkMode ? Colors.grey.shade300 : Colors.grey.shade600,
+              color: isDarkMode ? MangoPalette.grey300 : MangoPalette.grey600,
             ),
           ),
           SizedBox(height: 8),
@@ -729,7 +731,7 @@ class _WalletScreenState extends State<WalletScreen> {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
-              color: isDarkMode ? Colors.grey.shade500 : Colors.grey.shade500,
+              color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey500,
               height: 1.4,
             ),
           ),
@@ -744,7 +746,7 @@ class _WalletScreenState extends State<WalletScreen> {
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(MangoRadius.md),
         border: Border.all(color: Colors.blue.shade200),
       ),
       child: Column(
@@ -791,7 +793,7 @@ class _WalletScreenState extends State<WalletScreen> {
       label: 'Refresh wallet data',
       child: FloatingActionButton(
         onPressed: _loadWalletData,
-        backgroundColor: Colors.orange.shade600,
+        backgroundColor: MangoPalette.green600,
         foregroundColor: Colors.white,
         elevation: 4,
         child: Icon(Icons.refresh_rounded, size: 26),
@@ -845,14 +847,14 @@ class _WalletScreenState extends State<WalletScreen> {
         children: [
           Semantics(
             label: 'Loading wallet data',
-            child: CircularProgressIndicator.adaptive(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.orange.shade600),
+            child: CircularProgressIndicator.adaptive(semanticsLabel: 'Loading', 
+              valueColor: AlwaysStoppedAnimation<Color>(MangoPalette.green600),
             ),
           ),
           SizedBox(height: 16),
           Text(
             'Loading your wallet...',
-            style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+            style: TextStyle(fontSize: 16, color: MangoPalette.grey600),
           ),
         ],
       ),
@@ -880,7 +882,7 @@ class _WalletScreenState extends State<WalletScreen> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: Colors.grey.shade800,
+                color: MangoPalette.grey800,
               ),
             ),
             SizedBox(height: 12),
@@ -889,7 +891,7 @@ class _WalletScreenState extends State<WalletScreen> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey.shade600,
+                color: MangoPalette.grey600,
                 height: 1.4,
               ),
             ),
@@ -897,8 +899,8 @@ class _WalletScreenState extends State<WalletScreen> {
             FilledButton.tonal(
               onPressed: _loadWalletData,
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.orange.shade100,
-                foregroundColor: Colors.orange.shade800,
+                backgroundColor: MangoPalette.green100,
+                foregroundColor: MangoPalette.green800,
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -937,7 +939,7 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
 
     return Container(
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade900 : Colors.white,
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -959,8 +961,8 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(2),
+                  color: MangoPalette.grey400,
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                 ),
               ),
             ),
@@ -969,7 +971,7 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
               children: [
                 Icon(
                   Icons.send_rounded,
-                  color: Colors.orange.shade600,
+                  color: MangoPalette.green600,
                   size: 28,
                 ),
                 SizedBox(width: 12),
@@ -990,7 +992,7 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                   hintText: 'Enter wallet address...',
                   prefixIcon: Icon(Icons.person_outline_rounded),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   filled: true,
                 ),
@@ -1009,7 +1011,7 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                   hintText: '0.000000',
                   prefixIcon: Icon(Icons.attach_money_rounded),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   filled: true,
                   suffixText: 'MNG',
@@ -1019,7 +1021,7 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
             SizedBox(height: 8),
             Text(
               'Minimum amount: 0.000001 MNG',
-              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+              style: TextStyle(fontSize: 12, color: MangoPalette.grey600),
             ),
             SizedBox(height: 24),
             Row(
@@ -1030,7 +1032,7 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                     ),
                     child: Text('Cancel'),
@@ -1041,17 +1043,17 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
                   child: FilledButton(
                     onPressed: isTransferring ? null : _transferCoins,
                     style: FilledButton.styleFrom(
-                      backgroundColor: Colors.orange.shade600,
+                      backgroundColor: MangoPalette.green600,
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(MangoRadius.md),
                       ),
                     ),
                     child: isTransferring
                         ? SizedBox(
                             height: 20,
                             width: 20,
-                            child: CircularProgressIndicator(
+                            child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation(Colors.white),
                             ),
@@ -1110,7 +1112,7 @@ class _TransferBottomSheetState extends State<TransferBottomSheet> {
         SnackBar(
           content: Text('✅ Transfer completed successfully!'),
           behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.green.shade600,
+          backgroundColor: MangoPalette.green600,
         ),
       );
     } catch (e) {
@@ -1142,7 +1144,7 @@ class ReceiveBottomSheet extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade900 : Colors.white,
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -1158,8 +1160,8 @@ class ReceiveBottomSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(2),
+                  color: MangoPalette.grey400,
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                 ),
               ),
             ),
@@ -1168,7 +1170,7 @@ class ReceiveBottomSheet extends StatelessWidget {
               children: [
                 Icon(
                   Icons.qr_code_2_rounded,
-                  color: Colors.green.shade600,
+                  color: MangoPalette.green600,
                   size: 28,
                 ),
                 SizedBox(width: 12),
@@ -1182,18 +1184,18 @@ class ReceiveBottomSheet extends StatelessWidget {
             Text(
               'Share this address to receive Mango tokens',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+              style: TextStyle(fontSize: 14, color: MangoPalette.grey600),
             ),
             SizedBox(height: 20),
             Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade50,
-                borderRadius: BorderRadius.circular(16),
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+                borderRadius: BorderRadius.circular(MangoRadius.md),
                 border: Border.all(
                   color: isDarkMode
-                      ? Colors.grey.shade700
-                      : Colors.grey.shade200,
+                      ? MangoPalette.grey700
+                      : MangoPalette.grey200,
                 ),
               ),
               child: Column(
@@ -1207,7 +1209,7 @@ class ReceiveBottomSheet extends StatelessWidget {
                         fontSize: 14,
                         fontFamily: 'Monospace',
                         fontWeight: FontWeight.w500,
-                        color: isDarkMode ? Colors.white : Colors.grey.shade900,
+                        color: isDarkMode ? Colors.white : MangoPalette.grey900,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -1216,8 +1218,8 @@ class ReceiveBottomSheet extends StatelessWidget {
                   FilledButton.tonal(
                     onPressed: () => _copyToClipboard(context, address),
                     style: FilledButton.styleFrom(
-                      backgroundColor: Colors.green.shade100,
-                      foregroundColor: Colors.green.shade800,
+                      backgroundColor: MangoPalette.green100,
+                      foregroundColor: MangoPalette.green800,
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -1238,13 +1240,13 @@ class ReceiveBottomSheet extends StatelessWidget {
             Text(
               'Others can send you Mango tokens using this address',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+              style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
             ),
             SizedBox(height: 16),
             FilledButton(
               onPressed: () => Navigator.pop(context),
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.green.shade600,
+                backgroundColor: MangoPalette.green600,
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               ),
               child: Text('Done'),
@@ -1267,7 +1269,7 @@ class ReceiveBottomSheet extends StatelessWidget {
       SnackBar(
         content: Text('Address copied to clipboard'),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.sm)),
       ),
     );
   }
@@ -1302,8 +1304,8 @@ class TransactionDetailsSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(2),
+                  color: MangoPalette.grey400,
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                 ),
               ),
             ),
@@ -1340,7 +1342,7 @@ class FullTransactionHistorySheet extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade900 : Colors.white,
+        color: isDarkMode ? MangoPalette.grey900 : Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -1356,8 +1358,8 @@ class FullTransactionHistorySheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(2),
+                  color: MangoPalette.grey400,
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                 ),
               ),
             ),
@@ -1379,6 +1381,7 @@ class FullTransactionHistorySheet extends StatelessWidget {
                 ),
                 Spacer(),
                 IconButton(
+        tooltip: 'Close',
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.close_rounded),
                 ),
@@ -1416,7 +1419,7 @@ class FullTransactionHistorySheet extends StatelessWidget {
           Icon(
             Icons.receipt_long_rounded,
             size: 80,
-            color: Colors.grey.shade300,
+            color: MangoPalette.grey300,
           ),
           SizedBox(height: 16),
           Text(
@@ -1424,13 +1427,13 @@ class FullTransactionHistorySheet extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Colors.grey.shade600,
+              color: MangoPalette.grey600,
             ),
           ),
           SizedBox(height: 8),
           Text(
             'Your transaction history will appear here',
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
+            style: TextStyle(fontSize: 14, color: MangoPalette.grey500),
           ),
         ],
       ),
@@ -1446,7 +1449,7 @@ class FullTransactionHistorySheet extends StatelessWidget {
     final icon = isCredit
         ? Icons.arrow_downward_rounded
         : Icons.arrow_upward_rounded;
-    final color = isCredit ? Colors.green.shade500 : Colors.red.shade500;
+    final color = isCredit ? MangoPalette.green500 : Colors.red.shade500;
     final typeLabel = isCredit ? 'Received' : 'Sent';
 
     return Card(
@@ -1456,7 +1459,7 @@ class FullTransactionHistorySheet extends StatelessWidget {
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(MangoRadius.sm),
           ),
           child: Icon(icon, color: color, size: 20),
         ),
@@ -1483,7 +1486,7 @@ class FullTransactionHistorySheet extends StatelessWidget {
             SizedBox(height: 2),
             Text(
               typeLabel,
-              style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
+              style: TextStyle(fontSize: 12, color: MangoPalette.grey500),
             ),
           ],
         ),

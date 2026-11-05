@@ -6,6 +6,8 @@ import 'package:mango/Home/dashboard.dart';
 import 'package:mango/Home/pages/genre_video_player.dart';
 import 'package:mango/Models/customModel/mango_genres.dart';
 import 'package:mango/Utils/text_highlighter.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class GenreVideoCarousel extends StatefulWidget {
   final List<MangoGenre> genres;
@@ -105,7 +107,7 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
             width: 200,
             height: 450,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               boxShadow: [
                 BoxShadow(
                   color: mood.color.withOpacity(0.3),
@@ -116,7 +118,7 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               child: GenreVideoPlayer(
                 key: ValueKey('${mood.id}_$index'),
                 videoUrl: mood.videoUrl,
@@ -132,11 +134,11 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
             width: 200,
             height: 450,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                colors: [Colors.transparent, MangoPalette.black.withOpacity(0.8)],
                 stops: const [0.4, 1.0],
               ),
             ),
@@ -149,18 +151,18 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(12),
+                color: MangoPalette.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(MangoRadius.md),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(mood.emoji, style: const TextStyle(fontSize: 10)),
+                  Text(mood.emoji, style: const TextStyle(fontSize: 12)),
                   const SizedBox(width: 6),
                   Text(
                     mood.name,
                     style: const TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -184,7 +186,7 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
-                  colors: [Colors.black.withOpacity(0.9), Colors.transparent],
+                  colors: [MangoPalette.black.withOpacity(0.9), Colors.transparent],
                 ),
               ),
               child: Padding(
@@ -207,7 +209,7 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
                     
                     Text(
                       mood.description,
-                      style: const TextStyle(fontSize: 6, color: Colors.white),
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
 
                     const SizedBox(height: 8),
@@ -221,13 +223,13 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: mood.color.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(MangoRadius.sm),
                             border: Border.all(color: mood.color.withOpacity(0.5), width: 0.5),
                           ),
                           child: Text(
                             genre,
                             style: TextStyle(
-                              fontSize: 6,
+                              fontSize: 12,
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
                             ),
@@ -243,7 +245,7 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
                       '${mood.songCount} songs • ${playValue(mood.totalPlays)} total plays',
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 9,
+                        fontSize: 12,
                         height: 1,
                         color: Colors.white,
                       ),
@@ -259,7 +261,7 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         
-                        GestureDetector(
+                        MangoPressable(
                           onTap: () {
                             Get.toNamed('/mood/${mood.id}', arguments: {
                               'mood': mood,
@@ -272,16 +274,16 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(2),
+                              borderRadius: BorderRadius.circular(MangoRadius.xs),
                               border: Border.all(
-                                color: Colors.black.withOpacity(0.1),
+                                color: MangoPalette.black.withOpacity(0.1),
                               ),
                             ),
                             child: const Text(
                               'Explore Mood',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 9,
+                                color: MangoPalette.black,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 letterSpacing: -0.1,
                               ),
@@ -298,7 +300,7 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
                               '${mood.songCount} songs',
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 9,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 0,
                               ),
@@ -341,7 +343,7 @@ class _GenreVideoCarouselState extends State<GenreVideoCarousel> {
             Text(
               value,
               style: const TextStyle(
-                fontSize: 9,
+                fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
               ),

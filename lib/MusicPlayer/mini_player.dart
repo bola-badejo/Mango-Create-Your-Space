@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/MusicPlayer/controllers/global_music_controller.dart';
 import 'package:mango/MusicPlayer/music_player.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({super.key});
@@ -28,7 +30,7 @@ class MiniPlayer extends StatelessWidget {
     final music = musicController.currentMusic.value!;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Get.to(() => MusicPlayer(
           musicId: music.id,
@@ -40,11 +42,11 @@ class MiniPlayer extends StatelessWidget {
         height: 70,
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[900] : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          color: isDarkMode ? MangoPalette.grey900 : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: MangoPalette.black.withOpacity(0.2),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -54,7 +56,7 @@ class MiniPlayer extends StatelessWidget {
           children: [
             // Artwork
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(MangoRadius.sm),
               child: Image.network(
                 music.artworkUrl,
                 width: 50,
@@ -64,7 +66,7 @@ class MiniPlayer extends StatelessWidget {
                   return Container(
                     width: 50,
                     height: 50,
-                    color: Colors.grey[800],
+                    color: MangoPalette.grey800,
                     child: const Icon(Icons.music_note, color: Colors.white),
                   );
                 },
@@ -91,7 +93,7 @@ class MiniPlayer extends StatelessWidget {
                   Text(
                     music.artistName,
                     style: TextStyle(
-                      color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                      color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                       fontSize: 12,
                     ),
                     maxLines: 1,
@@ -106,10 +108,10 @@ class MiniPlayer extends StatelessWidget {
                     return Container(
                       height: 2,
                       margin: const EdgeInsets.only(top: 4),
-                      child: LinearProgressIndicator(
+                      child: LinearProgressIndicator(semanticsLabel: 'Loading', 
                         value: progress,
-                        backgroundColor: isDarkMode ? Colors.grey[800] : Colors.grey[200],
-                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.orange),
+                        backgroundColor: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey200,
+                        valueColor: const AlwaysStoppedAnimation<Color>(MangoPalette.green500),
                       ),
                     );
                   }),
@@ -119,9 +121,10 @@ class MiniPlayer extends StatelessWidget {
             
             // Play/Pause button
             Obx(() => IconButton(
+        tooltip: 'Pause',
               icon: Icon(
                 musicController.isPlaying.value ? Icons.pause : Icons.play_arrow,
-                color: Colors.orange,
+                color: MangoPalette.green500,
                 size: 28,
               ),
               onPressed: musicController.togglePlayPause,
@@ -129,7 +132,8 @@ class MiniPlayer extends StatelessWidget {
             
             // Close button
             IconButton(
-              icon: const Icon(Icons.close, color: Colors.grey, size: 20),
+        tooltip: 'Close',
+              icon: const Icon(Icons.close, color: MangoPalette.grey500, size: 20),
               onPressed: musicController.stopMusic,
             ),
           ],
@@ -142,17 +146,17 @@ class MiniPlayer extends StatelessWidget {
     final music = musicController.currentMusic.value!;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     
-    return GestureDetector(
+    return MangoPressable(
       onTap: musicController.toggleMiniPlayer,
       child: Container(
         height: 40,
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[900] : Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          color: isDarkMode ? MangoPalette.grey900 : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.lg),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: MangoPalette.black.withOpacity(0.2),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -163,7 +167,7 @@ class MiniPlayer extends StatelessWidget {
           children: [
             Obx(() => Icon(
               musicController.isPlaying.value ? Icons.play_arrow : Icons.pause,
-              color: Colors.orange,
+              color: MangoPalette.green500,
               size: 16,
             )),
             const SizedBox(width: 8),
@@ -181,7 +185,7 @@ class MiniPlayer extends StatelessWidget {
               width: 4,
               height: 4,
               decoration: const BoxDecoration(
-                color: Colors.orange,
+                color: MangoPalette.green500,
                 shape: BoxShape.circle,
               ),
             ),

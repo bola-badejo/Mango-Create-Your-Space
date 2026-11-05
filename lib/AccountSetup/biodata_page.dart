@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:math';
 
 import 'add_description.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class BioDataPage extends StatefulWidget {
   const BioDataPage({super.key});
@@ -74,7 +75,7 @@ class _BioDataPageState extends State<BioDataPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: Colors.black,
+                            color: MangoPalette.black,
                             width: 2,
                           )),
                       child: Row(
@@ -97,7 +98,7 @@ class _BioDataPageState extends State<BioDataPage> {
                               controller: usernameController,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
-                                  focusColor: Colors.orangeAccent,
+                                  focusColor: MangoPalette.green500,
                                   hintText: 'username',
                                   hintStyle: postTextBoxHint),
                             ),
@@ -114,7 +115,7 @@ class _BioDataPageState extends State<BioDataPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: Colors.black,
+                            color: MangoPalette.black,
                             width: 2,
                           )),
                       child: Row(
@@ -133,7 +134,7 @@ class _BioDataPageState extends State<BioDataPage> {
                               controller: displayNameController,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
-                                  focusColor: Colors.orangeAccent,
+                                  focusColor: MangoPalette.green500,
                                   hintText: 'Full name',
                                   hintStyle: postTextBoxHint),
                             ),
@@ -152,7 +153,7 @@ class _BioDataPageState extends State<BioDataPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: Colors.black,
+                            color: MangoPalette.black,
                             width: 2,
                           )),
                       child: Row(
@@ -240,7 +241,7 @@ class _BioDataPageState extends State<BioDataPage> {
                                 horizontal: 20.0)),
                         backgroundColor:
                         MaterialStateProperty.all<
-                            Color>(Colors.black),
+                            Color>(MangoPalette.black),
                       ),
                       child: const Row(mainAxisSize: MainAxisSize.min, children: [
                         Icon(

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mango/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controllers/space_model.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class MoreOptionsScreen extends StatelessWidget {
   final SpaceModel space;
@@ -27,6 +28,7 @@ class MoreOptionsScreen extends StatelessWidget {
         ),
         centerTitle: true,
         leading: IconButton(
+        tooltip: 'Back',
           icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryColorLight),
           onPressed: () => Get.back(),
         ),
@@ -72,8 +74,8 @@ class MoreOptionsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(12),
+        color: MangoPalette.black,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Row(
         children: [
@@ -81,13 +83,13 @@ class MoreOptionsScreen extends StatelessWidget {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.1),
+              color: MangoPalette.green500.withOpacity(0.1),
               borderRadius: BorderRadius.circular(25),
-              border: Border.all(color: Colors.orange),
+              border: Border.all(color: MangoPalette.green500),
             ),
             child: Icon(
               Icons.space_dashboard,
-              color: Colors.orange,
+              color: MangoPalette.green500,
               size: 24,
             ),
           ),
@@ -108,7 +110,7 @@ class MoreOptionsScreen extends StatelessWidget {
                   space.category,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[400],
+                    color: MangoPalette.grey400,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -134,17 +136,17 @@ class MoreOptionsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey[800],
-        borderRadius: BorderRadius.circular(12),
+        color: MangoPalette.grey800,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: Colors.grey[400]),
+          Icon(icon, size: 12, color: MangoPalette.grey400),
           const SizedBox(width: 4),
           Text(
             text,
-            style: TextStyle(fontSize: 10, color: Colors.grey[400]),
+            style: TextStyle(fontSize: 12, color: MangoPalette.grey400),
           ),
         ],
       ),
@@ -175,7 +177,7 @@ class MoreOptionsScreen extends StatelessWidget {
       subtitle: Text(
         "Get help and support resources",
         style: TextStyle(
-          fontSize: 9,
+          fontSize: 12,
           color: Theme.of(context).primaryColorLight,
           fontWeight: FontWeight.w500,
         ),
@@ -238,7 +240,7 @@ class MoreOptionsScreen extends StatelessWidget {
       subtitle: Text(
         "Legal documents and policies",
         style: TextStyle(
-          fontSize: 9,
+          fontSize: 12,
           color: Theme.of(context).primaryColorLight,
           fontWeight: FontWeight.w500,
         ),
@@ -283,7 +285,7 @@ class MoreOptionsScreen extends StatelessWidget {
     return ExpansionTileCard(
       key: aboutCard,
       leading: CircleAvatar(
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         child: Icon(
           Icons.info,
           size: 18,
@@ -301,7 +303,7 @@ class MoreOptionsScreen extends StatelessWidget {
       subtitle: Text(
         "Technical information and details",
         style: TextStyle(
-          fontSize: 9,
+          fontSize: 12,
           color: Theme.of(context).primaryColorLight,
           fontWeight: FontWeight.w500,
         ),
@@ -346,7 +348,7 @@ class MoreOptionsScreen extends StatelessWidget {
     return ExpansionTileCard(
       key: advancedCard,
       leading: CircleAvatar(
-        backgroundColor: Colors.orange,
+        backgroundColor: MangoPalette.green500,
         child: Icon(
           Icons.settings,
           size: 18,
@@ -364,7 +366,7 @@ class MoreOptionsScreen extends StatelessWidget {
       subtitle: Text(
         "Advanced settings and utilities",
         style: TextStyle(
-          fontSize: 9,
+          fontSize: 12,
           color: Theme.of(context).primaryColorLight,
           fontWeight: FontWeight.w500,
         ),
@@ -410,8 +412,8 @@ class MoreOptionsScreen extends StatelessWidget {
         onPressed: onTap,
         padding: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: BorderSide(color: Colors.grey[800]!),
+          borderRadius: BorderRadius.circular(MangoRadius.sm),
+          side: BorderSide(color: MangoPalette.grey800),
         ),
         child: Row(
           children: [
@@ -419,10 +421,10 @@ class MoreOptionsScreen extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(8),
+                color: MangoPalette.grey800,
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
               ),
-              child: Icon(icon, color: Colors.grey[400], size: 20),
+              child: Icon(icon, color: MangoPalette.grey400, size: 20),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -440,14 +442,14 @@ class MoreOptionsScreen extends StatelessWidget {
                   Text(
                     subtitle,
                     style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey[400],
+                      fontSize: 12,
+                      color: MangoPalette.grey400,
                     ),
                   ),
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios, color: Colors.grey[400], size: 14),
+            Icon(Icons.arrow_forward_ios, color: MangoPalette.grey400, size: 14),
           ],
         ),
       ),
@@ -458,8 +460,8 @@ class MoreOptionsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(12),
+        color: MangoPalette.black,
+        borderRadius: BorderRadius.circular(MangoRadius.md),
       ),
       child: Column(
         children: [
@@ -476,15 +478,15 @@ class MoreOptionsScreen extends StatelessWidget {
             'Version 1.0.0',
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey[400],
+              color: MangoPalette.grey400,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             '© 2024 Mango Team. All rights reserved.',
             style: TextStyle(
-              fontSize: 10,
-              color: Colors.grey[500],
+              fontSize: 12,
+              color: MangoPalette.grey500,
             ),
           ),
         ],
@@ -529,7 +531,7 @@ class MoreOptionsScreen extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Describe the issue',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                 ),
               ),
               maxLines: 4,
@@ -542,7 +544,7 @@ class MoreOptionsScreen extends StatelessWidget {
                   Get.back();
                   UtilsService().showSnackbar('Success', 'Problem reported successfully', context: context);
                 },
-                color: Colors.orange,
+                color: MangoPalette.green500,
                 child: const Text('Submit Report'),
               ),
             ),
@@ -632,7 +634,7 @@ class MoreOptionsScreen extends StatelessWidget {
           Get.back();
           UtilsService().showSnackbar('Success', 'Cache cleared successfully', context: context);
         },
-        color: Colors.orange,
+        color: MangoPalette.green500,
         child: const Text('Clear'),
       ),
       cancel: MaterialButton(

@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mango/utils.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class Track {
   String id;
@@ -224,7 +225,7 @@ class UploadAlbumController extends GetxController {
       });
 
       UtilsService().showSnackbar('Success', 'Album uploaded successfully',
-          backgroundColor: Colors.green, colorText: Colors.white, context: context);
+          backgroundColor: MangoPalette.green500, colorText: Colors.white, context: context);
 
       _clearAll();
     } catch (e) {

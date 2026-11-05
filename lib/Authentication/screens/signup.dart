@@ -8,6 +8,8 @@ import 'package:mango/utils.dart';
 
 import '../../constants.dart';
 import '../../Utils/text_field.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -178,7 +180,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   shadowColor: Colors.transparent,
                   baseColor: theme.cardColor,
                   expandedColor: theme.cardColor,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(MangoRadius.md),
                   leading: CircleAvatar(
                     backgroundColor: theme.primaryColor,
                     child: const Icon(Icons.mail, color: Colors.white),
@@ -229,14 +231,14 @@ class _SignUpPageState extends State<SignUpPage> {
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 55),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(MangoRadius.md),
                                 ),
                               ),
                               child: _isLoading.value
                                   ? const SizedBox(
                                       height: 20,
                                       width: 20,
-                                      child: CircularProgressIndicator(
+                                      child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                         strokeWidth: 2,
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
@@ -279,7 +281,7 @@ class _SignUpPageState extends State<SignUpPage> {
               //     shadowColor: Colors.transparent,
               //     baseColor: theme.cardColor,
               //     expandedColor: theme.cardColor,
-              //     borderRadius: BorderRadius.circular(16),
+              //     borderRadius: BorderRadius.circular(MangoRadius.md),
               //     leading: CircleAvatar(
               //       backgroundColor: theme.primaryColor,
               //       child: const Icon(Icons.phone, color: Colors.white),
@@ -316,7 +318,7 @@ class _SignUpPageState extends State<SignUpPage> {
               //                 style: ElevatedButton.styleFrom(
               //                   minimumSize: const Size(double.infinity, 55),
               //                   shape: RoundedRectangleBorder(
-              //                     borderRadius: BorderRadius.circular(12),
+              //                     borderRadius: BorderRadius.circular(MangoRadius.md),
               //                   ),
               //                 ),
               //                 child: _isLoading.value
@@ -374,7 +376,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: theme.textTheme.bodyMedium,
                     ),
                     const SizedBox(width: 6),
-                    GestureDetector(
+                    MangoPressable(
                       onTap: () => Get.toNamed('/login'),
                       child: Text(
                         "Login",
@@ -407,12 +409,12 @@ class _SignUpPageState extends State<SignUpPage> {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(MangoRadius.md),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.withOpacity(.3)),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          border: Border.all(color: MangoPalette.grey500.withOpacity(.3)),
         ),
         child: Row(
           children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class Explainer extends StatefulWidget {
   const Explainer({super.key});
@@ -192,7 +193,7 @@ class _ExplainerState extends State<Explainer> {
               ),
               Container(
                 padding: const EdgeInsets.all(15),
-                color: Colors.green.shade800,
+                color: MangoPalette.green800,
                 height: size.height,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -303,7 +304,7 @@ class _ExplainerState extends State<Explainer> {
               ),
               Container(
                 padding: const EdgeInsets.all(15),
-                color: Colors.orange.shade700,
+                color: MangoPalette.green700,
                 height: size.height,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -490,6 +491,7 @@ class _ExplainerState extends State<Explainer> {
                 top: 10,
                 right: 10,
                 child: IconButton(
+        tooltip: 'Close',
                   icon: const Icon(Icons.close),
                   onPressed: () {
                     Navigator.of(context).pop();

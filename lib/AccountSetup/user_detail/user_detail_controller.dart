@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mango/Media/compose/mango_composer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,7 @@ import 'package:mango/Models/customModel/user.dart';
 import 'package:mango/Models/cloud/user_services.dart';
 import 'package:mango/Models/customModel/mango_tags.dart';
 import 'package:mango/utils.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class ControllerHelper {
   static UserDetailsController get userDetailsController {
@@ -391,126 +393,47 @@ class UserDetailsController extends GetxController {
     update(['step_validation', 'navigation']);
   }
 
+  /// Picks a profile picture (type 0, square) or banner (type 1, wide)
+  /// through the Mango composer: crop, filters and adjustments, then uploads
+  /// in the background.
   Future<void> pickImage(
     ImageSource source,
     int type,
     BuildContext context,
   ) async {
     try {
-      if (kIsWeb) {
-        FilePickerResult? result = await FilePicker.platform.pickFiles(
-          type: FileType.image,
-          allowMultiple: false,
-        );
-
-        if (result != null && result.files.isNotEmpty) {
-          PlatformFile file = result.files.first;
-          Uint8List? fileBytes = file.bytes;
-          String? fileName = file.name;
-
-          if (fileBytes == null) {
-            throw Exception('Could not read file bytes');
-          }
-
-          if (fileBytes.length > 5 * 1024 * 1024) {
-            throw Exception('Image size must be less than 5MB');
-          }
-
-          if (type == 0) {
-            profileImage.value = fileBytes;
-            profileImageBytes.value = fileBytes;
-            webProfileFileName.value = fileName;
-            isProfileImageSelected.value = true;
-
-            update(['profile_image', 'user_info', 'current_step']);
-
-            UtilsService().showSnackbar(
-              'Success',
-              'Profile picture selected',
-              snackPosition: SnackPosition.BOTTOM,
-              context: context,
-              backgroundColor: Colors.green,
-              colorText: Colors.white,
-            );
-
-            _uploadProfileImageInBackgroundForWeb(fileBytes, fileName, context);
-          } else {
-            bannerImage.value = fileBytes;
-            bannerImageBytes.value = fileBytes;
-            webBannerFileName.value = fileName;
-            isBannerImageSelected.value = true;
-
-            update(['banner_image', 'current_step']);
-
-            UtilsService().showSnackbar(
-              'Success',
-              'Banner image selected',
-              snackPosition: SnackPosition.BOTTOM,
-              context: context,
-              backgroundColor: Colors.green,
-              colorText: Colors.white,
-            );
-
-            _uploadBannerImageInBackgroundForWeb(fileBytes, fileName, context);
-          }
-        }
+      final media = await MangoComposer.pick(
+        context,
+        source: source == ImageSource.camera ? 'camera' : 'gallery',
+        crop: type == 0 ? CropShape.square : CropShape.landscape,
+        allowCaption: false,
+        actionLabel: 'Use',
+      );
+      if (media == null) return;
+      final bytes = media.bytes;
+      if (type == 0) {
+        profileImage.value = bytes;
+        profileImageBytes.value = bytes;
+        webProfileFileName.value = media.name;
+        isProfileImageSelected.value = true;
+        update(['profile_image', 'user_info', 'current_step']);
+        _uploadProfileImageInBackgroundForWeb(bytes, media.name, context);
       } else {
-        final media = await _picker.pickImage(
-          source: source,
-          imageQuality: 85,
-          maxWidth: 1080,
-        );
-
-        if (media != null) {
-          final file = File(media.path);
-          final fileSize = await file.length();
-
-          if (fileSize > 5 * 1024 * 1024) {
-            throw Exception('Image size must be less than 5MB');
-          }
-
-          if (type == 0) {
-            profileImage.value = file;
-            isProfileImageSelected.value = true;
-            update(['profile_image', 'user_info', 'current_step']);
-
-            UtilsService().showSnackbar(
-              'Success',
-              'Profile picture selected',
-              snackPosition: SnackPosition.BOTTOM,
-              context: context,
-              backgroundColor: Colors.green,
-              colorText: Colors.white,
-            );
-
-            _uploadProfileImageInBackground(file, context);
-          } else {
-            bannerImage.value = file;
-            isBannerImageSelected.value = true;
-            update(['banner_image', 'current_step']);
-
-            UtilsService().showSnackbar(
-              'Success',
-              'Banner image selected',
-              snackPosition: SnackPosition.BOTTOM,
-              context: context,
-              backgroundColor: Colors.green,
-              colorText: Colors.white,
-            );
-
-            _uploadBannerImageInBackground(file, context);
-          }
-        }
+        bannerImage.value = bytes;
+        bannerImageBytes.value = bytes;
+        webBannerFileName.value = media.name;
+        isBannerImageSelected.value = true;
+        update(['banner_image', 'current_step']);
+        _uploadBannerImageInBackgroundForWeb(bytes, media.name, context);
       }
     } catch (e) {
       UtilsService().showSnackbar(
         'Error',
-        e.toString(),
+        "Couldn't use that picture. Try another.",
         snackPosition: SnackPosition.BOTTOM,
         context: context,
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        duration: const Duration(seconds: 3),
       );
     }
   }
@@ -545,8 +468,8 @@ class UserDetailsController extends GetxController {
 
     return CircleAvatar(
       radius: radius,
-      backgroundColor: Colors.grey[300],
-      child: Icon(Icons.person, size: radius, color: Colors.grey[600]),
+      backgroundColor: MangoPalette.grey300,
+      child: Icon(Icons.person, size: radius, color: MangoPalette.grey600),
     );
   }
 
@@ -595,8 +518,8 @@ class UserDetailsController extends GetxController {
     return Container(
       width: width,
       height: height,
-      color: Colors.grey[300],
-      child: Icon(Icons.photo, size: 40, color: Colors.grey[600]),
+      color: MangoPalette.grey300,
+      child: Icon(Icons.photo, size: 40, color: MangoPalette.grey600),
     );
   }
 
@@ -742,40 +665,9 @@ class UserDetailsController extends GetxController {
 
       final updates = <Future>[];
 
-      if (isProfileImageSelected.value) {
-        if (kIsWeb && profileImageBytes.value != null) {
-          updates.add(
-            _uploadProfileImageInBackgroundForWeb(
-              profileImageBytes.value!,
-              webProfileFileName.value,
-              context,
-            ),
-          );
-        } else if (!kIsWeb && profileImage.value is File) {
-          updates.add(
-            _uploadProfileImageInBackground(
-              profileImage.value as File,
-              context,
-            ),
-          );
-        }
-      }
+      // Pictures upload as soon as they're picked (pickImage); nothing to redo here.
 
-      if (isBannerImageSelected.value) {
-        if (kIsWeb && bannerImageBytes.value != null) {
-          updates.add(
-            _uploadBannerImageInBackgroundForWeb(
-              bannerImageBytes.value!,
-              webBannerFileName.value,
-              context,
-            ),
-          );
-        } else if (!kIsWeb && bannerImage.value is File) {
-          updates.add(
-            _uploadBannerImageInBackground(bannerImage.value as File, context),
-          );
-        }
-      }
+      // Pictures upload as soon as they're picked (pickImage); nothing to redo here.
 
       if (displayNameController.text.trim().isNotEmpty) {
         updates.add(
@@ -830,7 +722,7 @@ class UserDetailsController extends GetxController {
         'Your profile has been successfully updated',
         snackPosition: SnackPosition.BOTTOM,
         context: context,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
       );
@@ -895,12 +787,12 @@ class UserDetailsController extends GetxController {
           return Theme(
             data: Theme.of(context).copyWith(
               colorScheme: ColorScheme.light(
-                primary: Colors.orange,
+                primary: MangoPalette.green500,
                 onPrimary: Colors.white,
                 surface: Theme.of(context).cardColor,
                 onSurface:
                     Theme.of(context).textTheme.bodyLarge?.color ??
-                    Colors.black,
+                    MangoPalette.black,
               ),
               dialogBackgroundColor: Theme.of(context).cardColor,
             ),

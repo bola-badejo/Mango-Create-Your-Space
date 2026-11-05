@@ -6,6 +6,9 @@ import 'package:mango/Utils/optimized_lists.dart';
 import 'dart:math';
 
 import 'package:provider/provider.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
+import 'package:mango/MusicPlayer/controllers/global_music_controller.dart';
 
 class MangoMusicController extends GetxController {
   var playlist = [].obs;
@@ -51,17 +54,27 @@ class MangoMusicController extends GetxController {
     }
   }
 
+  /// Plays through the app's single audio engine (GlobalMusicController),
+  /// so only one thing ever plays at a time and the queue stays consistent.
   playMusic(song) async {
-    if (song != null) {
-      nowPlaying.value = song;
-      await audioPlayer.play(song);
-      playerState.value = "playing";
-      isPanelVisible.value = true;
+    if (song == null) return;
+    nowPlaying.value = song;
+    final dynamic s = song;
+    String? id;
+    try {
+      id = s.id as String?;
+    } catch (_) {
+      id = null;
     }
+    if (id == null || id.isEmpty) return;
+    await Get.find<GlobalMusicController>().initializePlayer(id);
+    playerState.value = "playing";
+    isPanelVisible.value = true;
   }
 
   void pauseMusic() async {
-    await audioPlayer.pause();
+    final engine = Get.find<GlobalMusicController>();
+    if (engine.isPlaying.value) await engine.togglePlayPause();
     playerState.value = "paused";
   }
 
@@ -242,6 +255,7 @@ class TrackListItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
+        tooltip: 'Play',
             icon: const Icon(Icons.play_arrow),
             onPressed: () {
               context.read<MusicPlayerState>().playTrack(track);
@@ -249,6 +263,7 @@ class TrackListItem extends StatelessWidget {
             },
           ),
           IconButton(
+        tooltip: 'Add to playlist',
             icon: const Icon(Icons.playlist_add),
             onPressed: () => context.read<MusicPlayerState>().addToQueue(track),
           ),
@@ -275,7 +290,7 @@ class PlayerSheet extends StatelessWidget {
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
-            color: Colors.grey[900],
+            color: MangoPalette.grey900,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: playerState.isExpanded
@@ -309,7 +324,7 @@ class ExpandedPlayerView extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.8,
             height: MediaQuery.of(context).size.width * 0.8,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MangoRadius.lg),
               image: DecorationImage(
                 image: NetworkImage(track.image),
                 fit: BoxFit.cover,
@@ -319,7 +334,7 @@ class ExpandedPlayerView extends StatelessWidget {
           const SizedBox(height: 30),
           
           Text(track.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          Text(track.artiste, style: TextStyle(fontSize: 18, color: Colors.grey[400])),
+          Text(track.artiste, style: TextStyle(fontSize: 18, color: MangoPalette.grey400)),
           const SizedBox(height: 20),
           
           Padding(
@@ -348,16 +363,19 @@ class ExpandedPlayerView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
+        tooltip: 'Previous track',
                 icon: const Icon(Icons.skip_previous),
                 iconSize: 40,
                 onPressed: playerState.playPrevious,
               ),
               IconButton(
+        tooltip: 'Pause',
                 icon: Icon(playerState.isPlaying ? Icons.pause : Icons.play_arrow),
                 iconSize: 60,
                 onPressed: playerState.togglePlay,
               ),
               IconButton(
+        tooltip: 'Next track',
                 icon: const Icon(Icons.skip_next),
                 iconSize: 40,
                 onPressed: playerState.playNext,
@@ -370,6 +388,7 @@ class ExpandedPlayerView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
+        tooltip: 'Queue',
                 icon: const Icon(Icons.queue_music),
                 onPressed: () => showModalBottomSheet(
                   context: context,
@@ -377,6 +396,7 @@ class ExpandedPlayerView extends StatelessWidget {
                 ),
               ),
               IconButton(
+        tooltip: 'Shuffle',
                 icon: Icon(
                   Icons.shuffle,
                   color: playerState.shuffleEnabled ? Colors.blue : Colors.white,
@@ -390,7 +410,7 @@ class ExpandedPlayerView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Card(
-              color: Colors.grey[800],
+              color: MangoPalette.grey800,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
@@ -406,7 +426,7 @@ class ExpandedPlayerView extends StatelessWidget {
                         children: [
                           const Text('About the Artist', style: TextStyle(fontWeight: FontWeight.bold)),
                           const SizedBox(height: 8),
-                          Text(track.about, style: TextStyle(color: Colors.grey[400])),
+                          Text(track.about, style: TextStyle(color: MangoPalette.grey400)),
                         ],
                       ),
                     ),
@@ -439,7 +459,7 @@ class MinimizedPlayerView extends StatelessWidget {
 
     if (track == null) return const SizedBox.shrink();
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         
         playerState.expandPlayer();
@@ -447,8 +467,8 @@ class MinimizedPlayerView extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.grey[900],
-          border: Border(top: BorderSide(color: Colors.grey[800]!)),
+          color: MangoPalette.grey900,
+          border: Border(top: BorderSide(color: MangoPalette.grey800)),
         ),
         child: Row(
           children: [
@@ -460,11 +480,12 @@ class MinimizedPlayerView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(track.title, overflow: TextOverflow.ellipsis),
-                  Text(track.artiste, style: TextStyle(color: Colors.grey[400])),
+                  Text(track.artiste, style: TextStyle(color: MangoPalette.grey400)),
                 ],
               ),
             ),
             IconButton(
+        tooltip: 'Pause',
               icon: Icon(playerState.isPlaying ? Icons.pause : Icons.play_arrow),
               onPressed: playerState.togglePlay,
             ),

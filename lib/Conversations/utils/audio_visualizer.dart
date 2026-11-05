@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class AudioVisualizer extends StatefulWidget {
   final bool isRecording;
@@ -79,7 +80,7 @@ class _AudioVisualizerState extends State<AudioVisualizer> with SingleTickerProv
                   Colors.red.shade800.withOpacity(0.8 + height * 0.2),
                 ],
               ),
-              borderRadius: BorderRadius.circular(1.5),
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
               boxShadow: [
                 BoxShadow(
                   color: Colors.red.withOpacity(height * 0.3),

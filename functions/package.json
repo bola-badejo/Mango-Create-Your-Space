@@ -2,8 +2,10 @@
   "name": "mango-functions",
   "description": "Firebase Functions for Mango",
   "dependencies": {
-    "firebase-admin": "^13.5.0",
-    "firebase-functions": "^6.5.0",
+    "ethers": "^6.17.0",
+    "firebase-admin": "^13.10.0",
+    "firebase-functions": "^6.6.0",
+    "livekit-server-sdk": "^2.19.2",
     "node-fetch": "^3.3.2"
   },
   "engines": {
@@ -12,9 +14,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test test/*.test.js",
+    "ledger:key": "node ledger/scripts/generate-key.js",
+    "ledger:audit": "node ledger/scripts/audit.js",
+    "ledger:migrate": "node ledger/scripts/migrate-legacy.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "ganache": "^7.9.2",
+    "solc": "^0.8.26"
+  }
 }

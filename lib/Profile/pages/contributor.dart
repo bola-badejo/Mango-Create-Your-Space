@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mango/Contributors/studio/studio_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mango/Utils/optimized_lists.dart';
 import 'package:lottie/lottie.dart';
@@ -15,6 +16,8 @@ import 'package:lottie/lottie.dart';
 import '../../Contributors/contribute_content.dart';
 import '../../Home/controllers/dashboard_controller.dart';
 import '../../Models/customModel/user.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class Contributors extends StatefulWidget {
   const Contributors({super.key});
@@ -77,7 +80,7 @@ class _ContributorsState extends State<Contributors>
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Scaffold(
-            backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+            backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +96,7 @@ class _ContributorsState extends State<Contributors>
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -101,7 +104,7 @@ class _ContributorsState extends State<Contributors>
                     snapshot.error.toString(),
                     style: TextStyle(
                       fontSize: 12,
-                      color: isDarkMode ? Colors.grey[400] : Colors.grey,
+                      color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey500,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -113,12 +116,12 @@ class _ContributorsState extends State<Contributors>
 
         if (!snapshot.hasData) {
           return Scaffold(
-            backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+            backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
             body: Center(
               child: Text(
                 'No user data found',
                 style: TextStyle(
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
               ),
             ),
@@ -132,11 +135,11 @@ class _ContributorsState extends State<Contributors>
             backgroundColor: Colors.transparent,
             elevation: 0,
             iconTheme: IconThemeData(
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
           ),
           extendBodyBehindAppBar: true,
-          backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+          backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
           body: SafeArea(
             child: SingleChildScrollView(
               child: Padding(
@@ -156,8 +159,8 @@ class _ContributorsState extends State<Contributors>
                     Text(
                       'Welcome to Mango\'s contributor space. Whether you\'re distributing, creating, or selling, there\'s a place for you to shine and grow.',
                       style: TextStyle(
-                        fontSize: 10,
-                        color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
+                        fontSize: 12,
+                        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey700,
                         height: 1.2,
                       ),
                     ),
@@ -166,12 +169,12 @@ class _ContributorsState extends State<Contributors>
                       'Contribute',
                       style: TextStyle(
                         fontSize: 14,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     const SizedBox(height: 16),
-                    GestureDetector(
+                    MangoPressable(
                       onTap: () {
                         if (user.isCreator ||
                             user.isVendor ||
@@ -257,7 +260,7 @@ class _ContributorsState extends State<Contributors>
                               content: Text(
                                 'Create a Contributor Account to access the Magic Box',
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
@@ -275,9 +278,7 @@ class _ContributorsState extends State<Contributors>
                                             context,
                                             animation,
                                             secondaryAnimation,
-                                          ) => ContributorRegistrationPage(
-                                            title: 'Creator',
-                                          ),
+                                          ) => const StudioEntry(roleTitle: 'Creator'),
                                       transitionsBuilder:
                                           (
                                             context,
@@ -317,7 +318,7 @@ class _ContributorsState extends State<Contributors>
                             width: double.infinity,
                             height: 80,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(MangoRadius.lg),
                             ),
                             child: Stack(
                               children: [
@@ -332,14 +333,14 @@ class _ContributorsState extends State<Contributors>
                                               Colors.purpleAccent.withOpacity(
                                                 0.8,
                                               ),
-                                              Colors.orangeAccent.withOpacity(
+                                              MangoPalette.green500.withOpacity(
                                                 0.8,
                                               ),
                                             ]
                                           : [
                                               Colors.blueAccent,
                                               Colors.purpleAccent,
-                                              Colors.orangeAccent,
+                                              MangoPalette.green500,
                                             ],
                                       stops: [
                                         _controller.value - 0.2,
@@ -356,9 +357,9 @@ class _ContributorsState extends State<Contributors>
                                     width: double.infinity,
                                     height: 90,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(MangoRadius.lg),
                                       color: isDarkMode
-                                          ? Colors.grey[800]
+                                          ? MangoPalette.grey800
                                           : Colors.white,
                                     ),
                                   ),
@@ -390,7 +391,7 @@ class _ContributorsState extends State<Contributors>
                                                 fontWeight: FontWeight.bold,
                                                 color: isDarkMode
                                                     ? Colors.white
-                                                    : Colors.black,
+                                                    : MangoPalette.black,
                                               ),
                                             ),
                                             const SizedBox(height: 5),
@@ -402,7 +403,7 @@ class _ContributorsState extends State<Contributors>
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   height: 1.1,
-                                                  fontSize: 11,
+                                                  fontSize: 12,
                                                   color: isDarkMode
                                                       ? Colors.white70
                                                       : Colors.white,
@@ -422,12 +423,12 @@ class _ContributorsState extends State<Contributors>
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Divider(color: isDarkMode ? Colors.grey[700] : Colors.grey),
+                    Divider(color: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey500),
                     Text(
                       'Registration',
                       style: TextStyle(
                         fontSize: 14,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -444,7 +445,7 @@ class _ContributorsState extends State<Contributors>
                               width: double.infinity,
                               height: 200,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(MangoRadius.md),
                                 image: DecorationImage(
                                   image: AssetImage(item['image']!),
                                   fit: BoxFit.cover,
@@ -455,9 +456,9 @@ class _ContributorsState extends State<Contributors>
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
                                 color: isDarkMode
-                                    ? Colors.grey[800]!.withOpacity(.8)
-                                    : Colors.black.withOpacity(.8),
-                                borderRadius: BorderRadius.circular(16),
+                                    ? MangoPalette.grey800.withOpacity(.8)
+                                    : MangoPalette.black.withOpacity(.8),
+                                borderRadius: BorderRadius.circular(MangoRadius.md),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -516,7 +517,7 @@ class _ContributorsState extends State<Contributors>
                                                     content: Text(
                                                       'You are already registered as a ${item['title']!}',
                                                       style: TextStyle(
-                                                        fontSize: 11,
+                                                        fontSize: 12,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -534,9 +535,7 @@ class _ContributorsState extends State<Contributors>
                                                           context,
                                                           animation,
                                                           secondaryAnimation,
-                                                        ) => ContributorRegistrationPage(
-                                                          title: item['title']!,
-                                                        ),
+                                                        ) => StudioEntry(roleTitle: item['title']!),
                                                     transitionsBuilder:
                                                         (
                                                           context,
@@ -588,7 +587,7 @@ class _ContributorsState extends State<Contributors>
                                               child: Text(
                                                 "Register Now",
                                                 style: TextStyle(
-                                                  fontSize: 9,
+                                                  fontSize: 12,
                                                   fontWeight: FontWeight.w700,
                                                   color: Colors.white,
                                                 ),
@@ -603,7 +602,7 @@ class _ContributorsState extends State<Contributors>
                                   Text(
                                     item['description']!,
                                     style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 12,
                                       color: Colors.white70,
                                     ),
                                   ),
@@ -1027,7 +1026,7 @@ class _ContributorRegistrationPageState
         SnackBar(
           content: Text(
             'Error picking image: ${e.toString()}',
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.red,
         ),
@@ -1071,7 +1070,7 @@ class _ContributorRegistrationPageState
         SnackBar(
           content: Text(
             'Error picking logo: ${e.toString()}',
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.red,
         ),
@@ -1121,7 +1120,7 @@ class _ContributorRegistrationPageState
         SnackBar(
           content: const Text(
             'Profile image is required',
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.redAccent,
         ),
@@ -1135,7 +1134,7 @@ class _ContributorRegistrationPageState
         SnackBar(
           content: Text(
             'Please select your ${widget.title.toLowerCase()} specialty',
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.redAccent,
         ),
@@ -1149,7 +1148,7 @@ class _ContributorRegistrationPageState
         SnackBar(
           content: const Text(
             'Please select at least one content category',
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.redAccent,
         ),
@@ -1164,7 +1163,7 @@ class _ContributorRegistrationPageState
         SnackBar(
           content: const Text(
             'Please select Freelance or Signed',
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.redAccent,
         ),
@@ -1182,7 +1181,7 @@ class _ContributorRegistrationPageState
         SnackBar(
           content: const Text(
             'Please fill all required fields correctly',
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.redAccent,
         ),
@@ -1322,9 +1321,9 @@ class _ContributorRegistrationPageState
               widget.isEditMode
                   ? '${widget.title} profile updated!'
                   : 'Welcome to Mango Contributors!',
-              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: MangoPalette.green500,
           ),
         );
       }
@@ -1335,7 +1334,7 @@ class _ContributorRegistrationPageState
         SnackBar(
           content: Text(
             'Error: ${e.toString()}',
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.red,
         ),
@@ -1358,9 +1357,9 @@ class _ContributorRegistrationPageState
         Text(
           'Profile Images',
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : MangoPalette.black,
           ),
         ),
         const SizedBox(height: 12),
@@ -1393,8 +1392,8 @@ class _ContributorRegistrationPageState
               ? '* Keep existing images or upload new ones'
               : '* Profile image is required. Logo is optional for brand identification.',
           style: TextStyle(
-            fontSize: 9,
-            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+            fontSize: 12,
+            color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             fontStyle: FontStyle.italic,
           ),
         ),
@@ -1419,13 +1418,13 @@ class _ContributorRegistrationPageState
           Text(
             label,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
             ),
           ),
           const SizedBox(height: 6),
-          GestureDetector(
+          MangoPressable(
             onTap: onTap,
             child: Container(
               height: 80,
@@ -1437,18 +1436,18 @@ class _ContributorRegistrationPageState
                           webImageBytes == null &&
                           existingUrl == null
                       ? Colors.red
-                      : (isDarkMode ? Colors.grey[600]! : Colors.grey),
+                      : (isDarkMode ? MangoPalette.grey600 : MangoPalette.grey500),
                   width: 2,
                 ),
-                borderRadius: BorderRadius.circular(8),
-                color: isDarkMode ? Colors.grey[800] : Colors.grey[100],
+                borderRadius: BorderRadius.circular(MangoRadius.sm),
+                color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
               ),
               child: _isUploadingImage
                   ? Center(
                       child: SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(
+                        child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                           strokeWidth: 2,
                           valueColor: AlwaysStoppedAnimation<Color>(
                             Theme.of(context).primaryColor,
@@ -1458,7 +1457,7 @@ class _ContributorRegistrationPageState
                     )
                   : webImageBytes != null
                   ? ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       child: Image.memory(
                         webImageBytes,
                         fit: BoxFit.cover,
@@ -1468,7 +1467,7 @@ class _ContributorRegistrationPageState
                     )
                   : image != null
                   ? ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       child: Image.file(
                         File(image.path),
                         fit: BoxFit.cover,
@@ -1478,7 +1477,7 @@ class _ContributorRegistrationPageState
                     )
                   : existingUrl != null && existingUrl.isNotEmpty
                   ? ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       child: Image.network(
                         existingUrl,
                         fit: BoxFit.cover,
@@ -1494,17 +1493,17 @@ class _ContributorRegistrationPageState
                             Icons.add_photo_alternate,
                             size: 24,
                             color: isDarkMode
-                                ? Colors.grey[400]
-                                : Colors.grey[600],
+                                ? MangoPalette.grey400
+                                : MangoPalette.grey600,
                           ),
                           const SizedBox(height: 4),
                           Text(
                             widget.isEditMode ? 'Update' : 'Tap to upload',
                             style: TextStyle(
-                              fontSize: 8,
+                              fontSize: 12,
                               color: isDarkMode
-                                  ? Colors.grey[400]
-                                  : Colors.grey[600],
+                                  ? MangoPalette.grey400
+                                  : MangoPalette.grey600,
                             ),
                           ),
                         ],
@@ -1525,16 +1524,16 @@ class _ContributorRegistrationPageState
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: isDarkMode ? Colors.grey[600]! : Colors.grey),
-        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey500),
+        borderRadius: BorderRadius.circular(MangoRadius.sm),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: TextFormField(
         controller: controller,
         style: TextStyle(
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: FontWeight.bold,
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode ? Colors.white : MangoPalette.black,
         ),
         validator: isRequired
             ? (value) {
@@ -1547,16 +1546,16 @@ class _ContributorRegistrationPageState
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
+            color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey700,
           ),
           contentPadding: const EdgeInsets.symmetric(
             vertical: 10,
             horizontal: 12,
           ),
           border: InputBorder.none,
-          errorStyle: const TextStyle(fontSize: 9),
+          errorStyle: const TextStyle(fontSize: 12),
         ),
       ),
     );
@@ -1575,7 +1574,7 @@ class _ContributorRegistrationPageState
       errorText = 'This field is required';
     }
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () async {
         final selected = await showDialog<String>(
           context: context,
@@ -1594,9 +1593,9 @@ class _ContributorRegistrationPageState
           border: Border.all(
             color: errorText != null
                 ? Colors.red
-                : (isDarkMode ? Colors.grey[600]! : Colors.grey),
+                : (isDarkMode ? MangoPalette.grey600 : MangoPalette.grey500),
           ),
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(MangoRadius.sm),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Column(
@@ -1617,11 +1616,11 @@ class _ContributorRegistrationPageState
                     child: Text(
                       value ?? label,
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: value != null
-                            ? (isDarkMode ? Colors.white : Colors.black)
-                            : (isDarkMode ? Colors.grey[400] : Colors.grey),
+                            ? (isDarkMode ? Colors.white : MangoPalette.black)
+                            : (isDarkMode ? MangoPalette.grey400 : MangoPalette.grey500),
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -1629,7 +1628,7 @@ class _ContributorRegistrationPageState
                   Icon(
                     Icons.arrow_drop_down,
                     size: 20,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey,
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey500,
                   ),
                 ],
               ),
@@ -1638,7 +1637,7 @@ class _ContributorRegistrationPageState
               const SizedBox(height: 4),
               Text(
                 errorText,
-                style: const TextStyle(fontSize: 9, color: Colors.red),
+                style: const TextStyle(fontSize: 12, color: Colors.red),
               ),
             ],
           ],
@@ -1659,16 +1658,16 @@ class _ContributorRegistrationPageState
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 12,
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : MangoPalette.black,
           ),
         ),
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         iconTheme: IconThemeData(
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode ? Colors.white : MangoPalette.black,
         ),
       ),
-      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
       body: Form(
         key: _formKey,
         child: Padding(
@@ -1689,7 +1688,7 @@ class _ContributorRegistrationPageState
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -1698,8 +1697,8 @@ class _ContributorRegistrationPageState
                       ? 'Update your details below to keep your profile fresh.'
                       : 'Fill in your details below to get started and become a contributor on Mango.',
                   style: TextStyle(
-                    fontSize: 11,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey,
+                    fontSize: 12,
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey500,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -1707,8 +1706,8 @@ class _ContributorRegistrationPageState
                 Text(
                   '* indicates required field',
                   style: TextStyle(
-                    fontSize: 10,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey,
+                    fontSize: 12,
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey500,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -1787,9 +1786,9 @@ class _ContributorRegistrationPageState
                 Text(
                   'Select the content categories you work with: *',
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -1802,11 +1801,11 @@ class _ContributorRegistrationPageState
                       label: Text(
                         category,
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: isSelected
                               ? Colors.white
-                              : (isDarkMode ? Colors.white : Colors.black),
+                              : (isDarkMode ? Colors.white : MangoPalette.black),
                         ),
                       ),
                       selected: isSelected,
@@ -1823,10 +1822,10 @@ class _ContributorRegistrationPageState
                           }
                         });
                       },
-                      selectedColor: Colors.orange,
+                      selectedColor: MangoPalette.green500,
                       backgroundColor: isDarkMode
-                          ? Colors.grey[700]
-                          : Colors.grey[200],
+                          ? MangoPalette.grey700
+                          : MangoPalette.grey200,
                     );
                   }).toList(),
                 ),
@@ -1846,23 +1845,23 @@ class _ContributorRegistrationPageState
                 Container(
                   padding: const EdgeInsets.only(top: 3, left: 3),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(MangoRadius.sm),
                     border: Border.all(color: Theme.of(context).primaryColor),
                   ),
                   child: MaterialButton(
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: _isSubmitting ? null : _submitContributorForm,
-                    color: Colors.orangeAccent,
+                    color: MangoPalette.green500,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                     ),
                     child: _isSubmitting
                         ? const SizedBox(
                             height: 20,
                             width: 20,
-                            child: CircularProgressIndicator(
+                            child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Colors.white,
@@ -1932,7 +1931,7 @@ class _SearchableDropdownDialogState extends State<SearchableDropdownDialog> {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Dialog(
-      backgroundColor: isDarkMode ? Colors.grey[800] : Colors.white,
+      backgroundColor: isDarkMode ? MangoPalette.grey800 : Colors.white,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height * 0.6,
@@ -1945,21 +1944,21 @@ class _SearchableDropdownDialogState extends State<SearchableDropdownDialog> {
               child: TextField(
                 controller: _searchController,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black,
+                  color: isDarkMode ? Colors.white : MangoPalette.black,
                 ),
                 decoration: InputDecoration(
                   labelText: 'Search ${widget.title}',
                   labelStyle: TextStyle(
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey700,
                   ),
                   suffixIcon: Icon(
                     Icons.search,
                     size: 20,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey,
+                    color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey500,
                   ),
                   border: const OutlineInputBorder(),
                   contentPadding: const EdgeInsets.symmetric(
@@ -1967,7 +1966,7 @@ class _SearchableDropdownDialogState extends State<SearchableDropdownDialog> {
                     horizontal: 12,
                   ),
                   filled: true,
-                  fillColor: isDarkMode ? Colors.grey[700] : Colors.grey[100],
+                  fillColor: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey100,
                 ),
               ),
             ),
@@ -1981,9 +1980,9 @@ class _SearchableDropdownDialogState extends State<SearchableDropdownDialog> {
                     title: Text(
                       item,
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                       ),
                     ),
                     onTap: () => Navigator.pop(context, item),

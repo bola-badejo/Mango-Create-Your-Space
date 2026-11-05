@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/AccountSetup/user_detail/user_detail_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class ProfilePictureSection extends StatelessWidget {
   const ProfilePictureSection({super.key});
@@ -22,7 +23,7 @@ class ProfilePictureSection extends StatelessWidget {
         border: Border.all(color: Colors.white, width: 4),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: MangoPalette.black.withOpacity(0.2),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -66,11 +67,11 @@ class ProfilePictureSection extends StatelessWidget {
 
   Widget _buildPlaceholder(bool isDark) {
     return Container(
-      color: isDark ? Colors.grey[800] : Colors.grey.shade200,
+      color: isDark ? MangoPalette.grey800 : MangoPalette.grey200,
       child: Icon(
         Icons.person,
         size: 40,
-        color: isDark ? Colors.grey[400] : Colors.grey,
+        color: isDark ? MangoPalette.grey400 : MangoPalette.grey500,
       ),
     );
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mango/Store/screens/general_store.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class MarketplaceCard extends StatelessWidget {
   final Map<String, dynamic> vendor;
@@ -25,7 +27,7 @@ class MarketplaceCard extends StatelessWidget {
     // Get skill if available
     final String skill = vendor['skill'] ?? '';
     
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         Get.to(
           () => ShopScreen(
@@ -43,14 +45,14 @@ class MarketplaceCard extends StatelessWidget {
           height: 300, // Increased height to accommodate tags
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               image: DecorationImage(
                 image: vendor['profileImageUrl'] != null && vendor['profileImageUrl'].isNotEmpty
                     ? NetworkImage(vendor['profileImageUrl'])
                     : const AssetImage('asset/images/mango-11.jpg') as ImageProvider,
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.5),
+                  MangoPalette.black.withOpacity(0.5),
                   BlendMode.darken,
                 ),
               ),
@@ -65,8 +67,8 @@ class MarketplaceCard extends StatelessWidget {
                     top: 12,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(8),
+                        color: MangoPalette.black.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                       child: Row(
@@ -74,15 +76,15 @@ class MarketplaceCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.local_fire_department,
-                            color: Colors.orange,
+                            color: MangoPalette.green500,
                             size: 12,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             "Popular",
-                            style: GoogleFonts.roboto(
-                              fontSize: 10,
-                              color: Colors.orange,
+                            style: TextStyle(fontFamily: 'Poppins', 
+                              fontSize: 12,
+                              color: MangoPalette.green500,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -99,13 +101,13 @@ class MarketplaceCard extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.blue.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                       child: Text(
                         skill,
-                        style: GoogleFonts.roboto(
-                          fontSize: 9,
+                        style: TextStyle(fontFamily: 'Poppins', 
+                          fontSize: 12,
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
                         ),
@@ -135,7 +137,7 @@ class MarketplaceCard extends StatelessWidget {
                           border: Border.all(color: Colors.white, width: 2),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: MangoPalette.black.withOpacity(0.2),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -146,13 +148,13 @@ class MarketplaceCard extends StatelessWidget {
                       // Vendor name
                       Text(
                         vendor['storeName'] ?? vendor['fullName'] ?? 'Vendor',
-                        style: GoogleFonts.roboto(
+                        style: TextStyle(fontFamily: 'Poppins', 
                           fontSize: 14,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           shadows: [
                             const Shadow(
-                              color: Colors.black,
+                              color: MangoPalette.black,
                               blurRadius: 4,
                               offset: Offset(0, 1),
                             ),
@@ -170,12 +172,12 @@ class MarketplaceCard extends StatelessWidget {
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.roboto(
-                            fontSize: 10,
+                          style: TextStyle(fontFamily: 'Poppins', 
+                            fontSize: 12,
                             color: Colors.white70,
                             shadows: [
                               const Shadow(
-                                color: Colors.black,
+                                color: MangoPalette.black,
                                 blurRadius: 2,
                               ),
                             ],
@@ -193,13 +195,13 @@ class MarketplaceCard extends StatelessWidget {
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: Colors.orange.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(12),
+                                color: MangoPalette.green500.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(MangoRadius.md),
                               ),
                               child: Text(
                                 tag,
-                                style: GoogleFonts.roboto(
-                                  fontSize: 8,
+                                style: TextStyle(fontFamily: 'Poppins', 
+                                  fontSize: 12,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -210,8 +212,8 @@ class MarketplaceCard extends StatelessWidget {
                         if (tags.length > 2)
                           Text(
                             '+${tags.length - 2} more',
-                            style: GoogleFonts.roboto(
-                              fontSize: 8,
+                            style: TextStyle(fontFamily: 'Poppins', 
+                              fontSize: 12,
                               color: Colors.white70,
                             ),
                           ),
@@ -221,13 +223,13 @@ class MarketplaceCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(20),
+                          color: MangoPalette.green500,
+                          borderRadius: BorderRadius.circular(MangoRadius.lg),
                         ),
                         child: Text(
                           "Shop Now",
-                          style: GoogleFonts.roboto(
-                            fontSize: 11,
+                          style: TextStyle(fontFamily: 'Poppins', 
+                            fontSize: 12,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),

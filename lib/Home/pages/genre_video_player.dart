@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class GenreVideoPlayer extends StatefulWidget {
   final String videoUrl;
@@ -234,12 +236,12 @@ class _GenreVideoPlayerState extends State<GenreVideoPlayer> with WidgetsBinding
           Positioned(
             top: 12,
             right: 12,
-            child: GestureDetector(
+            child: MangoPressable(
               onTap: _toggleMute,
               child: Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
+                  color: MangoPalette.black.withOpacity(0.7),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -259,9 +261,9 @@ class _GenreVideoPlayerState extends State<GenreVideoPlayer> with WidgetsBinding
       children: [
         _buildThumbnailUI(),
         Container(
-          color: Colors.black.withOpacity(0.3),
+          color: MangoPalette.black.withOpacity(0.3),
           child: Center(
-            child: CircularProgressIndicator(
+            child: CircularProgressIndicator(semanticsLabel: 'Loading', 
               strokeWidth: 2,
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
@@ -294,14 +296,14 @@ class _GenreVideoPlayerState extends State<GenreVideoPlayer> with WidgetsBinding
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Colors.grey[800]!, Colors.grey[900]!],
+          colors: [MangoPalette.grey800, MangoPalette.grey900],
         ),
       ),
       child: Center(
         child: Icon(
           Icons.music_video,
           size: 40,
-          color: Colors.grey[400],
+          color: MangoPalette.grey400,
         ),
       ),
     );

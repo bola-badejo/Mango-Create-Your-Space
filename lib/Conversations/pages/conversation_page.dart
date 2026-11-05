@@ -12,6 +12,8 @@ import 'package:mango/Models/customModel/user.dart';
 import 'package:mango/Spaces/controllers/friends.dart';
 import 'package:mango/Utils/theme.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class ConversationPage extends StatefulWidget {
   @override
@@ -125,9 +127,9 @@ class _ConversationPageState extends State<ConversationPage> {
             return Dialog(
               insetPadding: const EdgeInsets.all(20),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(MangoRadius.lg),
               ),
-              backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+              backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
               child: Container(
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.8,
@@ -148,14 +150,15 @@ class _ConversationPageState extends State<ConversationPage> {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                                color: isDarkMode ? Colors.white : MangoPalette.black,
                               ),
                             ),
                           ),
                           IconButton(
+        tooltip: 'Close',
                             icon: Icon(
                               Icons.close,
-                              color: isDarkMode ? Colors.white : Colors.black,
+                              color: isDarkMode ? Colors.white : MangoPalette.black,
                             ),
                             onPressed: () => Navigator.pop(context),
                           ),
@@ -168,23 +171,23 @@ class _ConversationPageState extends State<ConversationPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: isDarkMode ? Colors.grey[800] : Colors.grey[100],
-                          borderRadius: BorderRadius.circular(12),
+                          color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey100,
+                          borderRadius: BorderRadius.circular(MangoRadius.md),
                         ),
                         child: TextField(
                           controller: _allUsersSearchController,
                           autofocus: true,
                           style: TextStyle(
-                            color: isDarkMode ? Colors.white : Colors.black,
+                            color: isDarkMode ? Colors.white : MangoPalette.black,
                           ),
                           decoration: InputDecoration(
                             hintText: 'Search by username or name...',
                             hintStyle: TextStyle(
-                              color: isDarkMode ? Colors.grey[500] : Colors.grey[600],
+                              color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey600,
                             ),
                             prefixIcon: Icon(
                               Icons.search,
-                              color: isDarkMode ? Colors.grey[500] : Colors.grey[600],
+                              color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey600,
                             ),
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.symmetric(
@@ -202,7 +205,7 @@ class _ConversationPageState extends State<ConversationPage> {
                     Expanded(
                       child: _isLoadingAllUsers && _filteredAllUsers.isEmpty
                           ? Center(
-                              child: CircularProgressIndicator(
+                              child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                 color: primaryColor,
                               ),
                             )
@@ -214,7 +217,7 @@ class _ConversationPageState extends State<ConversationPage> {
                                       Icon(
                                         Icons.group_off,
                                         size: 60,
-                                        color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                                        color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                                       ),
                                       const SizedBox(height: 16),
                                       Text(
@@ -223,7 +226,7 @@ class _ConversationPageState extends State<ConversationPage> {
                                             : 'No results found',
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                                          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                                         ),
                                       ),
                                       if (_allUsersSearchController.text.isNotEmpty)
@@ -233,7 +236,7 @@ class _ConversationPageState extends State<ConversationPage> {
                                             'Try a different search term',
                                             style: TextStyle(
                                               fontSize: 12,
-                                              color: isDarkMode ? Colors.grey[500] : Colors.grey[700],
+                                              color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey700,
                                             ),
                                           ),
                                         ),
@@ -270,7 +273,7 @@ class _ConversationPageState extends State<ConversationPage> {
                                     if (_isLoadingMore)
                                       Padding(
                                         padding: const EdgeInsets.all(16.0),
-                                        child: CircularProgressIndicator(color: primaryColor),
+                                        child: CircularProgressIndicator(semanticsLabel: 'Loading', color: primaryColor),
                                       ),
                                   ],
                                 ),
@@ -648,7 +651,7 @@ class _ConversationPageState extends State<ConversationPage> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           onTap: () {
             if (!isFriend) {
               _startChatWithUser(user);
@@ -659,8 +662,8 @@ class _ConversationPageState extends State<ConversationPage> {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
-              borderRadius: BorderRadius.circular(12),
+              color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey50,
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               border: (username.startsWith(query) || displayName.startsWith(query))
                   ? Border.all(color: primaryColor.withOpacity(0.3), width: 1)
                   : null,
@@ -673,11 +676,11 @@ class _ConversationPageState extends State<ConversationPage> {
                       ? NetworkImage(user.profileImage)
                       : null,
                   radius: 22,
-                  backgroundColor: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                  backgroundColor: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                   child: user.profileImage.isEmpty
                       ? Icon(
                           Icons.person,
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : MangoPalette.black,
                         )
                       : null,
                 ),
@@ -716,7 +719,7 @@ class _ConversationPageState extends State<ConversationPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: primaryColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(MangoRadius.lg),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -739,7 +742,7 @@ class _ConversationPageState extends State<ConversationPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: primaryColor,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(MangoRadius.lg),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -779,7 +782,7 @@ class _ConversationPageState extends State<ConversationPage> {
         style: TextStyle(
           fontSize: isUsername ? 12 : 14,
           fontWeight: isBold ? FontWeight.bold : (isUsername ? FontWeight.normal : FontWeight.w500),
-          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
         ),
       );
     }
@@ -793,7 +796,7 @@ class _ConversationPageState extends State<ConversationPage> {
         style: TextStyle(
           fontSize: isUsername ? 12 : 14,
           fontWeight: isBold ? FontWeight.bold : (isUsername ? FontWeight.normal : FontWeight.w500),
-          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
         ),
       );
     }
@@ -808,7 +811,7 @@ class _ConversationPageState extends State<ConversationPage> {
             style: TextStyle(
               fontSize: isUsername ? 12 : 14,
               fontWeight: isBold ? FontWeight.bold : (isUsername ? FontWeight.normal : FontWeight.w500),
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
           ),
           TextSpan(
@@ -816,7 +819,7 @@ class _ConversationPageState extends State<ConversationPage> {
             style: TextStyle(
               fontSize: isUsername ? 12 : 14,
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: isDarkMode ? Colors.white : MangoPalette.black,
               backgroundColor: primaryColor.withOpacity(0.2),
             ),
           ),
@@ -825,7 +828,7 @@ class _ConversationPageState extends State<ConversationPage> {
             style: TextStyle(
               fontSize: isUsername ? 12 : 14,
               fontWeight: isBold ? FontWeight.bold : (isUsername ? FontWeight.normal : FontWeight.w500),
-              color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
           ),
         ],
@@ -842,7 +845,7 @@ class _ConversationPageState extends State<ConversationPage> {
           backgroundColor: primaryColor.withOpacity(0.1),
           foregroundColor: primaryColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         ),
@@ -871,12 +874,12 @@ class _ConversationPageState extends State<ConversationPage> {
 
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(MangoRadius.lg),
           ),
-          backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+          backgroundColor: isDarkMode ? MangoPalette.grey900 : Colors.white,
           title: Text(
             'Start Chat',
-            style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+            style: TextStyle(color: isDarkMode ? Colors.white : MangoPalette.black),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -885,7 +888,7 @@ class _ConversationPageState extends State<ConversationPage> {
               Text(
                 'Start a conversation with ${user.displayName}?',
                 style: TextStyle(
-                  color: isDarkMode ? Colors.grey[300] : Colors.grey[700],
+                  color: isDarkMode ? MangoPalette.grey300 : MangoPalette.grey700,
                 ),
               ),
               const SizedBox(height: 8),
@@ -893,7 +896,7 @@ class _ConversationPageState extends State<ConversationPage> {
                 'You can send a message to @${user.username}',
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
               ),
             ],
@@ -904,7 +907,7 @@ class _ConversationPageState extends State<ConversationPage> {
               child: Text(
                 'Cancel',
                 style: TextStyle(
-                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                  color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                 ),
               ),
             ),
@@ -916,7 +919,7 @@ class _ConversationPageState extends State<ConversationPage> {
               style: TextButton.styleFrom(
                 backgroundColor: primaryColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(MangoRadius.sm),
                 ),
               ),
               child: Text(
@@ -951,7 +954,7 @@ class _ConversationPageState extends State<ConversationPage> {
       final primaryColor = _themeController.primaryColorValue;
 
       return Scaffold(
-        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        backgroundColor: isDarkMode ? MangoPalette.black : Colors.white,
         body: _buildMainInterface(isDarkMode, primaryColor),
       );
     });
@@ -963,7 +966,7 @@ class _ConversationPageState extends State<ConversationPage> {
         
         Container(
           decoration: BoxDecoration(
-            color: isDarkMode ? Colors.black : Colors.white,
+            color: isDarkMode ? MangoPalette.black : Colors.white,
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
@@ -984,12 +987,12 @@ class _ConversationPageState extends State<ConversationPage> {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                       ),
                     ),
                     const Spacer(),
                     
-                    GestureDetector(
+                    MangoPressable(
                       onTap: () => _showAllUsersDialog(context),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -998,7 +1001,7 @@ class _ConversationPageState extends State<ConversationPage> {
                         ),
                         decoration: BoxDecoration(
                           color: primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(MangoRadius.lg),
                           border: Border.all(
                             color: primaryColor.withOpacity(0.3),
                             width: 1.5,
@@ -1036,7 +1039,7 @@ class _ConversationPageState extends State<ConversationPage> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : MangoPalette.black,
                       ),
                     ),
                     const Spacer(),
@@ -1045,7 +1048,7 @@ class _ConversationPageState extends State<ConversationPage> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                       ),
                     ),
                   ],
@@ -1062,22 +1065,22 @@ class _ConversationPageState extends State<ConversationPage> {
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[900] : Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
+                    color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey100,
+                    borderRadius: BorderRadius.circular(MangoRadius.md),
                   ),
                   child: TextField(
                     controller: _searchController,
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : MangoPalette.black,
                     ),
                     decoration: InputDecoration(
                       hintText: 'Search friends...',
                       hintStyle: TextStyle(
-                        color: isDarkMode ? Colors.grey[500] : Colors.grey[600],
+                        color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey600,
                       ),
                       prefixIcon: Icon(
                         Icons.search,
-                        color: isDarkMode ? Colors.grey[500] : Colors.grey[600],
+                        color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey600,
                       ),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
@@ -1098,7 +1101,7 @@ class _ConversationPageState extends State<ConversationPage> {
           child: Container(
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.grey[900] : Colors.grey[50],
+              color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey50,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
@@ -1134,14 +1137,14 @@ class _ConversationPageState extends State<ConversationPage> {
                     Icon(
                       Icons.search_off,
                       size: 60,
-                      color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                      color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
                     ),
                     const SizedBox(height: 16),
                     Text(
                       'No friends found',
                       style: TextStyle(
                         fontSize: 12,
-                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                       ),
                     ),
                   ],
@@ -1168,7 +1171,7 @@ class _ConversationPageState extends State<ConversationPage> {
             child: Container(
               height: 200,
               child: Center(
-                child: CircularProgressIndicator(color: primaryColor),
+                child: CircularProgressIndicator(semanticsLabel: 'Loading', color: primaryColor),
               ),
             ),
           );
@@ -1196,7 +1199,7 @@ class _ConversationPageState extends State<ConversationPage> {
                     Text(
                       'Please try again later',
                       style: TextStyle(
-                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                         fontSize: 12,
                       ),
                     ),
@@ -1259,13 +1262,13 @@ class _ConversationPageState extends State<ConversationPage> {
         child: (user.profileImage.isEmpty)
             ? Icon(
                 Icons.person,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
               )
             : null,
         backgroundColor: (user.profileImage.isEmpty)
             ? isDarkMode
-                ? Colors.grey[700]
-                : Colors.grey[300]
+                ? MangoPalette.grey700
+                : MangoPalette.grey300
             : null,
       ),
       title: Text(
@@ -1275,17 +1278,17 @@ class _ConversationPageState extends State<ConversationPage> {
           fontSize: 12,
           height: 1,
           letterSpacing: -0.1,
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode ? Colors.white : MangoPalette.black,
         ),
       ),
       subtitle: Text(
         '@${user.username}',
         style: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: 11,
+          fontSize: 12,
           height: 1,
           letterSpacing: -0.1,
-          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
         ),
       ),
       trailing: Icon(Icons.chat_bubble_outline, color: primaryColor, size: 14),
@@ -1311,22 +1314,22 @@ class _ConversationPageState extends State<ConversationPage> {
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.grey[800] : Colors.grey.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(16),
+              color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey500.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Row(
               children: [
                 CircleAvatar(
                   radius: 22,
-                  backgroundColor: isDarkMode ? Colors.grey[700] : Colors.grey[300],
-                  child: CircularProgressIndicator(color: primaryColor),
+                  backgroundColor: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
+                  child: CircularProgressIndicator(semanticsLabel: 'Loading', color: primaryColor),
                 ),
                 const SizedBox(width: 12),
                 Text(
                   'Loading...',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
               ],
@@ -1339,24 +1342,24 @@ class _ConversationPageState extends State<ConversationPage> {
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.grey[800] : Colors.grey.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(16),
+              color: isDarkMode ? MangoPalette.grey800 : MangoPalette.grey500.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
             ),
             child: Row(
               children: [
                 CircleAvatar(
                   radius: 22,
-                  backgroundColor: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                  backgroundColor: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                   child: Icon(
                     Icons.person,
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
                 const SizedBox(width: 12),
                 Text(
                   'Unknown User',
                   style: TextStyle(
-                    color: isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : MangoPalette.black,
                   ),
                 ),
               ],
@@ -1365,12 +1368,12 @@ class _ConversationPageState extends State<ConversationPage> {
         }
 
         final user = snapshot.data!;
-        return GestureDetector(
+        return MangoPressable(
           onTap: () => _selectFriend(user),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.grey[900] : Colors.white.withOpacity(0.95),
+              color: isDarkMode ? MangoPalette.grey900 : Colors.white.withOpacity(0.95),
             ),
             child: Row(
               children: [
@@ -1379,11 +1382,11 @@ class _ConversationPageState extends State<ConversationPage> {
                   backgroundImage: (user.profileImage.isNotEmpty)
                       ? NetworkImage(user.profileImage)
                       : null,
-                  backgroundColor: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                  backgroundColor: isDarkMode ? MangoPalette.grey700 : MangoPalette.grey300,
                   child: (user.profileImage.isEmpty)
                       ? Icon(
                           Icons.person,
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : MangoPalette.black,
                         )
                       : null,
                 ),
@@ -1398,7 +1401,7 @@ class _ConversationPageState extends State<ConversationPage> {
                           fontWeight: FontWeight.w700,
                           fontSize: 13,
                           letterSpacing: -0.1,
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : MangoPalette.black,
                         ),
                       ),
                       const SizedBox(height: 0),
@@ -1409,7 +1412,7 @@ class _ConversationPageState extends State<ConversationPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
-                          color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
+                          color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey700,
                         ),
                       ),
                     ],
@@ -1422,8 +1425,8 @@ class _ConversationPageState extends State<ConversationPage> {
                     Text(
                       _formatMessageTime(message.timeStamp),
                       style: TextStyle(
-                        fontSize: 10,
-                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                        fontSize: 12,
+                        color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey600,
                       ),
                     ),
                   ],
@@ -1482,7 +1485,7 @@ class _ConversationPageState extends State<ConversationPage> {
             child: Text(
               'No friends yet',
               style: TextStyle(
-                color: isDarkMode ? Colors.grey[600] : Colors.grey[400],
+                color: isDarkMode ? MangoPalette.grey600 : MangoPalette.grey400,
               ),
             ),
           ),
@@ -1512,7 +1515,7 @@ class _ConversationPageState extends State<ConversationPage> {
       return username.length > 7 ? '${username.substring(0, 10)}..' : username;
     }
 
-    return GestureDetector(
+    return MangoPressable(
       onTap: () => _selectFriend(user),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -1529,14 +1532,14 @@ class _ConversationPageState extends State<ConversationPage> {
                   child: (user.profileImage.isEmpty)
                       ? Icon(
                           Icons.person,
-                          color: isDarkMode ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : MangoPalette.black,
                           size: 30,
                         )
                       : null,
                   backgroundColor: (user.profileImage.isEmpty)
                       ? isDarkMode
-                          ? Colors.grey[700]
-                          : Colors.grey[300]
+                          ? MangoPalette.grey700
+                          : MangoPalette.grey300
                       : null,
                 ),
                 Positioned(
@@ -1548,7 +1551,7 @@ class _ConversationPageState extends State<ConversationPage> {
                       color: primaryColor,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: isDarkMode ? Colors.black : Colors.white,
+                        color: isDarkMode ? MangoPalette.black : Colors.white,
                         width: 1,
                       ),
                     ),
@@ -1561,9 +1564,9 @@ class _ConversationPageState extends State<ConversationPage> {
             Text(
               '@${formatUsername(user.username)}',
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: isDarkMode ? Colors.white : Colors.black,
+                color: isDarkMode ? Colors.white : MangoPalette.black,
               ),
             ),
           ],
@@ -1575,7 +1578,7 @@ class _ConversationPageState extends State<ConversationPage> {
   Widget _buildEmptyInboxState(bool isDarkMode) {
     return Container(
       height: 400,
-      color: isDarkMode ? Colors.grey[900] : Colors.grey[50],
+      color: isDarkMode ? MangoPalette.grey900 : MangoPalette.grey50,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1592,7 +1595,7 @@ class _ConversationPageState extends State<ConversationPage> {
               'No messages yet',
               style: TextStyle(
                 fontSize: 18,
-                color: isDarkMode ? Colors.grey[400] : Colors.grey,
+                color: isDarkMode ? MangoPalette.grey400 : MangoPalette.grey500,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -1601,7 +1604,7 @@ class _ConversationPageState extends State<ConversationPage> {
               'Start a conversation with your friends!',
               style: TextStyle(
                 fontSize: 14,
-                color: isDarkMode ? Colors.grey[500] : Colors.grey[600],
+                color: isDarkMode ? MangoPalette.grey500 : MangoPalette.grey600,
               ),
             ),
           ],

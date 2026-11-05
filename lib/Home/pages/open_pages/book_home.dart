@@ -6,6 +6,8 @@ import 'package:shimmer/shimmer.dart';
 import '../../../Models/customModel/library.dart';
 import '../../controllers/dashboard_controller.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 class BookHomePage extends StatefulWidget {
   const BookHomePage({super.key});
@@ -77,7 +79,7 @@ class _BookHomePageState extends State<BookHomePage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? Colors.black : const Color(0xFFF8F9FA),
+      backgroundColor: isDark ? MangoPalette.black : const Color(0xFFF5F6F3),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -109,7 +111,7 @@ class _BookHomePageState extends State<BookHomePage> {
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
       child: Row(
         children: [
-          GestureDetector(
+          MangoPressable(
             onTap: () => Get.back(),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -142,10 +144,10 @@ class _BookHomePageState extends State<BookHomePage> {
       child: Container(
         height: 48,
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E1E2E) : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          color: isDark ? const Color(0xFF1B241E) : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           border: Border.all(
-            color: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+            color: isDark ? MangoPalette.grey800 : MangoPalette.grey300,
             width: 1,
           ),
         ),
@@ -157,26 +159,27 @@ class _BookHomePageState extends State<BookHomePage> {
             });
           },
           style: TextStyle(
-            color: isDark ? Colors.white : Colors.black,
+            color: isDark ? Colors.white : MangoPalette.black,
             fontSize: 14,
           ),
           decoration: InputDecoration(
             hintText: 'Search books, authors...',
             hintStyle: TextStyle(
-              color: isDark ? Colors.grey[600] : Colors.grey[500],
+              color: isDark ? MangoPalette.grey600 : MangoPalette.grey500,
               fontSize: 14,
             ),
             prefixIcon: Icon(
               Icons.search,
               size: 22,
-              color: isDark ? Colors.grey[400] : Colors.grey[600],
+              color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
             ),
             suffixIcon: _searchQuery.isNotEmpty
                 ? IconButton(
+        tooltip: 'Clear',
                     icon: Icon(
                       Icons.clear,
                       size: 20,
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                     ),
                     onPressed: () {
                       setState(() {
@@ -206,7 +209,7 @@ class _BookHomePageState extends State<BookHomePage> {
           final genre = _genreFilters[index];
           final isSelected = _selectedGenre == genre;
 
-          return GestureDetector(
+          return MangoPressable(
             onTap: () {
               if (_selectedGenre == genre) return;
               setState(() {
@@ -220,12 +223,12 @@ class _BookHomePageState extends State<BookHomePage> {
               decoration: BoxDecoration(
                 color: isSelected
                     ? const Color(0xFF667eea)
-                    : (isDark ? Colors.grey[800] : Colors.grey[200]),
+                    : (isDark ? MangoPalette.grey800 : MangoPalette.grey200),
                 borderRadius: BorderRadius.circular(25),
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF667eea)
-                      : (isDark ? Colors.grey[700]! : Colors.grey[300]!),
+                      : (isDark ? MangoPalette.grey700 : MangoPalette.grey300),
                 ),
               ),
               child: Center(
@@ -292,14 +295,14 @@ class _BookHomePageState extends State<BookHomePage> {
               Icon(
                 _searchQuery.isNotEmpty ? Icons.search_off : Icons.book,
                 size: 60,
-                color: isDark ? Colors.grey[600] : Colors.grey[400],
+                color: isDark ? MangoPalette.grey600 : MangoPalette.grey400,
               ),
               const SizedBox(height: 16),
               Text(
                 _searchQuery.isNotEmpty ? 'No books match your search' : 'No books found',
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDark ? Colors.grey[500] : Colors.grey[600],
+                  color: isDark ? MangoPalette.grey500 : MangoPalette.grey600,
                 ),
               ),
               if (_searchQuery.isNotEmpty) ...[
@@ -308,7 +311,7 @@ class _BookHomePageState extends State<BookHomePage> {
                   'Try searching with different keywords',
                   style: TextStyle(
                     fontSize: 14,
-                    color: isDark ? Colors.grey[600] : Colors.grey[500],
+                    color: isDark ? MangoPalette.grey600 : MangoPalette.grey500,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -326,7 +329,7 @@ class _BookHomePageState extends State<BookHomePage> {
                     side: const BorderSide(color: Color(0xFF667eea)),
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(MangoRadius.lg),
                     ),
                   ),
                 ),
@@ -359,17 +362,17 @@ class _BookHomePageState extends State<BookHomePage> {
   }
 
   Widget _buildBookCard(MangoBooks book, bool isDark) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: () {
         // Navigate to book detail
       },
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: isDark ? const Color(0xFF1E1E2E) : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          color: isDark ? const Color(0xFF1B241E) : Colors.white,
           boxShadow: [
             BoxShadow(
-              color: (isDark ? Colors.black : Colors.grey).withOpacity(0.1),
+              color: (isDark ? MangoPalette.black : MangoPalette.grey500).withOpacity(0.1),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -388,18 +391,18 @@ class _BookHomePageState extends State<BookHomePage> {
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Container(
                   height: 160,
-                  color: isDark ? Colors.grey[800] : Colors.grey[200],
+                  color: isDark ? MangoPalette.grey800 : MangoPalette.grey200,
                   child: const Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2),
                   ),
                 ),
                 errorWidget: (context, url, error) => Container(
                   height: 160,
-                  color: isDark ? Colors.grey[800] : Colors.grey[200],
+                  color: isDark ? MangoPalette.grey800 : MangoPalette.grey200,
                   child: Icon(
                     Icons.book,
                     size: 40,
-                    color: isDark ? Colors.grey[600] : Colors.grey[400],
+                    color: isDark ? MangoPalette.grey600 : MangoPalette.grey400,
                   ),
                 ),
               ),
@@ -424,8 +427,8 @@ class _BookHomePageState extends State<BookHomePage> {
                   Text(
                     book.author,
                     style: TextStyle(
-                      fontSize: 11,
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      fontSize: 12,
+                      color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -437,12 +440,12 @@ class _BookHomePageState extends State<BookHomePage> {
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: const Color(0xFF667eea).withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                         ),
                         child: Text(
                           book.genre,
                           style: const TextStyle(
-                            fontSize: 8,
+                            fontSize: 12,
                             color: Color(0xFF667eea),
                             fontWeight: FontWeight.w500,
                           ),
@@ -456,8 +459,8 @@ class _BookHomePageState extends State<BookHomePage> {
                           Text(
                             (book.likes / 100).toStringAsFixed(1),
                             style: TextStyle(
-                              fontSize: 9,
-                              color: isDark ? Colors.grey[400] : Colors.grey[600],
+                              fontSize: 12,
+                              color: isDark ? MangoPalette.grey400 : MangoPalette.grey600,
                             ),
                           ),
                         ],
@@ -474,13 +477,13 @@ class _BookHomePageState extends State<BookHomePage> {
   }
 
   Widget _buildShimmerBookCard(bool isDark) {
-    return Shimmer.fromColors(
-      baseColor: isDark ? Colors.grey[850]! : Colors.grey[300]!,
-      highlightColor: isDark ? Colors.grey[800]! : Colors.grey[100]!,
+    return MangoShimmer(
+      baseColor: isDark ? MangoPalette.grey850 : MangoPalette.grey300,
+      highlightColor: isDark ? MangoPalette.grey800 : MangoPalette.grey100,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: isDark ? Colors.grey[800] : Colors.white,
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          color: isDark ? MangoPalette.grey800 : Colors.white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

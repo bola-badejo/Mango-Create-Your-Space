@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:mango/AccountSetup/user_detail/user_detail_controller.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class PhoneInputField extends StatefulWidget {
   final UserDetailsController controller;
@@ -58,7 +59,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
         }
       },
       style: TextStyle(
-        color: widget.isDark ? Colors.white : Colors.black,
+        color: widget.isDark ? Colors.white : MangoPalette.black,
         fontSize: 14,
       ),
       decoration: InputDecoration(
@@ -71,30 +72,30 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
           color: widget.isDark ? Colors.white54 : Colors.black38,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: BorderSide(color: MangoPalette.grey300),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: BorderSide(color: MangoPalette.grey300),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.orange),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
+          borderSide: const BorderSide(color: MangoPalette.green500),
         ),
         filled: true,
-        fillColor: widget.isDark ? Colors.grey[800] : Colors.grey.shade50,
+        fillColor: widget.isDark ? MangoPalette.grey800 : MangoPalette.grey50,
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           borderSide: const BorderSide(color: Colors.red),
         ),
       ),
       dropdownTextStyle: TextStyle(
-        color: widget.isDark ? Colors.white : Colors.black,
+        color: widget.isDark ? Colors.white : MangoPalette.black,
       ),
       dropdownIcon: Icon(
         Icons.arrow_drop_down,
-        color: widget.isDark ? Colors.white : Colors.black,
+        color: widget.isDark ? Colors.white : MangoPalette.black,
       ),
       searchText: 'Search country',
       invalidNumberMessage: 'Please enter a valid phone number',

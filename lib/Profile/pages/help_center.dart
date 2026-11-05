@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class HelpCenterPage extends StatelessWidget {
   const HelpCenterPage({super.key});
@@ -70,8 +71,8 @@ class HelpCenterPage extends StatelessWidget {
             child: Text(
               "support@mangoapp.ng",
               style: theme.textTheme.bodySmall?.copyWith(
-                color: Colors.grey,
-                fontSize: 10,
+                color: MangoPalette.grey500,
+                fontSize: 12,
               ),
             ),
           ),
@@ -86,7 +87,7 @@ class HelpCenterPage extends StatelessWidget {
     return Card(
       elevation: 0.5,
       margin: const EdgeInsets.only(bottom: 14),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -94,11 +95,11 @@ class HelpCenterPage extends StatelessWidget {
           children: [
             Text(title,
                 style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold, fontSize: 11.5)),
+                    fontWeight: FontWeight.bold, fontSize: 12)),
             const SizedBox(height: 6),
             Text(
               content,
-              style: theme.textTheme.bodySmall?.copyWith(fontSize: 10),
+              style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
             ),
           ],
         ),

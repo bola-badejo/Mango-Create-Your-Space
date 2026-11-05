@@ -4,6 +4,7 @@ import 'package:mango/Books/viewer_bse.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mango/Models/customModel/library.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class PdfViewerScreen extends PdfViewerBase {
   const PdfViewerScreen({
@@ -81,7 +82,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         future: _pdfUrlFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(semanticsLabel: 'Loading'));
           }
 
           if (snapshot.hasError || !snapshot.hasData) {
@@ -96,14 +97,14 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade800,
+                      color: MangoPalette.grey800,
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     _errorMessage,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey.shade600),
+                    style: TextStyle(color: MangoPalette.grey600),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
@@ -147,7 +148,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.grey.shade600,
+                      color: MangoPalette.grey600,
                     ),
                   ),
                   const SizedBox(height: 32),

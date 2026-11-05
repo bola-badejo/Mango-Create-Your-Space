@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mango/constants.dart';
 import 'interests.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class SkipSetup extends StatefulWidget {
   final String? uid;
@@ -16,9 +17,9 @@ class _SkipSetupState extends State<SkipSetup> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
-    final Color backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
-    final Color textColor = isDark ? Colors.white : Colors.black;
-    final Color buttonColor = isDark ? Colors.grey[700]! : Colors.grey[300]!;
+    final Color backgroundColor = isDark ? MangoPalette.grey900 : MangoPalette.grey50;
+    final Color textColor = isDark ? Colors.white : MangoPalette.black;
+    final Color buttonColor = isDark ? MangoPalette.grey700 : MangoPalette.grey300;
 
     return Scaffold(
       appBar: AppBar(
@@ -88,7 +89,7 @@ class _SkipSetupState extends State<SkipSetup> {
                     backgroundColor: buttonColor,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                   ),
                   child: Row(
@@ -125,10 +126,10 @@ class _SkipSetupState extends State<SkipSetup> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: MangoPalette.green500,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(MangoRadius.md),
                     ),
                   ),
                   child: const Row(

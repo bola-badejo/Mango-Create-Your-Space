@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class LinkDialog extends StatefulWidget {
   const LinkDialog({super.key});
@@ -26,7 +27,7 @@ class _LinkDialogState extends State<LinkDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.md)),
       child: Container(
         padding: const EdgeInsets.all(20),
         child: Form(

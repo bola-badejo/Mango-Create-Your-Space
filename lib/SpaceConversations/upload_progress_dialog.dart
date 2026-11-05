@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 
 class UploadProgressDialog extends StatefulWidget {
@@ -79,7 +80,7 @@ class _UploadProgressDialogState extends State<UploadProgressDialog> {
 
   Color _getProgressColor() {
     if (!_isUploading) {
-      return _isSuccess ? Colors.green : Colors.red;
+      return _isSuccess ? MangoPalette.green500 : Colors.red;
     }
     return Colors.blue;
   }
@@ -89,7 +90,7 @@ class _UploadProgressDialogState extends State<UploadProgressDialog> {
     return WillPopScope(
       onWillPop: () async => false, 
       child: Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MangoRadius.lg)),
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -109,7 +110,7 @@ class _UploadProgressDialogState extends State<UploadProgressDialog> {
                       ? Stack(
                           alignment: Alignment.center,
                           children: [
-                            CircularProgressIndicator(
+                            CircularProgressIndicator(semanticsLabel: 'Loading', 
                               value: _progress,
                               valueColor: AlwaysStoppedAnimation(_getProgressColor()),
                               strokeWidth: 4,
@@ -151,7 +152,7 @@ class _UploadProgressDialogState extends State<UploadProgressDialog> {
                 widget.fileName,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey[600],
+                  color: MangoPalette.grey600,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -162,19 +163,19 @@ class _UploadProgressDialogState extends State<UploadProgressDialog> {
               
               
               if (_isUploading) ...[
-                LinearProgressIndicator(
+                LinearProgressIndicator(semanticsLabel: 'Loading', 
                   value: _progress,
-                  backgroundColor: Colors.grey[200],
+                  backgroundColor: MangoPalette.grey200,
                   valueColor: AlwaysStoppedAnimation(_getProgressColor()),
                   minHeight: 6,
-                  borderRadius: BorderRadius.circular(3),
+                  borderRadius: BorderRadius.circular(MangoRadius.xs),
                 ),
                 SizedBox(height: 8),
                 Text(
                   '${(_progress * 100).toStringAsFixed(1)}%',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: MangoPalette.grey600,
                   ),
                 ),
               ],

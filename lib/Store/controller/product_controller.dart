@@ -8,6 +8,7 @@ import 'package:mango/Store/controller/product_services.dart';
 import 'package:mango/utils.dart';
 import 'package:uuid/uuid.dart';
 import '../../Models/customModel/MangoProduct.dart';
+import 'package:mango/Core/theme/mango_palette.dart';
 
 class ProductController extends GetxController {
   final ProductService _productService = ProductService();
@@ -228,7 +229,7 @@ class ProductController extends GetxController {
         'Success', 
         'Comment added successfully', 
         context: context,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
       );
       
     } catch (e) {
@@ -265,7 +266,7 @@ class ProductController extends GetxController {
         'Success', 
         'Comment updated successfully', 
         context: context,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
       );
       
     } catch (e) {
@@ -290,7 +291,7 @@ class ProductController extends GetxController {
         'Success', 
         'Comment deleted successfully', 
         context: context,
-        backgroundColor: Colors.green,
+        backgroundColor: MangoPalette.green500,
       );
       
     } catch (e) {

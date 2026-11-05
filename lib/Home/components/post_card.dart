@@ -1,3 +1,6 @@
+import 'package:share_plus/share_plus.dart';
+import 'package:mango/Home/compose/mango_post_service.dart';
+import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +22,7 @@ import 'package:mango/Utils/theme.dart';
 import 'package:mango/utils.dart';
 import 'package:video_player/video_player.dart';
 import 'package:mango/Utils/optimized_lists.dart';
+import 'package:mango/Core/design_system/mango_ui.dart';
 
 enum PostErrorType {
   network,
@@ -662,13 +666,13 @@ class _CommentWidgetState extends State<CommentWidget> {
   void _updateColors() {
     _textColor = widget.themeController.isDarkMode.value
         ? Colors.white
-        : Colors.black;
+        : MangoPalette.black;
     _secondaryTextColor = widget.themeController.isDarkMode.value
-        ? const Color(0xFFB0B0B0)
-        : const Color(0xFF666666);
+        ? const Color(0xFFAEB1AC)
+        : const Color(0xFF5C665F);
     _surfaceColor = widget.themeController.isDarkMode.value
-        ? const Color(0xFF2D2D2D)
-        : const Color(0xFFF5F5F5);
+        ? const Color(0xFF243028)
+        : const Color(0xFFF5F6F3);
     _primaryColor = widget.themeController.primaryColorValue;
     _threadLineColor = widget.themeController.isDarkMode.value
         ? const Color(0xFF444444)
@@ -800,7 +804,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                             Text(
                               timeAgo(widget.comment.timestamp.toDate()),
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: _secondaryTextColor,
                               ),
                             ),
@@ -821,7 +825,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                         Row(
                           children: [
                             Obx(
-                              () => GestureDetector(
+                              () => MangoPressable(
                                 onTap: _toggleLike,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -829,7 +833,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(MangoRadius.md),
                                     color: _surfaceColor,
                                   ),
                                   child: Row(
@@ -848,7 +852,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                       Text(
                                         _formatCount(_likeCount.value),
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 12,
                                           color: _isLiked.value
                                               ? Colors.red
                                               : _secondaryTextColor,
@@ -862,7 +866,7 @@ class _CommentWidgetState extends State<CommentWidget> {
 
                             const SizedBox(width: 12),
 
-                            GestureDetector(
+                            MangoPressable(
                               onTap: widget.onReply,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -870,7 +874,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(MangoRadius.md),
                                   color: _surfaceColor,
                                 ),
                                 child: Row(
@@ -885,7 +889,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                     Text(
                                       'Reply',
                                       style: TextStyle(
-                                        fontSize: 10,
+                                        fontSize: 12,
                                         color: _secondaryTextColor,
                                       ),
                                     ),
@@ -897,7 +901,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                             if (hasReplies) ...[
                               const SizedBox(width: 12),
                               Obx(
-                                () => GestureDetector(
+                                () => MangoPressable(
                                   onTap: _toggleReplies,
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -905,7 +909,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                       vertical: 4,
                                     ),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(MangoRadius.md),
                                       color: _surfaceColor,
                                     ),
                                     child: Row(
@@ -922,7 +926,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                         Text(
                                           '${widget.comment.replies.length} ${widget.comment.replies.length == 1 ? 'reply' : 'replies'}',
                                           style: TextStyle(
-                                            fontSize: 10,
+                                            fontSize: 12,
                                             color: _primaryColor,
                                           ),
                                         ),
@@ -951,7 +955,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Center(
-                                child: CircularProgressIndicator(
+                                child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                   color: _primaryColor,
                                   strokeWidth: 2,
                                 ),
@@ -1087,21 +1091,21 @@ class _CommentsModalSheetState extends State<CommentsModalSheet> {
 
   void _updateColors() {
     _cardColor = widget.themeController.isDarkMode.value
-        ? const Color(0xFF1E1E1E)
+        ? const Color(0xFF1B241E)
         : Colors.white;
     _textColor = widget.themeController.isDarkMode.value
         ? Colors.white
-        : Colors.black;
+        : MangoPalette.black;
     _secondaryTextColor = widget.themeController.isDarkMode.value
-        ? const Color(0xFFB0B0B0)
-        : const Color(0xFF666666);
+        ? const Color(0xFFAEB1AC)
+        : const Color(0xFF5C665F);
     _surfaceColor = widget.themeController.isDarkMode.value
-        ? const Color(0xFF2D2D2D)
-        : const Color(0xFFF5F5F5);
+        ? const Color(0xFF243028)
+        : const Color(0xFFF5F6F3);
     _primaryColor = widget.themeController.primaryColorValue;
     _dividerColor = widget.themeController.isDarkMode.value
-        ? const Color(0xFF333333)
-        : const Color(0xFFE0E0E0);
+        ? const Color(0xFF2E3B32)
+        : const Color(0xFFDEE1DC);
   }
 
   void _startReply(Comment comment) async {
@@ -1174,7 +1178,7 @@ class _CommentsModalSheetState extends State<CommentsModalSheet> {
             height: 4,
             decoration: BoxDecoration(
               color: _secondaryTextColor.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(MangoRadius.xs),
             ),
           ),
 
@@ -1230,6 +1234,7 @@ class _CommentsModalSheetState extends State<CommentsModalSheet> {
                       const SizedBox(width: 4),
                     ],
                     IconButton(
+        tooltip: 'Close',
                       onPressed: () => Navigator.pop(context),
                       icon: Icon(Icons.close, color: _textColor),
                     ),
@@ -1246,7 +1251,7 @@ class _CommentsModalSheetState extends State<CommentsModalSheet> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
-                    child: CircularProgressIndicator(
+                    child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                       color: _primaryColor,
                     ),
                   );
@@ -1355,7 +1360,8 @@ class _CommentsModalSheetState extends State<CommentsModalSheet> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        GestureDetector(
+                        MangoPressable(
+        semanticLabel: 'Close',
                           onTap: _cancelReply,
                           child: Icon(
                             Icons.close,
@@ -1389,7 +1395,7 @@ class _CommentsModalSheetState extends State<CommentsModalSheet> {
                         constraints: const BoxConstraints(maxHeight: 100),
                         decoration: BoxDecoration(
                           color: _cardColor,
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(MangoRadius.lg),
                         ),
                         child: TextField(
                           controller: _commentController,
@@ -1426,20 +1432,20 @@ class _CommentsModalSheetState extends State<CommentsModalSheet> {
                               height: 40,
                               decoration: BoxDecoration(
                                 color: _primaryColor,
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(MangoRadius.lg),
                               ),
                               child: Center(
                                 child: SizedBox(
                                   width: 20,
                                   height: 20,
-                                  child: CircularProgressIndicator(
+                                  child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                                     strokeWidth: 2,
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
                             )
-                          : GestureDetector(
+                          : MangoPressable(
                               onTap: _submitComment,
                               child: Container(
                                 padding: const EdgeInsets.all(8),
@@ -1447,7 +1453,7 @@ class _CommentsModalSheetState extends State<CommentsModalSheet> {
                                   color: _commentController.text.trim().isNotEmpty
                                       ? _primaryColor
                                       : _secondaryTextColor.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(MangoRadius.lg),
                                 ),
                                 child: Icon(
                                   Icons.send,
@@ -1649,30 +1655,30 @@ class _PostCardState extends State<PostCard> {
   }
 
   Color get _cardColor =>
-      themeController.isDarkMode.value ? const Color(0xFF1E1E1E) : Colors.white;
+      themeController.isDarkMode.value ? const Color(0xFF1B241E) : Colors.white;
 
   Color get _profileSegmentColor => themeController.primaryColorValue;
 
   Color get _textColor =>
-      themeController.isDarkMode.value ? Colors.white : Colors.black;
+      themeController.isDarkMode.value ? Colors.white : MangoPalette.black;
 
   Color get _secondaryTextColor => themeController.isDarkMode.value
-      ? const Color(0xFFB0B0B0)
-      : const Color(0xFF666666);
+      ? const Color(0xFFAEB1AC)
+      : const Color(0xFF5C665F);
 
   Color get _surfaceColor => themeController.isDarkMode.value
-      ? const Color(0xFF2D2D2D)
-      : const Color(0xFFF5F5F5);
+      ? const Color(0xFF243028)
+      : const Color(0xFFF5F6F3);
 
   Color get _dividerColor => themeController.isDarkMode.value
-      ? const Color(0xFF333333)
-      : const Color(0xFFE0E0E0);
+      ? const Color(0xFF2E3B32)
+      : const Color(0xFFDEE1DC);
 
   Color get _primaryColor => themeController.primaryColorValue;
 
-  Color get _successColor => const Color(0xFF4CAF50);
+  Color get _successColor => const Color(0xFF369365);
   Color get _errorColor => const Color(0xFFF44336);
-  Color get _warningColor => const Color(0xFFFF9800);
+  Color get _warningColor => const Color(0xFF369365);
 
   Color get _profileTextColor => Colors.white;
 
@@ -1752,12 +1758,14 @@ class _PostCardState extends State<PostCard> {
   }
 
   void _sharePost() {
-    final shareText = '${widget.post.text}\n\nShared from Mango App';
-    UtilsService().showSnackbar(
-      'Share',
-      'Post shared to clipboard',
-      backgroundColor: _surfaceColor, context: context,
-    );
+    final text = widget.post.text.trim();
+    final media = widget.post.image.isNotEmpty ? widget.post.image : (widget.post.multiImage.isNotEmpty ? widget.post.multiImage.first : '');
+    final shareText = [if (text.isNotEmpty) text, if (media.isNotEmpty) media, 'Shared from Mango'].join('\n\n');
+    SharePlus.instance.share(ShareParams(text: shareText)).catchError((_) {
+      Clipboard.setData(ClipboardData(text: shareText));
+      if (mounted) MangoToast.show(context, message: 'Copied to clipboard');
+      return ShareResult.unavailable;
+    });
   }
 
   void _commentOnPost() {
@@ -1857,10 +1865,10 @@ class _PostCardState extends State<PostCard> {
         backgroundColor = _warningColor;
         break;
       case PostErrorType.permission:
-        backgroundColor = Colors.orange;
+        backgroundColor = MangoPalette.green500;
         break;
       case PostErrorType.quotaExceeded:
-        backgroundColor = Colors.deepOrange;
+        backgroundColor = MangoPalette.green500;
         break;
       default:
         backgroundColor = _errorColor;
@@ -1936,10 +1944,10 @@ class _PostCardState extends State<PostCard> {
               ] else ...[
                 Divider(color: _dividerColor),
                 ListTile(
-                  leading: Icon(Icons.report, color: Colors.orange),
+                  leading: Icon(Icons.report, color: MangoPalette.green500),
                   title: Text(
                     'Report Post',
-                    style: TextStyle(color: Colors.orange),
+                    style: TextStyle(color: MangoPalette.green500),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -1975,10 +1983,35 @@ class _PostCardState extends State<PostCard> {
   }
 
   void _editPost() {
-    UtilsService().showSnackbar(
-      'Edit',
-      'Edit feature coming soon',
-      backgroundColor: _surfaceColor, context: context,
+    final ctrl = TextEditingController(text: widget.post.text);
+    showDialog<void>(
+      context: context,
+      builder: (dialog) => AlertDialog(
+        title: const Text('Edit post'),
+        content: TextField(
+          controller: ctrl,
+          autofocus: true,
+          minLines: 2,
+          maxLines: 8,
+          maxLength: MangoPostService.maxChars,
+          decoration: const InputDecoration(hintText: "What's happening?"),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(dialog), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(dialog);
+              try {
+                await MangoPostService.instance.editText(widget.post.id, ctrl.text);
+                if (mounted) MangoToast.show(context, message: 'Post updated', kind: MangoToastKind.success);
+              } catch (e) {
+                if (mounted) MangoToast.show(context, message: e.toString(), kind: MangoToastKind.error);
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -2012,7 +2045,8 @@ class _PostCardState extends State<PostCard> {
   Future<void> _performDelete() async {
     _isLoading.value = true;
     try {
-      await _service.deletePost(widget.post.id);
+      // Also updates counts; the server removes the post's files.
+      await MangoPostService.instance.delete(widget.post.id);
       UtilsService().showSnackbar(
         'Success',
         'Post deleted',
@@ -2163,82 +2197,120 @@ class _PostCardState extends State<PostCard> {
         final hasText = widget.post.text.isNotEmpty;
 
         return Obx(
-          () => Column(
-            children: [
-              // Branded Profile Segment Container
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 10,
-                ),
+          () => MangoAppear(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: _profileSegmentColor,
-                  borderRadius:  BorderRadius.circular(30),
-                ),
-                child: _buildUserInfo(user),
-              ),
-
-              // Media Section
-              if (hasMedia)
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: themeController.isDarkMode.value
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-                  child: _buildMediaSection(context),
-                ),
-
-              // Linked Content Section
-              if (hasLinkedContent)
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _cardColor,
-                  ),
-                  child: _buildLinkedContentSection(),
-                ),
-
-              // Text and Actions Section
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 20,
-                ),
-                decoration: BoxDecoration(
-                  color: _cardColor,
                   borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: themeController.isDarkMode.value ? 0.35 : 0.06),
+                      blurRadius: 18,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (hasText) ...[
-                      Text(
-                        widget.post.text,
-                        style: TextStyle(
-                          fontSize: 12,
-                          height: 1.4,
-                          color: _textColor,
+                    // Branded profile segment
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            _profileSegmentColor,
+                            Color.alphaBlend(context.colors.actionPrimary.withValues(alpha: 0.10), _profileSegmentColor),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: context.colors.borderSubtle),
+                      ),
+                      child: _buildUserInfo(user),
+                    ),
+                    // Media, with double-tap to like
+                    if (hasMedia)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: GestureDetector(
+                            onDoubleTap: _doubleTapLike,
+                            child: Stack(alignment: Alignment.center, children: [
+                              Container(
+                                width: double.infinity,
+                                color: themeController.isDarkMode.value ? MangoPalette.black : Colors.white,
+                                child: _buildMediaSection(context),
+                              ),
+                              IgnorePointer(
+                                child: AnimatedOpacity(
+                                  opacity: _heartBurst ? 1 : 0,
+                                  duration: MangoMotion.duration(context, MangoMotionTokens.fast),
+                                  child: AnimatedScale(
+                                    scale: _heartBurst ? 1.0 : 0.4,
+                                    duration: MangoMotion.duration(context, MangoMotionTokens.moderate),
+                                    curve: Curves.elasticOut,
+                                    child: const Icon(Icons.favorite_rounded, size: 96, color: Colors.white, shadows: [Shadow(blurRadius: 24, color: Colors.black45)]),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                    ],
-                    _buildActionsRow(),
+                    if (hasLinkedContent)
+                      Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(top: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        decoration: BoxDecoration(color: _cardColor, borderRadius: BorderRadius.circular(24)),
+                        child: _buildLinkedContentSection(),
+                      ),
+                    // Text and actions
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(top: 6),
+                      padding: const EdgeInsets.fromLTRB(18, 16, 18, 10),
+                      decoration: BoxDecoration(
+                        color: _cardColor,
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: context.colors.borderSubtle),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (hasText) ...[
+                            _PostText(text: widget.post.text, color: _textColor, accent: context.colors.textBrand),
+                            const SizedBox(height: 10),
+                          ],
+                          _buildActionsRow(),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
         );
       },
     );
+  }
+
+  bool _heartBurst = false;
+
+  /// Double-tap media to like (never unlikes), with a heart burst.
+  void _doubleTapLike() {
+    HapticFeedback.lightImpact();
+    if (!_isLiked.value) _toggleLike();
+    setState(() => _heartBurst = true);
+    Future.delayed(const Duration(milliseconds: 650), () {
+      if (mounted) setState(() => _heartBurst = false);
+    });
+    MangoAnnounce.polite(context, 'Liked');
   }
 
   Widget _buildErrorState(dynamic error) {
@@ -2259,7 +2331,7 @@ class _PostCardState extends State<PostCard> {
           const SizedBox(height: 4),
           Text(
             'Please try again',
-            style: TextStyle(color: _secondaryTextColor, fontSize: 10),
+            style: TextStyle(color: _secondaryTextColor, fontSize: 12),
           ),
         ],
       ),
@@ -2271,7 +2343,7 @@ class _PostCardState extends State<PostCard> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: GestureDetector(
+          child: MangoPressable(
             onTap: () => _navigateToProfile(user),
             child: Row(
               children: [
@@ -2302,7 +2374,7 @@ class _PostCardState extends State<PostCard> {
                       Text(
                         '@${user?.username ?? 'unknown'}',
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: _profileTextColor.withOpacity(0.8),
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -2325,9 +2397,9 @@ class _PostCardState extends State<PostCard> {
                     ? const SizedBox(
                         width: 24,
                         height: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        child: CircularProgressIndicator(semanticsLabel: 'Loading', strokeWidth: 2),
                       )
-                    : GestureDetector(
+                    : MangoPressable(
                         onTap: _toggleFollow,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -2335,7 +2407,7 @@ class _PostCardState extends State<PostCard> {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(MangoRadius.lg),
                             color: _isFollowing.value
                                 ? Colors.transparent
                                 : _profileSegmentColor,
@@ -2363,14 +2435,14 @@ class _PostCardState extends State<PostCard> {
                   ? SizedBox(
                       width: 24,
                       height: 24,
-                      child: CircularProgressIndicator(
+                      child: CircularProgressIndicator(semanticsLabel: 'Loading', 
                         strokeWidth: 2,
                         valueColor: AlwaysStoppedAnimation<Color>(
                           _profileTextColor,
                         ),
                       ),
                     )
-                  : GestureDetector(
+                  : MangoPressable(
                       onTap: () => _showMenu(context),
                       child: Container(
                         padding: const EdgeInsets.all(4),
@@ -2440,11 +2512,11 @@ class _PostCardState extends State<PostCard> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   color: themeController.isDarkMode.value
-                      ? Colors.grey[800]
-                      : Colors.grey[300],
+                      ? MangoPalette.grey800
+                      : MangoPalette.grey300,
                 ),
               ),
-            const CircularProgressIndicator(color: Colors.white),
+            const CircularProgressIndicator(semanticsLabel: 'Loading', color: Colors.white),
           ],
         );
       }
@@ -2457,8 +2529,8 @@ class _PostCardState extends State<PostCard> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]
-                : Colors.grey[300],
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -2473,7 +2545,7 @@ class _PostCardState extends State<PostCard> {
 
       
       final controller = _videoController!;
-      return GestureDetector(
+      return MangoPressable(
         onTap: () {
           controller.value.isPlaying ? controller.pause() : controller.play();
           _isVideoPlaying.value = controller.value.isPlaying;
@@ -2501,7 +2573,7 @@ class _PostCardState extends State<PostCard> {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
+                  color: MangoPalette.black.withOpacity(0.5),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -2527,7 +2599,7 @@ class _PostCardState extends State<PostCard> {
 
   
   Widget _buildSingleImageSection(BuildContext context) {
-    return GestureDetector(
+    return MangoPressable(
       onTap: () => _openImageViewer(context, [widget.post.image], 0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
@@ -2540,15 +2612,15 @@ class _PostCardState extends State<PostCard> {
             width: double.infinity,
             height: MediaQuery.of(context).size.width,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]
-                : Colors.grey[300],
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
             child: Center(
               child: Icon(
                 Icons.photo,
                 size: 40,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey[600]
-                    : Colors.grey[400],
+                    ? MangoPalette.grey600
+                    : MangoPalette.grey400,
               ),
             ),
           ),
@@ -2556,15 +2628,15 @@ class _PostCardState extends State<PostCard> {
             width: double.infinity,
             height: MediaQuery.of(context).size.width,
             color: themeController.isDarkMode.value
-                ? Colors.grey[800]
-                : Colors.grey[300],
+                ? MangoPalette.grey800
+                : MangoPalette.grey300,
             child: Center(
               child: Icon(
                 Icons.photo,
                 size: 40,
                 color: themeController.isDarkMode.value
-                    ? Colors.grey
-                    : Colors.grey[600],
+                    ? MangoPalette.grey500
+                    : MangoPalette.grey600,
               ),
             ),
           ),
@@ -2584,7 +2656,7 @@ class _PostCardState extends State<PostCard> {
         scrollDirection: Axis.horizontal,
         itemCount: widget.post.multiImage.length,
         itemBuilder: (context, index) {
-          return GestureDetector(
+          return MangoPressable(
             onTap: () =>
                 _openImageViewer(context, widget.post.multiImage, index),
             child: Container(
@@ -2604,15 +2676,15 @@ class _PostCardState extends State<PostCard> {
                     width: imageWidth,
                     height: imageWidth,
                     color: themeController.isDarkMode.value
-                        ? Colors.grey[800]
-                        : Colors.grey[300],
+                        ? MangoPalette.grey800
+                        : MangoPalette.grey300,
                     child: Center(
                       child: Icon(
                         Icons.photo_library,
                         size: 40,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey[600]
-                            : Colors.grey[400],
+                            ? MangoPalette.grey600
+                            : MangoPalette.grey400,
                       ),
                     ),
                   ),
@@ -2620,15 +2692,15 @@ class _PostCardState extends State<PostCard> {
                     width: imageWidth,
                     height: imageWidth,
                     color: themeController.isDarkMode.value
-                        ? Colors.grey[800]
-                        : Colors.grey[300],
+                        ? MangoPalette.grey800
+                        : MangoPalette.grey300,
                     child: Center(
                       child: Icon(
                         Icons.photo_library,
                         size: 40,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey[600],
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey600,
                       ),
                     ),
                   ),
@@ -2652,11 +2724,11 @@ class _PostCardState extends State<PostCard> {
           return Container(
             height: 70,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               color: _surfaceColor,
             ),
             child: Center(
-              child: CircularProgressIndicator(color: _primaryColor),
+              child: CircularProgressIndicator(semanticsLabel: 'Loading', color: _primaryColor),
             ),
           );
         }
@@ -2665,7 +2737,7 @@ class _PostCardState extends State<PostCard> {
           return Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(MangoRadius.md),
               color: _surfaceColor,
             ),
             child: Row(
@@ -2675,7 +2747,7 @@ class _PostCardState extends State<PostCard> {
                 Expanded(
                   child: Text(
                     'Unable to load content',
-                    style: TextStyle(fontSize: 10, color: _secondaryTextColor),
+                    style: TextStyle(fontSize: 12, color: _secondaryTextColor),
                   ),
                 ),
               ],
@@ -2707,7 +2779,7 @@ class _PostCardState extends State<PostCard> {
       children: [
         Text(
           timeAgo(widget.post.timeStamp!.toDate()),
-          style: TextStyle(fontSize: 10, color: _secondaryTextColor),
+          style: TextStyle(fontSize: 12, color: _secondaryTextColor),
         ),
         Obx(
           () => Row(
@@ -2716,27 +2788,35 @@ class _PostCardState extends State<PostCard> {
                 icon: FontAwesomeIcons.comment,
                 count: widget.post.replyCount,
                 onTap: _commentOnPost,
+                label: 'Comment',
+                countNoun: 'comments',
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 8),
               _buildActionButton(
                 icon: FontAwesomeIcons.retweet,
                 count: widget.post.repostCount,
                 onTap: _repost,
+                label: 'Repost',
+                countNoun: 'reposts',
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 8),
               _buildActionButton(
-                icon: _isLiked.value
-                    ? FontAwesomeIcons.solidHeart
-                    : FontAwesomeIcons.heart,
+                icon: FontAwesomeIcons.heart,
+                activeIcon: FontAwesomeIcons.solidHeart,
                 count: _likeCount.value,
                 onTap: _toggleLike,
                 isActive: _isLiked.value,
                 activeColor: Colors.red,
+                label: 'Like',
+                activeLabel: 'Liked',
+                countNoun: 'likes',
+                haptic: true,
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 8),
               _buildActionButton(
                 icon: FontAwesomeIcons.share,
                 onTap: _sharePost,
+                label: 'Share',
               ),
             ],
           ),
@@ -2751,36 +2831,28 @@ class _PostCardState extends State<PostCard> {
     required VoidCallback onTap,
     bool isActive = false,
     Color activeColor = Colors.blue,
+    required String label,
+    String? activeLabel,
+    String? countNoun,
+    IconData? activeIcon,
+    bool haptic = false,
   }) {
-    return GestureDetector(
+    // Animated icon swap, count tick and spoken state ("Liked, 13 likes").
+    return MangoReactionButton(
+      icon: icon,
+      activeIcon: activeIcon,
+      label: label,
+      activeLabel: activeLabel,
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: isActive ? activeColor.withOpacity(0.2) : _surfaceColor,
-        ),
-        child: Row(
-          children: [
-            FaIcon(
-              icon,
-              size: 14,
-              color: isActive ? activeColor : _secondaryTextColor,
-            ),
-            if (count > 0) ...[
-              const SizedBox(width: 4),
-              Text(
-                _formatCount(count),
-                style: TextStyle(
-                  fontSize: 10,
-                  color: isActive ? activeColor : _secondaryTextColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
+      isActive: isActive,
+      count: count,
+      countNoun: countNoun,
+      activeColor: activeColor,
+      inactiveColor: _secondaryTextColor,
+      background: _surfaceColor,
+      iconSize: 14,
+      formatCount: _formatCount,
+      haptic: haptic,
     );
   }
 
@@ -2792,7 +2864,7 @@ class _PostCardState extends State<PostCard> {
         child: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             color: _surfaceColor,
             border: Border.all(color: _dividerColor),
           ),
@@ -2810,18 +2882,18 @@ class _PostCardState extends State<PostCard> {
                     width: 45,
                     height: 60,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       color: themeController.isDarkMode.value
-                          ? Colors.grey[800]
-                          : Colors.grey[300],
+                          ? MangoPalette.grey800
+                          : MangoPalette.grey300,
                     ),
                     child: Center(
                       child: Icon(
                         Icons.book,
                         size: 20,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey[600],
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey600,
                       ),
                     ),
                   ),
@@ -2829,18 +2901,18 @@ class _PostCardState extends State<PostCard> {
                     width: 45,
                     height: 60,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       color: themeController.isDarkMode.value
-                          ? Colors.grey[800]
-                          : Colors.grey[300],
+                          ? MangoPalette.grey800
+                          : MangoPalette.grey300,
                     ),
                     child: Center(
                       child: Icon(
                         Icons.book,
                         size: 20,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey[600],
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey600,
                       ),
                     ),
                   ),
@@ -2864,7 +2936,7 @@ class _PostCardState extends State<PostCard> {
                             book.title,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 11,
+                              fontSize: 12,
                               color: _textColor,
                             ),
                             maxLines: 1,
@@ -2877,7 +2949,7 @@ class _PostCardState extends State<PostCard> {
                     Text(
                       'by ${book.author}',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: _secondaryTextColor,
                       ),
                     ),
@@ -2895,7 +2967,7 @@ class _PostCardState extends State<PostCard> {
                             Text(
                               '${book.reads}',
                               style: TextStyle(
-                                fontSize: 9,
+                                fontSize: 12,
                                 color: _secondaryTextColor,
                               ),
                             ),
@@ -2913,7 +2985,7 @@ class _PostCardState extends State<PostCard> {
                             Text(
                               '${book.likes}',
                               style: TextStyle(
-                                fontSize: 9,
+                                fontSize: 12,
                                 color: _secondaryTextColor,
                               ),
                             ),
@@ -2972,7 +3044,7 @@ class _PostCardState extends State<PostCard> {
         child: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(MangoRadius.md),
             color: _surfaceColor,
             border: Border.all(color: _dividerColor),
           ),
@@ -2990,18 +3062,18 @@ class _PostCardState extends State<PostCard> {
                     width: 45,
                     height: 45,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       color: themeController.isDarkMode.value
-                          ? Colors.grey[800]
-                          : Colors.grey[300],
+                          ? MangoPalette.grey800
+                          : MangoPalette.grey300,
                     ),
                     child: Center(
                       child: Icon(
                         Icons.music_note,
                         size: 20,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey[600],
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey600,
                       ),
                     ),
                   ),
@@ -3009,18 +3081,18 @@ class _PostCardState extends State<PostCard> {
                     width: 45,
                     height: 45,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(MangoRadius.sm),
                       color: themeController.isDarkMode.value
-                          ? Colors.grey[800]
-                          : Colors.grey[300],
+                          ? MangoPalette.grey800
+                          : MangoPalette.grey300,
                     ),
                     child: Center(
                       child: Icon(
                         Icons.music_note,
                         size: 20,
                         color: themeController.isDarkMode.value
-                            ? Colors.grey
-                            : Colors.grey[600],
+                            ? MangoPalette.grey500
+                            : MangoPalette.grey600,
                       ),
                     ),
                   ),
@@ -3044,7 +3116,7 @@ class _PostCardState extends State<PostCard> {
                             playlist.title,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 11,
+                              fontSize: 12,
                               color: _textColor,
                             ),
                             maxLines: 1,
@@ -3057,7 +3129,7 @@ class _PostCardState extends State<PostCard> {
                     Text(
                       'by ${playlist.artiste}',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: _secondaryTextColor,
                       ),
                     ),
@@ -3075,7 +3147,7 @@ class _PostCardState extends State<PostCard> {
                             Text(
                               '${playlist.plays}',
                               style: TextStyle(
-                                fontSize: 9,
+                                fontSize: 12,
                                 color: _secondaryTextColor,
                               ),
                             ),
@@ -3093,7 +3165,7 @@ class _PostCardState extends State<PostCard> {
                             Text(
                               '${playlist.likeCount}',
                               style: TextStyle(
-                                fontSize: 9,
+                                fontSize: 12,
                                 color: _secondaryTextColor,
                               ),
                             ),
@@ -3119,7 +3191,7 @@ class _PostCardState extends State<PostCard> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           color: _surfaceColor,
           border: Border.all(color: _dividerColor),
         ),
@@ -3138,18 +3210,18 @@ class _PostCardState extends State<PostCard> {
                         width: 45,
                         height: 45,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           color: themeController.isDarkMode.value
-                              ? Colors.grey[800]
-                              : Colors.grey[300],
+                              ? MangoPalette.grey800
+                              : MangoPalette.grey300,
                         ),
                         child: Center(
                           child: Icon(
                             Icons.shopping_bag,
                             size: 20,
                             color: themeController.isDarkMode.value
-                                ? Colors.grey
-                                : Colors.grey[600],
+                                ? MangoPalette.grey500
+                                : MangoPalette.grey600,
                           ),
                         ),
                       ),
@@ -3157,25 +3229,25 @@ class _PostCardState extends State<PostCard> {
                         width: 45,
                         height: 45,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           color: themeController.isDarkMode.value
-                              ? Colors.grey[800]
-                              : Colors.grey[300],
+                              ? MangoPalette.grey800
+                              : MangoPalette.grey300,
                         ),
                         child: Center(
                           child: Icon(
                             Icons.shopping_bag,
                             size: 20,
                             color: themeController.isDarkMode.value
-                                ? Colors.grey
-                                : Colors.grey[600],
+                                ? MangoPalette.grey500
+                                : MangoPalette.grey600,
                           ),
                         ),
                       ),
                     )
                   : Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                         color: _primaryColor.withOpacity(0.1),
                       ),
                       child: Center(
@@ -3205,7 +3277,7 @@ class _PostCardState extends State<PostCard> {
                           data['title'] ?? 'Product',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 11,
+                            fontSize: 12,
                             color: _textColor,
                           ),
                         ),
@@ -3236,7 +3308,7 @@ class _PostCardState extends State<PostCard> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           color: _surfaceColor,
           border: Border.all(color: _dividerColor),
         ),
@@ -3255,18 +3327,18 @@ class _PostCardState extends State<PostCard> {
                         width: 45,
                         height: 45,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           color: themeController.isDarkMode.value
-                              ? Colors.grey[800]
-                              : Colors.grey[300],
+                              ? MangoPalette.grey800
+                              : MangoPalette.grey300,
                         ),
                         child: Center(
                           child: Icon(
                             Icons.podcasts,
                             size: 20,
                             color: themeController.isDarkMode.value
-                                ? Colors.grey
-                                : Colors.grey[600],
+                                ? MangoPalette.grey500
+                                : MangoPalette.grey600,
                           ),
                         ),
                       ),
@@ -3274,25 +3346,25 @@ class _PostCardState extends State<PostCard> {
                         width: 45,
                         height: 45,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           color: themeController.isDarkMode.value
-                              ? Colors.grey[800]
-                              : Colors.grey[300],
+                              ? MangoPalette.grey800
+                              : MangoPalette.grey300,
                         ),
                         child: Center(
                           child: Icon(
                             Icons.podcasts,
                             size: 20,
                             color: themeController.isDarkMode.value
-                                ? Colors.grey
-                                : Colors.grey[600],
+                                ? MangoPalette.grey500
+                                : MangoPalette.grey600,
                           ),
                         ),
                       ),
                     )
                   : Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                         color: _primaryColor.withOpacity(0.1),
                       ),
                       child: Center(
@@ -3322,7 +3394,7 @@ class _PostCardState extends State<PostCard> {
                           data['title'] ?? 'Podcast',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 11,
+                            fontSize: 12,
                             color: _textColor,
                           ),
                         ),
@@ -3332,7 +3404,7 @@ class _PostCardState extends State<PostCard> {
                   const SizedBox(height: 4),
                   Text(
                     data['host'] ?? 'Unknown Host',
-                    style: TextStyle(fontSize: 10, color: _secondaryTextColor),
+                    style: TextStyle(fontSize: 12, color: _secondaryTextColor),
                   ),
                 ],
               ),
@@ -3349,7 +3421,7 @@ class _PostCardState extends State<PostCard> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MangoRadius.md),
           color: _surfaceColor,
           border: Border.all(color: _dividerColor),
         ),
@@ -3368,18 +3440,18 @@ class _PostCardState extends State<PostCard> {
                         width: 45,
                         height: 60,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           color: themeController.isDarkMode.value
-                              ? Colors.grey[800]
-                              : Colors.grey[300],
+                              ? MangoPalette.grey800
+                              : MangoPalette.grey300,
                         ),
                         child: Center(
                           child: Icon(
                             Icons.movie,
                             size: 20,
                             color: themeController.isDarkMode.value
-                                ? Colors.grey
-                                : Colors.grey[600],
+                                ? MangoPalette.grey500
+                                : MangoPalette.grey600,
                           ),
                         ),
                       ),
@@ -3387,25 +3459,25 @@ class _PostCardState extends State<PostCard> {
                         width: 45,
                         height: 60,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(MangoRadius.sm),
                           color: themeController.isDarkMode.value
-                              ? Colors.grey[800]
-                              : Colors.grey[300],
+                              ? MangoPalette.grey800
+                              : MangoPalette.grey300,
                         ),
                         child: Center(
                           child: Icon(
                             Icons.movie,
                             size: 20,
                             color: themeController.isDarkMode.value
-                                ? Colors.grey
-                                : Colors.grey[600],
+                                ? MangoPalette.grey500
+                                : MangoPalette.grey600,
                           ),
                         ),
                       ),
                     )
                   : Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(MangoRadius.sm),
                         color: _primaryColor.withOpacity(0.1),
                       ),
                       child: Center(
@@ -3435,7 +3507,7 @@ class _PostCardState extends State<PostCard> {
                           data['title'] ?? 'Movie',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 11,
+                            fontSize: 12,
                             color: _textColor,
                           ),
                         ),
@@ -3445,7 +3517,7 @@ class _PostCardState extends State<PostCard> {
                   const SizedBox(height: 4),
                   Text(
                     data['genre'] ?? 'Unknown Genre',
-                    style: TextStyle(fontSize: 10, color: _secondaryTextColor),
+                    style: TextStyle(fontSize: 12, color: _secondaryTextColor),
                   ),
                 ],
               ),
@@ -3460,5 +3532,58 @@ class _PostCardState extends State<PostCard> {
   void dispose() {
     super.dispose();
     _videoController?.dispose();
+  }
+}
+
+/// Post text: readable size, #hashtags, @mentions and links highlighted,
+/// and "more" for long posts.
+class _PostText extends StatefulWidget {
+  const _PostText({required this.text, required this.color, required this.accent});
+
+  final String text;
+  final Color color;
+  final Color accent;
+
+  @override
+  State<_PostText> createState() => _PostTextState();
+}
+
+class _PostTextState extends State<_PostText> {
+  bool _expanded = false;
+
+  List<InlineSpan> _spans(TextStyle base) {
+    final re = RegExp(r'(#[\w]+|@[\w.]+|https?://\S+)');
+    final out = <InlineSpan>[];
+    var last = 0;
+    for (final m in re.allMatches(widget.text)) {
+      if (m.start > last) out.add(TextSpan(text: widget.text.substring(last, m.start)));
+      out.add(TextSpan(text: m.group(0), style: base.copyWith(color: widget.accent, fontWeight: FontWeight.w600)));
+      last = m.end;
+    }
+    if (last < widget.text.length) out.add(TextSpan(text: widget.text.substring(last)));
+    return out;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final style = TextStyle(fontSize: 15, height: 1.45, color: widget.color);
+    final long = widget.text.length > 180 || '\n'.allMatches(widget.text).length > 4;
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      AnimatedSize(
+        duration: MangoMotion.duration(context, MangoMotionTokens.base),
+        alignment: Alignment.topCenter,
+        child: Text.rich(
+          TextSpan(style: style, children: _spans(style)),
+          maxLines: _expanded || !long ? null : 4,
+          overflow: _expanded || !long ? TextOverflow.visible : TextOverflow.ellipsis,
+        ),
+      ),
+      if (long)
+        TextButton(
+          style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(48, 32)),
+          onPressed: () => setState(() => _expanded = !_expanded),
+          child: Text(_expanded ? 'Show less' : 'more'),
+        ),
+    ]);
   }
 }
